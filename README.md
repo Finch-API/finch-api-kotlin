@@ -68,15 +68,15 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new hris directory, first use the `HriDirectoryListIndividualsParams` builder to specify attributes,
+To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
 then pass that to the `listIndividuals` method of the `directory` service.
 
 ```kotlin
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.Page
 
-val params = HriDirectoryListIndividualsParams.builder().build()
+val params = HrisDirectoryListIndividualsParams.builder().build()
 val hrisDirectory = client.directory().listIndividuals(params)
 ```
 
@@ -105,14 +105,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HriDirectoryListIndividualsParams.builder()` to pass to
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
 the `listIndividuals` method of the `directory` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```kotlin
-val params = HriDirectoryListIndividualsParams.builder()
+val params = HrisDirectoryListIndividualsParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build()

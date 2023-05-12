@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtStageListPageAsync
-import com.tryfinch.api.models.AtStageListParams
+import com.tryfinch.api.models.AtsStageListPageAsync
+import com.tryfinch.api.models.AtsStageListParams
 
 interface StageServiceAsync {
 
@@ -14,7 +14,7 @@ interface StageServiceAsync {
      * `job_id` to determine whether a job applies specifically to a job.
      */
     suspend fun list(
-        params: AtStageListParams,
+        params: AtsStageListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtStageListPageAsync
+    ): AtsStageListPageAsync
 }

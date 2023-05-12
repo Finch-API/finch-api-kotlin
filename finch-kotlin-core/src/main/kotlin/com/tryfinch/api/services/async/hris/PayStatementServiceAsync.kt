@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriPayStatementRetrieveManyPageAsync
-import com.tryfinch.api.models.HriPayStatementRetrieveManyParams
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 
 interface PayStatementServiceAsync {
 
@@ -14,7 +14,7 @@ interface PayStatementServiceAsync {
      * Deduction and contribution types are supported by the payroll systems that support Benefits.
      */
     suspend fun retrieveMany(
-        params: HriPayStatementRetrieveManyParams,
+        params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriPayStatementRetrieveManyPageAsync
+    ): HrisPayStatementRetrieveManyPageAsync
 }

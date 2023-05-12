@@ -3,22 +3,22 @@
 package com.tryfinch.api.services.blocking.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtOfferListPage
-import com.tryfinch.api.models.AtOfferListParams
-import com.tryfinch.api.models.AtOfferRetrieveParams
+import com.tryfinch.api.models.AtsOfferListPage
+import com.tryfinch.api.models.AtsOfferListParams
+import com.tryfinch.api.models.AtsOfferRetrieveParams
 import com.tryfinch.api.models.Offer
 
 interface OfferService {
 
     /** Get a single offer from an organization. */
     fun retrieve(
-        params: AtOfferRetrieveParams,
+        params: AtsOfferRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Offer
 
     /** Get all offers put out by an organization. */
     fun list(
-        params: AtOfferListParams,
+        params: AtsOfferListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtOfferListPage
+    ): AtsOfferListPage
 }

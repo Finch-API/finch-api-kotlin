@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HriPayStatementRetrieveManyPageAsync
-import com.tryfinch.api.models.HriPayStatementRetrieveManyParams
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.json
 import com.tryfinch.api.services.jsonHandler
@@ -20,8 +20,8 @@ constructor(
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-    private val retrieveManyHandler: Handler<HriPayStatementRetrieveManyPageAsync.Response> =
-        jsonHandler<HriPayStatementRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
+    private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageAsync.Response> =
+        jsonHandler<HrisPayStatementRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -30,9 +30,9 @@ constructor(
      * Deduction and contribution types are supported by the payroll systems that support Benefits.
      */
     override suspend fun retrieveMany(
-        params: HriPayStatementRetrieveManyParams,
+        params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions
-    ): HriPayStatementRetrieveManyPageAsync {
+    ): HrisPayStatementRetrieveManyPageAsync {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
@@ -50,7 +50,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { HriPayStatementRetrieveManyPageAsync.of(this, params, it) }
+                .let { HrisPayStatementRetrieveManyPageAsync.of(this, params, it) }
         }
     }
 }

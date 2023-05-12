@@ -3,11 +3,11 @@
 package com.tryfinch.api.services.async.hris.benefits
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriBenefitIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsPageAsync
-import com.tryfinch.api.models.HriBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HriBenefitIndividualUnenrollPageAsync
-import com.tryfinch.api.models.HriBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
+import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
+import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPageAsync
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 
 interface IndividualServiceAsync {
@@ -18,7 +18,7 @@ interface IndividualServiceAsync {
      * Lists individuals currently enrolled in a given benefit.
      */
     suspend fun enrolledIds(
-        params: HriBenefitIndividualEnrolledIdsParams,
+        params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): IndividualEnrolledIdsResponse
 
@@ -28,9 +28,9 @@ interface IndividualServiceAsync {
      * Get enrolled benefit information for the given individuals.
      */
     suspend fun retrieveManyBenefits(
-        params: HriBenefitIndividualRetrieveManyBenefitsParams,
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitIndividualRetrieveManyBenefitsPageAsync
+    ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -38,7 +38,7 @@ interface IndividualServiceAsync {
      * Unenroll individuals from a benefit
      */
     suspend fun unenroll(
-        params: HriBenefitIndividualUnenrollParams,
+        params: HrisBenefitIndividualUnenrollParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitIndividualUnenrollPageAsync
+    ): HrisBenefitIndividualUnenrollPageAsync
 }

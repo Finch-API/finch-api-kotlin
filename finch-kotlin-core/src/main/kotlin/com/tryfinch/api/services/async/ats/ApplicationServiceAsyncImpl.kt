@@ -7,9 +7,9 @@ import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Application
-import com.tryfinch.api.models.AtApplicationListPageAsync
-import com.tryfinch.api.models.AtApplicationListParams
-import com.tryfinch.api.models.AtApplicationRetrieveParams
+import com.tryfinch.api.models.AtsApplicationListPageAsync
+import com.tryfinch.api.models.AtsApplicationListParams
+import com.tryfinch.api.models.AtsApplicationRetrieveParams
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
 import com.tryfinch.api.services.withErrorHandler
@@ -26,7 +26,7 @@ constructor(
 
     /** Gets an application from an organization. */
     override suspend fun retrieve(
-        params: AtApplicationRetrieveParams,
+        params: AtsApplicationRetrieveParams,
         requestOptions: RequestOptions
     ): Application {
         val request =
@@ -48,15 +48,15 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtApplicationListPageAsync.Response> =
-        jsonHandler<AtApplicationListPageAsync.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtsApplicationListPageAsync.Response> =
+        jsonHandler<AtsApplicationListPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /** Gets all of an organization's applications. */
     override suspend fun list(
-        params: AtApplicationListParams,
+        params: AtsApplicationListParams,
         requestOptions: RequestOptions
-    ): AtApplicationListPageAsync {
+    ): AtsApplicationListPageAsync {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -73,7 +73,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtApplicationListPageAsync.of(this, params, it) }
+                .let { AtsApplicationListPageAsync.of(this, params, it) }
         }
     }
 }

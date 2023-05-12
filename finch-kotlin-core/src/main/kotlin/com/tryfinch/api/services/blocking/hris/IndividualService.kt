@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriIndividualRetrieveManyPage
-import com.tryfinch.api.models.HriIndividualRetrieveManyParams
+import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
+import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataService
 
 interface IndividualService {
@@ -13,7 +13,7 @@ interface IndividualService {
 
     /** Read individual data, excluding income and employment data */
     fun retrieveMany(
-        params: HriIndividualRetrieveManyParams,
+        params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriIndividualRetrieveManyPage
+    ): HrisIndividualRetrieveManyPage
 }

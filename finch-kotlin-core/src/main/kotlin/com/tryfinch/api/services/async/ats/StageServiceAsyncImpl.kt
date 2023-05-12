@@ -6,8 +6,8 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtStageListPageAsync
-import com.tryfinch.api.models.AtStageListParams
+import com.tryfinch.api.models.AtsStageListPageAsync
+import com.tryfinch.api.models.AtsStageListParams
 import com.tryfinch.api.models.Stage
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -29,9 +29,9 @@ constructor(
      * `job_id` to determine whether a job applies specifically to a job.
      */
     override suspend fun list(
-        params: AtStageListParams,
+        params: AtsStageListParams,
         requestOptions: RequestOptions
-    ): AtStageListPageAsync {
+    ): AtsStageListPageAsync {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -48,8 +48,8 @@ constructor(
                         forEach { it.validate() }
                     }
                 }
-                .let { AtStageListPageAsync.Response.Builder().items(it).build() }
-                .let { AtStageListPageAsync.of(this, params, it) }
+                .let { AtsStageListPageAsync.Response.Builder().items(it).build() }
+                .let { AtsStageListPageAsync.of(this, params, it) }
         }
     }
 }

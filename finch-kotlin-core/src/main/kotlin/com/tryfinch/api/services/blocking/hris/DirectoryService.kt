@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriDirectoryListIndividualsPage
-import com.tryfinch.api.models.HriDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 
 interface DirectoryService {
 
     /** Read company directory and organization structure */
     fun listIndividuals(
-        params: HriDirectoryListIndividualsParams,
+        params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriDirectoryListIndividualsPage
+    ): HrisDirectoryListIndividualsPage
 }

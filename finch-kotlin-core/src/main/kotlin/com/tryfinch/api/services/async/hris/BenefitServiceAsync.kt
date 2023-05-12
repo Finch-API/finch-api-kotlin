@@ -5,13 +5,13 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
-import com.tryfinch.api.models.HriBenefitCreateParams
-import com.tryfinch.api.models.HriBenefitListPageAsync
-import com.tryfinch.api.models.HriBenefitListParams
-import com.tryfinch.api.models.HriBenefitListSupportedBenefitsPageAsync
-import com.tryfinch.api.models.HriBenefitListSupportedBenefitsParams
-import com.tryfinch.api.models.HriBenefitRetrieveParams
-import com.tryfinch.api.models.HriBenefitUpdateParams
+import com.tryfinch.api.models.HrisBenefitCreateParams
+import com.tryfinch.api.models.HrisBenefitListPageAsync
+import com.tryfinch.api.models.HrisBenefitListParams
+import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
+import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRetrieveParams
+import com.tryfinch.api.models.HrisBenefitUpdateParams
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 
@@ -26,7 +26,7 @@ interface BenefitServiceAsync {
      * for each provider.
      */
     suspend fun create(
-        params: HriBenefitCreateParams,
+        params: HrisBenefitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CreateCompanyBenefitsResponse
 
@@ -36,7 +36,7 @@ interface BenefitServiceAsync {
      * Lists benefit information for a given benefit
      */
     suspend fun retrieve(
-        params: HriBenefitRetrieveParams,
+        params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompanyBenefit
 
@@ -46,7 +46,7 @@ interface BenefitServiceAsync {
      * Updates an existing company-wide benefit
      */
     suspend fun update(
-        params: HriBenefitUpdateParams,
+        params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): UpdateCompanyBenefitResponse
 
@@ -56,9 +56,9 @@ interface BenefitServiceAsync {
      * List all company-wide benefits.
      */
     suspend fun list(
-        params: HriBenefitListParams,
+        params: HrisBenefitListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitListPageAsync
+    ): HrisBenefitListPageAsync
 
     /**
      * **Availability: Automated and Assisted Benefits providers**
@@ -66,7 +66,7 @@ interface BenefitServiceAsync {
      * Lists available types and configurations for the provider associated with the access token.
      */
     suspend fun listSupportedBenefits(
-        params: HriBenefitListSupportedBenefitsParams,
+        params: HrisBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriBenefitListSupportedBenefitsPageAsync
+    ): HrisBenefitListSupportedBenefitsPageAsync
 }

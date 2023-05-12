@@ -6,9 +6,9 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.AtCandidateListPageAsync
-import com.tryfinch.api.models.AtCandidateListParams
-import com.tryfinch.api.models.AtCandidateRetrieveParams
+import com.tryfinch.api.models.AtsCandidateListPageAsync
+import com.tryfinch.api.models.AtsCandidateListParams
+import com.tryfinch.api.models.AtsCandidateRetrieveParams
 import com.tryfinch.api.models.Candidate
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.jsonHandler
@@ -29,7 +29,7 @@ constructor(
      * one or more applications.
      */
     override suspend fun retrieve(
-        params: AtCandidateRetrieveParams,
+        params: AtsCandidateRetrieveParams,
         requestOptions: RequestOptions
     ): Candidate {
         val request =
@@ -51,8 +51,8 @@ constructor(
         }
     }
 
-    private val listHandler: Handler<AtCandidateListPageAsync.Response> =
-        jsonHandler<AtCandidateListPageAsync.Response>(clientOptions.jsonMapper)
+    private val listHandler: Handler<AtsCandidateListPageAsync.Response> =
+        jsonHandler<AtsCandidateListPageAsync.Response>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
     /**
@@ -60,9 +60,9 @@ constructor(
      * with one or more applications.
      */
     override suspend fun list(
-        params: AtCandidateListParams,
+        params: AtsCandidateListParams,
         requestOptions: RequestOptions
-    ): AtCandidateListPageAsync {
+    ): AtsCandidateListPageAsync {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
@@ -79,7 +79,7 @@ constructor(
                         validate()
                     }
                 }
-                .let { AtCandidateListPageAsync.of(this, params, it) }
+                .let { AtsCandidateListPageAsync.of(this, params, it) }
         }
     }
 }

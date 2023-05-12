@@ -3,8 +3,8 @@
 package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HriIndividualRetrieveManyPageAsync
-import com.tryfinch.api.models.HriIndividualRetrieveManyParams
+import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
 import com.tryfinch.api.services.async.hris.individuals.EmploymentDataServiceAsync
 
 interface IndividualServiceAsync {
@@ -13,7 +13,7 @@ interface IndividualServiceAsync {
 
     /** Read individual data, excluding income and employment data */
     suspend fun retrieveMany(
-        params: HriIndividualRetrieveManyParams,
+        params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HriIndividualRetrieveManyPageAsync
+    ): HrisIndividualRetrieveManyPageAsync
 }

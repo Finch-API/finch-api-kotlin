@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.async.ats
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.AtCandidateListPageAsync
-import com.tryfinch.api.models.AtCandidateListParams
-import com.tryfinch.api.models.AtCandidateRetrieveParams
+import com.tryfinch.api.models.AtsCandidateListPageAsync
+import com.tryfinch.api.models.AtsCandidateListParams
+import com.tryfinch.api.models.AtsCandidateRetrieveParams
 import com.tryfinch.api.models.Candidate
 
 interface CandidateServiceAsync {
@@ -15,7 +15,7 @@ interface CandidateServiceAsync {
      * one or more applications.
      */
     suspend fun retrieve(
-        params: AtCandidateRetrieveParams,
+        params: AtsCandidateRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): Candidate
 
@@ -24,7 +24,7 @@ interface CandidateServiceAsync {
      * with one or more applications.
      */
     suspend fun list(
-        params: AtCandidateListParams,
+        params: AtsCandidateListParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): AtCandidateListPageAsync
+    ): AtsCandidateListPageAsync
 }
