@@ -50,7 +50,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Stage = apply {
         if (!validated) {
             id()
             jobId()

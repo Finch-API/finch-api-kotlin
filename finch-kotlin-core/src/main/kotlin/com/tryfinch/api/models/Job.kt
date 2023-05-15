@@ -65,7 +65,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Job = apply {
         if (!validated) {
             id()
             name()
@@ -305,7 +305,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): Department = apply {
             if (!validated) {
                 name()
                 validated = true
@@ -398,7 +398,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): HiringTeam = apply {
             if (!validated) {
                 hiringManagers()?.forEach { it.validate() }
                 recruiters()?.forEach { it.validate() }
@@ -510,7 +510,7 @@ private constructor(
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-            fun validate() = apply {
+            fun validate(): HiringManager = apply {
                 if (!validated) {
                     name()
                     validated = true
@@ -600,7 +600,7 @@ private constructor(
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-            fun validate() = apply {
+            fun validate(): Recruiter = apply {
                 if (!validated) {
                     name()
                     validated = true

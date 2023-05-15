@@ -63,7 +63,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate() = apply {
+    fun validate(): Application = apply {
         if (!validated) {
             id()
             candidateId()
@@ -233,7 +233,7 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-        fun validate() = apply {
+        fun validate(): RejectedReason = apply {
             if (!validated) {
                 text()
                 validated = true
