@@ -86,7 +86,8 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun responses(): List<EmploymentDataResponse> = responses.getRequired("responses")
+        fun responses(): List<EmploymentDataResponse> =
+            responses.getNullable("responses") ?: listOf()
 
         @JsonProperty("responses")
         fun _responses(): JsonField<List<EmploymentDataResponse>>? = responses
@@ -97,7 +98,7 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                responses().forEach { it.validate() }
+                responses().map { it.validate() }
                 validated = true
             }
         }

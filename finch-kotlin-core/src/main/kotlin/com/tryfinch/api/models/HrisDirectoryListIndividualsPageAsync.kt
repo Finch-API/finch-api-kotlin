@@ -103,7 +103,8 @@ private constructor(
 
         fun paging(): Paging = paging.getRequired("paging")
 
-        fun individuals(): List<IndividualInDirectory> = individuals.getRequired("individuals")
+        fun individuals(): List<IndividualInDirectory> =
+            individuals.getNullable("individuals") ?: listOf()
 
         @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
 
@@ -117,7 +118,7 @@ private constructor(
         fun validate(): Response = apply {
             if (!validated) {
                 paging().validate()
-                individuals().forEach { it.validate() }
+                individuals().map { it.validate() }
                 validated = true
             }
         }

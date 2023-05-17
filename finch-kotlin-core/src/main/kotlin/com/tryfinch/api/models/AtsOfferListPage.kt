@@ -96,7 +96,7 @@ private constructor(
 
         fun paging(): Paging = paging.getRequired("paging")
 
-        fun offers(): List<Offer> = offers.getRequired("offers")
+        fun offers(): List<Offer> = offers.getNullable("offers") ?: listOf()
 
         @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
 
@@ -109,7 +109,7 @@ private constructor(
         fun validate(): Response = apply {
             if (!validated) {
                 paging().validate()
-                offers().forEach { it.validate() }
+                offers().map { it.validate() }
                 validated = true
             }
         }
