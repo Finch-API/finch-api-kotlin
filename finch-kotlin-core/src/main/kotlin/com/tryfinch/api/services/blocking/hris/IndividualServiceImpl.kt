@@ -8,8 +8,6 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPage
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
-import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataService
-import com.tryfinch.api.services.blocking.hris.individuals.EmploymentDataServiceImpl
 import com.tryfinch.api.services.errorHandler
 import com.tryfinch.api.services.json
 import com.tryfinch.api.services.jsonHandler
@@ -21,12 +19,6 @@ constructor(
 ) : IndividualService {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
-
-    private val employmentData: EmploymentDataService by lazy {
-        EmploymentDataServiceImpl(clientOptions)
-    }
-
-    override fun employmentData(): EmploymentDataService = employmentData
 
     private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPage.Response> =
         jsonHandler<HrisIndividualRetrieveManyPage.Response>(clientOptions.jsonMapper)
@@ -48,7 +40,7 @@ constructor(
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
-                .let { retrieveManyHandler.handle(it) }
+                .use { retrieveManyHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()

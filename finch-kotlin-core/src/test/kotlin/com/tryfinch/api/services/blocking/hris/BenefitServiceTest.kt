@@ -17,16 +17,14 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
         val createCompanyBenefitsResponse =
             benefitService.create(
                 HrisBenefitCreateParams.builder()
-                    .type(BenefitType._401K)
                     .description("string")
                     .frequency(BenefitFrequency.ONE_TIME)
+                    .type(BenefitType._401K)
                     .build()
             )
         println(createCompanyBenefitsResponse)
@@ -39,8 +37,6 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
         val companyBenefit =
@@ -55,8 +51,6 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
         val updateCompanyBenefitResponse =
@@ -73,8 +67,6 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsResponse =
@@ -89,8 +81,6 @@ class BenefitServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
         val benefitService = client.hris().benefits()
         val getCompanyBenefitsMetadataResponse =

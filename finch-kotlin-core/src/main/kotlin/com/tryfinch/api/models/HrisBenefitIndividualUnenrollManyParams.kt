@@ -11,7 +11,7 @@ import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.models.*
 import java.util.Objects
 
-class HrisBenefitIndividualUnenrollParams
+class HrisBenefitIndividualUnenrollManyParams
 constructor(
     private val benefitId: String,
     private val individualIds: List<String>?,
@@ -24,8 +24,8 @@ constructor(
 
     fun individualIds(): List<String>? = individualIds
 
-    internal fun getBody(): HrisBenefitIndividualUnenrollBody {
-        return HrisBenefitIndividualUnenrollBody(individualIds, additionalBodyProperties)
+    internal fun getBody(): HrisBenefitIndividualUnenrollManyBody {
+        return HrisBenefitIndividualUnenrollManyBody(individualIds, additionalBodyProperties)
     }
 
     internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -39,9 +39,9 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = HrisBenefitIndividualUnenrollBody.Builder::class)
+    @JsonDeserialize(builder = HrisBenefitIndividualUnenrollManyBody.Builder::class)
     @NoAutoDetect
-    class HrisBenefitIndividualUnenrollBody
+    class HrisBenefitIndividualUnenrollManyBody
     internal constructor(
         private val individualIds: List<String>?,
         private val additionalProperties: Map<String, JsonValue>,
@@ -63,7 +63,7 @@ constructor(
                 return true
             }
 
-            return other is HrisBenefitIndividualUnenrollBody &&
+            return other is HrisBenefitIndividualUnenrollManyBody &&
                 this.individualIds == other.individualIds &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -76,7 +76,7 @@ constructor(
         }
 
         override fun toString() =
-            "HrisBenefitIndividualUnenrollBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
+            "HrisBenefitIndividualUnenrollManyBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -89,10 +89,10 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(
-                hrisBenefitIndividualUnenrollBody: HrisBenefitIndividualUnenrollBody
+                hrisBenefitIndividualUnenrollManyBody: HrisBenefitIndividualUnenrollManyBody
             ) = apply {
-                this.individualIds = hrisBenefitIndividualUnenrollBody.individualIds
-                additionalProperties(hrisBenefitIndividualUnenrollBody.additionalProperties)
+                this.individualIds = hrisBenefitIndividualUnenrollManyBody.individualIds
+                additionalProperties(hrisBenefitIndividualUnenrollManyBody.additionalProperties)
             }
 
             /** Array of individual_ids to unenroll. */
@@ -115,8 +115,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): HrisBenefitIndividualUnenrollBody =
-                HrisBenefitIndividualUnenrollBody(
+            fun build(): HrisBenefitIndividualUnenrollManyBody =
+                HrisBenefitIndividualUnenrollManyBody(
                     individualIds?.toUnmodifiable(),
                     additionalProperties.toUnmodifiable()
                 )
@@ -134,7 +134,7 @@ constructor(
             return true
         }
 
-        return other is HrisBenefitIndividualUnenrollParams &&
+        return other is HrisBenefitIndividualUnenrollManyParams &&
             this.benefitId == other.benefitId &&
             this.individualIds == other.individualIds &&
             this.additionalQueryParams == other.additionalQueryParams &&
@@ -153,7 +153,7 @@ constructor(
     }
 
     override fun toString() =
-        "HrisBenefitIndividualUnenrollParams{benefitId=$benefitId, individualIds=$individualIds, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, individualIds=$individualIds, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -166,27 +166,33 @@ constructor(
     class Builder {
 
         private var benefitId: String? = null
-        private var individualIds: List<String>? = null
+        private var individualIds: MutableList<String> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            hrisBenefitIndividualUnenrollParams: HrisBenefitIndividualUnenrollParams
+            hrisBenefitIndividualUnenrollManyParams: HrisBenefitIndividualUnenrollManyParams
         ) = apply {
-            this.benefitId = hrisBenefitIndividualUnenrollParams.benefitId
-            this.individualIds = hrisBenefitIndividualUnenrollParams.individualIds
-            additionalQueryParams(hrisBenefitIndividualUnenrollParams.additionalQueryParams)
-            additionalHeaders(hrisBenefitIndividualUnenrollParams.additionalHeaders)
-            additionalBodyProperties(hrisBenefitIndividualUnenrollParams.additionalBodyProperties)
+            this.benefitId = hrisBenefitIndividualUnenrollManyParams.benefitId
+            this.individualIds(hrisBenefitIndividualUnenrollManyParams.individualIds ?: listOf())
+            additionalQueryParams(hrisBenefitIndividualUnenrollManyParams.additionalQueryParams)
+            additionalHeaders(hrisBenefitIndividualUnenrollManyParams.additionalHeaders)
+            additionalBodyProperties(
+                hrisBenefitIndividualUnenrollManyParams.additionalBodyProperties
+            )
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Array of individual_ids to unenroll. */
         fun individualIds(individualIds: List<String>) = apply {
-            this.individualIds = individualIds
+            this.individualIds.clear()
+            this.individualIds.addAll(individualIds)
         }
+
+        /** Array of individual_ids to unenroll. */
+        fun addIndividualId(individualId: String) = apply { this.individualIds.add(individualId) }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -242,10 +248,10 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): HrisBenefitIndividualUnenrollParams =
-            HrisBenefitIndividualUnenrollParams(
+        fun build(): HrisBenefitIndividualUnenrollManyParams =
+            HrisBenefitIndividualUnenrollManyParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                individualIds?.toUnmodifiable(),
+                if (individualIds.size == 0) null else individualIds.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),

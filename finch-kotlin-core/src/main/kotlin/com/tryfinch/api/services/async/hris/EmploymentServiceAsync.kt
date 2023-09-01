@@ -1,12 +1,12 @@
 @file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
 
-package com.tryfinch.api.services.async.hris.individuals
+package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyPageAsync
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
-interface EmploymentDataServiceAsync {
+interface EmploymentServiceAsync {
 
     /**
      * Read individual employment and income data
@@ -16,7 +16,7 @@ interface EmploymentDataServiceAsync {
      * what information the provider returns.
      */
     suspend fun retrieveMany(
-        params: HrisIndividualEmploymentDataRetrieveManyParams,
+        params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none()
-    ): HrisIndividualEmploymentDataRetrieveManyPageAsync
+    ): HrisEmploymentRetrieveManyPageAsync
 }

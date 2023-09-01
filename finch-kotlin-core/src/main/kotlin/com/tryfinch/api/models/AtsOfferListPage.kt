@@ -22,9 +22,9 @@ private constructor(
 
     fun response(): Response = response
 
-    fun paging(): Paging = response().paging()
-
     fun offers(): List<Offer> = response().offers()
+
+    fun paging(): Paging = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -87,20 +87,20 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val paging: JsonField<Paging>,
         private val offers: JsonField<List<Offer>>,
+        private val paging: JsonField<Paging>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun paging(): Paging = paging.getRequired("paging")
-
         fun offers(): List<Offer> = offers.getNullable("offers") ?: listOf()
 
-        @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
+        fun paging(): Paging = paging.getRequired("paging")
 
         @JsonProperty("offers") fun _offers(): JsonField<List<Offer>>? = offers
+
+        @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -108,8 +108,8 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                paging().validate()
                 offers().map { it.validate() }
+                paging().validate()
                 validated = true
             }
         }
@@ -122,21 +122,21 @@ private constructor(
             }
 
             return other is Response &&
-                this.paging == other.paging &&
                 this.offers == other.offers &&
+                this.paging == other.paging &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
             return Objects.hash(
-                paging,
                 offers,
+                paging,
                 additionalProperties,
             )
         }
 
         override fun toString() =
-            "AtsOfferListPage.Response{paging=$paging, offers=$offers, additionalProperties=$additionalProperties}"
+            "AtsOfferListPage.Response{offers=$offers, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -145,25 +145,25 @@ private constructor(
 
         class Builder {
 
-            private var paging: JsonField<Paging> = JsonMissing.of()
             private var offers: JsonField<List<Offer>> = JsonMissing.of()
+            private var paging: JsonField<Paging> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(page: Response) = apply {
-                this.paging = page.paging
                 this.offers = page.offers
+                this.paging = page.paging
                 this.additionalProperties.putAll(page.additionalProperties)
             }
-
-            fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-            @JsonProperty("paging")
-            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
             fun offers(offers: List<Offer>) = offers(JsonField.of(offers))
 
             @JsonProperty("offers")
             fun offers(offers: JsonField<List<Offer>>) = apply { this.offers = offers }
+
+            fun paging(paging: Paging) = paging(JsonField.of(paging))
+
+            @JsonProperty("paging")
+            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
@@ -172,8 +172,8 @@ private constructor(
 
             fun build() =
                 Response(
-                    paging,
                     offers,
+                    paging,
                     additionalProperties.toUnmodifiable(),
                 )
         }

@@ -149,75 +149,6 @@ private constructor(
             )
     }
 
-    class Code
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<Int>,
-    ) {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Int> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Code && this.value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            val OK = Code(JsonField.of(200))
-
-            val CREATED = Code(JsonField.of(201))
-
-            val NOT_FOUND = Code(JsonField.of(404))
-
-            val FORBIDDEN = Code(JsonField.of(403))
-
-            fun of(value: Int) = Code(JsonField.of(value))
-        }
-
-        enum class Known {
-            OK,
-            CREATED,
-            NOT_FOUND,
-            FORBIDDEN,
-        }
-
-        enum class Value {
-            OK,
-            CREATED,
-            NOT_FOUND,
-            FORBIDDEN,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                OK -> Value.OK
-                CREATED -> Value.CREATED
-                NOT_FOUND -> Value.NOT_FOUND
-                FORBIDDEN -> Value.FORBIDDEN
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                OK -> Known.OK
-                CREATED -> Known.CREATED
-                NOT_FOUND -> Known.NOT_FOUND
-                FORBIDDEN -> Known.FORBIDDEN
-                else -> throw FinchInvalidDataException("Unknown Code: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
-    }
-
     @JsonDeserialize(builder = Body.Builder::class)
     @NoAutoDetect
     class Body
@@ -358,5 +289,74 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+    }
+
+    class Code
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<Int>,
+    ) {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Int> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Code && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            val OK = Code(JsonField.of(200))
+
+            val CREATED = Code(JsonField.of(201))
+
+            val NOT_FOUND = Code(JsonField.of(404))
+
+            val FORBIDDEN = Code(JsonField.of(403))
+
+            fun of(value: Int) = Code(JsonField.of(value))
+        }
+
+        enum class Known {
+            OK,
+            CREATED,
+            NOT_FOUND,
+            FORBIDDEN,
+        }
+
+        enum class Value {
+            OK,
+            CREATED,
+            NOT_FOUND,
+            FORBIDDEN,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                OK -> Value.OK
+                CREATED -> Value.CREATED
+                NOT_FOUND -> Value.NOT_FOUND
+                FORBIDDEN -> Value.FORBIDDEN
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                OK -> Known.OK
+                CREATED -> Known.CREATED
+                NOT_FOUND -> Known.NOT_FOUND
+                FORBIDDEN -> Known.FORBIDDEN
+                else -> throw FinchInvalidDataException("Unknown Code: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 }

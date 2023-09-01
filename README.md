@@ -2,8 +2,6 @@
 
 The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin. It includes helper classes with helpful types and documentation for every request and response property.
 
-This package is currently in beta (pre-v1.0.0). We expect some breaking changes to rarely-used areas of the SDK, and appreciate your [feedback](mailto:founders@tryfinch.com).
-
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
 ## Documentation
@@ -68,21 +66,22 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
-then pass that to the `listIndividuals` method of the `directory` service.
+To create a new ats candidate, first use the `AtsCandidateRetrieveParams` builder to specify attributes,
+then pass that to the `retrieve` method of the `candidates` service.
 
 ```kotlin
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
-import com.tryfinch.api.models.Page
+import com.tryfinch.api.models.AtsCandidateRetrieveParams
+import com.tryfinch.api.models.Candidate
 
-val params = HrisDirectoryListIndividualsParams.builder().build()
-val hrisDirectory = client.directory().listIndividuals(params)
+val params = AtsCandidateRetrieveParams.builder()
+    .candidateId("<candidate id>")
+    .build()
+val atsCandidate = client.candidates().retrieve(params)
 ```
 
 ### Example: listing resources
 
-The Finch API provides a `list` method to get a paginated list of ats jobs.
+The Finch API provides a `list` method to get a paginated list of jobs.
 You can retrieve the first page by:
 
 ```kotlin
@@ -90,8 +89,8 @@ import com.tryfinch.api.models.Job
 import com.tryfinch.api.models.Page
 
 val page = client.jobs().list()
-for (atsJob: Job in page.jobs()) {
-    print(atsJob)
+for (job: Job in page.jobs()) {
+    print(job)
 }
 ```
 
@@ -105,14 +104,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
-the `listIndividuals` method of the `directory` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `AtsCandidateRetrieveParams.builder()` to pass to
+the `retrieve` method of the `candidates` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```kotlin
-val params = HrisDirectoryListIndividualsParams.builder()
+val params = AtsCandidateRetrieveParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build()
@@ -125,7 +124,7 @@ val params = HrisDirectoryListIndividualsParams.builder()
 When receiving a response, the Finch Kotlin SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Kotlin type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```kotlin
-val hrisDirectory = client.directory().listIndividuals().validate()
+val atsCandidate = client.candidates().retrieve().validate()
 ```
 
 ### Response properties as JSON
@@ -155,7 +154,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```kotlin
-val secret = hrisDirectory._additionalProperties().get("secret_field")
+val secret = atsCandidate._additionalProperties().get("secret_field")
 ```
 
 ---
@@ -176,7 +175,7 @@ which automatically handles fetching more pages for you:
 // As a Sequence:
 client.jobs().list(params).autoPager()
     .take(50)
-    .forEach { atsJob -> print(atsJob) }
+    .forEach { job -> print(job) }
 ```
 
 ### Asynchronous
@@ -185,7 +184,7 @@ client.jobs().list(params).autoPager()
 // As a Flow:
 asyncClient.jobs().list(params).autoPager()
     .take(50)
-    .collect { atsJob -> print(atsJob) }
+    .collect { job -> print(job) }
 ```
 
 ### Manual pagination
@@ -198,8 +197,8 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 ```kotlin
 val page = client.jobs().list(params)
 while (page != null) {
-    for (atsJob in page.jobs) {
-        print(atsJob)
+    for (job in page.jobs) {
+        print(job)
     }
 
     page = page.getNextPage()
@@ -247,7 +246,7 @@ val client = FinchOkHttpClient.builder()
 
 ### Timeouts
 
-Requests time out after 60 seconds by default. You can configure this on the client builder:
+Requests time out after 1 minute by default. You can configure this on the client builder:
 
 ```kotlin
 val client = FinchOkHttpClient.builder()
@@ -269,3 +268,14 @@ val client = FinchOkHttpClient.builder()
     ))
     .build()
 ```
+
+## Semantic Versioning
+
+This package generally attempts to follow [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+
+1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals)_.
+2. Changes that we do not expect to impact the vast majority of users in practice.
+
+We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
+
+We are keen for your feedback; please open an [issue](https://www.github.com/Finch-API/finch-api-kotlin/issues) with questions, bugs, or suggestions.

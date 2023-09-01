@@ -5,11 +5,8 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.models.HrisIndividualRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisIndividualRetrieveManyParams
-import com.tryfinch.api.services.async.hris.individuals.EmploymentDataServiceAsync
 
 interface IndividualServiceAsync {
-
-    fun employmentData(): EmploymentDataServiceAsync
 
     /** Read individual data, excluding income and employment data */
     suspend fun retrieveMany(

@@ -9,8 +9,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollPageAsync
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollParams
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPageAsync
+import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
@@ -49,7 +49,7 @@ constructor(
                 .build()
         return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
             response
-                .let { enrolledIdsHandler.handle(it) }
+                .use { enrolledIdsHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()
@@ -81,7 +81,7 @@ constructor(
                 .build()
         return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
             response
-                .let { retrieveManyBenefitsHandler.handle(it) }
+                .use { retrieveManyBenefitsHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         forEach { it.validate() }
@@ -96,7 +96,7 @@ constructor(
         }
     }
 
-    private val unenrollHandler: Handler<List<UnenrolledIndividual>> =
+    private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
         jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
@@ -105,10 +105,10 @@ constructor(
      *
      * Unenroll individuals from a benefit
      */
-    override suspend fun unenroll(
-        params: HrisBenefitIndividualUnenrollParams,
+    override suspend fun unenrollMany(
+        params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions
-    ): HrisBenefitIndividualUnenrollPageAsync {
+    ): HrisBenefitIndividualUnenrollManyPageAsync {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.DELETE)
@@ -120,14 +120,16 @@ constructor(
                 .build()
         return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
             response
-                .let { unenrollHandler.handle(it) }
+                .use { unenrollManyHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         forEach { it.validate() }
                     }
                 }
-                .let { HrisBenefitIndividualUnenrollPageAsync.Response.Builder().items(it).build() }
-                .let { HrisBenefitIndividualUnenrollPageAsync.of(this, params, it) }
+                .let {
+                    HrisBenefitIndividualUnenrollManyPageAsync.Response.Builder().items(it).build()
+                }
+                .let { HrisBenefitIndividualUnenrollManyPageAsync.of(this, params, it) }
         }
     }
 }

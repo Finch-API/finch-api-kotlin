@@ -16,8 +16,6 @@ import com.tryfinch.api.core.jsonMapper
 import com.tryfinch.api.models.*
 import com.tryfinch.api.models.AtsJobListPage
 import com.tryfinch.api.models.AtsJobListParams
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -43,7 +41,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun hrisDirectoryListIndividualsWithAdditionalParams() {
+    fun atsCandidatesRetrieveWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
@@ -53,34 +51,24 @@ class ServiceParamsTest {
         additionalQueryParams.put("test_query_param", listOf("def567"))
 
         val params =
-            HrisDirectoryListIndividualsParams.builder()
-                .limit(123L)
-                .offset(123L)
+            AtsCandidateRetrieveParams.builder()
+                .candidateId("string")
                 .additionalHeaders(additionalHeaders)
                 .additionalQueryParams(additionalQueryParams)
                 .build()
 
         val apiResponse =
-            HrisDirectoryListIndividualsPage.Response.builder()
-                .paging(Paging.builder().count(123L).offset(123L).build())
-                .individuals(
-                    listOf(
-                        IndividualInDirectory.builder()
-                            .id("string")
-                            .firstName("string")
-                            .middleName("string")
-                            .lastName("string")
-                            .manager(
-                                IndividualInDirectory.Manager.builder()
-                                    .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
-                                    .build()
-                            )
-                            .department(
-                                IndividualInDirectory.Department.builder().name("string").build()
-                            )
-                            .isActive(true)
-                            .build()
-                    )
+            Candidate.builder()
+                .id("string")
+                .applicationIds(listOf("string"))
+                .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .emails(listOf(Candidate.Email.builder().data("string").type("string").build()))
+                .firstName("string")
+                .fullName("string")
+                .lastActivityAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                .lastName("string")
+                .phoneNumbers(
+                    listOf(Candidate.PhoneNumber.builder().data("string").type("string").build())
                 )
                 .build()
 
@@ -91,7 +79,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.hris().directory().listIndividuals(params)
+        client.ats().candidates().retrieve(params)
 
         verify(getRequestedFor(anyUrl()))
     }
@@ -116,16 +104,13 @@ class ServiceParamsTest {
 
         val apiResponse =
             AtsJobListPage.Response.builder()
-                .paging(Paging.builder().count(123L).offset(123L).build())
                 .jobs(
                     listOf(
                         Job.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .name("string")
-                            .status(Job.Status.OPEN)
-                            .department(Job.Department.builder().name("string").build())
-                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .closedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .department(Job.Department.builder().name("string").build())
                             .hiringTeam(
                                 Job.HiringTeam.builder()
                                     .hiringManagers(
@@ -144,9 +129,12 @@ class ServiceParamsTest {
                                     )
                                     .build()
                             )
+                            .name("string")
+                            .status(Job.Status.OPEN)
                             .build()
                     )
                 )
+                .paging(Paging.builder().count(123L).offset(123L).build())
                 .build()
 
         stubFor(

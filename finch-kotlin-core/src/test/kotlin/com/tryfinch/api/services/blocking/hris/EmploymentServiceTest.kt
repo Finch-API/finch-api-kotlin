@@ -1,14 +1,14 @@
-package com.tryfinch.api.services.blocking.hris.individuals
+package com.tryfinch.api.services.blocking.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.*
-import com.tryfinch.api.models.HrisIndividualEmploymentDataRetrieveManyParams
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class EmploymentDataServiceTest {
+class EmploymentServiceTest {
 
     @Test
     fun callRetrieveMany() {
@@ -16,16 +16,14 @@ class EmploymentDataServiceTest {
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("test-api-key")
-                .clientId("string")
-                .clientSecret("string")
                 .build()
-        val employmentDataService = client.hris().individuals().employmentData()
+        val employmentService = client.hris().employments()
         val getEmploymentResponse =
-            employmentDataService.retrieveMany(
-                HrisIndividualEmploymentDataRetrieveManyParams.builder()
+            employmentService.retrieveMany(
+                HrisEmploymentRetrieveManyParams.builder()
                     .requests(
                         listOf(
-                            HrisIndividualEmploymentDataRetrieveManyParams.Request.builder()
+                            HrisEmploymentRetrieveManyParams.Request.builder()
                                 .individualId("string")
                                 .build()
                         )

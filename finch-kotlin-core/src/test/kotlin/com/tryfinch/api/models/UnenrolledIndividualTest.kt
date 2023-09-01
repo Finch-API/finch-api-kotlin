@@ -9,26 +9,26 @@ class UnenrolledIndividualTest {
     fun createUnenrolledIndividual() {
         val unenrolledIndividual =
             UnenrolledIndividual.builder()
-                .individualId("string")
-                .code(123L)
                 .body(
                     UnenrolledIndividual.Body.builder()
-                        .name("string")
                         .finchCode("string")
                         .message("string")
+                        .name("string")
                         .build()
                 )
+                .code(123L)
+                .individualId("string")
                 .build()
         assertThat(unenrolledIndividual).isNotNull
-        assertThat(unenrolledIndividual.individualId()).isEqualTo("string")
-        assertThat(unenrolledIndividual.code()).isEqualTo(123L)
         assertThat(unenrolledIndividual.body())
             .isEqualTo(
                 UnenrolledIndividual.Body.builder()
-                    .name("string")
                     .finchCode("string")
                     .message("string")
+                    .name("string")
                     .build()
             )
+        assertThat(unenrolledIndividual.code()).isEqualTo(123L)
+        assertThat(unenrolledIndividual.individualId()).isEqualTo("string")
     }
 }

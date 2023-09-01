@@ -10,9 +10,9 @@ interface FinchClientAsync {
 
     fun sync(): FinchClient
 
-    fun ats(): AtsServiceAsync
-
     fun hris(): HrisServiceAsync
+
+    fun ats(): AtsServiceAsync
 
     fun providers(): ProviderServiceAsync
 

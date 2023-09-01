@@ -10,21 +10,23 @@ class IndividualInDirectoryTest {
         val individualInDirectory =
             IndividualInDirectory.builder()
                 .id("string")
+                .department(IndividualInDirectory.Department.builder().name("string").build())
                 .firstName("string")
-                .middleName("string")
+                .isActive(true)
                 .lastName("string")
                 .manager(
                     IndividualInDirectory.Manager.builder()
                         .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
                         .build()
                 )
-                .department(IndividualInDirectory.Department.builder().name("string").build())
-                .isActive(true)
+                .middleName("string")
                 .build()
         assertThat(individualInDirectory).isNotNull
         assertThat(individualInDirectory.id()).isEqualTo("string")
+        assertThat(individualInDirectory.department())
+            .isEqualTo(IndividualInDirectory.Department.builder().name("string").build())
         assertThat(individualInDirectory.firstName()).isEqualTo("string")
-        assertThat(individualInDirectory.middleName()).isEqualTo("string")
+        assertThat(individualInDirectory.isActive()).isEqualTo(true)
         assertThat(individualInDirectory.lastName()).isEqualTo("string")
         assertThat(individualInDirectory.manager())
             .isEqualTo(
@@ -32,8 +34,6 @@ class IndividualInDirectoryTest {
                     .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
                     .build()
             )
-        assertThat(individualInDirectory.department())
-            .isEqualTo(IndividualInDirectory.Department.builder().name("string").build())
-        assertThat(individualInDirectory.isActive()).isEqualTo(true)
+        assertThat(individualInDirectory.middleName()).isEqualTo("string")
     }
 }

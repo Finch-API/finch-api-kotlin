@@ -10,54 +10,52 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
+import com.tryfinch.api.services.blocking.hris.EmploymentService
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
-class HrisBenefitIndividualUnenrollPageAsync
+class HrisEmploymentRetrieveManyPage
 private constructor(
-    private val individualsService: IndividualServiceAsync,
-    private val params: HrisBenefitIndividualUnenrollParams,
+    private val employmentsService: EmploymentService,
+    private val params: HrisEmploymentRetrieveManyParams,
     private val response: Response,
 ) {
 
     fun response(): Response = response
 
-    fun items(): List<UnenrolledIndividual> = response().items()
+    fun responses(): List<EmploymentDataResponse> = response().responses()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return other is HrisBenefitIndividualUnenrollPageAsync &&
-            this.individualsService == other.individualsService &&
+        return other is HrisEmploymentRetrieveManyPage &&
+            this.employmentsService == other.employmentsService &&
             this.params == other.params &&
             this.response == other.response
     }
 
     override fun hashCode(): Int {
         return Objects.hash(
-            individualsService,
+            employmentsService,
             params,
             response,
         )
     }
 
     override fun toString() =
-        "HrisBenefitIndividualUnenrollPageAsync{individualsService=$individualsService, params=$params, response=$response}"
+        "HrisEmploymentRetrieveManyPage{employmentsService=$employmentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return responses().isEmpty()
     }
 
-    fun getNextPageParams(): HrisBenefitIndividualUnenrollParams? {
+    fun getNextPageParams(): HrisEmploymentRetrieveManyParams? {
         return null
     }
 
-    suspend fun getNextPage(): HrisBenefitIndividualUnenrollPageAsync? {
-        return getNextPageParams()?.let { individualsService.unenroll(it) }
+    fun getNextPage(): HrisEmploymentRetrieveManyPage? {
+        return getNextPageParams()?.let { employmentsService.retrieveMany(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -65,12 +63,12 @@ private constructor(
     companion object {
 
         fun of(
-            individualsService: IndividualServiceAsync,
-            params: HrisBenefitIndividualUnenrollParams,
+            employmentsService: EmploymentService,
+            params: HrisEmploymentRetrieveManyParams,
             response: Response
         ) =
-            HrisBenefitIndividualUnenrollPageAsync(
-                individualsService,
+            HrisEmploymentRetrieveManyPage(
+                employmentsService,
                 params,
                 response,
             )
@@ -80,15 +78,17 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val items: JsonField<List<UnenrolledIndividual>>,
+        private val responses: JsonField<List<EmploymentDataResponse>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun items(): List<UnenrolledIndividual> = items.getNullable("items") ?: listOf()
+        fun responses(): List<EmploymentDataResponse> =
+            responses.getNullable("responses") ?: listOf()
 
-        @JsonProperty("items") fun _items(): JsonField<List<UnenrolledIndividual>>? = items
+        @JsonProperty("responses")
+        fun _responses(): JsonField<List<EmploymentDataResponse>>? = responses
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -96,7 +96,7 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                items().map { it.validate() }
+                responses().map { it.validate() }
                 validated = true
             }
         }
@@ -109,16 +109,16 @@ private constructor(
             }
 
             return other is Response &&
-                this.items == other.items &&
+                this.responses == other.responses &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(items, additionalProperties)
+            return Objects.hash(responses, additionalProperties)
         }
 
         override fun toString() =
-            "HrisBenefitIndividualUnenrollPageAsync.Response{items=$items, additionalProperties=$additionalProperties}"
+            "HrisEmploymentRetrieveManyPage.Response{responses=$responses, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -127,39 +127,42 @@ private constructor(
 
         class Builder {
 
-            private var items: JsonField<List<UnenrolledIndividual>> = JsonMissing.of()
+            private var responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(page: Response) = apply {
-                this.items = page.items
+                this.responses = page.responses
                 this.additionalProperties.putAll(page.additionalProperties)
             }
 
-            fun items(items: List<UnenrolledIndividual>) = items(JsonField.of(items))
+            fun responses(responses: List<EmploymentDataResponse>) =
+                responses(JsonField.of(responses))
 
-            @JsonProperty("items")
-            fun items(items: JsonField<List<UnenrolledIndividual>>) = apply { this.items = items }
+            @JsonProperty("responses")
+            fun responses(responses: JsonField<List<EmploymentDataResponse>>) = apply {
+                this.responses = responses
+            }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() = Response(items, additionalProperties.toUnmodifiable())
+            fun build() = Response(responses, additionalProperties.toUnmodifiable())
         }
     }
 
     class AutoPager
     constructor(
-        private val firstPage: HrisBenefitIndividualUnenrollPageAsync,
-    ) : Flow<UnenrolledIndividual> {
+        private val firstPage: HrisEmploymentRetrieveManyPage,
+    ) : Sequence<EmploymentDataResponse> {
 
-        override suspend fun collect(collector: FlowCollector<UnenrolledIndividual>) {
+        override fun iterator(): Iterator<EmploymentDataResponse> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
-                while (index < page.items().size) {
-                    collector.emit(page.items()[index++])
+                while (index < page.responses().size) {
+                    yield(page.responses()[index++])
                 }
                 page = page.getNextPage() ?: break
                 index = 0

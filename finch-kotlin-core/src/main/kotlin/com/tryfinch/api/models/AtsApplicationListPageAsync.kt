@@ -24,9 +24,9 @@ private constructor(
 
     fun response(): Response = response
 
-    fun paging(): Paging = response().paging()
-
     fun applications(): List<Application> = response().applications()
+
+    fun paging(): Paging = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -94,21 +94,21 @@ private constructor(
     @NoAutoDetect
     class Response
     constructor(
-        private val paging: JsonField<Paging>,
         private val applications: JsonField<List<Application>>,
+        private val paging: JsonField<Paging>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
 
-        fun paging(): Paging = paging.getRequired("paging")
-
         fun applications(): List<Application> = applications.getNullable("applications") ?: listOf()
 
-        @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
+        fun paging(): Paging = paging.getRequired("paging")
 
         @JsonProperty("applications")
         fun _applications(): JsonField<List<Application>>? = applications
+
+        @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -116,8 +116,8 @@ private constructor(
 
         fun validate(): Response = apply {
             if (!validated) {
-                paging().validate()
                 applications().map { it.validate() }
+                paging().validate()
                 validated = true
             }
         }
@@ -130,21 +130,21 @@ private constructor(
             }
 
             return other is Response &&
-                this.paging == other.paging &&
                 this.applications == other.applications &&
+                this.paging == other.paging &&
                 this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
             return Objects.hash(
-                paging,
                 applications,
+                paging,
                 additionalProperties,
             )
         }
 
         override fun toString() =
-            "AtsApplicationListPageAsync.Response{paging=$paging, applications=$applications, additionalProperties=$additionalProperties}"
+            "AtsApplicationListPageAsync.Response{applications=$applications, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -153,20 +153,15 @@ private constructor(
 
         class Builder {
 
-            private var paging: JsonField<Paging> = JsonMissing.of()
             private var applications: JsonField<List<Application>> = JsonMissing.of()
+            private var paging: JsonField<Paging> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(page: Response) = apply {
-                this.paging = page.paging
                 this.applications = page.applications
+                this.paging = page.paging
                 this.additionalProperties.putAll(page.additionalProperties)
             }
-
-            fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-            @JsonProperty("paging")
-            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
             fun applications(applications: List<Application>) =
                 applications(JsonField.of(applications))
@@ -176,6 +171,11 @@ private constructor(
                 this.applications = applications
             }
 
+            fun paging(paging: Paging) = paging(JsonField.of(paging))
+
+            @JsonProperty("paging")
+            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
+
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 this.additionalProperties.put(key, value)
@@ -183,8 +183,8 @@ private constructor(
 
             fun build() =
                 Response(
-                    paging,
                     applications,
+                    paging,
                     additionalProperties.toUnmodifiable(),
                 )
         }
