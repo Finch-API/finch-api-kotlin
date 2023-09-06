@@ -18,6 +18,8 @@ interface FinchClientAsync {
 
     fun account(): AccountServiceAsync
 
+    fun webhooks(): WebhookServiceAsync
+
     suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
