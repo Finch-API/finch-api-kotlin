@@ -1,0 +1,16 @@
+package com.tryfinch.api.models
+
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+class BenfitContributionTest {
+
+    @Test
+    fun createBenfitContribution() {
+        val benfitContribution =
+            BenfitContribution.builder().amount(123L).type(BenfitContribution.Type.FIXED).build()
+        assertThat(benfitContribution).isNotNull
+        assertThat(benfitContribution.amount()).isEqualTo(123L)
+        assertThat(benfitContribution.type()).isEqualTo(BenfitContribution.Type.FIXED)
+    }
+}
