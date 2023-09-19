@@ -12,8 +12,6 @@ interface FinchClientAsync {
 
     fun hris(): HrisServiceAsync
 
-    fun ats(): AtsServiceAsync
-
     fun providers(): ProviderServiceAsync
 
     fun account(): AccountServiceAsync

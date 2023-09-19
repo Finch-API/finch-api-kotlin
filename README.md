@@ -71,31 +71,32 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new ats candidate, first use the `AtsCandidateRetrieveParams` builder to specify attributes,
-then pass that to the `retrieve` method of the `candidates` service.
+To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
+then pass that to the `listIndividuals` method of the `directory` service.
 
 ```kotlin
-import com.tryfinch.api.models.AtsCandidateRetrieveParams
-import com.tryfinch.api.models.Candidate
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
+import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.Page
 
-val params = AtsCandidateRetrieveParams.builder()
+val params = HrisDirectoryListIndividualsParams.builder()
     .candidateId("<candidate id>")
     .build()
-val atsCandidate = client.candidates().retrieve(params)
+val hrisDirectory = client.directory().listIndividuals(params)
 ```
 
 ### Example: listing resources
 
-The Finch API provides a `list` method to get a paginated list of jobs.
+The Finch API provides a `listIndividuals` method to get a paginated list of directory.
 You can retrieve the first page by:
 
 ```kotlin
-import com.tryfinch.api.models.Job
+import com.tryfinch.api.models.IndividualInDirectory
 import com.tryfinch.api.models.Page
 
-val page = client.jobs().list()
-for (job: Job in page.jobs()) {
-    print(job)
+val page = client.directory().listIndividuals()
+for (directory: IndividualInDirectory in page.individuals()) {
+    print(directory)
 }
 ```
 
@@ -109,14 +110,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `AtsCandidateRetrieveParams.builder()` to pass to
-the `retrieve` method of the `candidates` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
+the `listIndividuals` method of the `directory` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```kotlin
-val params = AtsCandidateRetrieveParams.builder()
+val params = HrisDirectoryListIndividualsParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build()
@@ -129,7 +130,7 @@ val params = AtsCandidateRetrieveParams.builder()
 When receiving a response, the Finch Kotlin SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Kotlin type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```kotlin
-val atsCandidate = client.candidates().retrieve().validate()
+val hrisDirectory = client.directory().listIndividuals().validate()
 ```
 
 ### Response properties as JSON
@@ -159,7 +160,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```kotlin
-val secret = atsCandidate._additionalProperties().get("secret_field")
+val secret = hrisDirectory._additionalProperties().get("secret_field")
 ```
 
 ---
@@ -178,18 +179,18 @@ which automatically handles fetching more pages for you:
 
 ```kotlin
 // As a Sequence:
-client.jobs().list(params).autoPager()
+client.directory().listIndividuals(params).autoPager()
     .take(50)
-    .forEach { job -> print(job) }
+    .forEach { directory -> print(directory) }
 ```
 
 ### Asynchronous
 
 ```kotlin
 // As a Flow:
-asyncClient.jobs().list(params).autoPager()
+asyncClient.directory().listIndividuals(params).autoPager()
     .take(50)
-    .collect { job -> print(job) }
+    .collect { directory -> print(directory) }
 ```
 
 ### Manual pagination
@@ -200,10 +201,10 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```kotlin
-val page = client.jobs().list(params)
+val page = client.directory().listIndividuals(params)
 while (page != null) {
-    for (job in page.jobs) {
-        print(job)
+    for (directory in page.individuals) {
+        print(directory)
     }
 
     page = page.getNextPage()
