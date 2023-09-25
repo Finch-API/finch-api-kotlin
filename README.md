@@ -19,7 +19,7 @@ The API documentation can be found [here](https://developer.tryfinch.com/).
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:0.0.2")
+implementation("com.tryfinch.api:finch-kotlin:0.0.3")
 ```
 
 #### Maven
@@ -28,7 +28,7 @@ implementation("com.tryfinch.api:finch-kotlin:0.0.2")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 

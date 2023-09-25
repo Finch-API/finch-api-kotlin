@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.3 (2023-09-25)
+
+Full Changelog: [v0.0.2...v0.0.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.0.2...v0.0.3)
+
+### Features
+
+* **ci:** add reviewers ([#9](https://github.com/Finch-API/finch-api-kotlin/issues/9)) ([58af103](https://github.com/Finch-API/finch-api-kotlin/commit/58af103c8d9c793a6cc2a01dac46139d8090fe71))
+
 ## 0.0.2 (2023-09-19)
 
 Full Changelog: [v0.0.1...v0.0.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.0.1...v0.0.2)
