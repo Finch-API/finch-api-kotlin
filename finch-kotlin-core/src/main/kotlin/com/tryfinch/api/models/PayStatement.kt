@@ -21,7 +21,7 @@ private constructor(
     private val individualId: JsonField<String>,
     private val type: JsonField<Type>,
     private val paymentMethod: JsonField<PaymentMethod>,
-    private val totalHours: JsonField<Long>,
+    private val totalHours: JsonField<Double>,
     private val grossPay: JsonField<Money>,
     private val netPay: JsonField<Money>,
     private val earnings: JsonField<List<Earning>>,
@@ -45,7 +45,7 @@ private constructor(
     fun paymentMethod(): PaymentMethod? = paymentMethod.getNullable("payment_method")
 
     /** The number of hours worked for this pay period */
-    fun totalHours(): Long? = totalHours.getNullable("total_hours")
+    fun totalHours(): Double? = totalHours.getNullable("total_hours")
 
     fun grossPay(): Money? = grossPay.getNullable("gross_pay")
 
@@ -169,7 +169,7 @@ private constructor(
         private var individualId: JsonField<String> = JsonMissing.of()
         private var type: JsonField<Type> = JsonMissing.of()
         private var paymentMethod: JsonField<PaymentMethod> = JsonMissing.of()
-        private var totalHours: JsonField<Long> = JsonMissing.of()
+        private var totalHours: JsonField<Double> = JsonMissing.of()
         private var grossPay: JsonField<Money> = JsonMissing.of()
         private var netPay: JsonField<Money> = JsonMissing.of()
         private var earnings: JsonField<List<Earning>> = JsonMissing.of()
@@ -221,12 +221,12 @@ private constructor(
         }
 
         /** The number of hours worked for this pay period */
-        fun totalHours(totalHours: Long) = totalHours(JsonField.of(totalHours))
+        fun totalHours(totalHours: Double) = totalHours(JsonField.of(totalHours))
 
         /** The number of hours worked for this pay period */
         @JsonProperty("total_hours")
         @ExcludeMissing
-        fun totalHours(totalHours: JsonField<Long>) = apply { this.totalHours = totalHours }
+        fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
         fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
 
