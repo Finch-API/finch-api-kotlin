@@ -1,5 +1,6 @@
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,6 +12,14 @@ class EmploymentDataTest {
             EmploymentData.builder()
                 .id("string")
                 .classCode("string")
+                .customFields(
+                    listOf(
+                        EmploymentData.CustomField.builder()
+                            .name("string")
+                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .build()
+                    )
+                )
                 .department(EmploymentData.Department.builder().name("string").build())
                 .employment(
                     EmploymentData.Employment.builder()
@@ -59,6 +68,7 @@ class EmploymentDataTest {
                 )
                 .middleName("string")
                 .payGroupIds(listOf("string"))
+                .sourceId("string")
                 .startDate("string")
                 .title("string")
                 .workId("string")
@@ -67,6 +77,13 @@ class EmploymentDataTest {
         assertThat(employmentData).isNotNull
         assertThat(employmentData.id()).isEqualTo("string")
         assertThat(employmentData.classCode()).isEqualTo("string")
+        assertThat(employmentData.customFields())
+            .containsExactly(
+                EmploymentData.CustomField.builder()
+                    .name("string")
+                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .build()
+            )
         assertThat(employmentData.department())
             .isEqualTo(EmploymentData.Department.builder().name("string").build())
         assertThat(employmentData.employment())
@@ -117,6 +134,7 @@ class EmploymentDataTest {
             )
         assertThat(employmentData.middleName()).isEqualTo("string")
         assertThat(employmentData.payGroupIds()).containsExactly("string")
+        assertThat(employmentData.sourceId()).isEqualTo("string")
         assertThat(employmentData.startDate()).isEqualTo("string")
         assertThat(employmentData.title()).isEqualTo("string")
         assertThat(employmentData.workId()).isEqualTo("string")

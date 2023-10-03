@@ -2,6 +2,7 @@ package com.tryfinch.api.client
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
@@ -32,6 +33,8 @@ constructor(
 
     private val webhooks: WebhookServiceAsync by lazy { WebhookServiceAsyncImpl(clientOptions) }
 
+    private val employer: EmployerServiceAsync by lazy { EmployerServiceAsyncImpl(clientOptions) }
+
     private val getAccessTokenHandler: Handler<GetAccessTokenResponse> =
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -44,6 +47,40 @@ constructor(
     override fun account(): AccountServiceAsync = account
 
     override fun webhooks(): WebhookServiceAsync = webhooks
+
+    override fun employer(): EmployerServiceAsync = employer
+
+    private val forwardHandler: Handler<ForwardResponse> =
+        jsonHandler<ForwardResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+    /**
+     * The Forward API allows you to make direct requests to an employment system. If Finch’s
+     * unified API doesn’t have a data model that cleanly fits your needs, then Forward allows you
+     * to push or pull data models directly against an integration’s API.
+     */
+    override suspend fun forward(
+        params: ClientForwardParams,
+        requestOptions: RequestOptions
+    ): ForwardResponse {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.POST)
+                .addPathSegments("forward")
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
+            response
+                .use { forwardHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
 
     override suspend fun getAccessToken(
         clientId: String,
