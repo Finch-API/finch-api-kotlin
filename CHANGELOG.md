@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.0.4 (2023-10-04)
+
+Full Changelog: [v0.0.3...v0.0.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.0.3...v0.0.4)
+
+### Features
+
+* **api:** add `/forward` endpoint and other updates ([#16](https://github.com/Finch-API/finch-api-kotlin/issues/16)) ([1a2db24](https://github.com/Finch-API/finch-api-kotlin/commit/1a2db2439db6d3abce1396f3efc0c4fe5425160f))
+
+
+### Chores
+
+* **docs:** adjust some docstrings ([#17](https://github.com/Finch-API/finch-api-kotlin/issues/17)) ([20971af](https://github.com/Finch-API/finch-api-kotlin/commit/20971afeef2f285fdc500cfc070ce7fddeac0e91))
+* **docs:** adjust some docstrings ([#18](https://github.com/Finch-API/finch-api-kotlin/issues/18)) ([32cb6c0](https://github.com/Finch-API/finch-api-kotlin/commit/32cb6c05f6ba56c4addcc1ff5452f55c5d28ec09))
+* **internal:** add a top-level generated comment to each file ([#19](https://github.com/Finch-API/finch-api-kotlin/issues/19)) ([79a0ca0](https://github.com/Finch-API/finch-api-kotlin/commit/79a0ca0f8210a279fbea77ec89d8965397339f35))
+
 ## 0.0.3 (2023-09-25)
 
 Full Changelog: [v0.0.2...v0.0.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.0.2...v0.0.3)
