@@ -15,10 +15,10 @@ import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 
-class HrisDirectoryListIndividualsPage
+class HrisDirectoryListPage
 private constructor(
     private val directoryService: DirectoryService,
-    private val params: HrisDirectoryListIndividualsParams,
+    private val params: HrisDirectoryListParams,
     private val response: Response,
 ) {
 
@@ -33,7 +33,7 @@ private constructor(
             return true
         }
 
-        return other is HrisDirectoryListIndividualsPage &&
+        return other is HrisDirectoryListPage &&
             this.directoryService == other.directoryService &&
             this.params == other.params &&
             this.response == other.response
@@ -48,7 +48,7 @@ private constructor(
     }
 
     override fun toString() =
-        "HrisDirectoryListIndividualsPage{directoryService=$directoryService, params=$params, response=$response}"
+        "HrisDirectoryListPage{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         if (individuals().isEmpty()) {
@@ -59,20 +59,19 @@ private constructor(
             ?: 0) + individuals().count() < (paging().count() ?: Long.MAX_VALUE)
     }
 
-    fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
+    fun getNextPageParams(): HrisDirectoryListParams? {
         if (!hasNextPage()) {
             return null
         }
 
-        return HrisDirectoryListIndividualsParams.builder()
+        return HrisDirectoryListParams.builder()
             .from(params)
             .offset((paging().offset() ?: 0) + individuals().count())
             .build()
     }
 
-    fun getNextPage(): HrisDirectoryListIndividualsPage? {
-        @Suppress("DEPRECATION")
-        return getNextPageParams()?.let { directoryService.listIndividuals(it) }
+    fun getNextPage(): HrisDirectoryListPage? {
+        return getNextPageParams()?.let { directoryService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -81,10 +80,10 @@ private constructor(
 
         fun of(
             directoryService: DirectoryService,
-            params: HrisDirectoryListIndividualsParams,
+            params: HrisDirectoryListParams,
             response: Response
         ) =
-            HrisDirectoryListIndividualsPage(
+            HrisDirectoryListPage(
                 directoryService,
                 params,
                 response,
@@ -146,7 +145,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisDirectoryListIndividualsPage.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
+            "HrisDirectoryListPage.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -194,7 +193,7 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisDirectoryListIndividualsPage,
+        private val firstPage: HrisDirectoryListPage,
     ) : Sequence<IndividualInDirectory> {
 
         override fun iterator(): Iterator<IndividualInDirectory> = iterator {

@@ -16,9 +16,9 @@ import com.tryfinch.api.core.toUnmodifiable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = BenfitContribution.Builder::class)
+@JsonDeserialize(builder = BenefitContribution.Builder::class)
 @NoAutoDetect
-class BenfitContribution
+class BenefitContribution
 private constructor(
     private val type: JsonField<Type>,
     private val amount: JsonField<Long>,
@@ -45,7 +45,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): BenfitContribution = apply {
+    fun validate(): BenefitContribution = apply {
         if (!validated) {
             type()
             amount()
@@ -60,7 +60,7 @@ private constructor(
             return true
         }
 
-        return other is BenfitContribution &&
+        return other is BenefitContribution &&
             this.type == other.type &&
             this.amount == other.amount &&
             this.additionalProperties == other.additionalProperties
@@ -79,7 +79,7 @@ private constructor(
     }
 
     override fun toString() =
-        "BenfitContribution{type=$type, amount=$amount, additionalProperties=$additionalProperties}"
+        "BenefitContribution{type=$type, amount=$amount, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -92,10 +92,10 @@ private constructor(
         private var amount: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(benfitContribution: BenfitContribution) = apply {
-            this.type = benfitContribution.type
-            this.amount = benfitContribution.amount
-            additionalProperties(benfitContribution.additionalProperties)
+        internal fun from(benefitContribution: BenefitContribution) = apply {
+            this.type = benefitContribution.type
+            this.amount = benefitContribution.amount
+            additionalProperties(benefitContribution.additionalProperties)
         }
 
         /** Contribution type. */
@@ -128,8 +128,8 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): BenfitContribution =
-            BenfitContribution(
+        fun build(): BenefitContribution =
+            BenefitContribution(
                 type,
                 amount,
                 additionalProperties.toUnmodifiable(),
