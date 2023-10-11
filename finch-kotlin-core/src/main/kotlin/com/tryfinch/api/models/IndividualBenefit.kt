@@ -151,8 +151,8 @@ private constructor(
     @NoAutoDetect
     class Body
     private constructor(
-        private val employeeDeduction: JsonField<BenfitContribution>,
-        private val companyContribution: JsonField<BenfitContribution>,
+        private val employeeDeduction: JsonField<BenefitContribution>,
+        private val companyContribution: JsonField<BenefitContribution>,
         private val annualMaximum: JsonField<Long>,
         private val catchUp: JsonField<Boolean>,
         private val hsaContributionLimit: JsonField<HsaContributionLimit>,
@@ -163,10 +163,10 @@ private constructor(
 
         private var hashCode: Int = 0
 
-        fun employeeDeduction(): BenfitContribution? =
+        fun employeeDeduction(): BenefitContribution? =
             employeeDeduction.getNullable("employee_deduction")
 
-        fun companyContribution(): BenfitContribution? =
+        fun companyContribution(): BenefitContribution? =
             companyContribution.getNullable("company_contribution")
 
         /** If the benefit supports annual maximum, the amount in cents for this individual. */
@@ -260,8 +260,8 @@ private constructor(
 
         class Builder {
 
-            private var employeeDeduction: JsonField<BenfitContribution> = JsonMissing.of()
-            private var companyContribution: JsonField<BenfitContribution> = JsonMissing.of()
+            private var employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of()
+            private var companyContribution: JsonField<BenefitContribution> = JsonMissing.of()
             private var annualMaximum: JsonField<Long> = JsonMissing.of()
             private var catchUp: JsonField<Boolean> = JsonMissing.of()
             private var hsaContributionLimit: JsonField<HsaContributionLimit> = JsonMissing.of()
@@ -276,21 +276,21 @@ private constructor(
                 additionalProperties(body.additionalProperties)
             }
 
-            fun employeeDeduction(employeeDeduction: BenfitContribution) =
+            fun employeeDeduction(employeeDeduction: BenefitContribution) =
                 employeeDeduction(JsonField.of(employeeDeduction))
 
             @JsonProperty("employee_deduction")
             @ExcludeMissing
-            fun employeeDeduction(employeeDeduction: JsonField<BenfitContribution>) = apply {
+            fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
                 this.employeeDeduction = employeeDeduction
             }
 
-            fun companyContribution(companyContribution: BenfitContribution) =
+            fun companyContribution(companyContribution: BenefitContribution) =
                 companyContribution(JsonField.of(companyContribution))
 
             @JsonProperty("company_contribution")
             @ExcludeMissing
-            fun companyContribution(companyContribution: JsonField<BenfitContribution>) = apply {
+            fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
                 this.companyContribution = companyContribution
             }
 

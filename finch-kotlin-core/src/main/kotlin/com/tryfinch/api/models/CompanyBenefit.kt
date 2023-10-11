@@ -22,8 +22,8 @@ private constructor(
     private val type: JsonField<BenefitType>,
     private val description: JsonField<String>,
     private val frequency: JsonField<BenefitFrequency>,
-    private val companyContribution: JsonField<BenfitContribution>,
-    private val employeeDeduction: JsonField<BenfitContribution>,
+    private val companyContribution: JsonField<BenefitContribution>,
+    private val employeeDeduction: JsonField<BenefitContribution>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -40,10 +40,10 @@ private constructor(
 
     fun frequency(): BenefitFrequency? = frequency.getNullable("frequency")
 
-    fun companyContribution(): BenfitContribution? =
+    fun companyContribution(): BenefitContribution? =
         companyContribution.getNullable("company_contribution")
 
-    fun employeeDeduction(): BenfitContribution? =
+    fun employeeDeduction(): BenefitContribution? =
         employeeDeduction.getNullable("employee_deduction")
 
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
@@ -124,8 +124,8 @@ private constructor(
         private var type: JsonField<BenefitType> = JsonMissing.of()
         private var description: JsonField<String> = JsonMissing.of()
         private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
-        private var companyContribution: JsonField<BenfitContribution> = JsonMissing.of()
-        private var employeeDeduction: JsonField<BenfitContribution> = JsonMissing.of()
+        private var companyContribution: JsonField<BenefitContribution> = JsonMissing.of()
+        private var employeeDeduction: JsonField<BenefitContribution> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(companyBenefit: CompanyBenefit) = apply {
@@ -164,21 +164,21 @@ private constructor(
         @ExcludeMissing
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
 
-        fun companyContribution(companyContribution: BenfitContribution) =
+        fun companyContribution(companyContribution: BenefitContribution) =
             companyContribution(JsonField.of(companyContribution))
 
         @JsonProperty("company_contribution")
         @ExcludeMissing
-        fun companyContribution(companyContribution: JsonField<BenfitContribution>) = apply {
+        fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
             this.companyContribution = companyContribution
         }
 
-        fun employeeDeduction(employeeDeduction: BenfitContribution) =
+        fun employeeDeduction(employeeDeduction: BenefitContribution) =
             employeeDeduction(JsonField.of(employeeDeduction))
 
         @JsonProperty("employee_deduction")
         @ExcludeMissing
-        fun employeeDeduction(employeeDeduction: JsonField<BenfitContribution>) = apply {
+        fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
             this.employeeDeduction = employeeDeduction
         }
 

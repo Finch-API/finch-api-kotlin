@@ -73,6 +73,7 @@ private constructor(
     }
 
     suspend fun getNextPage(): HrisDirectoryListIndividualsPageAsync? {
+        @Suppress("DEPRECATION")
         return getNextPageParams()?.let { directoryService.listIndividuals(it) }
     }
 

@@ -6,7 +6,7 @@ The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences
 
 ## Documentation
 
-The API documentation can be found [here](https://developer.tryfinch.com/).
+The API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
 ---
 
@@ -71,30 +71,30 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new hris directory, first use the `HrisDirectoryListIndividualsParams` builder to specify attributes,
-then pass that to the `listIndividuals` method of the `directory` service.
+To create a new hris directory, first use the `HrisDirectoryListParams` builder to specify attributes,
+then pass that to the `list` method of the `directory` service.
 
 ```kotlin
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
 import com.tryfinch.api.models.Page
 
-val params = HrisDirectoryListIndividualsParams.builder()
+val params = HrisDirectoryListParams.builder()
     .candidateId("<candidate id>")
     .build()
-val hrisDirectory = client.directory().listIndividuals(params)
+val hrisDirectory = client.directory().list(params)
 ```
 
 ### Example: listing resources
 
-The Finch API provides a `listIndividuals` method to get a paginated list of directory.
+The Finch API provides a `list` method to get a paginated list of directory.
 You can retrieve the first page by:
 
 ```kotlin
 import com.tryfinch.api.models.IndividualInDirectory
 import com.tryfinch.api.models.Page
 
-val page = client.directory().listIndividuals()
+val page = client.directory().list()
 for (directory: IndividualInDirectory in page.individuals()) {
     print(directory)
 }
@@ -110,14 +110,14 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListIndividualsParams.builder()` to pass to
-the `listIndividuals` method of the `directory` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListParams.builder()` to pass to
+the `list` method of the `directory` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```kotlin
-val params = HrisDirectoryListIndividualsParams.builder()
+val params = HrisDirectoryListParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build()
@@ -130,7 +130,7 @@ val params = HrisDirectoryListIndividualsParams.builder()
 When receiving a response, the Finch Kotlin SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Kotlin type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```kotlin
-val hrisDirectory = client.directory().listIndividuals().validate()
+val hrisDirectory = client.directory().list().validate()
 ```
 
 ### Response properties as JSON
@@ -179,7 +179,7 @@ which automatically handles fetching more pages for you:
 
 ```kotlin
 // As a Sequence:
-client.directory().listIndividuals(params).autoPager()
+client.directory().list(params).autoPager()
     .take(50)
     .forEach { directory -> print(directory) }
 ```
@@ -188,7 +188,7 @@ client.directory().listIndividuals(params).autoPager()
 
 ```kotlin
 // As a Flow:
-asyncClient.directory().listIndividuals(params).autoPager()
+asyncClient.directory().list(params).autoPager()
     .take(50)
     .collect { directory -> print(directory) }
 ```
@@ -201,7 +201,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```kotlin
-val page = client.directory().listIndividuals(params)
+val page = client.directory().list(params)
 while (page != null) {
     for (directory in page.individuals) {
         print(directory)
@@ -291,7 +291,7 @@ val client = FinchOkHttpClient.builder()
 
 ## Semantic Versioning
 
-This package generally attempts to follow [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 
 1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals)_.
 2. Changes that we do not expect to impact the vast majority of users in practice.
