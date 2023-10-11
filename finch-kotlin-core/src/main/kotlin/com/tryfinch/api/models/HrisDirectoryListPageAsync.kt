@@ -12,13 +12,15 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
-import com.tryfinch.api.services.blocking.hris.DirectoryService
+import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import java.util.Objects
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 
-class HrisDirectoryListIndividualsPage
+class HrisDirectoryListPageAsync
 private constructor(
-    private val directoryService: DirectoryService,
-    private val params: HrisDirectoryListIndividualsParams,
+    private val directoryService: DirectoryServiceAsync,
+    private val params: HrisDirectoryListParams,
     private val response: Response,
 ) {
 
@@ -33,7 +35,7 @@ private constructor(
             return true
         }
 
-        return other is HrisDirectoryListIndividualsPage &&
+        return other is HrisDirectoryListPageAsync &&
             this.directoryService == other.directoryService &&
             this.params == other.params &&
             this.response == other.response
@@ -48,7 +50,7 @@ private constructor(
     }
 
     override fun toString() =
-        "HrisDirectoryListIndividualsPage{directoryService=$directoryService, params=$params, response=$response}"
+        "HrisDirectoryListPageAsync{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
         if (individuals().isEmpty()) {
@@ -59,20 +61,19 @@ private constructor(
             ?: 0) + individuals().count() < (paging().count() ?: Long.MAX_VALUE)
     }
 
-    fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
+    fun getNextPageParams(): HrisDirectoryListParams? {
         if (!hasNextPage()) {
             return null
         }
 
-        return HrisDirectoryListIndividualsParams.builder()
+        return HrisDirectoryListParams.builder()
             .from(params)
             .offset((paging().offset() ?: 0) + individuals().count())
             .build()
     }
 
-    fun getNextPage(): HrisDirectoryListIndividualsPage? {
-        @Suppress("DEPRECATION")
-        return getNextPageParams()?.let { directoryService.listIndividuals(it) }
+    suspend fun getNextPage(): HrisDirectoryListPageAsync? {
+        return getNextPageParams()?.let { directoryService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
@@ -80,11 +81,11 @@ private constructor(
     companion object {
 
         fun of(
-            directoryService: DirectoryService,
-            params: HrisDirectoryListIndividualsParams,
+            directoryService: DirectoryServiceAsync,
+            params: HrisDirectoryListParams,
             response: Response
         ) =
-            HrisDirectoryListIndividualsPage(
+            HrisDirectoryListPageAsync(
                 directoryService,
                 params,
                 response,
@@ -146,7 +147,7 @@ private constructor(
         }
 
         override fun toString() =
-            "HrisDirectoryListIndividualsPage.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
+            "HrisDirectoryListPageAsync.Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -194,15 +195,15 @@ private constructor(
 
     class AutoPager
     constructor(
-        private val firstPage: HrisDirectoryListIndividualsPage,
-    ) : Sequence<IndividualInDirectory> {
+        private val firstPage: HrisDirectoryListPageAsync,
+    ) : Flow<IndividualInDirectory> {
 
-        override fun iterator(): Iterator<IndividualInDirectory> = iterator {
+        override suspend fun collect(collector: FlowCollector<IndividualInDirectory>) {
             var page = firstPage
             var index = 0
             while (true) {
                 while (index < page.individuals().size) {
-                    yield(page.individuals()[index++])
+                    collector.emit(page.individuals()[index++])
                 }
                 page = page.getNextPage() ?: break
                 index = 0
