@@ -15,12 +15,12 @@ private constructor(
     val jsonMapper: JsonMapper,
     val clock: Clock,
     val baseUrl: String,
-    val accessToken: String,
-    val headers: ListMultimap<String, String>,
-    val responseValidation: Boolean,
+    val accessToken: String?,
     val clientId: String?,
     val clientSecret: String?,
     val webhookSecret: String?,
+    val headers: ListMultimap<String, String>,
+    val responseValidation: Boolean,
 ) {
 
     companion object {
@@ -79,7 +79,7 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
         fun clientId(clientId: String?) = apply { this.clientId = clientId }
 
@@ -95,7 +95,6 @@ private constructor(
 
         fun build(): ClientOptions {
             checkNotNull(httpClient) { "`httpClient` is required but was not set" }
-            checkNotNull(accessToken) { "`accessToken` is required but was not set" }
 
             val headers = ArrayListMultimap.create<String, String>()
             headers.put("X-Stainless-Lang", "kotlin")
@@ -117,12 +116,12 @@ private constructor(
                 jsonMapper ?: jsonMapper(),
                 clock,
                 baseUrl,
-                accessToken!!,
-                headers.toUnmodifiable(),
-                responseValidation,
+                accessToken,
                 clientId,
                 clientSecret,
                 webhookSecret,
+                headers.toUnmodifiable(),
+                responseValidation,
             )
         }
     }
