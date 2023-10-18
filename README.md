@@ -19,7 +19,7 @@ The API documentation can be found [in the Finch Documentation Center](https://
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:0.1.0")
+implementation("com.tryfinch.api:finch-kotlin:0.2.0")
 ```
 
 #### Maven
@@ -28,7 +28,7 @@ implementation("com.tryfinch.api:finch-kotlin:0.1.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
