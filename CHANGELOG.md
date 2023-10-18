@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.2.0 (2023-10-18)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* make webhook headers case insensitive ([#27](https://github.com/Finch-API/finch-api-kotlin/issues/27)) ([f024f71](https://github.com/Finch-API/finch-api-kotlin/commit/f024f7176bd78cc24771e23a1180feaa9be65cfc))
+
+
+### Bug Fixes
+
+* correct benfits to benefits ([#22](https://github.com/Finch-API/finch-api-kotlin/issues/22)) ([921dcbc](https://github.com/Finch-API/finch-api-kotlin/commit/921dcbcf65f2d8fe8dbdcb3a92f301a2770c16b4))
+
+
+### Chores
+
+* **internal:** minor reformatting ([#25](https://github.com/Finch-API/finch-api-kotlin/issues/25)) ([61277ac](https://github.com/Finch-API/finch-api-kotlin/commit/61277acc6080310008b4ef9bbe67a4b806439c44))
+* **internal:** rearrange client arguments ([#24](https://github.com/Finch-API/finch-api-kotlin/issues/24)) ([8fa645a](https://github.com/Finch-API/finch-api-kotlin/commit/8fa645a529d3c060e15d47ef7c74242106d88676))
+
+
+### Documentation
+
+* organisation -&gt; organization (UK to US English) ([#28](https://github.com/Finch-API/finch-api-kotlin/issues/28)) ([669b99d](https://github.com/Finch-API/finch-api-kotlin/commit/669b99d0776e8d0e5dc29e699b54d1126b9ca265))
+
 ## 0.1.0 (2023-10-17)
 
 Full Changelog: [v0.0.5...v0.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.0.5...v0.1.0)
