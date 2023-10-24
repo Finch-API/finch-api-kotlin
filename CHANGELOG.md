@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2023-10-24)
+
+Full Changelog: [v0.3.0...v0.3.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.3.0...v0.3.1)
+
 ## 0.3.0 (2023-10-24)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.2.1...v0.3.0)
