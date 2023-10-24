@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2023-10-24)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **client:** adjust retry behavior ([#32](https://github.com/Finch-API/finch-api-kotlin/issues/32)) ([c300d79](https://github.com/Finch-API/finch-api-kotlin/commit/c300d7929c21546086afcfa3a9323357e45402e7))
+
 ## 0.2.1 (2023-10-19)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.2.0...v0.2.1)
