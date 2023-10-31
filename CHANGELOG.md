@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2023-10-31)
+
+Full Changelog: [v0.3.1...v0.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.3.1...v0.4.0)
+
+### Features
+
+* **github:** include a devcontainer setup ([#36](https://github.com/Finch-API/finch-api-kotlin/issues/36)) ([1812964](https://github.com/Finch-API/finch-api-kotlin/commit/1812964d5817df17b64470ab114ae7d64700e8c2))
+
 ## 0.3.1 (2023-10-24)
 
 Full Changelog: [v0.3.0...v0.3.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.3.0...v0.3.1)
