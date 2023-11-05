@@ -73,7 +73,7 @@ import com.tryfinch.api.models.Page
 val params = HrisDirectoryListParams.builder()
     .candidateId("<candidate id>")
     .build()
-val hrisDirectory = client.directory().list(params)
+val page = client.hris().directory().list(params)
 ```
 
 ### Example: listing resources
@@ -85,7 +85,7 @@ You can retrieve the first page by:
 import com.tryfinch.api.models.IndividualInDirectory
 import com.tryfinch.api.models.Page
 
-val page = client.directory().list()
+val page = client.hris().directory().list()
 for (directory: IndividualInDirectory in page.individuals()) {
     print(directory)
 }
@@ -121,7 +121,7 @@ val params = HrisDirectoryListParams.builder()
 When receiving a response, the Finch Kotlin SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Kotlin type. If you directly access the mistaken property, the SDK will throw an unchecked `FinchInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```kotlin
-val hrisDirectory = client.directory().list().validate()
+val page = client.hris().directory().list().validate()
 ```
 
 ### Response properties as JSON
@@ -151,7 +151,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```kotlin
-val secret = hrisDirectory._additionalProperties().get("secret_field")
+val secret = page._additionalProperties().get("secret_field")
 ```
 
 ---
@@ -170,7 +170,7 @@ which automatically handles fetching more pages for you:
 
 ```kotlin
 // As a Sequence:
-client.directory().list(params).autoPager()
+client.hris().directory().list(params).autoPager()
     .take(50)
     .forEach { directory -> print(directory) }
 ```
@@ -179,7 +179,7 @@ client.directory().list(params).autoPager()
 
 ```kotlin
 // As a Flow:
-asyncClient.directory().list(params).autoPager()
+asyncClient.hris().directory().list(params).autoPager()
     .take(50)
     .collect { directory -> print(directory) }
 ```
@@ -192,7 +192,7 @@ A page of results has a `data()` method to fetch the list of objects, as well as
 `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
 
 ```kotlin
-val page = client.directory().list(params)
+val page = client.hris().directory().list(params)
 while (page != null) {
     for (directory in page.individuals) {
         print(directory)
