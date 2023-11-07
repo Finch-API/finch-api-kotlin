@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.0 (2023-11-07)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **client:** allow binary returns ([#38](https://github.com/Finch-API/finch-api-kotlin/issues/38)) ([d6545a1](https://github.com/Finch-API/finch-api-kotlin/commit/d6545a1e467b77ba3cc752372f72f88ac449e79a))
+
+
+### Chores
+
+* **docs:** fix some typos ([#41](https://github.com/Finch-API/finch-api-kotlin/issues/41)) ([fc1b433](https://github.com/Finch-API/finch-api-kotlin/commit/fc1b433cae85ddb89cbecf25fc7fa38edf2fb307))
+
+
+### Documentation
+
+* **readme:** improve example snippets ([#40](https://github.com/Finch-API/finch-api-kotlin/issues/40)) ([1f7941a](https://github.com/Finch-API/finch-api-kotlin/commit/1f7941affc9dd3ff610c98a72a827bf48110bd81))
+
 ## 0.4.0 (2023-10-31)
 
 Full Changelog: [v0.3.1...v0.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.3.1...v0.4.0)
