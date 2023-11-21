@@ -21,6 +21,7 @@ class IndividualTest {
                             .build()
                     )
                 )
+                .encryptedSsn("string")
                 .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("string")
                 .gender(Individual.Gender.FEMALE)
@@ -56,6 +57,7 @@ class IndividualTest {
             .containsExactly(
                 Individual.Email.builder().data("string").type(Individual.Email.Type.WORK).build()
             )
+        assertThat(individual.encryptedSsn()).isEqualTo("string")
         assertThat(individual.ethnicity()).isEqualTo(Individual.Ethnicity.ASIAN)
         assertThat(individual.firstName()).isEqualTo("string")
         assertThat(individual.gender()).isEqualTo(Individual.Gender.FEMALE)
