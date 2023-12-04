@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.0 (2023-12-04)
+
+Full Changelog: [v0.8.1...v0.9.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.8.1...v0.9.0)
+
+### Features
+
+* **api:** add `/jobs` endpoints ([#50](https://github.com/Finch-API/finch-api-kotlin/issues/50)) ([5aaf719](https://github.com/Finch-API/finch-api-kotlin/commit/5aaf7198dfa2bcaa9eedf0e34b200ca82a7c7836))
+
 ## 0.8.1 (2023-12-04)
 
 Full Changelog: [v0.8.0...v0.8.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.8.0...v0.8.1)
