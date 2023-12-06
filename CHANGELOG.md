@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0 (2023-12-06)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** add `client_type` and `connection_type` to introspection ([#52](https://github.com/Finch-API/finch-api-kotlin/issues/52)) ([a4428ae](https://github.com/Finch-API/finch-api-kotlin/commit/a4428ae2bc6d7a239093e5129b56808dc4e8be29))
+
 ## 0.9.0 (2023-12-04)
 
 Full Changelog: [v0.8.1...v0.9.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.8.1...v0.9.0)
