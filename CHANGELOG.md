@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 (2023-12-07)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** add `lp` tax payer type enum value ([#55](https://github.com/Finch-API/finch-api-kotlin/issues/55)) ([e009e5f](https://github.com/Finch-API/finch-api-kotlin/commit/e009e5f67b94596a051208c476b804407b67a780))
+
 ## 0.10.0 (2023-12-06)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.9.0...v0.10.0)
