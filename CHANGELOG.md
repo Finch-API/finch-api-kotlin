@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.1 (2023-12-18)
+
+Full Changelog: [v0.11.0...v0.11.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.11.0...v0.11.1)
+
+### Chores
+
+* **ci:** run release workflow once per day ([#57](https://github.com/Finch-API/finch-api-kotlin/issues/57)) ([8a49238](https://github.com/Finch-API/finch-api-kotlin/commit/8a49238dbf02ed61d77f730cf8d90e838e7467d9))
+
+
+### Documentation
+
+* replace &lt;br&gt; tags with newlines ([#59](https://github.com/Finch-API/finch-api-kotlin/issues/59)) ([587129a](https://github.com/Finch-API/finch-api-kotlin/commit/587129a66fa5c1b459c97b3a96434a9836cf938d))
+
 ## 0.11.0 (2023-12-07)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.10.0...v0.11.0)
