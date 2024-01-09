@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.0 (2024-01-09)
+
+Full Changelog: [v0.11.1...v0.12.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.11.1...v0.12.0)
+
+### Features
+
+* **api:** add method to create access token ([#62](https://github.com/Finch-API/finch-api-kotlin/issues/62)) ([ca4e517](https://github.com/Finch-API/finch-api-kotlin/commit/ca4e517b121a1f706ed4684d7f127b0684e7962f))
+* **api:** add sandbox APIs ([#64](https://github.com/Finch-API/finch-api-kotlin/issues/64)) ([57230a5](https://github.com/Finch-API/finch-api-kotlin/commit/57230a52723ed21b6806bc7575fed23cd58ba134))
+
+
+### Chores
+
+* add .keep files for examples and custom code directories ([#63](https://github.com/Finch-API/finch-api-kotlin/issues/63)) ([01b99ed](https://github.com/Finch-API/finch-api-kotlin/commit/01b99edc0e0b2549a7ab9f626464c361610ac8e5))
+* **internal:** bump license ([#60](https://github.com/Finch-API/finch-api-kotlin/issues/60)) ([968fbcb](https://github.com/Finch-API/finch-api-kotlin/commit/968fbcbb72abda3976fcac1909653137699a42f8))
+
 ## 0.11.1 (2023-12-18)
 
 Full Changelog: [v0.11.0...v0.11.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.11.0...v0.11.1)
