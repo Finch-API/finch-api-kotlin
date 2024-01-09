@@ -26,6 +26,10 @@ interface FinchClientAsync {
 
     fun jobs(): JobServiceAsync
 
+    fun auth(): AuthServiceAsync
+
+    fun sandbox(): SandboxServiceAsync
+
     suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
