@@ -11,13 +11,13 @@ class PaymentTest {
     fun createPayment() {
         val payment =
             Payment.builder()
-                .id("e8b90071-0c11-471c-86e8-e303ef2f6782")
+                .id("string")
                 .companyDebit(Money.builder().amount(123L).currency("string").build())
                 .debitDate("string")
                 .employeeTaxes(Money.builder().amount(123L).currency("string").build())
                 .employerTaxes(Money.builder().amount(123L).currency("string").build())
                 .grossPay(Money.builder().amount(123L).currency("string").build())
-                .individualIds(listOf("e8b90071-0c11-471c-86e8-e303ef2f6782"))
+                .individualIds(listOf("string"))
                 .netPay(Money.builder().amount(123L).currency("string").build())
                 .payDate("string")
                 .payPeriod(
@@ -25,7 +25,7 @@ class PaymentTest {
                 )
                 .build()
         assertThat(payment).isNotNull
-        assertThat(payment.id()).isEqualTo("e8b90071-0c11-471c-86e8-e303ef2f6782")
+        assertThat(payment.id()).isEqualTo("string")
         assertThat(payment.companyDebit())
             .isEqualTo(Money.builder().amount(123L).currency("string").build())
         assertThat(payment.debitDate()).isEqualTo("string")
@@ -35,7 +35,7 @@ class PaymentTest {
             .isEqualTo(Money.builder().amount(123L).currency("string").build())
         assertThat(payment.grossPay())
             .isEqualTo(Money.builder().amount(123L).currency("string").build())
-        assertThat(payment.individualIds()).containsExactly("e8b90071-0c11-471c-86e8-e303ef2f6782")
+        assertThat(payment.individualIds()).containsExactly("string")
         assertThat(payment.netPay())
             .isEqualTo(Money.builder().amount(123L).currency("string").build())
         assertThat(payment.payDate()).isEqualTo("string")
