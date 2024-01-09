@@ -7,7 +7,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
 
-class IntrospectResponseConnectionStatus
+class ConnectionStatusType
 @JsonCreator
 private constructor(
     private val value: JsonField<String>,
@@ -20,7 +20,7 @@ private constructor(
             return true
         }
 
-        return other is IntrospectResponseConnectionStatus && this.value == other.value
+        return other is ConnectionStatusType && this.value == other.value
     }
 
     override fun hashCode() = value.hashCode()
@@ -29,21 +29,19 @@ private constructor(
 
     companion object {
 
-        val PENDING = IntrospectResponseConnectionStatus(JsonField.of("pending"))
+        val PENDING = ConnectionStatusType(JsonField.of("pending"))
 
-        val PROCESSING = IntrospectResponseConnectionStatus(JsonField.of("processing"))
+        val PROCESSING = ConnectionStatusType(JsonField.of("processing"))
 
-        val CONNECTED = IntrospectResponseConnectionStatus(JsonField.of("connected"))
+        val CONNECTED = ConnectionStatusType(JsonField.of("connected"))
 
-        val ERROR_NO_ACCOUNT_SETUP =
-            IntrospectResponseConnectionStatus(JsonField.of("error_no_account_setup"))
+        val ERROR_NO_ACCOUNT_SETUP = ConnectionStatusType(JsonField.of("error_no_account_setup"))
 
-        val ERROR_PERMISSIONS =
-            IntrospectResponseConnectionStatus(JsonField.of("error_permissions"))
+        val ERROR_PERMISSIONS = ConnectionStatusType(JsonField.of("error_permissions"))
 
-        val REAUTH = IntrospectResponseConnectionStatus(JsonField.of("reauth"))
+        val REAUTH = ConnectionStatusType(JsonField.of("reauth"))
 
-        fun of(value: String) = IntrospectResponseConnectionStatus(JsonField.of(value))
+        fun of(value: String) = ConnectionStatusType(JsonField.of(value))
     }
 
     enum class Known {
@@ -84,10 +82,7 @@ private constructor(
             ERROR_NO_ACCOUNT_SETUP -> Known.ERROR_NO_ACCOUNT_SETUP
             ERROR_PERMISSIONS -> Known.ERROR_PERMISSIONS
             REAUTH -> Known.REAUTH
-            else ->
-                throw FinchInvalidDataException(
-                    "Unknown IntrospectResponseConnectionStatus: $value"
-                )
+            else -> throw FinchInvalidDataException("Unknown ConnectionStatusType: $value")
         }
 
     fun asString(): String = _value().asStringOrThrow()
