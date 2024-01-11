@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.13.0 (2024-01-11)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **client:** hook up sandbox auth ([#68](https://github.com/Finch-API/finch-api-kotlin/issues/68)) ([822710c](https://github.com/Finch-API/finch-api-kotlin/commit/822710cb82a2e20d2114e6afbf076c55a4920a00))
+* remove redundant endpoint, add sandbox client options (not yet used) ([#67](https://github.com/Finch-API/finch-api-kotlin/issues/67)) ([ab01b16](https://github.com/Finch-API/finch-api-kotlin/commit/ab01b16b81f2be80c5b2080d5e42e87507aa5988))
+
+
+### Chores
+
+* **internal:** rename unreleased connection status type ([#65](https://github.com/Finch-API/finch-api-kotlin/issues/65)) ([7c99a67](https://github.com/Finch-API/finch-api-kotlin/commit/7c99a679d5e263a9d3fcd7ef8b214cf9e4bf3589))
+
 ## 0.12.0 (2024-01-09)
 
 Full Changelog: [v0.11.1...v0.12.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.11.1...v0.12.0)
