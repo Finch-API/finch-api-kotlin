@@ -5,7 +5,7 @@
 package com.tryfinch.api.services.async
 
 import com.google.common.collect.ListMultimap
-import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.models.WebhookEvent
 
 interface WebhookServiceAsync {
 
@@ -13,7 +13,7 @@ interface WebhookServiceAsync {
         payload: String,
         headers: ListMultimap<String, String>,
         secret: String?
-    ): JsonValue
+    ): WebhookEvent
 
     suspend fun verifySignature(
         payload: String,
