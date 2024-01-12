@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.14.0 (2024-01-12)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* **webhooks:** add types to the `unwrap` method ([#69](https://github.com/Finch-API/finch-api-kotlin/issues/69)) ([69cc98f](https://github.com/Finch-API/finch-api-kotlin/commit/69cc98fa2b5a666bbfc5163dd2f2604efbb17ea9))
+
+
+### Documentation
+
+* **readme:** improve api reference ([#71](https://github.com/Finch-API/finch-api-kotlin/issues/71)) ([4bd255f](https://github.com/Finch-API/finch-api-kotlin/commit/4bd255f3885a7ff5fa34e3a43467e74d3766cd04))
+
 ## 0.13.0 (2024-01-11)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.12.0...v0.13.0)
