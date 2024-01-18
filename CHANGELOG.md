@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.15.0 (2024-01-18)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** add employer_contributions field ([#75](https://github.com/Finch-API/finch-api-kotlin/issues/75)) ([4243525](https://github.com/Finch-API/finch-api-kotlin/commit/4243525367d92d91362c88be91840c1c9ff122e1))
+
+
+### Chores
+
+* **ci:** rely on Stainless GitHub App for releases ([#74](https://github.com/Finch-API/finch-api-kotlin/issues/74)) ([825eca2](https://github.com/Finch-API/finch-api-kotlin/commit/825eca2770aeae31f021ac3e741135a35392603a))
+* **internal:** speculative retry-after-ms support ([#72](https://github.com/Finch-API/finch-api-kotlin/issues/72)) ([b7fbb9a](https://github.com/Finch-API/finch-api-kotlin/commit/b7fbb9aed5066de445204e235b233f8dba659e90))
+
 ## 0.14.0 (2024-01-12)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.13.0...v0.14.0)
