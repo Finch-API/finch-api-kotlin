@@ -4158,6 +4158,7 @@ private constructor(
                         private val netPay: JsonField<Boolean>,
                         private val earnings: JsonField<Earnings>,
                         private val employeeDeductions: JsonField<EmployeeDeductions>,
+                        private val employerContributions: JsonField<EmployerContributions>,
                         private val employerDeductions: JsonField<EmployerDeductions>,
                         private val taxes: JsonField<Taxes>,
                         private val additionalProperties: Map<String, JsonValue>,
@@ -4184,6 +4185,10 @@ private constructor(
                         fun employeeDeductions(): EmployeeDeductions? =
                             employeeDeductions.getNullable("employee_deductions")
 
+                        fun employerContributions(): EmployerContributions? =
+                            employerContributions.getNullable("employer_contributions")
+
+                        /** [DEPRECATED] Use `employer_contributions` instead */
                         fun employerDeductions(): EmployerDeductions? =
                             employerDeductions.getNullable("employer_deductions")
 
@@ -4211,6 +4216,11 @@ private constructor(
                         @ExcludeMissing
                         fun _employeeDeductions() = employeeDeductions
 
+                        @JsonProperty("employer_contributions")
+                        @ExcludeMissing
+                        fun _employerContributions() = employerContributions
+
+                        /** [DEPRECATED] Use `employer_contributions` instead */
                         @JsonProperty("employer_deductions")
                         @ExcludeMissing
                         fun _employerDeductions() = employerDeductions
@@ -4231,6 +4241,7 @@ private constructor(
                                 netPay()
                                 earnings()?.validate()
                                 employeeDeductions()?.validate()
+                                employerContributions()?.validate()
                                 employerDeductions()?.validate()
                                 taxes()?.validate()
                                 validated = true
@@ -4253,6 +4264,7 @@ private constructor(
                                 this.netPay == other.netPay &&
                                 this.earnings == other.earnings &&
                                 this.employeeDeductions == other.employeeDeductions &&
+                                this.employerContributions == other.employerContributions &&
                                 this.employerDeductions == other.employerDeductions &&
                                 this.taxes == other.taxes &&
                                 this.additionalProperties == other.additionalProperties
@@ -4270,6 +4282,7 @@ private constructor(
                                         netPay,
                                         earnings,
                                         employeeDeductions,
+                                        employerContributions,
                                         employerDeductions,
                                         taxes,
                                         additionalProperties,
@@ -4279,7 +4292,7 @@ private constructor(
                         }
 
                         override fun toString() =
-                            "PayStatements{individualId=$individualId, type=$type, paymentMethod=$paymentMethod, totalHours=$totalHours, grossPay=$grossPay, netPay=$netPay, earnings=$earnings, employeeDeductions=$employeeDeductions, employerDeductions=$employerDeductions, taxes=$taxes, additionalProperties=$additionalProperties}"
+                            "PayStatements{individualId=$individualId, type=$type, paymentMethod=$paymentMethod, totalHours=$totalHours, grossPay=$grossPay, netPay=$netPay, earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, employerDeductions=$employerDeductions, taxes=$taxes, additionalProperties=$additionalProperties}"
 
                         companion object {
 
@@ -4297,6 +4310,8 @@ private constructor(
                             private var earnings: JsonField<Earnings> = JsonMissing.of()
                             private var employeeDeductions: JsonField<EmployeeDeductions> =
                                 JsonMissing.of()
+                            private var employerContributions: JsonField<EmployerContributions> =
+                                JsonMissing.of()
                             private var employerDeductions: JsonField<EmployerDeductions> =
                                 JsonMissing.of()
                             private var taxes: JsonField<Taxes> = JsonMissing.of()
@@ -4312,6 +4327,7 @@ private constructor(
                                 this.netPay = payStatements.netPay
                                 this.earnings = payStatements.earnings
                                 this.employeeDeductions = payStatements.employeeDeductions
+                                this.employerContributions = payStatements.employerContributions
                                 this.employerDeductions = payStatements.employerDeductions
                                 this.taxes = payStatements.taxes
                                 additionalProperties(payStatements.additionalProperties)
@@ -4381,9 +4397,21 @@ private constructor(
                                 employeeDeductions: JsonField<EmployeeDeductions>
                             ) = apply { this.employeeDeductions = employeeDeductions }
 
+                            fun employerContributions(
+                                employerContributions: EmployerContributions
+                            ) = employerContributions(JsonField.of(employerContributions))
+
+                            @JsonProperty("employer_contributions")
+                            @ExcludeMissing
+                            fun employerContributions(
+                                employerContributions: JsonField<EmployerContributions>
+                            ) = apply { this.employerContributions = employerContributions }
+
+                            /** [DEPRECATED] Use `employer_contributions` instead */
                             fun employerDeductions(employerDeductions: EmployerDeductions) =
                                 employerDeductions(JsonField.of(employerDeductions))
 
+                            /** [DEPRECATED] Use `employer_contributions` instead */
                             @JsonProperty("employer_deductions")
                             @ExcludeMissing
                             fun employerDeductions(
@@ -4421,6 +4449,7 @@ private constructor(
                                     netPay,
                                     earnings,
                                     employeeDeductions,
+                                    employerContributions,
                                     employerDeductions,
                                     taxes,
                                     additionalProperties.toUnmodifiable(),
@@ -4756,6 +4785,148 @@ private constructor(
                             }
                         }
 
+                        @JsonDeserialize(builder = EmployerContributions.Builder::class)
+                        @NoAutoDetect
+                        class EmployerContributions
+                        private constructor(
+                            private val name: JsonField<Boolean>,
+                            private val amount: JsonField<Boolean>,
+                            private val currency: JsonField<Boolean>,
+                            private val additionalProperties: Map<String, JsonValue>,
+                        ) {
+
+                            private var validated: Boolean = false
+
+                            private var hashCode: Int = 0
+
+                            fun name(): Boolean? = name.getNullable("name")
+
+                            fun amount(): Boolean? = amount.getNullable("amount")
+
+                            fun currency(): Boolean? = currency.getNullable("currency")
+
+                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+                            @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+
+                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+                            @JsonAnyGetter
+                            @ExcludeMissing
+                            fun _additionalProperties(): Map<String, JsonValue> =
+                                additionalProperties
+
+                            fun validate(): EmployerContributions = apply {
+                                if (!validated) {
+                                    name()
+                                    amount()
+                                    currency()
+                                    validated = true
+                                }
+                            }
+
+                            fun toBuilder() = Builder().from(this)
+
+                            override fun equals(other: Any?): Boolean {
+                                if (this === other) {
+                                    return true
+                                }
+
+                                return other is EmployerContributions &&
+                                    this.name == other.name &&
+                                    this.amount == other.amount &&
+                                    this.currency == other.currency &&
+                                    this.additionalProperties == other.additionalProperties
+                            }
+
+                            override fun hashCode(): Int {
+                                if (hashCode == 0) {
+                                    hashCode =
+                                        Objects.hash(
+                                            name,
+                                            amount,
+                                            currency,
+                                            additionalProperties,
+                                        )
+                                }
+                                return hashCode
+                            }
+
+                            override fun toString() =
+                                "EmployerContributions{name=$name, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+
+                            companion object {
+
+                                fun builder() = Builder()
+                            }
+
+                            class Builder {
+
+                                private var name: JsonField<Boolean> = JsonMissing.of()
+                                private var amount: JsonField<Boolean> = JsonMissing.of()
+                                private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var additionalProperties: MutableMap<String, JsonValue> =
+                                    mutableMapOf()
+
+                                internal fun from(employerContributions: EmployerContributions) =
+                                    apply {
+                                        this.name = employerContributions.name
+                                        this.amount = employerContributions.amount
+                                        this.currency = employerContributions.currency
+                                        additionalProperties(
+                                            employerContributions.additionalProperties
+                                        )
+                                    }
+
+                                fun name(name: Boolean) = name(JsonField.of(name))
+
+                                @JsonProperty("name")
+                                @ExcludeMissing
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                                fun amount(amount: Boolean) = amount(JsonField.of(amount))
+
+                                @JsonProperty("amount")
+                                @ExcludeMissing
+                                fun amount(amount: JsonField<Boolean>) = apply {
+                                    this.amount = amount
+                                }
+
+                                fun currency(currency: Boolean) = currency(JsonField.of(currency))
+
+                                @JsonProperty("currency")
+                                @ExcludeMissing
+                                fun currency(currency: JsonField<Boolean>) = apply {
+                                    this.currency = currency
+                                }
+
+                                fun additionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply {
+                                    this.additionalProperties.clear()
+                                    this.additionalProperties.putAll(additionalProperties)
+                                }
+
+                                @JsonAnySetter
+                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                    this.additionalProperties.put(key, value)
+                                }
+
+                                fun putAllAdditionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                                fun build(): EmployerContributions =
+                                    EmployerContributions(
+                                        name,
+                                        amount,
+                                        currency,
+                                        additionalProperties.toUnmodifiable(),
+                                    )
+                            }
+                        }
+
+                        /** [DEPRECATED] Use `employer_contributions` instead */
                         @JsonDeserialize(builder = EmployerDeductions.Builder::class)
                         @NoAutoDetect
                         class EmployerDeductions
