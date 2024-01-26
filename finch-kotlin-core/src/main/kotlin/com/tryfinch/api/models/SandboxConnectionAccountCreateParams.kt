@@ -354,7 +354,7 @@ constructor(
 
         companion object {
 
-            val CREDENTIALS = AuthenticationType(JsonField.of("credentials"))
+            val CREDENTIAL = AuthenticationType(JsonField.of("credential"))
 
             val API_TOKEN = AuthenticationType(JsonField.of("api_token"))
 
@@ -366,14 +366,14 @@ constructor(
         }
 
         enum class Known {
-            CREDENTIALS,
+            CREDENTIAL,
             API_TOKEN,
             OAUTH,
             ASSISTED,
         }
 
         enum class Value {
-            CREDENTIALS,
+            CREDENTIAL,
             API_TOKEN,
             OAUTH,
             ASSISTED,
@@ -382,7 +382,7 @@ constructor(
 
         fun value(): Value =
             when (this) {
-                CREDENTIALS -> Value.CREDENTIALS
+                CREDENTIAL -> Value.CREDENTIAL
                 API_TOKEN -> Value.API_TOKEN
                 OAUTH -> Value.OAUTH
                 ASSISTED -> Value.ASSISTED
@@ -391,7 +391,7 @@ constructor(
 
         fun known(): Known =
             when (this) {
-                CREDENTIALS -> Known.CREDENTIALS
+                CREDENTIAL -> Known.CREDENTIAL
                 API_TOKEN -> Known.API_TOKEN
                 OAUTH -> Known.OAUTH
                 ASSISTED -> Known.ASSISTED
