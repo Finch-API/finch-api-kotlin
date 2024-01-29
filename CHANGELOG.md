@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.15.1 (2024-01-29)
+
+Full Changelog: [v0.15.0...v0.15.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.0...v0.15.1)
+
+### Bug Fixes
+
+* **api:** fix authentication_type enum ([#76](https://github.com/Finch-API/finch-api-kotlin/issues/76)) ([dcc1a37](https://github.com/Finch-API/finch-api-kotlin/commit/dcc1a37b5d4000d60f15e7805c7e9a8f13adf86f))
+* **api:** update `employer_size` parameter to `employee_size` ([#78](https://github.com/Finch-API/finch-api-kotlin/issues/78)) ([a6e3dd9](https://github.com/Finch-API/finch-api-kotlin/commit/a6e3dd9e9c987993db16d970e4ac84c28babb92d))
+
 ## 0.15.0 (2024-01-18)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.14.0...v0.15.0)
