@@ -20,7 +20,7 @@ class SandboxConnectionCreateParams
 constructor(
     private val providerId: String,
     private val authenticationType: AuthenticationType?,
-    private val employerSize: Long?,
+    private val employeeSize: Long?,
     private val products: List<String>?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
@@ -31,7 +31,7 @@ constructor(
 
     fun authenticationType(): AuthenticationType? = authenticationType
 
-    fun employerSize(): Long? = employerSize
+    fun employeeSize(): Long? = employeeSize
 
     fun products(): List<String>? = products
 
@@ -39,7 +39,7 @@ constructor(
         return SandboxConnectionCreateBody(
             providerId,
             authenticationType,
-            employerSize,
+            employeeSize,
             products,
             additionalBodyProperties,
         )
@@ -55,7 +55,7 @@ constructor(
     internal constructor(
         private val providerId: String?,
         private val authenticationType: AuthenticationType?,
-        private val employerSize: Long?,
+        private val employeeSize: Long?,
         private val products: List<String>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
@@ -68,7 +68,7 @@ constructor(
         fun authenticationType(): AuthenticationType? = authenticationType
 
         /** Optional: the size of the employer to be created with this connection. Defaults to 20 */
-        @JsonProperty("employer_size") fun employerSize(): Long? = employerSize
+        @JsonProperty("employee_size") fun employeeSize(): Long? = employeeSize
 
         @JsonProperty("products") fun products(): List<String>? = products
 
@@ -86,7 +86,7 @@ constructor(
             return other is SandboxConnectionCreateBody &&
                 this.providerId == other.providerId &&
                 this.authenticationType == other.authenticationType &&
-                this.employerSize == other.employerSize &&
+                this.employeeSize == other.employeeSize &&
                 this.products == other.products &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -97,7 +97,7 @@ constructor(
                     Objects.hash(
                         providerId,
                         authenticationType,
-                        employerSize,
+                        employeeSize,
                         products,
                         additionalProperties,
                     )
@@ -106,7 +106,7 @@ constructor(
         }
 
         override fun toString() =
-            "SandboxConnectionCreateBody{providerId=$providerId, authenticationType=$authenticationType, employerSize=$employerSize, products=$products, additionalProperties=$additionalProperties}"
+            "SandboxConnectionCreateBody{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -117,14 +117,14 @@ constructor(
 
             private var providerId: String? = null
             private var authenticationType: AuthenticationType? = null
-            private var employerSize: Long? = null
+            private var employeeSize: Long? = null
             private var products: List<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxConnectionCreateBody: SandboxConnectionCreateBody) = apply {
                 this.providerId = sandboxConnectionCreateBody.providerId
                 this.authenticationType = sandboxConnectionCreateBody.authenticationType
-                this.employerSize = sandboxConnectionCreateBody.employerSize
+                this.employeeSize = sandboxConnectionCreateBody.employeeSize
                 this.products = sandboxConnectionCreateBody.products
                 additionalProperties(sandboxConnectionCreateBody.additionalProperties)
             }
@@ -140,8 +140,8 @@ constructor(
             /**
              * Optional: the size of the employer to be created with this connection. Defaults to 20
              */
-            @JsonProperty("employer_size")
-            fun employerSize(employerSize: Long) = apply { this.employerSize = employerSize }
+            @JsonProperty("employee_size")
+            fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
 
             @JsonProperty("products")
             fun products(products: List<String>) = apply { this.products = products }
@@ -164,7 +164,7 @@ constructor(
                 SandboxConnectionCreateBody(
                     checkNotNull(providerId) { "`providerId` is required but was not set" },
                     authenticationType,
-                    employerSize,
+                    employeeSize,
                     products?.toUnmodifiable(),
                     additionalProperties.toUnmodifiable(),
                 )
@@ -185,7 +185,7 @@ constructor(
         return other is SandboxConnectionCreateParams &&
             this.providerId == other.providerId &&
             this.authenticationType == other.authenticationType &&
-            this.employerSize == other.employerSize &&
+            this.employeeSize == other.employeeSize &&
             this.products == other.products &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
@@ -196,7 +196,7 @@ constructor(
         return Objects.hash(
             providerId,
             authenticationType,
-            employerSize,
+            employeeSize,
             products,
             additionalQueryParams,
             additionalHeaders,
@@ -205,7 +205,7 @@ constructor(
     }
 
     override fun toString() =
-        "SandboxConnectionCreateParams{providerId=$providerId, authenticationType=$authenticationType, employerSize=$employerSize, products=$products, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxConnectionCreateParams{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -219,7 +219,7 @@ constructor(
 
         private var providerId: String? = null
         private var authenticationType: AuthenticationType? = null
-        private var employerSize: Long? = null
+        private var employeeSize: Long? = null
         private var products: MutableList<String> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -228,7 +228,7 @@ constructor(
         internal fun from(sandboxConnectionCreateParams: SandboxConnectionCreateParams) = apply {
             this.providerId = sandboxConnectionCreateParams.providerId
             this.authenticationType = sandboxConnectionCreateParams.authenticationType
-            this.employerSize = sandboxConnectionCreateParams.employerSize
+            this.employeeSize = sandboxConnectionCreateParams.employeeSize
             this.products(sandboxConnectionCreateParams.products ?: listOf())
             additionalQueryParams(sandboxConnectionCreateParams.additionalQueryParams)
             additionalHeaders(sandboxConnectionCreateParams.additionalHeaders)
@@ -242,7 +242,7 @@ constructor(
         }
 
         /** Optional: the size of the employer to be created with this connection. Defaults to 20 */
-        fun employerSize(employerSize: Long) = apply { this.employerSize = employerSize }
+        fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
 
         fun products(products: List<String>) = apply {
             this.products.clear()
@@ -309,7 +309,7 @@ constructor(
             SandboxConnectionCreateParams(
                 checkNotNull(providerId) { "`providerId` is required but was not set" },
                 authenticationType,
-                employerSize,
+                employeeSize,
                 if (products.size == 0) null else products.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
