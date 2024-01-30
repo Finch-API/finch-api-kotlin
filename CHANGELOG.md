@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.2 (2024-01-30)
+
+Full Changelog: [v0.15.1...v0.15.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.1...v0.15.2)
+
+### Chores
+
+* **internal:** support pre-release versioning ([#79](https://github.com/Finch-API/finch-api-kotlin/issues/79)) ([0887da9](https://github.com/Finch-API/finch-api-kotlin/commit/0887da96777aeba800a7a87cd8ed6dc70223b0f6))
+
 ## 0.15.1 (2024-01-29)
 
 Full Changelog: [v0.15.0...v0.15.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.0...v0.15.1)
