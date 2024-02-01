@@ -49,7 +49,7 @@ private constructor(
         "HrisEmploymentRetrieveManyPage{employmentsService=$employmentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return responses().isEmpty()
+        return !responses().isEmpty()
     }
 
     fun getNextPageParams(): HrisEmploymentRetrieveManyParams? {

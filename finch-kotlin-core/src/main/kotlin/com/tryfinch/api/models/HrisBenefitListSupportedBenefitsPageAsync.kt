@@ -51,7 +51,7 @@ private constructor(
         "HrisBenefitListSupportedBenefitsPageAsync{benefitsService=$benefitsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): HrisBenefitListSupportedBenefitsParams? {
