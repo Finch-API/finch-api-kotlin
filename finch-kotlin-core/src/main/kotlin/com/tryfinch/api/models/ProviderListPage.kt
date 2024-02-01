@@ -49,7 +49,7 @@ private constructor(
         "ProviderListPage{providersService=$providersService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): ProviderListParams? {
