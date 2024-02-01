@@ -49,7 +49,7 @@ private constructor(
         "HrisPaymentListPage{paymentsService=$paymentsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): HrisPaymentListParams? {

@@ -51,7 +51,7 @@ private constructor(
         "HrisIndividualRetrieveManyPageAsync{individualsService=$individualsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return responses().isEmpty()
+        return !responses().isEmpty()
     }
 
     fun getNextPageParams(): HrisIndividualRetrieveManyParams? {
