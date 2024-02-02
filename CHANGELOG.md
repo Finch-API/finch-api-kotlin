@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.16.0 (2024-02-02)
+
+Full Changelog: [v0.15.2...v0.16.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.2...v0.16.0)
+
+### Features
+
+* **api:** create access token reads client opts if not provided ([#83](https://github.com/Finch-API/finch-api-kotlin/issues/83)) ([4f732c1](https://github.com/Finch-API/finch-api-kotlin/commit/4f732c1a0edc2d97b2845065eb0ca98f23ae8525))
+
+
+### Bug Fixes
+
+* **pagination:** correct hasNextPage check ([#81](https://github.com/Finch-API/finch-api-kotlin/issues/81)) ([d39149b](https://github.com/Finch-API/finch-api-kotlin/commit/d39149bb61581db9b6fdae5f2bf9d71880f5e43e))
+
+
+### Chores
+
+* **interal:** make link to api.md relative ([#84](https://github.com/Finch-API/finch-api-kotlin/issues/84)) ([9b52b78](https://github.com/Finch-API/finch-api-kotlin/commit/9b52b7886dff96aedd2768a58b2c493eeb803f58))
+
 ## 0.15.2 (2024-01-30)
 
 Full Changelog: [v0.15.1...v0.15.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.1...v0.15.2)
