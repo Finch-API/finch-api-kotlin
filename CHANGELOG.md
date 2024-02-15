@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.0.1 (2024-02-15)
+
+Full Changelog: [...abc-v0.0.1](https://github.com/Finch-API/finch-api-kotlin/compare/...abc-v0.0.1)
+
+### Features
+
+* **api:** add `/forward` endpoint and other updates ([#16](https://github.com/Finch-API/finch-api-kotlin/issues/16)) ([a4838f4](https://github.com/Finch-API/finch-api-kotlin/commit/a4838f4d211477be2c8f05b5923bef84ebda5aa1))
+* **api:** add `/jobs` endpoints ([#50](https://github.com/Finch-API/finch-api-kotlin/issues/50)) ([0685727](https://github.com/Finch-API/finch-api-kotlin/commit/06857275dc2a409908ba41217e990c6d5a7ffdcb))
+* **api:** add `client_type` and `connection_type` to introspection ([#52](https://github.com/Finch-API/finch-api-kotlin/issues/52)) ([18097b8](https://github.com/Finch-API/finch-api-kotlin/commit/18097b87ede8c4496bfe8bebfdfc59ed3bb3a8df))
+* **api:** add `lp` tax payer type enum value ([#55](https://github.com/Finch-API/finch-api-kotlin/issues/55)) ([cd69cd6](https://github.com/Finch-API/finch-api-kotlin/commit/cd69cd6b9e520bbba6d8a81160a2c24eb7a83ef8))
+* **api:** add employer_contributions field ([#75](https://github.com/Finch-API/finch-api-kotlin/issues/75)) ([f49885e](https://github.com/Finch-API/finch-api-kotlin/commit/f49885e600d17572d0219932f5209dacdcc2101d))
+* **api:** add method to create access token ([#62](https://github.com/Finch-API/finch-api-kotlin/issues/62)) ([bf67c78](https://github.com/Finch-API/finch-api-kotlin/commit/bf67c78992ce57d01dc090feb4bd05ecade2d811))
+* **api:** add sandbox APIs ([#64](https://github.com/Finch-API/finch-api-kotlin/issues/64)) ([6d22c33](https://github.com/Finch-API/finch-api-kotlin/commit/6d22c33e452760700542c3ff357570fc37b5031a))
+* **api:** create access token reads client opts if not provided ([#83](https://github.com/Finch-API/finch-api-kotlin/issues/83)) ([df44587](https://github.com/Finch-API/finch-api-kotlin/commit/df445878ef13c05f3c8bb9e967fbc3d7116a7396))
+* **api:** updates ([#43](https://github.com/Finch-API/finch-api-kotlin/issues/43)) ([b8e3bdc](https://github.com/Finch-API/finch-api-kotlin/commit/b8e3bdc15639e9a6358548a635cfb1f80ad9841c))
+* **api:** updates ([#47](https://github.com/Finch-API/finch-api-kotlin/issues/47)) ([7eb95ae](https://github.com/Finch-API/finch-api-kotlin/commit/7eb95aea20486e62c9078d5dfe8bf07cd7a48ad0))
+* **ci:** add reviewers ([#9](https://github.com/Finch-API/finch-api-kotlin/issues/9)) ([5283514](https://github.com/Finch-API/finch-api-kotlin/commit/5283514c2fe09916dec9491abe3608b9ce0ffc1c))
+* **client:** adjust retry behavior ([#32](https://github.com/Finch-API/finch-api-kotlin/issues/32)) ([ae371cd](https://github.com/Finch-API/finch-api-kotlin/commit/ae371cd0dbf9f3c71c79dda4c094b2427947898c))
+* **client:** allow binary returns ([#38](https://github.com/Finch-API/finch-api-kotlin/issues/38)) ([fdaf69a](https://github.com/Finch-API/finch-api-kotlin/commit/fdaf69a7d2c75ca5f7465f4a1d1c6261a53440fd))
+* **client:** hook up sandbox auth ([#68](https://github.com/Finch-API/finch-api-kotlin/issues/68)) ([a549eea](https://github.com/Finch-API/finch-api-kotlin/commit/a549eeac2c38ed354a3825f274f97ec4c6917219))
+* **client:** retry on 408 Request Timeout ([#5](https://github.com/Finch-API/finch-api-kotlin/issues/5)) ([669fc9c](https://github.com/Finch-API/finch-api-kotlin/commit/669fc9cfbadac0571b0a317f4728fb20f273b944))
+* **github:** include a devcontainer setup ([#36](https://github.com/Finch-API/finch-api-kotlin/issues/36)) ([f903e7a](https://github.com/Finch-API/finch-api-kotlin/commit/f903e7a33cb3782b731803596b19f0e4444f0bff))
+* **init:** initial commit ([670bd4e](https://github.com/Finch-API/finch-api-kotlin/commit/670bd4ea3631f0537cf7df789aa2176f9580faed))
+* make webhook headers case insensitive ([#27](https://github.com/Finch-API/finch-api-kotlin/issues/27)) ([92690b7](https://github.com/Finch-API/finch-api-kotlin/commit/92690b7eb3cd045c56d67e088f8e7138ee0b7670))
+* remove redundant endpoint, add sandbox client options (not yet used) ([#67](https://github.com/Finch-API/finch-api-kotlin/issues/67)) ([fcf6d8f](https://github.com/Finch-API/finch-api-kotlin/commit/fcf6d8f954ba81ddb3f8839056294de9906c6d39))
+* **webhooks:** add types to the `unwrap` method ([#69](https://github.com/Finch-API/finch-api-kotlin/issues/69)) ([0e43c2d](https://github.com/Finch-API/finch-api-kotlin/commit/0e43c2d066d5055ec50b69f251cd3bcba5a0fa80))
+
+
+### Bug Fixes
+
+* **api:** fix authentication_type enum ([#76](https://github.com/Finch-API/finch-api-kotlin/issues/76)) ([770fdfa](https://github.com/Finch-API/finch-api-kotlin/commit/770fdfa2373794fb112e3268adccf3965249daf4))
+* **api:** update `employer_size` parameter to `employee_size` ([#78](https://github.com/Finch-API/finch-api-kotlin/issues/78)) ([33fc617](https://github.com/Finch-API/finch-api-kotlin/commit/33fc617f8af0d87d7f9d08d7b9d3b336f9207af4))
+* correct benfits to benefits ([#22](https://github.com/Finch-API/finch-api-kotlin/issues/22)) ([f6d8c92](https://github.com/Finch-API/finch-api-kotlin/commit/f6d8c9236e289cc56a437aa46f8e957aa08faac2))
+* **pagination:** correct hasNextPage check ([#81](https://github.com/Finch-API/finch-api-kotlin/issues/81)) ([06ae02f](https://github.com/Finch-API/finch-api-kotlin/commit/06ae02fab91258561a010a3d53d79257b5b22bd2))
+
 ## 0.16.0 (2024-02-02)
 
 Full Changelog: [v0.15.2...v0.16.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.2...v0.16.0)
