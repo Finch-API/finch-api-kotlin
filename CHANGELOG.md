@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.17.0 (2024-02-20)
+
+Full Changelog: [v0.16.0...v0.17.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.16.0...v0.17.0)
+
+### Features
+
+* **api:** create new sandbox job ([#88](https://github.com/Finch-API/finch-api-kotlin/issues/88)) ([92080d1](https://github.com/Finch-API/finch-api-kotlin/commit/92080d17bf3c9e23bad30ad8c06706da2a13fced))
+
+
+### Chores
+
+* **internal:** refactor release environment script ([#85](https://github.com/Finch-API/finch-api-kotlin/issues/85)) ([faa2a00](https://github.com/Finch-API/finch-api-kotlin/commit/faa2a00960ba3070e4e658d9e7cf34351e34f6ef))
+
 ## 0.16.0 (2024-02-02)
 
 Full Changelog: [v0.15.2...v0.16.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.15.2...v0.16.0)
