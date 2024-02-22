@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.17.1 (2024-02-22)
+
+Full Changelog: [v0.17.0...v0.17.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.17.0...v0.17.1)
+
+### Chores
+
+* update dependency org.apache.httpcomponents.core5:httpcore5 to v5.2.4 ([#89](https://github.com/Finch-API/finch-api-kotlin/issues/89)) ([56316e4](https://github.com/Finch-API/finch-api-kotlin/commit/56316e406b5fbea88a4cfb3a423c2a4f4073202e))
+
 ## 0.17.0 (2024-02-20)
 
 Full Changelog: [v0.16.0...v0.17.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.16.0...v0.17.0)
