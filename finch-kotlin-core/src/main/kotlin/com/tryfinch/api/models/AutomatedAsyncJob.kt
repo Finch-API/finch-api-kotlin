@@ -55,7 +55,7 @@ private constructor(
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
-     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
+     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
      */
     fun scheduledAt(): OffsetDateTime? = scheduledAt.getNullable("scheduled_at")
 
@@ -84,7 +84,7 @@ private constructor(
 
     /**
      * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in the
-     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
+     * future if the job has not yet been enqueued. For ad-hoc jobs, this field will be null.
      */
     @JsonProperty("scheduled_at") @ExcludeMissing fun _scheduledAt() = scheduledAt
 
@@ -229,15 +229,15 @@ private constructor(
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
-         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will be
-         * null.
+         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
+         * be null.
          */
         fun scheduledAt(scheduledAt: OffsetDateTime) = scheduledAt(JsonField.of(scheduledAt))
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
-         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will be
-         * null.
+         * the future if the job has not yet been enqueued. For ad-hoc jobs, this field will
+         * be null.
          */
         @JsonProperty("scheduled_at")
         @ExcludeMissing

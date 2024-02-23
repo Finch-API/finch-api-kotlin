@@ -57,8 +57,8 @@ private constructor(
             return false
         }
 
-        return (paging().offset()
-            ?: 0) + individuals().count() < (paging().count() ?: Long.MAX_VALUE)
+        return (paging().offset() ?: 0) + individuals().count() <
+            (paging().count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): HrisDirectoryListParams? {

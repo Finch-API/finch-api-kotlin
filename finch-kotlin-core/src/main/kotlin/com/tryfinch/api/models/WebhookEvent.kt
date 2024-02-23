@@ -34,32 +34,53 @@ private constructor(
     private var validated: Boolean = false
 
     fun accountUpdateEvent(): AccountUpdateEvent? = accountUpdateEvent
+
     fun jobCompletionEvent(): JobCompletionEvent? = jobCompletionEvent
+
     fun companyEvent(): CompanyEvent? = companyEvent
+
     fun directoryEvent(): DirectoryEvent? = directoryEvent
+
     fun employmentEvent(): EmploymentEvent? = employmentEvent
+
     fun individualEvent(): IndividualEvent? = individualEvent
+
     fun paymentEvent(): PaymentEvent? = paymentEvent
+
     fun payStatementEvent(): PayStatementEvent? = payStatementEvent
 
     fun isAccountUpdateEvent(): Boolean = accountUpdateEvent != null
+
     fun isJobCompletionEvent(): Boolean = jobCompletionEvent != null
+
     fun isCompanyEvent(): Boolean = companyEvent != null
+
     fun isDirectoryEvent(): Boolean = directoryEvent != null
+
     fun isEmploymentEvent(): Boolean = employmentEvent != null
+
     fun isIndividualEvent(): Boolean = individualEvent != null
+
     fun isPaymentEvent(): Boolean = paymentEvent != null
+
     fun isPayStatementEvent(): Boolean = payStatementEvent != null
 
     fun asAccountUpdateEvent(): AccountUpdateEvent =
         accountUpdateEvent.getOrThrow("accountUpdateEvent")
+
     fun asJobCompletionEvent(): JobCompletionEvent =
         jobCompletionEvent.getOrThrow("jobCompletionEvent")
+
     fun asCompanyEvent(): CompanyEvent = companyEvent.getOrThrow("companyEvent")
+
     fun asDirectoryEvent(): DirectoryEvent = directoryEvent.getOrThrow("directoryEvent")
+
     fun asEmploymentEvent(): EmploymentEvent = employmentEvent.getOrThrow("employmentEvent")
+
     fun asIndividualEvent(): IndividualEvent = individualEvent.getOrThrow("individualEvent")
+
     fun asPaymentEvent(): PaymentEvent = paymentEvent.getOrThrow("paymentEvent")
+
     fun asPayStatementEvent(): PayStatementEvent = payStatementEvent.getOrThrow("payStatementEvent")
 
     fun _json(): JsonValue? = _json
