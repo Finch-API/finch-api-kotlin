@@ -16,9 +16,9 @@ import java.util.Objects
 class AccessTokenCreateParams
 constructor(
     private val code: String,
-    private val redirectUri: String,
     private val clientId: String?,
     private val clientSecret: String?,
+    private val redirectUri: String?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -26,18 +26,18 @@ constructor(
 
     fun code(): String = code
 
-    fun redirectUri(): String = redirectUri
-
     fun clientId(): String? = clientId
 
     fun clientSecret(): String? = clientSecret
 
+    fun redirectUri(): String? = redirectUri
+
     internal fun getBody(): AccessTokenCreateBody {
         return AccessTokenCreateBody(
             code,
-            redirectUri,
             clientId,
             clientSecret,
+            redirectUri,
             additionalBodyProperties,
         )
     }
@@ -51,9 +51,9 @@ constructor(
     class AccessTokenCreateBody
     internal constructor(
         private val code: String?,
-        private val redirectUri: String?,
         private val clientId: String?,
         private val clientSecret: String?,
+        private val redirectUri: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -61,11 +61,11 @@ constructor(
 
         @JsonProperty("code") fun code(): String? = code
 
-        @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
-
         @JsonProperty("client_id") fun clientId(): String? = clientId
 
         @JsonProperty("client_secret") fun clientSecret(): String? = clientSecret
+
+        @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -80,9 +80,9 @@ constructor(
 
             return other is AccessTokenCreateBody &&
                 this.code == other.code &&
-                this.redirectUri == other.redirectUri &&
                 this.clientId == other.clientId &&
                 this.clientSecret == other.clientSecret &&
+                this.redirectUri == other.redirectUri &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -91,9 +91,9 @@ constructor(
                 hashCode =
                     Objects.hash(
                         code,
-                        redirectUri,
                         clientId,
                         clientSecret,
+                        redirectUri,
                         additionalProperties,
                     )
             }
@@ -101,7 +101,7 @@ constructor(
         }
 
         override fun toString() =
-            "AccessTokenCreateBody{code=$code, redirectUri=$redirectUri, clientId=$clientId, clientSecret=$clientSecret, additionalProperties=$additionalProperties}"
+            "AccessTokenCreateBody{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -111,29 +111,29 @@ constructor(
         class Builder {
 
             private var code: String? = null
-            private var redirectUri: String? = null
             private var clientId: String? = null
             private var clientSecret: String? = null
+            private var redirectUri: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(accessTokenCreateBody: AccessTokenCreateBody) = apply {
                 this.code = accessTokenCreateBody.code
-                this.redirectUri = accessTokenCreateBody.redirectUri
                 this.clientId = accessTokenCreateBody.clientId
                 this.clientSecret = accessTokenCreateBody.clientSecret
+                this.redirectUri = accessTokenCreateBody.redirectUri
                 additionalProperties(accessTokenCreateBody.additionalProperties)
             }
 
             @JsonProperty("code") fun code(code: String) = apply { this.code = code }
-
-            @JsonProperty("redirect_uri")
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
 
             @JsonProperty("client_id")
             fun clientId(clientId: String) = apply { this.clientId = clientId }
 
             @JsonProperty("client_secret")
             fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
+
+            @JsonProperty("redirect_uri")
+            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -152,9 +152,9 @@ constructor(
             fun build(): AccessTokenCreateBody =
                 AccessTokenCreateBody(
                     checkNotNull(code) { "`code` is required but was not set" },
-                    checkNotNull(redirectUri) { "`redirectUri` is required but was not set" },
                     clientId,
                     clientSecret,
+                    redirectUri,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -173,9 +173,9 @@ constructor(
 
         return other is AccessTokenCreateParams &&
             this.code == other.code &&
-            this.redirectUri == other.redirectUri &&
             this.clientId == other.clientId &&
             this.clientSecret == other.clientSecret &&
+            this.redirectUri == other.redirectUri &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
             this.additionalBodyProperties == other.additionalBodyProperties
@@ -184,9 +184,9 @@ constructor(
     override fun hashCode(): Int {
         return Objects.hash(
             code,
-            redirectUri,
             clientId,
             clientSecret,
+            redirectUri,
             additionalQueryParams,
             additionalHeaders,
             additionalBodyProperties,
@@ -194,7 +194,7 @@ constructor(
     }
 
     override fun toString() =
-        "AccessTokenCreateParams{code=$code, redirectUri=$redirectUri, clientId=$clientId, clientSecret=$clientSecret, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "AccessTokenCreateParams{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -207,18 +207,18 @@ constructor(
     class Builder {
 
         private var code: String? = null
-        private var redirectUri: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
+        private var redirectUri: String? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(accessTokenCreateParams: AccessTokenCreateParams) = apply {
             this.code = accessTokenCreateParams.code
-            this.redirectUri = accessTokenCreateParams.redirectUri
             this.clientId = accessTokenCreateParams.clientId
             this.clientSecret = accessTokenCreateParams.clientSecret
+            this.redirectUri = accessTokenCreateParams.redirectUri
             additionalQueryParams(accessTokenCreateParams.additionalQueryParams)
             additionalHeaders(accessTokenCreateParams.additionalHeaders)
             additionalBodyProperties(accessTokenCreateParams.additionalBodyProperties)
@@ -226,11 +226,11 @@ constructor(
 
         fun code(code: String) = apply { this.code = code }
 
-        fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
-
         fun clientId(clientId: String) = apply { this.clientId = clientId }
 
         fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
+
+        fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -289,9 +289,9 @@ constructor(
         fun build(): AccessTokenCreateParams =
             AccessTokenCreateParams(
                 checkNotNull(code) { "`code` is required but was not set" },
-                checkNotNull(redirectUri) { "`redirectUri` is required but was not set" },
                 clientId,
                 clientSecret,
+                redirectUri,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
