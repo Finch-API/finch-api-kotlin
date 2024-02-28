@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.18.0 (2024-02-28)
+
+Full Changelog: [v0.17.1...v0.18.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.17.1...v0.18.0)
+
+### Features
+
+* **api:** make redirect_uri optional ([#103](https://github.com/Finch-API/finch-api-kotlin/issues/103)) ([71a974b](https://github.com/Finch-API/finch-api-kotlin/commit/71a974b80115407af60ea27ba3af518fe23fd718))
+* **api:** remove deprecated `deduction` from docstring ([#104](https://github.com/Finch-API/finch-api-kotlin/issues/104)) ([3e52454](https://github.com/Finch-API/finch-api-kotlin/commit/3e5245423849ccb203a23728cfd6d376c3fba174))
+
+
+### Chores
+
+* **ci:** update actions/setup-java action to v4 ([#97](https://github.com/Finch-API/finch-api-kotlin/issues/97)) ([c678f4d](https://github.com/Finch-API/finch-api-kotlin/commit/c678f4d7365dbe24dc706cad6052ebead3ad8c97))
+* **internal:** update deps ([#95](https://github.com/Finch-API/finch-api-kotlin/issues/95)) ([7dd20bf](https://github.com/Finch-API/finch-api-kotlin/commit/7dd20bfa5606408dd251ee541dec832fa1c316db))
+* update dependency com.diffplug.spotless:spotless-plugin-gradle to v6.25.0 ([#99](https://github.com/Finch-API/finch-api-kotlin/issues/99)) ([9782649](https://github.com/Finch-API/finch-api-kotlin/commit/9782649b34757cade5a6a67f39056cc4d57031fe))
+* update dependency com.github.tomakehurst:wiremock-jre8 to v2.35.2 ([#102](https://github.com/Finch-API/finch-api-kotlin/issues/102)) ([0420f22](https://github.com/Finch-API/finch-api-kotlin/commit/0420f223cdd89464d611d8ea2ccb6d24ae40edc9))
+* update dependency com.google.guava:guava to v33 ([#100](https://github.com/Finch-API/finch-api-kotlin/issues/100)) ([2fccb42](https://github.com/Finch-API/finch-api-kotlin/commit/2fccb4283d85a4e17e8e261d81b9e2f3fded1246))
+* update dependency com.squareup.okhttp3:okhttp to v4.12.0 ([#98](https://github.com/Finch-API/finch-api-kotlin/issues/98)) ([a8ba672](https://github.com/Finch-API/finch-api-kotlin/commit/a8ba672817d8d084f9eb99b795ab63ee4e864bce))
+* update dependency org.apache.httpcomponents.client5:httpclient5 to v5.3.1 ([#96](https://github.com/Finch-API/finch-api-kotlin/issues/96)) ([160547c](https://github.com/Finch-API/finch-api-kotlin/commit/160547cae88f3f7aca67485a983255f46f720fbb))
+* update dependency org.assertj:assertj-core to v3.25.3 ([#93](https://github.com/Finch-API/finch-api-kotlin/issues/93)) ([58405ff](https://github.com/Finch-API/finch-api-kotlin/commit/58405ff4ebabf5431f2c63587c8d25c0e79ddd1b))
+* update dependency org.assertj:assertj-guava to v3.25.3 ([#94](https://github.com/Finch-API/finch-api-kotlin/issues/94)) ([977b2d2](https://github.com/Finch-API/finch-api-kotlin/commit/977b2d281f45c13685f6d2a38c3e3dad70a2c43b))
+* update dependency org.slf4j:slf4j-simple to v1.7.36 ([#91](https://github.com/Finch-API/finch-api-kotlin/issues/91)) ([be1c65a](https://github.com/Finch-API/finch-api-kotlin/commit/be1c65a952fb21a341156d2e96914bf2383703d3))
+* update dependency org.slf4j:slf4j-simple to v2 ([#101](https://github.com/Finch-API/finch-api-kotlin/issues/101)) ([c831fb3](https://github.com/Finch-API/finch-api-kotlin/commit/c831fb39e119e36c087ab240b350e121fa3d7a84))
+
 ## 0.17.1 (2024-02-22)
 
 Full Changelog: [v0.17.0...v0.17.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.17.0...v0.17.1)
