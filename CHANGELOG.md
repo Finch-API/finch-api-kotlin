@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.18.1 (2024-03-04)
+
+Full Changelog: [v0.18.0...v0.18.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.0...v0.18.1)
+
+### Chores
+
+* update some doc strings ([#105](https://github.com/Finch-API/finch-api-kotlin/issues/105)) ([bd15f83](https://github.com/Finch-API/finch-api-kotlin/commit/bd15f8369a69858b48860576720dbd13b9c43e88))
+
 ## 0.18.0 (2024-02-28)
 
 Full Changelog: [v0.17.1...v0.18.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.17.1...v0.18.0)
