@@ -22,51 +22,33 @@ interface BenefitServiceAsync {
     fun individuals(): IndividualServiceAsync
 
     /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Creates a new company-wide benefit. Please use the `/meta` endpoint to view available types
-     * for each provider.
+     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+     * view available types for each provider.
      */
     suspend fun create(
         params: HrisBenefitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CreateCompanyBenefitsResponse
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * Lists benefit information for a given benefit
-     */
+    /** Lists deductions and contributions information for a given item */
     suspend fun retrieve(
         params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompanyBenefit
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Updates an existing company-wide benefit
-     */
+    /** Updates an existing company-wide deduction or contribution */
     suspend fun update(
         params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): UpdateCompanyBenefitResponse
 
-    /**
-     * **Availability: Automated Benefits providers only**
-     *
-     * List all company-wide benefits.
-     */
+    /** List all company-wide deductions and contributions. */
     suspend fun list(
         params: HrisBenefitListParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): HrisBenefitListPageAsync
 
-    /**
-     * **Availability: Automated and Assisted Benefits providers**
-     *
-     * Lists available types and configurations for the provider associated with the access token.
-     */
+    /** Get deductions metadata */
     suspend fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none()
