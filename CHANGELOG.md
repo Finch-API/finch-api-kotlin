@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.18.3 (2024-03-05)
+
+Full Changelog: [v0.18.2...v0.18.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.2...v0.18.3)
+
+### Chores
+
+* add api.md ([#111](https://github.com/Finch-API/finch-api-kotlin/issues/111)) ([0806ef4](https://github.com/Finch-API/finch-api-kotlin/commit/0806ef4b506527a529439fd55fe1397b6e5d431e))
+* remove internal-only field ([#109](https://github.com/Finch-API/finch-api-kotlin/issues/109)) ([303cb06](https://github.com/Finch-API/finch-api-kotlin/commit/303cb0601d3b175e6d3daa7c09d70c368da292e8))
+
 ## 0.18.2 (2024-03-04)
 
 Full Changelog: [v0.18.1...v0.18.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.1...v0.18.2)
