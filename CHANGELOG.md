@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.19.0 (2024-03-13)
+
+Full Changelog: [v0.18.3...v0.19.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.3...v0.19.0)
+
+### Features
+
+* add HttpRequestBody.contentLength() ([#112](https://github.com/Finch-API/finch-api-kotlin/issues/112)) ([1a20e88](https://github.com/Finch-API/finch-api-kotlin/commit/1a20e88f22a3b82f79896d800f47519a747978fb))
+
 ## 0.18.3 (2024-03-05)
 
 Full Changelog: [v0.18.2...v0.18.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.2...v0.18.3)
