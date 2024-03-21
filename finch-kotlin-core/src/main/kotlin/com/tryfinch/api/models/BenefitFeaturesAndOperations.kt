@@ -142,7 +142,7 @@ private constructor(
     class BenefitFeature
     private constructor(
         private val description: JsonField<String>,
-        private val frequencies: JsonField<List<BenefitFrequency>>,
+        private val frequencies: JsonField<List<BenefitFrequency?>>,
         private val employeeDeduction: JsonField<List<EmployeeDeduction>>,
         private val companyContribution: JsonField<List<CompanyContribution>>,
         private val annualMaximum: JsonField<Boolean>,
@@ -158,7 +158,7 @@ private constructor(
         fun description(): String? = description.getNullable("description")
 
         /** The list of frequencies supported by the provider for this benefit */
-        fun frequencies(): List<BenefitFrequency>? = frequencies.getNullable("frequencies")
+        fun frequencies(): List<BenefitFrequency?>? = frequencies.getNullable("frequencies")
 
         /** Supported deduction types. An empty array indicates deductions are not supported. */
         fun employeeDeduction(): List<EmployeeDeduction>? =
@@ -283,7 +283,7 @@ private constructor(
         class Builder {
 
             private var description: JsonField<String> = JsonMissing.of()
-            private var frequencies: JsonField<List<BenefitFrequency>> = JsonMissing.of()
+            private var frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of()
             private var employeeDeduction: JsonField<List<EmployeeDeduction>> = JsonMissing.of()
             private var companyContribution: JsonField<List<CompanyContribution>> = JsonMissing.of()
             private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
@@ -312,13 +312,13 @@ private constructor(
             }
 
             /** The list of frequencies supported by the provider for this benefit */
-            fun frequencies(frequencies: List<BenefitFrequency>) =
+            fun frequencies(frequencies: List<BenefitFrequency?>) =
                 frequencies(JsonField.of(frequencies))
 
             /** The list of frequencies supported by the provider for this benefit */
             @JsonProperty("frequencies")
             @ExcludeMissing
-            fun frequencies(frequencies: JsonField<List<BenefitFrequency>>) = apply {
+            fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
                 this.frequencies = frequencies
             }
 
