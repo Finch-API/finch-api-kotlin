@@ -19,7 +19,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:0.19.0")
+implementation("com.tryfinch.api:finch-kotlin:0.19.1")
 ```
 
 #### Maven
@@ -28,7 +28,7 @@ implementation("com.tryfinch.api:finch-kotlin:0.19.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>0.19.0</version>
+    <version>0.19.1</version>
 </dependency>
 ```
 
@@ -282,7 +282,7 @@ val client = FinchOkHttpClient.builder()
     .build()
 ```
 
-## Semantic Versioning
+## Semantic versioning
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 

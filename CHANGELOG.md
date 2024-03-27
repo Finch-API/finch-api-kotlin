@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.19.1 (2024-03-27)
+
+Full Changelog: [v0.19.0...v0.19.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.0...v0.19.1)
+
+### Bug Fixes
+
+* handle nullable values inside of arrays ([#116](https://github.com/Finch-API/finch-api-kotlin/issues/116)) ([344e654](https://github.com/Finch-API/finch-api-kotlin/commit/344e6541a646e18e295a4ac84f0515c71524ebf1))
+
+
+### Chores
+
+* revert temporary commit ([1b18b7a](https://github.com/Finch-API/finch-api-kotlin/commit/1b18b7a1d5b81048fbe10afe8af6ba8ca2ca6dcb))
+* temporary commit ([#117](https://github.com/Finch-API/finch-api-kotlin/issues/117)) ([af1d6fc](https://github.com/Finch-API/finch-api-kotlin/commit/af1d6fce782f7de5394bff7989cafec9f56a57ae))
+
+
+### Documentation
+
+* **readme:** consistent use of sentence case in headings ([#114](https://github.com/Finch-API/finch-api-kotlin/issues/114)) ([2328d09](https://github.com/Finch-API/finch-api-kotlin/commit/2328d093b51f628dafb5cd7dc61b538e30e56071))
+
 ## 0.19.0 (2024-03-13)
 
 Full Changelog: [v0.18.3...v0.19.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.3...v0.19.0)

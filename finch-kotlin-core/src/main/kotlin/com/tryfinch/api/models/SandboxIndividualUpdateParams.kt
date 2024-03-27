@@ -27,7 +27,7 @@ constructor(
     private val gender: Gender?,
     private val lastName: String?,
     private val middleName: String?,
-    private val phoneNumbers: List<PhoneNumber>?,
+    private val phoneNumbers: List<PhoneNumber?>?,
     private val preferredName: String?,
     private val residence: Location?,
     private val ssn: String?,
@@ -54,7 +54,7 @@ constructor(
 
     fun middleName(): String? = middleName
 
-    fun phoneNumbers(): List<PhoneNumber>? = phoneNumbers
+    fun phoneNumbers(): List<PhoneNumber?>? = phoneNumbers
 
     fun preferredName(): String? = preferredName
 
@@ -103,7 +103,7 @@ constructor(
         private val gender: Gender?,
         private val lastName: String?,
         private val middleName: String?,
-        private val phoneNumbers: List<PhoneNumber>?,
+        private val phoneNumbers: List<PhoneNumber?>?,
         private val preferredName: String?,
         private val residence: Location?,
         private val ssn: String?,
@@ -138,7 +138,7 @@ constructor(
         /** The legal middle name of the individual. */
         @JsonProperty("middle_name") fun middleName(): String? = middleName
 
-        @JsonProperty("phone_numbers") fun phoneNumbers(): List<PhoneNumber>? = phoneNumbers
+        @JsonProperty("phone_numbers") fun phoneNumbers(): List<PhoneNumber?>? = phoneNumbers
 
         /** The preferred name of the individual. */
         @JsonProperty("preferred_name") fun preferredName(): String? = preferredName
@@ -218,7 +218,7 @@ constructor(
             private var gender: Gender? = null
             private var lastName: String? = null
             private var middleName: String? = null
-            private var phoneNumbers: List<PhoneNumber>? = null
+            private var phoneNumbers: List<PhoneNumber?>? = null
             private var preferredName: String? = null
             private var residence: Location? = null
             private var ssn: String? = null
@@ -272,7 +272,7 @@ constructor(
             fun middleName(middleName: String) = apply { this.middleName = middleName }
 
             @JsonProperty("phone_numbers")
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber>) = apply {
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
                 this.phoneNumbers = phoneNumbers
             }
 
@@ -395,7 +395,7 @@ constructor(
         private var gender: Gender? = null
         private var lastName: String? = null
         private var middleName: String? = null
-        private var phoneNumbers: MutableList<PhoneNumber> = mutableListOf()
+        private var phoneNumbers: MutableList<PhoneNumber?> = mutableListOf()
         private var preferredName: String? = null
         private var residence: Location? = null
         private var ssn: String? = null
@@ -455,7 +455,7 @@ constructor(
         /** The legal middle name of the individual. */
         fun middleName(middleName: String) = apply { this.middleName = middleName }
 
-        fun phoneNumbers(phoneNumbers: List<PhoneNumber>) = apply {
+        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
             this.phoneNumbers.clear()
             this.phoneNumbers.addAll(phoneNumbers)
         }
