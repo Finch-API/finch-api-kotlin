@@ -21,13 +21,12 @@ constructor(
     private val body: List<IndividualOrEmployment>,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun body(): List<IndividualOrEmployment> = body
 
-    internal fun getBody(): SandboxDirectoryCreateBody {
-        return SandboxDirectoryCreateBody(body, additionalBodyProperties)
+    internal fun getBody(): List<IndividualOrEmployment> {
+        return body
     }
 
     internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -43,7 +42,6 @@ constructor(
     class SandboxDirectoryCreateBody
     internal constructor(
         private val body: List<IndividualOrEmployment>?,
-        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
@@ -54,10 +52,6 @@ constructor(
          */
         @JsonProperty("body") fun body(): List<IndividualOrEmployment>? = body
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
@@ -65,20 +59,17 @@ constructor(
                 return true
             }
 
-            return other is SandboxDirectoryCreateBody &&
-                this.body == other.body &&
-                this.additionalProperties == other.additionalProperties
+            return other is SandboxDirectoryCreateBody && this.body == other.body
         }
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = Objects.hash(body, additionalProperties)
+                hashCode = Objects.hash(body)
             }
             return hashCode
         }
 
-        override fun toString() =
-            "SandboxDirectoryCreateBody{body=$body, additionalProperties=$additionalProperties}"
+        override fun toString() = "SandboxDirectoryCreateBody{body=$body}"
 
         companion object {
 
@@ -88,11 +79,9 @@ constructor(
         class Builder {
 
             private var body: List<IndividualOrEmployment>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxDirectoryCreateBody: SandboxDirectoryCreateBody) = apply {
                 this.body = sandboxDirectoryCreateBody.body
-                additionalProperties(sandboxDirectoryCreateBody.additionalProperties)
             }
 
             /**
@@ -101,34 +90,12 @@ constructor(
              */
             @JsonProperty("body")
             fun body(body: List<IndividualOrEmployment>) = apply { this.body = body }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): SandboxDirectoryCreateBody =
-                SandboxDirectoryCreateBody(
-                    checkNotNull(body) { "`body` is required but was not set" }.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable()
-                )
         }
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
 
     fun _additionalHeaders(): Map<String, List<String>> = additionalHeaders
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -138,8 +105,7 @@ constructor(
         return other is SandboxDirectoryCreateParams &&
             this.body == other.body &&
             this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+            this.additionalHeaders == other.additionalHeaders
     }
 
     override fun hashCode(): Int {
@@ -147,12 +113,11 @@ constructor(
             body,
             additionalQueryParams,
             additionalHeaders,
-            additionalBodyProperties,
         )
     }
 
     override fun toString() =
-        "SandboxDirectoryCreateParams{body=$body, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxDirectoryCreateParams{body=$body, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -167,13 +132,11 @@ constructor(
         private var body: MutableList<IndividualOrEmployment> = mutableListOf()
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxDirectoryCreateParams: SandboxDirectoryCreateParams) = apply {
             this.body(sandboxDirectoryCreateParams.body)
             additionalQueryParams(sandboxDirectoryCreateParams.additionalQueryParams)
             additionalHeaders(sandboxDirectoryCreateParams.additionalHeaders)
-            additionalBodyProperties(sandboxDirectoryCreateParams.additionalBodyProperties)
         }
 
         /**
@@ -231,26 +194,11 @@ constructor(
 
         fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            this.additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
                 checkNotNull(body) { "`body` is required but was not set" }.toUnmodifiable(),
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
             )
     }
 
