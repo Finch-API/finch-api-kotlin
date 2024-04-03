@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.20.0 (2024-04-03)
+
+Full Changelog: [v0.19.1...v0.20.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.1...v0.20.0)
+
+### Features
+
+* **client:** add support for top-level array body params ([#120](https://github.com/Finch-API/finch-api-kotlin/issues/120)) ([3efe064](https://github.com/Finch-API/finch-api-kotlin/commit/3efe064ca7e27b1f73fd40f08e2acd1c7d9ffa18))
+
+
+### Chores
+
+* **deps:** update jackson to v2.14.3 ([#118](https://github.com/Finch-API/finch-api-kotlin/issues/118)) ([d772b92](https://github.com/Finch-API/finch-api-kotlin/commit/d772b9241340d570bc61a6b9bb375e03206eaa1a))
+* **deps:** update junit5 to v5.9.3 ([#122](https://github.com/Finch-API/finch-api-kotlin/issues/122)) ([95c1341](https://github.com/Finch-API/finch-api-kotlin/commit/95c13416b1f8af353fd3f22f94c480a736026b3e))
+* **deps:** update kotlin-gradle-plugin to v1.9.23 ([#121](https://github.com/Finch-API/finch-api-kotlin/issues/121)) ([18f10af](https://github.com/Finch-API/finch-api-kotlin/commit/18f10af7afdb2f945da52d2d685dcd48d946bea4))
+* **deps:** update kotlinx-coroutines-core to v1.8.0 ([#123](https://github.com/Finch-API/finch-api-kotlin/issues/123)) ([c6da004](https://github.com/Finch-API/finch-api-kotlin/commit/c6da004aef63f211f5d5606d2845ba77ad8288e1))
+
 ## 0.19.1 (2024-03-27)
 
 Full Changelog: [v0.19.0...v0.19.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.0...v0.19.1)
