@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.1 (2024-04-04)
+
+Full Changelog: [v0.20.0...v0.20.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.0...v0.20.1)
+
+### Chores
+
+* **api:** improve descriptions ([#124](https://github.com/Finch-API/finch-api-kotlin/issues/124)) ([425d262](https://github.com/Finch-API/finch-api-kotlin/commit/425d262121b2eba259e1d7a929250ef7f8ab68cf))
+
 ## 0.20.0 (2024-04-03)
 
 Full Changelog: [v0.19.1...v0.20.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.1...v0.20.0)
