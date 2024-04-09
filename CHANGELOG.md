@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.21.0 (2024-04-09)
+
+Full Changelog: [v0.20.1...v0.21.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.1...v0.21.0)
+
+### Features
+
+* **api:** updates ([#126](https://github.com/Finch-API/finch-api-kotlin/issues/126)) ([843a6de](https://github.com/Finch-API/finch-api-kotlin/commit/843a6debd6b853c2828a877087d9d14b505584b0))
+
+
+### Chores
+
+* **tests:** import wiremock.client.WireMock.put ([#128](https://github.com/Finch-API/finch-api-kotlin/issues/128)) ([d6c852b](https://github.com/Finch-API/finch-api-kotlin/commit/d6c852b2253930a57ecad6c29a3bc2877e2059e8))
+
 ## 0.20.1 (2024-04-04)
 
 Full Changelog: [v0.20.0...v0.20.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.0...v0.20.1)
