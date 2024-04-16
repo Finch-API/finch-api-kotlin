@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.22.0 (2024-04-16)
+
+Full Changelog: [v0.21.0...v0.22.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.21.0...v0.22.0)
+
+### Features
+
+* **api:** updates ([#131](https://github.com/Finch-API/finch-api-kotlin/issues/131)) ([735a11f](https://github.com/Finch-API/finch-api-kotlin/commit/735a11f336ce51e1850b2593b2987ca922470534))
+* **client:** implement support for multipart/form-data body requests ([#129](https://github.com/Finch-API/finch-api-kotlin/issues/129)) ([e5dc24a](https://github.com/Finch-API/finch-api-kotlin/commit/e5dc24aba10ae04ca05f04267c9ab11a49f1abf9))
+
+
+### Chores
+
+* **internal:** formatting ([#132](https://github.com/Finch-API/finch-api-kotlin/issues/132)) ([dc09782](https://github.com/Finch-API/finch-api-kotlin/commit/dc09782fbf809819c3f0145ddd18aca0d11f5554))
+
+
+### Build System
+
+* configure UTF-8 locale in devcontainer ([#133](https://github.com/Finch-API/finch-api-kotlin/issues/133)) ([4cb138a](https://github.com/Finch-API/finch-api-kotlin/commit/4cb138aeca971d87b614e9b13f6c62a3ff9b53aa))
+
 ## 0.21.0 (2024-04-09)
 
 Full Changelog: [v0.20.1...v0.21.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.1...v0.21.0)
