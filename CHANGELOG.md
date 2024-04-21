@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.1 (2024-04-21)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.0...v0.22.1)
+
+### Chores
+
+* **ci:** validate Gradle wrapper ([#134](https://github.com/Finch-API/finch-api-kotlin/issues/134)) ([c379f73](https://github.com/Finch-API/finch-api-kotlin/commit/c379f736b0872d32652d32ca4a6ab8d484db5921))
+
 ## 0.22.0 (2024-04-16)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.21.0...v0.22.0)
