@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.2 (2024-04-23)
+
+Full Changelog: [v0.22.1...v0.22.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.1...v0.22.2)
+
+### Chores
+
+* **internal:** gradlew v8.7, use gradle task config avoidance APIs ([#136](https://github.com/Finch-API/finch-api-kotlin/issues/136)) ([92bde04](https://github.com/Finch-API/finch-api-kotlin/commit/92bde0415807d12896b5bbb35080613e0b96d9bf))
+
 ## 0.22.1 (2024-04-21)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.0...v0.22.1)
