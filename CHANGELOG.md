@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.3 (2024-04-24)
+
+Full Changelog: [v0.22.2...v0.22.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.2...v0.22.3)
+
+### Chores
+
+* **internal:** use actions/checkout@v4 for codeflow ([#138](https://github.com/Finch-API/finch-api-kotlin/issues/138)) ([1e3d0bc](https://github.com/Finch-API/finch-api-kotlin/commit/1e3d0bcfd1c3419c68c80be143f34c710485759d))
+
 ## 0.22.2 (2024-04-23)
 
 Full Changelog: [v0.22.1...v0.22.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.1...v0.22.2)
