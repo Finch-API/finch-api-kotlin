@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.4 (2024-04-25)
+
+Full Changelog: [v0.22.3...v0.22.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.3...v0.22.4)
+
+### Documentation
+
+* clarify behavior around employee_size ([#140](https://github.com/Finch-API/finch-api-kotlin/issues/140)) ([d28f696](https://github.com/Finch-API/finch-api-kotlin/commit/d28f6960de5efcdd51e923427bc4b91393c082e5))
+
 ## 0.22.3 (2024-04-24)
 
 Full Changelog: [v0.22.2...v0.22.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.2...v0.22.3)
