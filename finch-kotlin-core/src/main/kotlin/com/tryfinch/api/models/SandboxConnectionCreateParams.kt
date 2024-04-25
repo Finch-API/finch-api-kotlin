@@ -68,7 +68,11 @@ constructor(
         @JsonProperty("authentication_type")
         fun authenticationType(): AuthenticationType? = authenticationType
 
-        /** Optional: the size of the employer to be created with this connection. Defaults to 20 */
+        /**
+         * Optional: the size of the employer to be created with this connection. Defaults to 20.
+         * Note that if this is higher than 100, historical payroll data will not be generated, and
+         * instead only one pay period will be created.
+         */
         @JsonProperty("employee_size") fun employeeSize(): Long? = employeeSize
 
         @JsonProperty("products") fun products(): List<String>? = products
@@ -139,7 +143,9 @@ constructor(
             }
 
             /**
-             * Optional: the size of the employer to be created with this connection. Defaults to 20
+             * Optional: the size of the employer to be created with this connection. Defaults
+             * to 20. Note that if this is higher than 100, historical payroll data will not be
+             * generated, and instead only one pay period will be created.
              */
             @JsonProperty("employee_size")
             fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
@@ -242,7 +248,11 @@ constructor(
             this.authenticationType = authenticationType
         }
 
-        /** Optional: the size of the employer to be created with this connection. Defaults to 20 */
+        /**
+         * Optional: the size of the employer to be created with this connection. Defaults to 20.
+         * Note that if this is higher than 100, historical payroll data will not be generated, and
+         * instead only one pay period will be created.
+         */
         fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
 
         fun products(products: List<String>) = apply {
