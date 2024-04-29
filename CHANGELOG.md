@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.5 (2024-04-29)
+
+Full Changelog: [v0.22.4...v0.22.5](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.4...v0.22.5)
+
+### Bug Fixes
+
+* **internal:** escape characters for POM description in gradle publish ([#142](https://github.com/Finch-API/finch-api-kotlin/issues/142)) ([26224e0](https://github.com/Finch-API/finch-api-kotlin/commit/26224e0825288cdf9c1494f9f082b04ed2460208))
+
 ## 0.22.4 (2024-04-25)
 
 Full Changelog: [v0.22.3...v0.22.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.3...v0.22.4)
