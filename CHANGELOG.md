@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.6 (2024-04-30)
+
+Full Changelog: [v0.22.5...v0.22.6](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.5...v0.22.6)
+
+### Chores
+
+* **internal:** add link to openapi spec ([#144](https://github.com/Finch-API/finch-api-kotlin/issues/144)) ([265fb01](https://github.com/Finch-API/finch-api-kotlin/commit/265fb01d2b900fb386b4fc70a4290b2962a65425))
+
 ## 0.22.5 (2024-04-29)
 
 Full Changelog: [v0.22.4...v0.22.5](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.4...v0.22.5)
