@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.22.7 (2024-05-01)
+
+Full Changelog: [v0.22.6...v0.22.7](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.6...v0.22.7)
+
+### Chores
+
+* **internal:** add scripts/mock ([#146](https://github.com/Finch-API/finch-api-kotlin/issues/146)) ([13fa391](https://github.com/Finch-API/finch-api-kotlin/commit/13fa391da9a8be04938f28ac339e25af5d12227a))
+* **internal:** bump mock server version to ~5.8.0 ([#148](https://github.com/Finch-API/finch-api-kotlin/issues/148)) ([a7fe62e](https://github.com/Finch-API/finch-api-kotlin/commit/a7fe62ef5020902de4456fe172ed66f7aa6aba9c))
+
 ## 0.22.6 (2024-04-30)
 
 Full Changelog: [v0.22.5...v0.22.6](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.5...v0.22.6)
