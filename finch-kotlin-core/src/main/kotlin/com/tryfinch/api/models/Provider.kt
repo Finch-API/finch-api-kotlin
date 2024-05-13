@@ -29,6 +29,7 @@ private constructor(
     private val mfaRequired: JsonField<Boolean>,
     private val primaryColor: JsonField<String>,
     private val manual: JsonField<Boolean>,
+    private val beta: JsonField<Boolean>,
     private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -65,6 +66,9 @@ private constructor(
      */
     fun manual(): Boolean? = manual.getNullable("manual")
 
+    /** `true` if the integration is in a beta state, `false` otherwise */
+    fun beta(): Boolean? = beta.getNullable("beta")
+
     /** The list of authentication methods supported by the provider. */
     fun authenticationMethods(): List<AuthenticationMethod>? =
         authenticationMethods.getNullable("authentication_methods")
@@ -97,6 +101,9 @@ private constructor(
      */
     @JsonProperty("manual") @ExcludeMissing fun _manual() = manual
 
+    /** `true` if the integration is in a beta state, `false` otherwise */
+    @JsonProperty("beta") @ExcludeMissing fun _beta() = beta
+
     /** The list of authentication methods supported by the provider. */
     @JsonProperty("authentication_methods")
     @ExcludeMissing
@@ -116,6 +123,7 @@ private constructor(
             mfaRequired()
             primaryColor()
             manual()
+            beta()
             authenticationMethods()?.forEach { it.validate() }
             validated = true
         }
@@ -137,6 +145,7 @@ private constructor(
             this.mfaRequired == other.mfaRequired &&
             this.primaryColor == other.primaryColor &&
             this.manual == other.manual &&
+            this.beta == other.beta &&
             this.authenticationMethods == other.authenticationMethods &&
             this.additionalProperties == other.additionalProperties
     }
@@ -153,6 +162,7 @@ private constructor(
                     mfaRequired,
                     primaryColor,
                     manual,
+                    beta,
                     authenticationMethods,
                     additionalProperties,
                 )
@@ -161,7 +171,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Provider{id=$id, displayName=$displayName, products=$products, icon=$icon, logo=$logo, mfaRequired=$mfaRequired, primaryColor=$primaryColor, manual=$manual, authenticationMethods=$authenticationMethods, additionalProperties=$additionalProperties}"
+        "Provider{id=$id, displayName=$displayName, products=$products, icon=$icon, logo=$logo, mfaRequired=$mfaRequired, primaryColor=$primaryColor, manual=$manual, beta=$beta, authenticationMethods=$authenticationMethods, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -178,6 +188,7 @@ private constructor(
         private var mfaRequired: JsonField<Boolean> = JsonMissing.of()
         private var primaryColor: JsonField<String> = JsonMissing.of()
         private var manual: JsonField<Boolean> = JsonMissing.of()
+        private var beta: JsonField<Boolean> = JsonMissing.of()
         private var authenticationMethods: JsonField<List<AuthenticationMethod>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -190,6 +201,7 @@ private constructor(
             this.mfaRequired = provider.mfaRequired
             this.primaryColor = provider.primaryColor
             this.manual = provider.manual
+            this.beta = provider.beta
             this.authenticationMethods = provider.authenticationMethods
             additionalProperties(provider.additionalProperties)
         }
@@ -266,6 +278,14 @@ private constructor(
         @ExcludeMissing
         fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
+        /** `true` if the integration is in a beta state, `false` otherwise */
+        fun beta(beta: Boolean) = beta(JsonField.of(beta))
+
+        /** `true` if the integration is in a beta state, `false` otherwise */
+        @JsonProperty("beta")
+        @ExcludeMissing
+        fun beta(beta: JsonField<Boolean>) = apply { this.beta = beta }
+
         /** The list of authentication methods supported by the provider. */
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
             authenticationMethods(JsonField.of(authenticationMethods))
@@ -302,6 +322,7 @@ private constructor(
                 mfaRequired,
                 primaryColor,
                 manual,
+                beta,
                 authenticationMethods.map { it.toUnmodifiable() },
                 additionalProperties.toUnmodifiable(),
             )
