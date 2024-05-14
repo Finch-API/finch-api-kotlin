@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.23.0 (2024-05-14)
+
+Full Changelog: [v0.22.7...v0.23.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.7...v0.23.0)
+
+### Features
+
+* propagate resource description field from stainless config to SDK docs ([#150](https://github.com/Finch-API/finch-api-kotlin/issues/150)) ([037749f](https://github.com/Finch-API/finch-api-kotlin/commit/037749fe0d97f5ae505788ad82a5c02796be7c4e))
+
+
+### Bug Fixes
+
+* **api:** correct authentication methods type ([#155](https://github.com/Finch-API/finch-api-kotlin/issues/155)) ([bd1f0d2](https://github.com/Finch-API/finch-api-kotlin/commit/bd1f0d289ac421fe3e7e501f88c1995914e1d16e))
+
+
+### Chores
+
+* **docs:** add SECURITY.md ([#152](https://github.com/Finch-API/finch-api-kotlin/issues/152)) ([701749c](https://github.com/Finch-API/finch-api-kotlin/commit/701749cca7ab7887492e8b2a54ebf6e34e21b471))
+* **internal:** add scripts-to-rule-them-all ([#157](https://github.com/Finch-API/finch-api-kotlin/issues/157)) ([de0f222](https://github.com/Finch-API/finch-api-kotlin/commit/de0f22264e60c64d61c997405dac71aad654a499))
+* **internal:** minor updates ([#154](https://github.com/Finch-API/finch-api-kotlin/issues/154)) ([be91a55](https://github.com/Finch-API/finch-api-kotlin/commit/be91a55dbf0d7ebe48b81f989561d549bf5ef860))
+* **tests:** update client ID example value ([#156](https://github.com/Finch-API/finch-api-kotlin/issues/156)) ([7e21749](https://github.com/Finch-API/finch-api-kotlin/commit/7e2174934a600375ffc6b1a11e75ffe435ef1947))
+
 ## 0.22.7 (2024-05-01)
 
 Full Changelog: [v0.22.6...v0.22.7](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.6...v0.22.7)
