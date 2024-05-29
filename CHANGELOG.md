@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.23.1 (2024-05-29)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.23.0...v0.23.1)
+
+### Chores
+
+* **internal:** add dev scripts ([#162](https://github.com/Finch-API/finch-api-kotlin/issues/162)) ([b689c73](https://github.com/Finch-API/finch-api-kotlin/commit/b689c7327748feac7b3eb961fdba525631f549b0))
+
+
+### Documentation
+
+* **examples:** fix example snippets ([cc67da4](https://github.com/Finch-API/finch-api-kotlin/commit/cc67da44f87ae5df02c8adc37a078012dcb8b122))
+
 ## 0.23.0 (2024-05-14)
 
 Full Changelog: [v0.22.7...v0.23.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.7...v0.23.0)
