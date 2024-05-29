@@ -1,15 +1,5 @@
 # Changelog
 
-## 0.23.1 (2024-05-23)
-
-Full Changelog: [v0.23.0...v0.23.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.23.0...v0.23.1)
-
-### Chores
-
-* **internal:** resolve spec formatting issue ([#160](https://github.com/Finch-API/finch-api-kotlin/issues/160)) ([1c7ad2f](https://github.com/Finch-API/finch-api-kotlin/commit/1c7ad2f1d81220f29c28b152eed576f312329a0b))
-* **tests:** example client_id ([#161](https://github.com/Finch-API/finch-api-kotlin/issues/161)) ([1494ead](https://github.com/Finch-API/finch-api-kotlin/commit/1494ead1fe94967182337d4a888aacbcaea3c7d8))
-* **tests:** update some example values ([#158](https://github.com/Finch-API/finch-api-kotlin/issues/158)) ([a1ff4ff](https://github.com/Finch-API/finch-api-kotlin/commit/a1ff4ffb96a1265782c4f4fc7fac2f258f8d55b7))
-
 ## 0.23.0 (2024-05-14)
 
 Full Changelog: [v0.22.7...v0.23.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.7...v0.23.0)
