@@ -72,9 +72,7 @@ import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 import com.tryfinch.api.models.Page
 
-val params = HrisDirectoryListParams.builder()
-    .candidateId("<candidate id>")
-    .build()
+val params = HrisDirectoryListParams.builder().build()
 val page = client.hris().directory().list(params)
 ```
 
