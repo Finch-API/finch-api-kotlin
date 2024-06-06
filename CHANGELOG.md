@@ -1,5 +1,171 @@
 # Changelog
 
+## 0.23.1 (2024-05-29)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.23.0...v0.23.1)
+
+### Chores
+
+* **internal:** add dev scripts ([#162](https://github.com/Finch-API/finch-api-kotlin/issues/162)) ([b689c73](https://github.com/Finch-API/finch-api-kotlin/commit/b689c7327748feac7b3eb961fdba525631f549b0))
+
+
+### Documentation
+
+* **examples:** fix example snippets ([cc67da4](https://github.com/Finch-API/finch-api-kotlin/commit/cc67da44f87ae5df02c8adc37a078012dcb8b122))
+
+## 0.23.0 (2024-05-14)
+
+Full Changelog: [v0.22.7...v0.23.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.7...v0.23.0)
+
+### Features
+
+* propagate resource description field from stainless config to SDK docs ([#150](https://github.com/Finch-API/finch-api-kotlin/issues/150)) ([037749f](https://github.com/Finch-API/finch-api-kotlin/commit/037749fe0d97f5ae505788ad82a5c02796be7c4e))
+
+
+### Bug Fixes
+
+* **api:** correct authentication methods type ([#155](https://github.com/Finch-API/finch-api-kotlin/issues/155)) ([bd1f0d2](https://github.com/Finch-API/finch-api-kotlin/commit/bd1f0d289ac421fe3e7e501f88c1995914e1d16e))
+
+
+### Chores
+
+* **docs:** add SECURITY.md ([#152](https://github.com/Finch-API/finch-api-kotlin/issues/152)) ([701749c](https://github.com/Finch-API/finch-api-kotlin/commit/701749cca7ab7887492e8b2a54ebf6e34e21b471))
+* **internal:** add scripts-to-rule-them-all ([#157](https://github.com/Finch-API/finch-api-kotlin/issues/157)) ([de0f222](https://github.com/Finch-API/finch-api-kotlin/commit/de0f22264e60c64d61c997405dac71aad654a499))
+* **internal:** minor updates ([#154](https://github.com/Finch-API/finch-api-kotlin/issues/154)) ([be91a55](https://github.com/Finch-API/finch-api-kotlin/commit/be91a55dbf0d7ebe48b81f989561d549bf5ef860))
+* **tests:** update client ID example value ([#156](https://github.com/Finch-API/finch-api-kotlin/issues/156)) ([7e21749](https://github.com/Finch-API/finch-api-kotlin/commit/7e2174934a600375ffc6b1a11e75ffe435ef1947))
+
+## 0.22.7 (2024-05-01)
+
+Full Changelog: [v0.22.6...v0.22.7](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.6...v0.22.7)
+
+### Chores
+
+* **internal:** add scripts/mock ([#146](https://github.com/Finch-API/finch-api-kotlin/issues/146)) ([13fa391](https://github.com/Finch-API/finch-api-kotlin/commit/13fa391da9a8be04938f28ac339e25af5d12227a))
+* **internal:** bump mock server version to ~5.8.0 ([#148](https://github.com/Finch-API/finch-api-kotlin/issues/148)) ([a7fe62e](https://github.com/Finch-API/finch-api-kotlin/commit/a7fe62ef5020902de4456fe172ed66f7aa6aba9c))
+
+## 0.22.6 (2024-04-30)
+
+Full Changelog: [v0.22.5...v0.22.6](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.5...v0.22.6)
+
+### Chores
+
+* **internal:** add link to openapi spec ([#144](https://github.com/Finch-API/finch-api-kotlin/issues/144)) ([265fb01](https://github.com/Finch-API/finch-api-kotlin/commit/265fb01d2b900fb386b4fc70a4290b2962a65425))
+
+## 0.22.5 (2024-04-29)
+
+Full Changelog: [v0.22.4...v0.22.5](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.4...v0.22.5)
+
+### Bug Fixes
+
+* **internal:** escape characters for POM description in gradle publish ([#142](https://github.com/Finch-API/finch-api-kotlin/issues/142)) ([26224e0](https://github.com/Finch-API/finch-api-kotlin/commit/26224e0825288cdf9c1494f9f082b04ed2460208))
+
+## 0.22.4 (2024-04-25)
+
+Full Changelog: [v0.22.3...v0.22.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.3...v0.22.4)
+
+### Documentation
+
+* clarify behavior around employee_size ([#140](https://github.com/Finch-API/finch-api-kotlin/issues/140)) ([d28f696](https://github.com/Finch-API/finch-api-kotlin/commit/d28f6960de5efcdd51e923427bc4b91393c082e5))
+
+## 0.22.3 (2024-04-24)
+
+Full Changelog: [v0.22.2...v0.22.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.2...v0.22.3)
+
+### Chores
+
+* **internal:** use actions/checkout@v4 for codeflow ([#138](https://github.com/Finch-API/finch-api-kotlin/issues/138)) ([1e3d0bc](https://github.com/Finch-API/finch-api-kotlin/commit/1e3d0bcfd1c3419c68c80be143f34c710485759d))
+
+## 0.22.2 (2024-04-23)
+
+Full Changelog: [v0.22.1...v0.22.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.1...v0.22.2)
+
+### Chores
+
+* **internal:** gradlew v8.7, use gradle task config avoidance APIs ([#136](https://github.com/Finch-API/finch-api-kotlin/issues/136)) ([92bde04](https://github.com/Finch-API/finch-api-kotlin/commit/92bde0415807d12896b5bbb35080613e0b96d9bf))
+
+## 0.22.1 (2024-04-21)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.22.0...v0.22.1)
+
+### Chores
+
+* **ci:** validate Gradle wrapper ([#134](https://github.com/Finch-API/finch-api-kotlin/issues/134)) ([c379f73](https://github.com/Finch-API/finch-api-kotlin/commit/c379f736b0872d32652d32ca4a6ab8d484db5921))
+
+## 0.22.0 (2024-04-16)
+
+Full Changelog: [v0.21.0...v0.22.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.21.0...v0.22.0)
+
+### Features
+
+* **api:** updates ([#131](https://github.com/Finch-API/finch-api-kotlin/issues/131)) ([735a11f](https://github.com/Finch-API/finch-api-kotlin/commit/735a11f336ce51e1850b2593b2987ca922470534))
+* **client:** implement support for multipart/form-data body requests ([#129](https://github.com/Finch-API/finch-api-kotlin/issues/129)) ([e5dc24a](https://github.com/Finch-API/finch-api-kotlin/commit/e5dc24aba10ae04ca05f04267c9ab11a49f1abf9))
+
+
+### Chores
+
+* **internal:** formatting ([#132](https://github.com/Finch-API/finch-api-kotlin/issues/132)) ([dc09782](https://github.com/Finch-API/finch-api-kotlin/commit/dc09782fbf809819c3f0145ddd18aca0d11f5554))
+
+
+### Build System
+
+* configure UTF-8 locale in devcontainer ([#133](https://github.com/Finch-API/finch-api-kotlin/issues/133)) ([4cb138a](https://github.com/Finch-API/finch-api-kotlin/commit/4cb138aeca971d87b614e9b13f6c62a3ff9b53aa))
+
+## 0.21.0 (2024-04-09)
+
+Full Changelog: [v0.20.1...v0.21.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.1...v0.21.0)
+
+### Features
+
+* **api:** updates ([#126](https://github.com/Finch-API/finch-api-kotlin/issues/126)) ([843a6de](https://github.com/Finch-API/finch-api-kotlin/commit/843a6debd6b853c2828a877087d9d14b505584b0))
+
+
+### Chores
+
+* **tests:** import wiremock.client.WireMock.put ([#128](https://github.com/Finch-API/finch-api-kotlin/issues/128)) ([d6c852b](https://github.com/Finch-API/finch-api-kotlin/commit/d6c852b2253930a57ecad6c29a3bc2877e2059e8))
+
+## 0.20.1 (2024-04-04)
+
+Full Changelog: [v0.20.0...v0.20.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.20.0...v0.20.1)
+
+### Chores
+
+* **api:** improve descriptions ([#124](https://github.com/Finch-API/finch-api-kotlin/issues/124)) ([425d262](https://github.com/Finch-API/finch-api-kotlin/commit/425d262121b2eba259e1d7a929250ef7f8ab68cf))
+
+## 0.20.0 (2024-04-03)
+
+Full Changelog: [v0.19.1...v0.20.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.1...v0.20.0)
+
+### Features
+
+* **client:** add support for top-level array body params ([#120](https://github.com/Finch-API/finch-api-kotlin/issues/120)) ([3efe064](https://github.com/Finch-API/finch-api-kotlin/commit/3efe064ca7e27b1f73fd40f08e2acd1c7d9ffa18))
+
+
+### Chores
+
+* **deps:** update jackson to v2.14.3 ([#118](https://github.com/Finch-API/finch-api-kotlin/issues/118)) ([d772b92](https://github.com/Finch-API/finch-api-kotlin/commit/d772b9241340d570bc61a6b9bb375e03206eaa1a))
+* **deps:** update junit5 to v5.9.3 ([#122](https://github.com/Finch-API/finch-api-kotlin/issues/122)) ([95c1341](https://github.com/Finch-API/finch-api-kotlin/commit/95c13416b1f8af353fd3f22f94c480a736026b3e))
+* **deps:** update kotlin-gradle-plugin to v1.9.23 ([#121](https://github.com/Finch-API/finch-api-kotlin/issues/121)) ([18f10af](https://github.com/Finch-API/finch-api-kotlin/commit/18f10af7afdb2f945da52d2d685dcd48d946bea4))
+* **deps:** update kotlinx-coroutines-core to v1.8.0 ([#123](https://github.com/Finch-API/finch-api-kotlin/issues/123)) ([c6da004](https://github.com/Finch-API/finch-api-kotlin/commit/c6da004aef63f211f5d5606d2845ba77ad8288e1))
+
+## 0.19.1 (2024-03-27)
+
+Full Changelog: [v0.19.0...v0.19.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.19.0...v0.19.1)
+
+### Bug Fixes
+
+* handle nullable values inside of arrays ([#116](https://github.com/Finch-API/finch-api-kotlin/issues/116)) ([344e654](https://github.com/Finch-API/finch-api-kotlin/commit/344e6541a646e18e295a4ac84f0515c71524ebf1))
+
+
+### Chores
+
+* revert temporary commit ([1b18b7a](https://github.com/Finch-API/finch-api-kotlin/commit/1b18b7a1d5b81048fbe10afe8af6ba8ca2ca6dcb))
+* temporary commit ([#117](https://github.com/Finch-API/finch-api-kotlin/issues/117)) ([af1d6fc](https://github.com/Finch-API/finch-api-kotlin/commit/af1d6fce782f7de5394bff7989cafec9f56a57ae))
+
+
+### Documentation
+
+* **readme:** consistent use of sentence case in headings ([#114](https://github.com/Finch-API/finch-api-kotlin/issues/114)) ([2328d09](https://github.com/Finch-API/finch-api-kotlin/commit/2328d093b51f628dafb5cd7dc61b538e30e56071))
+
 ## 0.19.0 (2024-03-13)
 
 Full Changelog: [v0.18.3...v0.19.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.18.3...v0.19.0)
