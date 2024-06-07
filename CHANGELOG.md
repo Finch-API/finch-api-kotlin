@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.24.1 (2024-06-07)
+
+Full Changelog: [v0.24.0...v0.24.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.24.0...v0.24.1)
+
+### Bug Fixes
+
+* rename pay groups endpoint ([#168](https://github.com/Finch-API/finch-api-kotlin/issues/168)) ([2d427a5](https://github.com/Finch-API/finch-api-kotlin/commit/2d427a598486c1858e8f040ae59c68d214858618))
+
 ## 0.24.0 (2024-06-06)
 
 Full Changelog: [v0.23.1...v0.24.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.23.1...v0.24.0)
