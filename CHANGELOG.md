@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0 (2024-06-17)
+
+Full Changelog: [v0.24.1...v0.25.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.24.1...v0.25.0)
+
+### Features
+
+* **client:** add support for `putQueryParam` on `ClientOptions` ([#171](https://github.com/Finch-API/finch-api-kotlin/issues/171)) ([01625b2](https://github.com/Finch-API/finch-api-kotlin/commit/01625b28fedbdf3e0161f82c57db879d5235486d))
+
 ## 0.24.1 (2024-06-07)
 
 Full Changelog: [v0.24.0...v0.24.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.24.0...v0.24.1)
