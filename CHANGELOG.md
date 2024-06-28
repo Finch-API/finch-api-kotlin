@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.1 (2024-06-28)
+
+Full Changelog: [v0.25.0...v0.25.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.0...v0.25.1)
+
+### Chores
+
+* gitignore test server logs ([#173](https://github.com/Finch-API/finch-api-kotlin/issues/173)) ([bcd7c44](https://github.com/Finch-API/finch-api-kotlin/commit/bcd7c44cbee1c681c267f24c7c6dbf87eec00a11))
+
 ## 0.25.0 (2024-06-17)
 
 Full Changelog: [v0.24.1...v0.25.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.24.1...v0.25.0)
