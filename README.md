@@ -19,7 +19,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:0.22.7")
+implementation("com.tryfinch.api:finch-kotlin:0.25.1")
 ```
 
 #### Maven
@@ -28,7 +28,7 @@ implementation("com.tryfinch.api:finch-kotlin:0.22.7")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>0.22.7</version>
+    <version>0.25.1</version>
 </dependency>
 ```
 
@@ -72,7 +72,9 @@ import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 import com.tryfinch.api.models.Page
 
-val params = HrisDirectoryListParams.builder().build()
+val params = HrisDirectoryListParams.builder()
+    .candidateId("<candidate id>")
+    .build()
 val page = client.hris().directory().list(params)
 ```
 
@@ -201,6 +203,20 @@ while (page != null) {
     page = page.getNextPage()
 }
 ```
+
+---
+
+---
+
+## Webhook Verification
+
+We provide helper methods for verifying that a webhook request came from Finch, and not a malicious third party.
+
+You can use `finch.webhooks().verifySignature(body, headers, secret?)` or `finch.webhooks().unwrap(body, headers, secret?)`,
+both of which will raise an error if the signature is invalid.
+
+Note that the "body" parameter must be the raw JSON string sent from the server (do not parse it first).
+The `.unwrap()` method can parse this JSON for you.
 
 ---
 
