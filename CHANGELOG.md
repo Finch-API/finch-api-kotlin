@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.2 (2024-07-01)
+
+Full Changelog: [v0.25.1...v0.25.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.1...v0.25.2)
+
+### Chores
+
+* sync openapi spec ([#175](https://github.com/Finch-API/finch-api-kotlin/issues/175)) ([3def5ca](https://github.com/Finch-API/finch-api-kotlin/commit/3def5cac1009082d4f480bc202db3aff02ecc6ec))
+
 ## 0.25.1 (2024-06-28)
 
 Full Changelog: [v0.25.0...v0.25.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.0...v0.25.1)
