@@ -4,6 +4,7 @@
 
 package com.tryfinch.api.client
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.models.*
 import com.tryfinch.api.services.async.*
 
@@ -28,4 +29,26 @@ interface FinchClientAsync {
     fun sandbox(): SandboxServiceAsync
 
     fun payroll(): PayrollServiceAsync
+
+    suspend fun getAccessToken(
+        clientId: String,
+        clientSecret: String,
+        code: String,
+        redirectUri: String
+    ): String
+
+    suspend fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String
+
+    suspend fun withAccessToken(accessToken: String): FinchClientAsync
+
+    private data class GetAccessTokenParams(
+        @JsonProperty("client_id") val clientId: String,
+        @JsonProperty("client_secret") val clientSecret: String,
+        @JsonProperty("code") val code: String,
+        @JsonProperty("redirect_uri") val redirectUri: String,
+    )
+
+    private data class GetAccessTokenResponse(
+        @JsonProperty("accessToken") val accessToken: String,
+    )
 }
