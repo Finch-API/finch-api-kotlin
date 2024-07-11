@@ -12,14 +12,14 @@ class IncomeTest {
         val income =
             Income.builder()
                 .amount(123L)
-                .currency("string")
-                .effectiveDate("string")
+                .currency("currency")
+                .effectiveDate("effective_date")
                 .unit(Income.Unit.YEARLY)
                 .build()
         assertThat(income).isNotNull
         assertThat(income.amount()).isEqualTo(123L)
-        assertThat(income.currency()).isEqualTo("string")
-        assertThat(income.effectiveDate()).isEqualTo("string")
+        assertThat(income.currency()).isEqualTo("currency")
+        assertThat(income.effectiveDate()).isEqualTo("effective_date")
         assertThat(income.unit()).isEqualTo(Income.Unit.YEARLY)
     }
 }

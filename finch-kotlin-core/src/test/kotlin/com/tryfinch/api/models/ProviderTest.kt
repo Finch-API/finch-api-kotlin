@@ -11,7 +11,7 @@ class ProviderTest {
     fun createProvider() {
         val provider =
             Provider.builder()
-                .id("string")
+                .id("id")
                 .authenticationMethods(
                     listOf(
                         Provider.AuthenticationMethod.builder()
@@ -32,7 +32,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -89,7 +89,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -146,7 +146,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -203,7 +203,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -260,7 +260,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -317,7 +317,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -374,7 +374,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -431,7 +431,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -488,7 +488,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -545,7 +545,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -602,7 +602,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -659,7 +659,7 @@ class ProviderTest {
                                                                 .FIXED
                                                         )
                                                     )
-                                                    .description("string")
+                                                    .description("description")
                                                     .employeeDeduction(
                                                         listOf(
                                                             BenefitFeaturesAndOperations
@@ -1042,16 +1042,16 @@ class ProviderTest {
                     )
                 )
                 .beta(true)
-                .displayName("string")
-                .icon("string")
-                .logo("string")
+                .displayName("display_name")
+                .icon("icon")
+                .logo("logo")
                 .manual(true)
                 .mfaRequired(true)
-                .primaryColor("string")
+                .primaryColor("primary_color")
                 .products(listOf("string"))
                 .build()
         assertThat(provider).isNotNull
-        assertThat(provider.id()).isEqualTo("string")
+        assertThat(provider.id()).isEqualTo("id")
         assertThat(provider.authenticationMethods())
             .containsExactly(
                 Provider.AuthenticationMethod.builder()
@@ -1070,7 +1070,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1123,7 +1123,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1176,7 +1176,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1229,7 +1229,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1282,7 +1282,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1335,7 +1335,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1388,7 +1388,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1441,7 +1441,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1494,7 +1494,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1547,7 +1547,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1600,7 +1600,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -1653,7 +1653,7 @@ class ProviderTest {
                                                         .FIXED
                                                 )
                                             )
-                                            .description("string")
+                                            .description("description")
                                             .employeeDeduction(
                                                 listOf(
                                                     BenefitFeaturesAndOperations.BenefitFeature
@@ -2024,12 +2024,12 @@ class ProviderTest {
                     .build()
             )
         assertThat(provider.beta()).isEqualTo(true)
-        assertThat(provider.displayName()).isEqualTo("string")
-        assertThat(provider.icon()).isEqualTo("string")
-        assertThat(provider.logo()).isEqualTo("string")
+        assertThat(provider.displayName()).isEqualTo("display_name")
+        assertThat(provider.icon()).isEqualTo("icon")
+        assertThat(provider.logo()).isEqualTo("logo")
         assertThat(provider.manual()).isEqualTo(true)
         assertThat(provider.mfaRequired()).isEqualTo(true)
-        assertThat(provider.primaryColor()).isEqualTo("string")
+        assertThat(provider.primaryColor()).isEqualTo("primary_color")
         assertThat(provider.products()).containsExactly("string")
     }
 }
