@@ -13,24 +13,24 @@ class EnrolledIndividualTest {
             EnrolledIndividual.builder()
                 .body(
                     EnrolledIndividual.Body.builder()
-                        .finchCode("string")
-                        .message("string")
-                        .name("string")
+                        .finchCode("finch_code")
+                        .message("message")
+                        .name("name")
                         .build()
                 )
                 .code(EnrolledIndividual.Code.OK)
-                .individualId("string")
+                .individualId("individual_id")
                 .build()
         assertThat(enrolledIndividual).isNotNull
         assertThat(enrolledIndividual.body())
             .isEqualTo(
                 EnrolledIndividual.Body.builder()
-                    .finchCode("string")
-                    .message("string")
-                    .name("string")
+                    .finchCode("finch_code")
+                    .message("message")
+                    .name("name")
                     .build()
             )
         assertThat(enrolledIndividual.code()).isEqualTo(EnrolledIndividual.Code.OK)
-        assertThat(enrolledIndividual.individualId()).isEqualTo("string")
+        assertThat(enrolledIndividual.individualId()).isEqualTo("individual_id")
     }
 }
