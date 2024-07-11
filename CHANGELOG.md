@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.25.3 (2024-07-11)
+
+Full Changelog: [v0.25.2...v0.25.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.2...v0.25.3)
+
+### Chores
+
+* **ci:** also run workflows for PRs targeting `next` ([#180](https://github.com/Finch-API/finch-api-kotlin/issues/180)) ([fd15b84](https://github.com/Finch-API/finch-api-kotlin/commit/fd15b841120bc0a5f0ee5e6a769608ee14fad291))
+* **docs:** document minimum Java version (Java 8) in README ([#178](https://github.com/Finch-API/finch-api-kotlin/issues/178)) ([448f290](https://github.com/Finch-API/finch-api-kotlin/commit/448f290a868165bc1680241997c3d984144050e9))
+
+
+### Documentation
+
+* **examples:** update example values ([#181](https://github.com/Finch-API/finch-api-kotlin/issues/181)) ([52745f5](https://github.com/Finch-API/finch-api-kotlin/commit/52745f5a04e512b41fcc3b633df96d4c915418c1))
+
 ## 0.25.2 (2024-07-01)
 
 Full Changelog: [v0.25.1...v0.25.2](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.1...v0.25.2)
