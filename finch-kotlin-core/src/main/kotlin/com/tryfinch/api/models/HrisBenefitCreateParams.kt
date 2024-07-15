@@ -54,6 +54,10 @@ constructor(
 
         private var hashCode: Int = 0
 
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         */
         @JsonProperty("description") fun description(): String? = description
 
         @JsonProperty("frequency") fun frequency(): BenefitFrequency? = frequency
@@ -114,6 +118,11 @@ constructor(
                 additionalProperties(hrisBenefitCreateBody.additionalProperties)
             }
 
+            /**
+             * Name of the benefit as it appears in the provider and pay statements. Recommend
+             * limiting this to <30 characters due to limitations in specific providers (e.g.
+             * Justworks).
+             */
             @JsonProperty("description")
             fun description(description: String) = apply { this.description = description }
 
@@ -207,6 +216,10 @@ constructor(
             additionalBodyProperties(hrisBenefitCreateParams.additionalBodyProperties)
         }
 
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         */
         fun description(description: String) = apply { this.description = description }
 
         fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
