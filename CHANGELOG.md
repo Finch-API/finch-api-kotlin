@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.25.4 (2024-07-16)
+
+Full Changelog: [v0.25.3...v0.25.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.3...v0.25.4)
+
+### Bug Fixes
+
+* **api:** remove unused fields ([#182](https://github.com/Finch-API/finch-api-kotlin/issues/182)) ([1ee675e](https://github.com/Finch-API/finch-api-kotlin/commit/1ee675ed6396142697a87b7b8437db6bd43da96c))
+* undo accidental deletion ([#186](https://github.com/Finch-API/finch-api-kotlin/issues/186)) ([f290048](https://github.com/Finch-API/finch-api-kotlin/commit/f290048902a84bc3d46c63951bd6dd615966509d))
+
+
+### Chores
+
+* **docs:** minor update to formatting of API link in README ([#185](https://github.com/Finch-API/finch-api-kotlin/issues/185)) ([eba7cd2](https://github.com/Finch-API/finch-api-kotlin/commit/eba7cd2d84c6c8ce5fd09d93f889882c1e1c67dc))
+
 ## 0.25.3 (2024-07-11)
 
 Full Changelog: [v0.25.2...v0.25.3](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.2...v0.25.3)
