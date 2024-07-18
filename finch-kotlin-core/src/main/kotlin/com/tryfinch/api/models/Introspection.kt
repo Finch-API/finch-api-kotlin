@@ -348,7 +348,7 @@ private constructor(
     @NoAutoDetect
     class AuthenticationMethod
     private constructor(
-        private val type: JsonField<String>,
+        private val type: JsonField<Type>,
         private val connectionStatus: JsonField<ConnectionStatus>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
@@ -357,11 +357,13 @@ private constructor(
 
         private var hashCode: Int = 0
 
-        fun type(): String? = type.getNullable("type")
+        /** The type of authentication method. */
+        fun type(): Type? = type.getNullable("type")
 
         fun connectionStatus(): ConnectionStatus? =
             connectionStatus.getNullable("connection_status")
 
+        /** The type of authentication method. */
         @JsonProperty("type") @ExcludeMissing fun _type() = type
 
         @JsonProperty("connection_status")
@@ -415,7 +417,7 @@ private constructor(
 
         class Builder {
 
-            private var type: JsonField<String> = JsonMissing.of()
+            private var type: JsonField<Type> = JsonMissing.of()
             private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -425,11 +427,13 @@ private constructor(
                 additionalProperties(authenticationMethod.additionalProperties)
             }
 
-            fun type(type: String) = type(JsonField.of(type))
+            /** The type of authentication method. */
+            fun type(type: Type) = type(JsonField.of(type))
 
+            /** The type of authentication method. */
             @JsonProperty("type")
             @ExcludeMissing
-            fun type(type: JsonField<String>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun connectionStatus(connectionStatus: ConnectionStatus) =
                 connectionStatus(JsonField.of(connectionStatus))
@@ -574,6 +578,81 @@ private constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+        }
+
+        class Type
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && this.value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+
+            companion object {
+
+                val ASSISTED = Type(JsonField.of("assisted"))
+
+                val CREDENTIAL = Type(JsonField.of("credential"))
+
+                val API_TOKEN = Type(JsonField.of("api_token"))
+
+                val API_CREDENTIAL = Type(JsonField.of("api_credential"))
+
+                val OAUTH = Type(JsonField.of("oauth"))
+
+                fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            enum class Known {
+                ASSISTED,
+                CREDENTIAL,
+                API_TOKEN,
+                API_CREDENTIAL,
+                OAUTH,
+            }
+
+            enum class Value {
+                ASSISTED,
+                CREDENTIAL,
+                API_TOKEN,
+                API_CREDENTIAL,
+                OAUTH,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    ASSISTED -> Value.ASSISTED
+                    CREDENTIAL -> Value.CREDENTIAL
+                    API_TOKEN -> Value.API_TOKEN
+                    API_CREDENTIAL -> Value.API_CREDENTIAL
+                    OAUTH -> Value.OAUTH
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    ASSISTED -> Known.ASSISTED
+                    CREDENTIAL -> Known.CREDENTIAL
+                    API_TOKEN -> Known.API_TOKEN
+                    API_CREDENTIAL -> Known.API_CREDENTIAL
+                    OAUTH -> Known.OAUTH
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
         }
     }
 
