@@ -68,6 +68,7 @@ private constructor(
     /**
      * Social Security Number of the individual. This field is only available with the `ssn` scope
      * enabled and the `options: { include: ['ssn'] }` param set in the body.
+     * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
      */
     fun ssn(): String? = ssn.getNullable("ssn")
 
@@ -110,6 +111,7 @@ private constructor(
     /**
      * Social Security Number of the individual. This field is only available with the `ssn` scope
      * enabled and the `options: { include: ['ssn'] }` param set in the body.
+     * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
      */
     @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
@@ -311,12 +313,14 @@ private constructor(
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
+         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
         fun ssn(ssn: String) = ssn(JsonField.of(ssn))
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
+         * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
         @JsonProperty("ssn")
         @ExcludeMissing
