@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.26.0 (2024-07-19)
+
+Full Changelog: [v0.25.4...v0.26.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.4...v0.26.0)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** authentication method type is an enum, not a plain string ([#190](https://github.com/Finch-API/finch-api-kotlin/issues/190))
+
+### Bug Fixes
+
+* **api:** authentication method type is an enum, not a plain string ([#190](https://github.com/Finch-API/finch-api-kotlin/issues/190)) ([cef8537](https://github.com/Finch-API/finch-api-kotlin/commit/cef8537eb21e9b83d8448d07c37411b0d85fd869))
+
+
+### Chores
+
+* **ci:** limit release doctor target branches ([#191](https://github.com/Finch-API/finch-api-kotlin/issues/191)) ([ec23e75](https://github.com/Finch-API/finch-api-kotlin/commit/ec23e75552c195d7ee37e19bd29faa6d2f855b7d))
+* **docs:** improve docstrings ([#192](https://github.com/Finch-API/finch-api-kotlin/issues/192)) ([6ad3c92](https://github.com/Finch-API/finch-api-kotlin/commit/6ad3c923c8541ea3a7442fc11ecd6623b736f057))
+* **internal:** codegen related update ([#187](https://github.com/Finch-API/finch-api-kotlin/issues/187)) ([4ab7fb0](https://github.com/Finch-API/finch-api-kotlin/commit/4ab7fb05828f605e80c7579bc1bc75047e491f8c))
+
 ## 0.25.4 (2024-07-16)
 
 Full Changelog: [v0.25.3...v0.25.4](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.3...v0.25.4)
