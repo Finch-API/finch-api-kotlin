@@ -34,7 +34,7 @@ interface FinchClientAsync {
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String
+        redirectUri: String?
     ): String
 
     suspend fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String
@@ -45,7 +45,7 @@ interface FinchClientAsync {
         @JsonProperty("client_id") val clientId: String,
         @JsonProperty("client_secret") val clientSecret: String,
         @JsonProperty("code") val code: String,
-        @JsonProperty("redirect_uri") val redirectUri: String,
+        @JsonProperty("redirect_uri") val redirectUri: String?,
     )
 
     private data class GetAccessTokenResponse(
