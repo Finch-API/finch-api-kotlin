@@ -44,13 +44,13 @@ class FinchClientAsyncTest {
         )
 
         assertThat(
-            client.getAccessToken(
-                "our-client-id",
-                "our-client-secret",
-                "finch-auth-code",
-                "our-redirect-uri"
+                client.getAccessToken(
+                    "our-client-id",
+                    "our-client-secret",
+                    "finch-auth-code",
+                    "our-redirect-uri"
+                )
             )
-        )
             .isEqualTo(expectedToken)
     }
 
@@ -68,8 +68,8 @@ class FinchClientAsyncTest {
         )
 
         assertThat(
-            client.getAccessToken("our-client-id", "our-client-secret", "finch-auth-code", null)
-        )
+                client.getAccessToken("our-client-id", "our-client-secret", "finch-auth-code", null)
+            )
             .isEqualTo(expectedToken)
     }
 }
