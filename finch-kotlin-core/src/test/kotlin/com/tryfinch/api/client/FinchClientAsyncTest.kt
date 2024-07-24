@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @WireMockTest
-class FinchClientTest {
+class FinchClientAsyncTest {
     private lateinit var client: FinchClient
 
     @BeforeEach
