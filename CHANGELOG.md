@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.26.1 (2024-07-24)
+
+Full Changelog: [v0.26.0...v0.26.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.26.0...v0.26.1)
+
+### Bug Fixes
+
+* **api:** mark redirect_uri as optional for getAccessToken helper ([#195](https://github.com/Finch-API/finch-api-kotlin/issues/195)) ([44e9f69](https://github.com/Finch-API/finch-api-kotlin/commit/44e9f69dbecd7d60791ce066e1a0fbdb5aeb8be6))
+
+
+### Chores
+
+* **tests:** update prism version ([#193](https://github.com/Finch-API/finch-api-kotlin/issues/193)) ([303ff54](https://github.com/Finch-API/finch-api-kotlin/commit/303ff54424dd71b437f7a65fbf840c1ead26b372))
+
 ## 0.26.0 (2024-07-19)
 
 Full Changelog: [v0.25.4...v0.26.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.25.4...v0.26.0)
