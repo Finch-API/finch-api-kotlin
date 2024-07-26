@@ -4,14 +4,17 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @JsonDeserialize(builder = Payment.Builder::class)
@@ -28,6 +31,8 @@ private constructor(
     private val employerTaxes: JsonField<Money>,
     private val employeeTaxes: JsonField<Money>,
     private val individualIds: JsonField<List<String>>,
+    private val payGroupIds: JsonField<List<String>>,
+    private val payFrequencies: JsonField<List<PayFrequency>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -58,6 +63,12 @@ private constructor(
     /** Array of every individual on this payment. */
     fun individualIds(): List<String>? = individualIds.getNullable("individual_ids")
 
+    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    fun payGroupIds(): List<String>? = payGroupIds.getNullable("pay_group_ids")
+
+    /** List of pay frequencies associated with this payment. */
+    fun payFrequencies(): List<PayFrequency>? = payFrequencies.getNullable("pay_frequencies")
+
     /** The unique id for the payment. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
@@ -81,6 +92,12 @@ private constructor(
     /** Array of every individual on this payment. */
     @JsonProperty("individual_ids") @ExcludeMissing fun _individualIds() = individualIds
 
+    /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+
+    /** List of pay frequencies associated with this payment. */
+    @JsonProperty("pay_frequencies") @ExcludeMissing fun _payFrequencies() = payFrequencies
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -97,6 +114,8 @@ private constructor(
             employerTaxes()?.validate()
             employeeTaxes()?.validate()
             individualIds()
+            payGroupIds()
+            payFrequencies()
             validated = true
         }
     }
@@ -119,6 +138,8 @@ private constructor(
             this.employerTaxes == other.employerTaxes &&
             this.employeeTaxes == other.employeeTaxes &&
             this.individualIds == other.individualIds &&
+            this.payGroupIds == other.payGroupIds &&
+            this.payFrequencies == other.payFrequencies &&
             this.additionalProperties == other.additionalProperties
     }
 
@@ -136,6 +157,8 @@ private constructor(
                     employerTaxes,
                     employeeTaxes,
                     individualIds,
+                    payGroupIds,
+                    payFrequencies,
                     additionalProperties,
                 )
         }
@@ -143,7 +166,7 @@ private constructor(
     }
 
     override fun toString() =
-        "Payment{id=$id, payPeriod=$payPeriod, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, additionalProperties=$additionalProperties}"
+        "Payment{id=$id, payPeriod=$payPeriod, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, payGroupIds=$payGroupIds, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -162,6 +185,8 @@ private constructor(
         private var employerTaxes: JsonField<Money> = JsonMissing.of()
         private var employeeTaxes: JsonField<Money> = JsonMissing.of()
         private var individualIds: JsonField<List<String>> = JsonMissing.of()
+        private var payGroupIds: JsonField<List<String>> = JsonMissing.of()
+        private var payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payment: Payment) = apply {
@@ -175,6 +200,8 @@ private constructor(
             this.employerTaxes = payment.employerTaxes
             this.employeeTaxes = payment.employeeTaxes
             this.individualIds = payment.individualIds
+            this.payGroupIds = payment.payGroupIds
+            this.payFrequencies = payment.payFrequencies
             additionalProperties(payment.additionalProperties)
         }
 
@@ -250,6 +277,27 @@ private constructor(
             this.individualIds = individualIds
         }
 
+        /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+        fun payGroupIds(payGroupIds: List<String>) = payGroupIds(JsonField.of(payGroupIds))
+
+        /** Array of the Finch id (uuidv4) of every pay group associated with this payment. */
+        @JsonProperty("pay_group_ids")
+        @ExcludeMissing
+        fun payGroupIds(payGroupIds: JsonField<List<String>>) = apply {
+            this.payGroupIds = payGroupIds
+        }
+
+        /** List of pay frequencies associated with this payment. */
+        fun payFrequencies(payFrequencies: List<PayFrequency>) =
+            payFrequencies(JsonField.of(payFrequencies))
+
+        /** List of pay frequencies associated with this payment. */
+        @JsonProperty("pay_frequencies")
+        @ExcludeMissing
+        fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
+            this.payFrequencies = payFrequencies
+        }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             this.additionalProperties.putAll(additionalProperties)
@@ -276,8 +324,109 @@ private constructor(
                 employerTaxes,
                 employeeTaxes,
                 individualIds.map { it.toUnmodifiable() },
+                payGroupIds.map { it.toUnmodifiable() },
+                payFrequencies.map { it.toUnmodifiable() },
                 additionalProperties.toUnmodifiable(),
             )
+    }
+
+    class PayFrequency
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PayFrequency && this.value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            val ANNUALLY = PayFrequency(JsonField.of("annually"))
+
+            val SEMI_ANNUALLY = PayFrequency(JsonField.of("semi_annually"))
+
+            val QUARTERLY = PayFrequency(JsonField.of("quarterly"))
+
+            val MONTHLY = PayFrequency(JsonField.of("monthly"))
+
+            val SEMI_MONTHLY = PayFrequency(JsonField.of("semi_monthly"))
+
+            val BI_WEEKLY = PayFrequency(JsonField.of("bi_weekly"))
+
+            val WEEKLY = PayFrequency(JsonField.of("weekly"))
+
+            val DAILY = PayFrequency(JsonField.of("daily"))
+
+            val OTHER = PayFrequency(JsonField.of("other"))
+
+            fun of(value: String) = PayFrequency(JsonField.of(value))
+        }
+
+        enum class Known {
+            ANNUALLY,
+            SEMI_ANNUALLY,
+            QUARTERLY,
+            MONTHLY,
+            SEMI_MONTHLY,
+            BI_WEEKLY,
+            WEEKLY,
+            DAILY,
+            OTHER,
+        }
+
+        enum class Value {
+            ANNUALLY,
+            SEMI_ANNUALLY,
+            QUARTERLY,
+            MONTHLY,
+            SEMI_MONTHLY,
+            BI_WEEKLY,
+            WEEKLY,
+            DAILY,
+            OTHER,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                ANNUALLY -> Value.ANNUALLY
+                SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
+                QUARTERLY -> Value.QUARTERLY
+                MONTHLY -> Value.MONTHLY
+                SEMI_MONTHLY -> Value.SEMI_MONTHLY
+                BI_WEEKLY -> Value.BI_WEEKLY
+                WEEKLY -> Value.WEEKLY
+                DAILY -> Value.DAILY
+                OTHER -> Value.OTHER
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                ANNUALLY -> Known.ANNUALLY
+                SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
+                QUARTERLY -> Known.QUARTERLY
+                MONTHLY -> Known.MONTHLY
+                SEMI_MONTHLY -> Known.SEMI_MONTHLY
+                BI_WEEKLY -> Known.BI_WEEKLY
+                WEEKLY -> Known.WEEKLY
+                DAILY -> Known.DAILY
+                OTHER -> Known.OTHER
+                else -> throw FinchInvalidDataException("Unknown PayFrequency: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
     }
 
     /** The pay period object. */
