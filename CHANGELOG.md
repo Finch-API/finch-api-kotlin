@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.27.0 (2024-07-26)
+
+Full Changelog: [v0.26.1...v0.27.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.26.1...v0.27.0)
+
+### Features
+
+* **api:** add 'payment frequencies' and 'pay group ids' to payment model ([#196](https://github.com/Finch-API/finch-api-kotlin/issues/196)) ([5513919](https://github.com/Finch-API/finch-api-kotlin/commit/551391973d782bf6f6b94020ee75072a1de04cc6))
+
 ## 0.26.1 (2024-07-24)
 
 Full Changelog: [v0.26.0...v0.26.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.26.0...v0.26.1)
