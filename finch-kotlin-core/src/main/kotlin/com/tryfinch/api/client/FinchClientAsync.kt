@@ -49,6 +49,6 @@ interface FinchClientAsync {
     )
 
     private data class GetAccessTokenResponse(
-        @JsonProperty("accessToken") val accessToken: String,
+        @JsonProperty("access_token") val accessToken: String,
     )
 }
