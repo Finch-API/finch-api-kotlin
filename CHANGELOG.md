@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.27.1 (2024-07-29)
+
+Full Changelog: [v0.27.0...v0.27.1](https://github.com/Finch-API/finch-api-kotlin/compare/v0.27.0...v0.27.1)
+
+### Bug Fixes
+
+* **client:** GetAccessTokenResponse was incorrectly expecting property 'accessToken' instead of 'access_token' ([#198](https://github.com/Finch-API/finch-api-kotlin/issues/198)) ([10b76af](https://github.com/Finch-API/finch-api-kotlin/commit/10b76afa28f299eda9620643981bbbabd20693ee))
+
 ## 0.27.0 (2024-07-26)
 
 Full Changelog: [v0.26.1...v0.27.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.26.1...v0.27.0)
