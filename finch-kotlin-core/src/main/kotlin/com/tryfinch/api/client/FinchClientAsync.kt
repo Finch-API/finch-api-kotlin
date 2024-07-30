@@ -30,6 +30,8 @@ interface FinchClientAsync {
 
     fun payroll(): PayrollServiceAsync
 
+    /** @deprecated use client.accessTokens().create instead */
+    @Deprecated("use client.accessTokens().create instead", ReplaceWith("accessTokens().create()"))
     suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
