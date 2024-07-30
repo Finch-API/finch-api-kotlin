@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.29.0 (2024-07-30)
+
+Full Changelog: [v0.28.0...v0.29.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.28.0...v0.29.0)
+
+### Features
+
+* **client:** deprecate getAccessToken in favor of client.accessTokens().create() ([#204](https://github.com/Finch-API/finch-api-kotlin/issues/204)) ([183fc5b](https://github.com/Finch-API/finch-api-kotlin/commit/183fc5bad556156c51db97c6076534cd19e5f3ea))
+
+
+### Chores
+
+* **ci:** run tests in CI ([#206](https://github.com/Finch-API/finch-api-kotlin/issues/206)) ([95788d5](https://github.com/Finch-API/finch-api-kotlin/commit/95788d5df4ec911a0ed3064815555ef01ed1ae9e))
+
 ## 0.28.0 (2024-07-30)
 
 Full Changelog: [v0.27.1...v0.28.0](https://github.com/Finch-API/finch-api-kotlin/compare/v0.27.1...v0.28.0)
