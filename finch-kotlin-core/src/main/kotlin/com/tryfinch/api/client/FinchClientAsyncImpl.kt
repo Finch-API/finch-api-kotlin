@@ -71,6 +71,8 @@ constructor(
 
     override fun payroll(): PayrollServiceAsync = payroll
 
+    /** @deprecated use client.accessTokens().create instead */
+    @Deprecated("use client.accessTokens().create instead", ReplaceWith("accessTokens().create()"))
     override suspend fun getAccessToken(
         clientId: String,
         clientSecret: String,
