@@ -10,7 +10,7 @@ import com.tryfinch.api.models.HrisCompanyRetrieveParams
 
 interface CompanyServiceAsync {
 
-    /** Read basic company data. */
+    /** Read basic company data */
     suspend fun retrieve(
         params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
