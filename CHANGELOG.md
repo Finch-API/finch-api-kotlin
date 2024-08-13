@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2024-08-13)
+
+Full Changelog: [v1.0.1...v1.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.0.1...v1.1.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#212](https://github.com/Finch-API/finch-api-kotlin/issues/212)) ([b579fc0](https://github.com/Finch-API/finch-api-kotlin/commit/b579fc0371d1a953144cca9ea0c468d8c6b71062))
+
 ## 1.0.1 (2024-08-09)
 
 Full Changelog: [v1.0.0...v1.0.1](https://github.com/Finch-API/finch-api-kotlin/compare/v1.0.0...v1.0.1)
