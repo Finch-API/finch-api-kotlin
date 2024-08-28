@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 (2024-08-28)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* chore: update reviewers for new teams ([#215](https://github.com/Finch-API/finch-api-kotlin/issues/215)) ([8a43d76](https://github.com/Finch-API/finch-api-kotlin/commit/8a43d76aae6e5cccb597872947ab135d04c8dfd6))
+
 ## 1.1.0 (2024-08-13)
 
 Full Changelog: [v1.0.1...v1.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.0.1...v1.1.0)
