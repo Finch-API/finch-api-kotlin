@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 (2024-08-30)
+
+Full Changelog: [v1.2.1...v1.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.2.1...v1.3.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#223](https://github.com/Finch-API/finch-api-kotlin/issues/223)) ([dd32700](https://github.com/Finch-API/finch-api-kotlin/commit/dd32700521f6ae121b469cf1aff7935b5f070bc4))
+
+
+### Chores
+
+* consistent string literal escaping ([#221](https://github.com/Finch-API/finch-api-kotlin/issues/221)) ([fad5753](https://github.com/Finch-API/finch-api-kotlin/commit/fad5753829f85c2fa7a204ca3d44523676fdaecc))
+* **internal:** codegen related update ([#224](https://github.com/Finch-API/finch-api-kotlin/issues/224)) ([25ad562](https://github.com/Finch-API/finch-api-kotlin/commit/25ad562ae94ba92f011b735d738e3cdf339bd3f1))
+
 ## 1.2.1 (2024-08-28)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/Finch-API/finch-api-kotlin/compare/v1.2.0...v1.2.1)
