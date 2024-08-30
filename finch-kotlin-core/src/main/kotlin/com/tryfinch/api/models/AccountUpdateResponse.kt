@@ -21,6 +21,7 @@ import java.util.Objects
 @NoAutoDetect
 class AccountUpdateResponse
 private constructor(
+    private val connectionId: JsonField<String>,
     private val accountId: JsonField<String>,
     private val authenticationType: JsonField<AuthenticationType>,
     private val companyId: JsonField<String>,
@@ -33,25 +34,37 @@ private constructor(
 
     private var hashCode: Int = 0
 
+    /** The ID of the new connection */
+    fun connectionId(): String? = connectionId.getNullable("connection_id")
+
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     fun accountId(): String = accountId.getRequired("account_id")
 
     fun authenticationType(): AuthenticationType =
         authenticationType.getRequired("authentication_type")
 
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     fun companyId(): String = companyId.getRequired("company_id")
 
+    /** The ID of the provider associated with the `access_token` */
     fun providerId(): String = providerId.getRequired("provider_id")
 
     fun products(): List<String> = products.getRequired("products")
 
+    /** The ID of the new connection */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
     @JsonProperty("authentication_type")
     @ExcludeMissing
     fun _authenticationType() = authenticationType
 
+    /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
 
+    /** The ID of the provider associated with the `access_token` */
     @JsonProperty("provider_id") @ExcludeMissing fun _providerId() = providerId
 
     @JsonProperty("products") @ExcludeMissing fun _products() = products
@@ -62,6 +75,7 @@ private constructor(
 
     fun validate(): AccountUpdateResponse = apply {
         if (!validated) {
+            connectionId()
             accountId()
             authenticationType()
             companyId()
@@ -79,6 +93,7 @@ private constructor(
         }
 
         return other is AccountUpdateResponse &&
+            this.connectionId == other.connectionId &&
             this.accountId == other.accountId &&
             this.authenticationType == other.authenticationType &&
             this.companyId == other.companyId &&
@@ -91,6 +106,7 @@ private constructor(
         if (hashCode == 0) {
             hashCode =
                 Objects.hash(
+                    connectionId,
                     accountId,
                     authenticationType,
                     companyId,
@@ -103,7 +119,7 @@ private constructor(
     }
 
     override fun toString() =
-        "AccountUpdateResponse{accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, providerId=$providerId, products=$products, additionalProperties=$additionalProperties}"
+        "AccountUpdateResponse{connectionId=$connectionId, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, providerId=$providerId, products=$products, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -112,6 +128,7 @@ private constructor(
 
     class Builder {
 
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
@@ -120,6 +137,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(accountUpdateResponse: AccountUpdateResponse) = apply {
+            this.connectionId = accountUpdateResponse.connectionId
             this.accountId = accountUpdateResponse.accountId
             this.authenticationType = accountUpdateResponse.authenticationType
             this.companyId = accountUpdateResponse.companyId
@@ -128,8 +146,20 @@ private constructor(
             additionalProperties(accountUpdateResponse.additionalProperties)
         }
 
+        /** The ID of the new connection */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /** The ID of the new connection */
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
+
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         @JsonProperty("account_id")
         @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -143,14 +173,18 @@ private constructor(
             this.authenticationType = authenticationType
         }
 
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
+        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
         @JsonProperty("company_id")
         @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
+        /** The ID of the provider associated with the `access_token` */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
+        /** The ID of the provider associated with the `access_token` */
         @JsonProperty("provider_id")
         @ExcludeMissing
         fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
@@ -177,6 +211,7 @@ private constructor(
 
         fun build(): AccountUpdateResponse =
             AccountUpdateResponse(
+                connectionId,
                 accountId,
                 authenticationType,
                 companyId,

@@ -21,6 +21,7 @@ import java.util.Objects
 @NoAutoDetect
 class JobCompletionEvent
 private constructor(
+    private val connectionId: JsonField<String>,
     private val companyId: JsonField<String>,
     private val accountId: JsonField<String>,
     private val eventType: JsonField<EventType>,
@@ -32,10 +33,19 @@ private constructor(
 
     private var hashCode: Int = 0
 
-    /** Unique Finch id of the company for which data has been updated. */
+    /** Unique Finch ID of the connection associated with the webhook event. */
+    fun connectionId(): String? = connectionId.getNullable("connection_id")
+
+    /**
+     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
     fun companyId(): String = companyId.getRequired("company_id")
 
-    /** Unique Finch id of the employer account that was used to make this connection. */
+    /**
+     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
     fun accountId(): String = accountId.getRequired("account_id")
 
     fun eventType(): EventType? = eventType.getNullable("event_type")
@@ -43,12 +53,25 @@ private constructor(
     fun data(): Data? = data.getNullable("data")
 
     fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder().companyId(companyId).accountId(accountId).build()
+        BaseWebhookEvent.builder()
+            .connectionId(connectionId)
+            .companyId(companyId)
+            .accountId(accountId)
+            .build()
 
-    /** Unique Finch id of the company for which data has been updated. */
+    /** Unique Finch ID of the connection associated with the webhook event. */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+
+    /**
+     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
 
-    /** Unique Finch id of the employer account that was used to make this connection. */
+    /**
+     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
     @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
@@ -61,6 +84,7 @@ private constructor(
 
     fun validate(): JobCompletionEvent = apply {
         if (!validated) {
+            connectionId()
             companyId()
             accountId()
             eventType()
@@ -77,6 +101,7 @@ private constructor(
         }
 
         return other is JobCompletionEvent &&
+            this.connectionId == other.connectionId &&
             this.companyId == other.companyId &&
             this.accountId == other.accountId &&
             this.eventType == other.eventType &&
@@ -88,6 +113,7 @@ private constructor(
         if (hashCode == 0) {
             hashCode =
                 Objects.hash(
+                    connectionId,
                     companyId,
                     accountId,
                     eventType,
@@ -99,7 +125,7 @@ private constructor(
     }
 
     override fun toString() =
-        "JobCompletionEvent{companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
+        "JobCompletionEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -108,6 +134,7 @@ private constructor(
 
     class Builder {
 
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
         private var eventType: JsonField<EventType> = JsonMissing.of()
@@ -115,6 +142,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(jobCompletionEvent: JobCompletionEvent) = apply {
+            this.connectionId = jobCompletionEvent.connectionId
             this.companyId = jobCompletionEvent.companyId
             this.accountId = jobCompletionEvent.accountId
             this.eventType = jobCompletionEvent.eventType
@@ -122,18 +150,40 @@ private constructor(
             additionalProperties(jobCompletionEvent.additionalProperties)
         }
 
-        /** Unique Finch id of the company for which data has been updated. */
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        @JsonProperty("connection_id")
+        @ExcludeMissing
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
+
+        /**
+         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
-        /** Unique Finch id of the company for which data has been updated. */
+        /**
+         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
         @JsonProperty("company_id")
         @ExcludeMissing
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
-        /** Unique Finch id of the employer account that was used to make this connection. */
+        /**
+         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
-        /** Unique Finch id of the employer account that was used to make this connection. */
+        /**
+         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
         @JsonProperty("account_id")
         @ExcludeMissing
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -166,6 +216,7 @@ private constructor(
 
         fun build(): JobCompletionEvent =
             JobCompletionEvent(
+                connectionId,
                 companyId,
                 accountId,
                 eventType,
