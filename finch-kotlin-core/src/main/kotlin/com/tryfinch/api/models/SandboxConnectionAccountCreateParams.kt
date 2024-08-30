@@ -65,6 +65,7 @@ constructor(
 
         @JsonProperty("company_id") fun companyId(): String? = companyId
 
+        /** The provider associated with the `access_token` */
         @JsonProperty("provider_id") fun providerId(): String? = providerId
 
         @JsonProperty("authentication_type")
@@ -138,6 +139,7 @@ constructor(
             @JsonProperty("company_id")
             fun companyId(companyId: String) = apply { this.companyId = companyId }
 
+            /** The provider associated with the `access_token` */
             @JsonProperty("provider_id")
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
@@ -246,6 +248,7 @@ constructor(
 
         fun companyId(companyId: String) = apply { this.companyId = companyId }
 
+        /** The provider associated with the `access_token` */
         fun providerId(providerId: String) = apply { this.providerId = providerId }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
