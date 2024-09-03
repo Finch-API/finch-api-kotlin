@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 (2024-09-03)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#226](https://github.com/Finch-API/finch-api-kotlin/issues/226)) ([113b0f3](https://github.com/Finch-API/finch-api-kotlin/commit/113b0f3a632b88c896b1dc351569c6e8563cfa1f))
+
 ## 1.3.0 (2024-08-30)
 
 Full Changelog: [v1.2.1...v1.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.2.1...v1.3.0)
