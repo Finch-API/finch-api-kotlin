@@ -154,7 +154,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```kotlin
-val secret = page._additionalProperties().get("secret_field")
+val secret = operationSupportMatrix._additionalProperties().get("secret_field")
 ```
 
 ---
