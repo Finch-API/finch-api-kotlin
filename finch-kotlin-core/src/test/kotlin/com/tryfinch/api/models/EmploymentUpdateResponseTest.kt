@@ -51,6 +51,7 @@ class EmploymentUpdateResponseTest {
                 )
                 .isActive(true)
                 .lastName("last_name")
+                .latestRehireDate("latest_rehire_date")
                 .location(
                     Location.builder()
                         .city("city")
@@ -110,6 +111,7 @@ class EmploymentUpdateResponseTest {
             )
         assertThat(employmentUpdateResponse.isActive()).isEqualTo(true)
         assertThat(employmentUpdateResponse.lastName()).isEqualTo("last_name")
+        assertThat(employmentUpdateResponse.latestRehireDate()).isEqualTo("latest_rehire_date")
         assertThat(employmentUpdateResponse.location())
             .isEqualTo(
                 Location.builder()
