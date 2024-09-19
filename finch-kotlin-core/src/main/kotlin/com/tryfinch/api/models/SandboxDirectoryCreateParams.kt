@@ -225,6 +225,7 @@ constructor(
         private val employment: Employment?,
         private val startDate: String?,
         private val endDate: String?,
+        private val latestRehireDate: String?,
         private val isActive: Boolean?,
         private val classCode: String?,
         private val location: Location?,
@@ -293,6 +294,8 @@ constructor(
 
         @JsonProperty("end_date") fun endDate(): String? = endDate
 
+        @JsonProperty("latest_rehire_date") fun latestRehireDate(): String? = latestRehireDate
+
         /** `true` if the individual an an active employee or contractor at the company. */
         @JsonProperty("is_active") fun isActive(): Boolean? = isActive
 
@@ -350,6 +353,7 @@ constructor(
                 this.employment == other.employment &&
                 this.startDate == other.startDate &&
                 this.endDate == other.endDate &&
+                this.latestRehireDate == other.latestRehireDate &&
                 this.isActive == other.isActive &&
                 this.classCode == other.classCode &&
                 this.location == other.location &&
@@ -382,6 +386,7 @@ constructor(
                         employment,
                         startDate,
                         endDate,
+                        latestRehireDate,
                         isActive,
                         classCode,
                         location,
@@ -396,7 +401,7 @@ constructor(
         }
 
         override fun toString() =
-            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -423,6 +428,7 @@ constructor(
             private var employment: Employment? = null
             private var startDate: String? = null
             private var endDate: String? = null
+            private var latestRehireDate: String? = null
             private var isActive: Boolean? = null
             private var classCode: String? = null
             private var location: Location? = null
@@ -451,6 +457,7 @@ constructor(
                 this.employment = individualOrEmployment.employment
                 this.startDate = individualOrEmployment.startDate
                 this.endDate = individualOrEmployment.endDate
+                this.latestRehireDate = individualOrEmployment.latestRehireDate
                 this.isActive = individualOrEmployment.isActive
                 this.classCode = individualOrEmployment.classCode
                 this.location = individualOrEmployment.location
@@ -532,6 +539,11 @@ constructor(
             @JsonProperty("end_date")
             fun endDate(endDate: String) = apply { this.endDate = endDate }
 
+            @JsonProperty("latest_rehire_date")
+            fun latestRehireDate(latestRehireDate: String) = apply {
+                this.latestRehireDate = latestRehireDate
+            }
+
             /** `true` if the individual an an active employee or contractor at the company. */
             @JsonProperty("is_active")
             fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
@@ -603,6 +615,7 @@ constructor(
                     employment,
                     startDate,
                     endDate,
+                    latestRehireDate,
                     isActive,
                     classCode,
                     location,
