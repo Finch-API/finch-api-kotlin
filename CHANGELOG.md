@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.5.0 (2024-09-20)
+
+Full Changelog: [v1.4.0...v1.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.4.0...v1.5.0)
+
+### Features
+
+* **api:** OpenAPI spec update via Stainless API ([#232](https://github.com/Finch-API/finch-api-kotlin/issues/232)) ([47ba4be](https://github.com/Finch-API/finch-api-kotlin/commit/47ba4be971218e8528a5a463c47fbb2c509bcbfc))
+* **client:** added structured fields to errors ([#231](https://github.com/Finch-API/finch-api-kotlin/issues/231)) ([4bc25cd](https://github.com/Finch-API/finch-api-kotlin/commit/4bc25cd96f71ec21db0a5698db1ea4515baa3ec6))
+
+
+### Documentation
+
+* adjust additional properties example ([#229](https://github.com/Finch-API/finch-api-kotlin/issues/229)) ([aea4600](https://github.com/Finch-API/finch-api-kotlin/commit/aea4600cacb6161bbd4e4c73229f67c226342c39))
+
 ## 1.4.0 (2024-09-03)
 
 Full Changelog: [v1.3.0...v1.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.3.0...v1.4.0)
