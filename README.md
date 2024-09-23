@@ -40,7 +40,7 @@ implementation("com.tryfinch.api:finch-kotlin:1.4.0")
 
 Use `FinchOkHttpClient.builder()` to configure the client.
 
-Alternately, set the environment with `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_SANDBOX_CLIENT_ID`, `FINCH_SANDBOX_CLIENT_SECRET` or `FINCH_WEBHOOK_SECRET`, and use `FinchOkHttpClient.fromEnv()` to read from the environment.
+Alternately, set the environment with `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` or `FINCH_WEBHOOK_SECRET`, and use `FinchOkHttpClient.fromEnv()` to read from the environment.
 
 ```kotlin
 val client = FinchOkHttpClient.fromEnv()
@@ -52,13 +52,11 @@ val client = FinchOkHttpClient.builder()
     .build()
 ```
 
-| Property            | Environment variable          | Required | Default value |
-| ------------------- | ----------------------------- | -------- | ------------- |
-| clientId            | `FINCH_CLIENT_ID`             | false    | —             |
-| clientSecret        | `FINCH_CLIENT_SECRET`         | false    | —             |
-| sandboxClientId     | `FINCH_SANDBOX_CLIENT_ID`     | false    | —             |
-| sandboxClientSecret | `FINCH_SANDBOX_CLIENT_SECRET` | false    | —             |
-| webhookSecret       | `FINCH_WEBHOOK_SECRET`        | false    | —             |
+| Property      | Environment variable   | Required | Default value |
+| ------------- | ---------------------- | -------- | ------------- |
+| clientId      | `FINCH_CLIENT_ID`      | false    | —             |
+| clientSecret  | `FINCH_CLIENT_SECRET`  | false    | —             |
+| webhookSecret | `FINCH_WEBHOOK_SECRET` | false    | —             |
 
 Read the documentation for more configuration options.
 
