@@ -19,8 +19,6 @@ private constructor(
     val accessToken: String?,
     val clientId: String?,
     val clientSecret: String?,
-    val sandboxClientId: String?,
-    val sandboxClientSecret: String?,
     val webhookSecret: String?,
     val headers: ListMultimap<String, String>,
     val queryParams: ListMultimap<String, String>,
@@ -49,8 +47,6 @@ private constructor(
         private var accessToken: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
-        private var sandboxClientId: String? = null
-        private var sandboxClientSecret: String? = null
         private var webhookSecret: String? = null
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
@@ -111,21 +107,11 @@ private constructor(
 
         fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
 
-        fun sandboxClientId(sandboxClientId: String?) = apply {
-            this.sandboxClientId = sandboxClientId
-        }
-
-        fun sandboxClientSecret(sandboxClientSecret: String?) = apply {
-            this.sandboxClientSecret = sandboxClientSecret
-        }
-
         fun webhookSecret(webhookSecret: String?) = apply { this.webhookSecret = webhookSecret }
 
         fun fromEnv() = apply {
             System.getenv("FINCH_CLIENT_ID")?.let { clientId(it) }
             System.getenv("FINCH_CLIENT_SECRET")?.let { clientSecret(it) }
-            System.getenv("FINCH_SANDBOX_CLIENT_ID")?.let { sandboxClientId(it) }
-            System.getenv("FINCH_SANDBOX_CLIENT_SECRET")?.let { sandboxClientSecret(it) }
             System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }
         }
 
@@ -144,10 +130,10 @@ private constructor(
             if (!accessToken.isNullOrEmpty()) {
                 headers.put("Authorization", "Bearer ${accessToken}")
             }
-            if (!sandboxClientId.isNullOrEmpty() && !sandboxClientSecret.isNullOrEmpty()) {
+            if (!clientId.isNullOrEmpty() && !clientSecret.isNullOrEmpty()) {
                 headers.put(
                     "Authorization",
-                    "Basic ${Base64.getEncoder().encodeToString("${sandboxClientId}:${sandboxClientSecret}".toByteArray())}"
+                    "Basic ${Base64.getEncoder().encodeToString("${clientId}:${clientSecret}".toByteArray())}"
                 )
             }
             this.headers.forEach(headers::replaceValues)
@@ -165,8 +151,6 @@ private constructor(
                 accessToken,
                 clientId,
                 clientSecret,
-                sandboxClientId,
-                sandboxClientSecret,
                 webhookSecret,
                 headers.toUnmodifiable(),
                 queryParams.toUnmodifiable(),
