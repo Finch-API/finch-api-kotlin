@@ -30,6 +30,9 @@ interface FinchClient {
 
     fun payroll(): PayrollService
 
+    fun connect(): ConnectService
+
+    // auth helpers:
     /** @deprecated use client.accessTokens().create instead */
     @Deprecated("use client.accessTokens().create instead", ReplaceWith("accessTokens().create()"))
     fun getAccessToken(
