@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.6.0 (2024-10-02)
+
+Full Changelog: [v1.5.0...v1.6.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.5.0...v1.6.0)
+
+### Features
+
+* **api:** manual updates ([#236](https://github.com/Finch-API/finch-api-kotlin/issues/236)) ([d426098](https://github.com/Finch-API/finch-api-kotlin/commit/d4260985f9048934d88da81981b37e20f75197db))
+* **api:** manual updates ([#237](https://github.com/Finch-API/finch-api-kotlin/issues/237)) ([b3aac6e](https://github.com/Finch-API/finch-api-kotlin/commit/b3aac6ed0e557721f066e82c02bfcfbb8f8dd753))
+
+
+### Chores
+
+* **internal:** codegen related update ([#233](https://github.com/Finch-API/finch-api-kotlin/issues/233)) ([357e8bc](https://github.com/Finch-API/finch-api-kotlin/commit/357e8bc94bc1d7b96c4268af0e6292071bc87ed2))
+* **internal:** codegen related update ([#238](https://github.com/Finch-API/finch-api-kotlin/issues/238)) ([7588c55](https://github.com/Finch-API/finch-api-kotlin/commit/7588c5557243a4b5936d456c87848cc6539f9651))
+* **internal:** fix test ([57e3cae](https://github.com/Finch-API/finch-api-kotlin/commit/57e3caef3c5e64495d2fc55d4340f87e5c406654))
+* **internal:** skip failing tests ([#235](https://github.com/Finch-API/finch-api-kotlin/issues/235)) ([83b4ce3](https://github.com/Finch-API/finch-api-kotlin/commit/83b4ce3f859e5c3f5ee3934bc44744c9ae2e7de7))
+
 ## 1.5.0 (2024-09-20)
 
 Full Changelog: [v1.4.0...v1.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.4.0...v1.5.0)
