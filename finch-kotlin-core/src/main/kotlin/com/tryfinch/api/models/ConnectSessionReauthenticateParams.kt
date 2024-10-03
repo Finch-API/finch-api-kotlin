@@ -66,7 +66,9 @@ constructor(
         /** The ID of the existing connection to reauthenticate */
         @JsonProperty("connection_id") fun connectionId(): String? = connectionId
 
-        /** The number of minutes until the session expires (defaults to 10,080, which is 7 days) */
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
         @JsonProperty("minutes_to_expire") fun minutesToExpire(): Long? = minutesToExpire
 
         /** The products to request access to (optional for reauthentication) */
@@ -138,7 +140,8 @@ constructor(
             fun connectionId(connectionId: String) = apply { this.connectionId = connectionId }
 
             /**
-             * The number of minutes until the session expires (defaults to 10,080, which is 7 days)
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
              */
             @JsonProperty("minutes_to_expire")
             fun minutesToExpire(minutesToExpire: Long) = apply {
@@ -248,7 +251,9 @@ constructor(
         /** The ID of the existing connection to reauthenticate */
         fun connectionId(connectionId: String) = apply { this.connectionId = connectionId }
 
-        /** The number of minutes until the session expires (defaults to 10,080, which is 7 days) */
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
         fun minutesToExpire(minutesToExpire: Long) = apply {
             this.minutesToExpire = minutesToExpire
         }
