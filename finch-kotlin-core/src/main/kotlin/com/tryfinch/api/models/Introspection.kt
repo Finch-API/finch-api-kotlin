@@ -42,8 +42,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
@@ -216,60 +214,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is Introspection &&
-            this.connectionId == other.connectionId &&
-            this.connectionStatus == other.connectionStatus &&
-            this.clientId == other.clientId &&
-            this.clientType == other.clientType &&
-            this.connectionType == other.connectionType &&
-            this.companyId == other.companyId &&
-            this.accountId == other.accountId &&
-            this.customerId == other.customerId &&
-            this.customerName == other.customerName &&
-            this.customerEmail == other.customerEmail &&
-            this.authenticationMethods == other.authenticationMethods &&
-            this.products == other.products &&
-            this.username == other.username &&
-            this.providerId == other.providerId &&
-            this.payrollProviderId == other.payrollProviderId &&
-            this.manual == other.manual &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    connectionId,
-                    connectionStatus,
-                    clientId,
-                    clientType,
-                    connectionType,
-                    companyId,
-                    accountId,
-                    customerId,
-                    customerName,
-                    customerEmail,
-                    authenticationMethods,
-                    products,
-                    username,
-                    providerId,
-                    payrollProviderId,
-                    manual,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, customerId=$customerId, customerName=$customerName, customerEmail=$customerEmail, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -557,8 +501,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         /** The type of authentication method. */
         fun type(): Type? = type.getNullable("type")
 
@@ -592,34 +534,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is AuthenticationMethod &&
-                this.type == other.type &&
-                this.connectionStatus == other.connectionStatus &&
-                this.products == other.products &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        connectionStatus,
-                        products,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "AuthenticationMethod{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -699,8 +613,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun status(): ConnectionStatusType? = status.getNullable("status")
 
             fun message(): String? = message.getNullable("message")
@@ -722,32 +634,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ConnectionStatus &&
-                    this.status == other.status &&
-                    this.message == other.message &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            status,
-                            message,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -800,6 +686,26 @@ private constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is ConnectionStatus && this.status == other.status && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(status, message, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
         }
 
         class Type
@@ -815,7 +721,7 @@ private constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -876,6 +782,26 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is AuthenticationMethod && this.type == other.type && this.connectionStatus == other.connectionStatus && this.products == other.products && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(type, connectionStatus, products, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "AuthenticationMethod{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
     }
 
     class ClientType
@@ -891,7 +817,7 @@ private constructor(
                 return true
             }
 
-            return other is ClientType && this.value == other.value
+            return /* spotless:off */ other is ClientType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -952,8 +878,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun status(): ConnectionStatusType? = status.getNullable("status")
 
         fun message(): String? = message.getNullable("message")
@@ -975,32 +899,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ConnectionStatus &&
-                this.status == other.status &&
-                this.message == other.message &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        status,
-                        message,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -1052,6 +950,26 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ConnectionStatus && this.status == other.status && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(status, message, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ConnectionStatus{status=$status, message=$message, additionalProperties=$additionalProperties}"
     }
 
     class ConnectionType
@@ -1067,7 +985,7 @@ private constructor(
                 return true
             }
 
-            return other is ConnectionType && this.value == other.value
+            return /* spotless:off */ other is ConnectionType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -1110,4 +1028,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is Introspection && this.connectionId == other.connectionId && this.connectionStatus == other.connectionStatus && this.clientId == other.clientId && this.clientType == other.clientType && this.connectionType == other.connectionType && this.companyId == other.companyId && this.accountId == other.accountId && this.customerId == other.customerId && this.customerName == other.customerName && this.customerEmail == other.customerEmail && this.authenticationMethods == other.authenticationMethods && this.products == other.products && this.username == other.username && this.providerId == other.providerId && this.payrollProviderId == other.payrollProviderId && this.manual == other.manual && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(connectionId, connectionStatus, clientId, clientType, connectionType, companyId, accountId, customerId, customerName, customerEmail, authenticationMethods, products, username, providerId, payrollProviderId, manual, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "Introspection{connectionId=$connectionId, connectionStatus=$connectionStatus, clientId=$clientId, clientType=$clientType, connectionType=$connectionType, companyId=$companyId, accountId=$accountId, customerId=$customerId, customerName=$customerName, customerEmail=$customerEmail, authenticationMethods=$authenticationMethods, products=$products, username=$username, providerId=$providerId, payrollProviderId=$payrollProviderId, manual=$manual, additionalProperties=$additionalProperties}"
 }
