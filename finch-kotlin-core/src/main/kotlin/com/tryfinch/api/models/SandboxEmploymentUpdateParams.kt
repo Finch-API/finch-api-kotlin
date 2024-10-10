@@ -136,8 +136,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Worker's compensation classification code for this employee */
         @JsonProperty("class_code") fun classCode(): String? = classCode
 
@@ -197,62 +195,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is SandboxEmploymentUpdateBody &&
-                this.classCode == other.classCode &&
-                this.customFields == other.customFields &&
-                this.department == other.department &&
-                this.employment == other.employment &&
-                this.endDate == other.endDate &&
-                this.firstName == other.firstName &&
-                this.income == other.income &&
-                this.incomeHistory == other.incomeHistory &&
-                this.isActive == other.isActive &&
-                this.lastName == other.lastName &&
-                this.latestRehireDate == other.latestRehireDate &&
-                this.location == other.location &&
-                this.manager == other.manager &&
-                this.middleName == other.middleName &&
-                this.sourceId == other.sourceId &&
-                this.startDate == other.startDate &&
-                this.title == other.title &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        classCode,
-                        customFields,
-                        department,
-                        employment,
-                        endDate,
-                        firstName,
-                        income,
-                        incomeHistory,
-                        isActive,
-                        lastName,
-                        latestRehireDate,
-                        location,
-                        manager,
-                        middleName,
-                        sourceId,
-                        startDate,
-                        title,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -412,6 +354,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is SandboxEmploymentUpdateBody && this.classCode == other.classCode && this.customFields == other.customFields && this.department == other.department && this.employment == other.employment && this.endDate == other.endDate && this.firstName == other.firstName && this.income == other.income && this.incomeHistory == other.incomeHistory && this.isActive == other.isActive && this.lastName == other.lastName && this.latestRehireDate == other.latestRehireDate && this.location == other.location && this.manager == other.manager && this.middleName == other.middleName && this.sourceId == other.sourceId && this.startDate == other.startDate && this.title == other.title && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -425,54 +387,11 @@ constructor(
             return true
         }
 
-        return other is SandboxEmploymentUpdateParams &&
-            this.individualId == other.individualId &&
-            this.classCode == other.classCode &&
-            this.customFields == other.customFields &&
-            this.department == other.department &&
-            this.employment == other.employment &&
-            this.endDate == other.endDate &&
-            this.firstName == other.firstName &&
-            this.income == other.income &&
-            this.incomeHistory == other.incomeHistory &&
-            this.isActive == other.isActive &&
-            this.lastName == other.lastName &&
-            this.latestRehireDate == other.latestRehireDate &&
-            this.location == other.location &&
-            this.manager == other.manager &&
-            this.middleName == other.middleName &&
-            this.sourceId == other.sourceId &&
-            this.startDate == other.startDate &&
-            this.title == other.title &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is SandboxEmploymentUpdateParams && this.individualId == other.individualId && this.classCode == other.classCode && this.customFields == other.customFields && this.department == other.department && this.employment == other.employment && this.endDate == other.endDate && this.firstName == other.firstName && this.income == other.income && this.incomeHistory == other.incomeHistory && this.isActive == other.isActive && this.lastName == other.lastName && this.latestRehireDate == other.latestRehireDate && this.location == other.location && this.manager == other.manager && this.middleName == other.middleName && this.sourceId == other.sourceId && this.startDate == other.startDate && this.title == other.title && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            individualId,
-            classCode,
-            customFields,
-            department,
-            employment,
-            endDate,
-            firstName,
-            income,
-            incomeHistory,
-            isActive,
-            lastName,
-            latestRehireDate,
-            location,
-            manager,
-            middleName,
-            sourceId,
-            startDate,
-            title,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -698,8 +617,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("name") fun name(): String? = name
 
         @JsonProperty("value") fun value(): JsonValue? = value
@@ -709,32 +626,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CustomField &&
-                this.name == other.name &&
-                this.value == other.value &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        value,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -778,6 +669,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is CustomField && this.name == other.name && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, value, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "CustomField{name=$name, value=$value, additionalProperties=$additionalProperties}"
     }
 
     /** The department object. */
@@ -789,8 +700,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** The name of the department associated with the individual. */
         @JsonProperty("name") fun name(): String? = name
 
@@ -799,26 +708,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Department &&
-                this.name == other.name &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(name, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Department{name=$name, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -854,6 +743,26 @@ constructor(
 
             fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Department && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Department{name=$name, additionalProperties=$additionalProperties}"
     }
 
     /** The employment object. */
@@ -865,8 +774,6 @@ constructor(
         private val subtype: Subtype?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var hashCode: Int = 0
 
         /** The main employment type of the individual. */
         @JsonProperty("type") fun type(): Type? = type
@@ -882,32 +789,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Employment &&
-                this.type == other.type &&
-                this.subtype == other.subtype &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        type,
-                        subtype,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -971,7 +852,7 @@ constructor(
                     return true
                 }
 
-                return other is Subtype && this.value == other.value
+                return /* spotless:off */ other is Subtype && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1052,7 +933,7 @@ constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1095,6 +976,26 @@ constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Employment && this.type == other.type && this.subtype == other.subtype && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(type, subtype, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
     }
 
     /** The manager object representing the manager of the individual within the org. */
@@ -1106,8 +1007,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         @JsonProperty("id") fun id(): String? = id
 
@@ -1116,25 +1015,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Manager &&
-                this.id == other.id &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(id, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -1170,5 +1050,24 @@ constructor(
 
             fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Manager && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Manager{id=$id, additionalProperties=$additionalProperties}"
     }
 }

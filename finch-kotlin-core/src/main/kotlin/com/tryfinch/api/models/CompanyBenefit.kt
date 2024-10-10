@@ -27,8 +27,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
     /** Type of benefit. */
@@ -62,36 +60,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is CompanyBenefit &&
-            this.benefitId == other.benefitId &&
-            this.type == other.type &&
-            this.description == other.description &&
-            this.frequency == other.frequency &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    benefitId,
-                    type,
-                    description,
-                    frequency,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "CompanyBenefit{benefitId=$benefitId, type=$type, description=$description, frequency=$frequency, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -163,4 +131,24 @@ private constructor(
                 additionalProperties.toUnmodifiable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is CompanyBenefit && this.benefitId == other.benefitId && this.type == other.type && this.description == other.description && this.frequency == other.frequency && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(benefitId, type, description, frequency, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "CompanyBenefit{benefitId=$benefitId, type=$type, description=$description, frequency=$frequency, additionalProperties=$additionalProperties}"
 }

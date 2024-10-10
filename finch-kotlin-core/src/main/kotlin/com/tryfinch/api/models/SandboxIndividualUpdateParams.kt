@@ -111,8 +111,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("dob") fun dob(): String? = dob
 
         @JsonProperty("emails") fun emails(): List<Email>? = emails
@@ -158,52 +156,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is SandboxIndividualUpdateBody &&
-                this.dob == other.dob &&
-                this.emails == other.emails &&
-                this.encryptedSsn == other.encryptedSsn &&
-                this.ethnicity == other.ethnicity &&
-                this.firstName == other.firstName &&
-                this.gender == other.gender &&
-                this.lastName == other.lastName &&
-                this.middleName == other.middleName &&
-                this.phoneNumbers == other.phoneNumbers &&
-                this.preferredName == other.preferredName &&
-                this.residence == other.residence &&
-                this.ssn == other.ssn &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        dob,
-                        emails,
-                        encryptedSsn,
-                        ethnicity,
-                        firstName,
-                        gender,
-                        lastName,
-                        middleName,
-                        phoneNumbers,
-                        preferredName,
-                        residence,
-                        ssn,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "SandboxIndividualUpdateBody{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -323,6 +275,26 @@ constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is SandboxIndividualUpdateBody && this.dob == other.dob && this.emails == other.emails && this.encryptedSsn == other.encryptedSsn && this.ethnicity == other.ethnicity && this.firstName == other.firstName && this.gender == other.gender && this.lastName == other.lastName && this.middleName == other.middleName && this.phoneNumbers == other.phoneNumbers && this.preferredName == other.preferredName && this.residence == other.residence && this.ssn == other.ssn && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "SandboxIndividualUpdateBody{dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -336,44 +308,11 @@ constructor(
             return true
         }
 
-        return other is SandboxIndividualUpdateParams &&
-            this.individualId == other.individualId &&
-            this.dob == other.dob &&
-            this.emails == other.emails &&
-            this.encryptedSsn == other.encryptedSsn &&
-            this.ethnicity == other.ethnicity &&
-            this.firstName == other.firstName &&
-            this.gender == other.gender &&
-            this.lastName == other.lastName &&
-            this.middleName == other.middleName &&
-            this.phoneNumbers == other.phoneNumbers &&
-            this.preferredName == other.preferredName &&
-            this.residence == other.residence &&
-            this.ssn == other.ssn &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is SandboxIndividualUpdateParams && this.individualId == other.individualId && this.dob == other.dob && this.emails == other.emails && this.encryptedSsn == other.encryptedSsn && this.ethnicity == other.ethnicity && this.firstName == other.firstName && this.gender == other.gender && this.lastName == other.lastName && this.middleName == other.middleName && this.phoneNumbers == other.phoneNumbers && this.preferredName == other.preferredName && this.residence == other.residence && this.ssn == other.ssn && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            individualId,
-            dob,
-            emails,
-            encryptedSsn,
-            ethnicity,
-            firstName,
-            gender,
-            lastName,
-            middleName,
-            phoneNumbers,
-            preferredName,
-            residence,
-            ssn,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(individualId, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -561,8 +500,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("data") fun data(): String? = data
 
         @JsonProperty("type") fun type(): Type? = type
@@ -572,32 +509,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Email &&
-                this.data == other.data &&
-                this.type == other.type &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        data,
-                        type,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -655,7 +566,7 @@ constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -698,6 +609,26 @@ constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Email && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 
     class Ethnicity
@@ -713,7 +644,7 @@ constructor(
                 return true
             }
 
-            return other is Ethnicity && this.value == other.value
+            return /* spotless:off */ other is Ethnicity && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -808,7 +739,7 @@ constructor(
                 return true
             }
 
-            return other is Gender && this.value == other.value
+            return /* spotless:off */ other is Gender && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -873,8 +804,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("data") fun data(): String? = data
 
         @JsonProperty("type") fun type(): Type? = type
@@ -884,32 +813,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PhoneNumber &&
-                this.data == other.data &&
-                this.type == other.type &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        data,
-                        type,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -967,7 +870,7 @@ constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1010,5 +913,25 @@ constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PhoneNumber && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 }

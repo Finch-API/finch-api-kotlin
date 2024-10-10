@@ -26,8 +26,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun individualId(): String? = individualId.getNullable("individual_id")
 
     /** HTTP status code */
@@ -56,34 +54,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is UnenrolledIndividual &&
-            this.individualId == other.individualId &&
-            this.code == other.code &&
-            this.body == other.body &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    individualId,
-                    code,
-                    body,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "UnenrolledIndividual{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -161,8 +131,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         /** Identifier indicating whether the benefit was newly enrolled or updated. */
         fun name(): String? = name.getNullable("name")
 
@@ -195,34 +163,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Body &&
-                this.name == other.name &&
-                this.finchCode == other.finchCode &&
-                this.message == other.message &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        finchCode,
-                        message,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Body{name=$name, finchCode=$finchCode, message=$message, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -289,5 +229,45 @@ private constructor(
                     additionalProperties.toUnmodifiable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && this.name == other.name && this.finchCode == other.finchCode && this.message == other.message && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, finchCode, message, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Body{name=$name, finchCode=$finchCode, message=$message, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is UnenrolledIndividual && this.individualId == other.individualId && this.code == other.code && this.body == other.body && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(individualId, code, body, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "UnenrolledIndividual{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
 }

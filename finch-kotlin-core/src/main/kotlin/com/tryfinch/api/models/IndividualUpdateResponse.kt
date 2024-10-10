@@ -39,8 +39,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The legal first name of the individual. */
     fun firstName(): String? = firstName.getNullable("first_name")
 
@@ -151,54 +149,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is IndividualUpdateResponse &&
-            this.firstName == other.firstName &&
-            this.middleName == other.middleName &&
-            this.lastName == other.lastName &&
-            this.preferredName == other.preferredName &&
-            this.emails == other.emails &&
-            this.phoneNumbers == other.phoneNumbers &&
-            this.gender == other.gender &&
-            this.ethnicity == other.ethnicity &&
-            this.dob == other.dob &&
-            this.ssn == other.ssn &&
-            this.encryptedSsn == other.encryptedSsn &&
-            this.residence == other.residence &&
-            this.id == other.id &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    firstName,
-                    middleName,
-                    lastName,
-                    preferredName,
-                    emails,
-                    phoneNumbers,
-                    gender,
-                    ethnicity,
-                    dob,
-                    ssn,
-                    encryptedSsn,
-                    residence,
-                    id,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "IndividualUpdateResponse{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, id=$id, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -400,8 +350,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun data(): String? = data.getNullable("data")
 
         fun type(): Type? = type.getNullable("type")
@@ -423,32 +371,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Email &&
-                this.data == other.data &&
-                this.type == other.type &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        data,
-                        type,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -514,7 +436,7 @@ private constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -557,6 +479,26 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Email && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 
     class Ethnicity
@@ -572,7 +514,7 @@ private constructor(
                 return true
             }
 
-            return other is Ethnicity && this.value == other.value
+            return /* spotless:off */ other is Ethnicity && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -667,7 +609,7 @@ private constructor(
                 return true
             }
 
-            return other is Gender && this.value == other.value
+            return /* spotless:off */ other is Gender && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -734,8 +676,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun data(): String? = data.getNullable("data")
 
         fun type(): Type? = type.getNullable("type")
@@ -757,32 +697,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is PhoneNumber &&
-                this.data == other.data &&
-                this.type == other.type &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        data,
-                        type,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -848,7 +762,7 @@ private constructor(
                     return true
                 }
 
-                return other is Type && this.value == other.value
+                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -891,5 +805,45 @@ private constructor(
 
             fun asString(): String = _value().asStringOrThrow()
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PhoneNumber && this.data == other.data && this.type == other.type && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(data, type, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "PhoneNumber{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is IndividualUpdateResponse && this.firstName == other.firstName && this.middleName == other.middleName && this.lastName == other.lastName && this.preferredName == other.preferredName && this.emails == other.emails && this.phoneNumbers == other.phoneNumbers && this.gender == other.gender && this.ethnicity == other.ethnicity && this.dob == other.dob && this.ssn == other.ssn && this.encryptedSsn == other.encryptedSsn && this.residence == other.residence && this.id == other.id && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, id, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "IndividualUpdateResponse{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, id=$id, additionalProperties=$additionalProperties}"
 }
