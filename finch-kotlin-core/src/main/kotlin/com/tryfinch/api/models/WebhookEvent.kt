@@ -196,6 +196,7 @@ private constructor(
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
+
             tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
                 return WebhookEvent(accountUpdateEvent = it, _json = json)
             }
