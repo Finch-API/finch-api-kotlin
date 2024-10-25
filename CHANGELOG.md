@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.0 (2024-10-25)
+
+Full Changelog: [v1.8.0...v1.9.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.8.0...v1.9.0)
+
+### Features
+
+* **api:** api update ([#248](https://github.com/Finch-API/finch-api-kotlin/issues/248)) ([049c24f](https://github.com/Finch-API/finch-api-kotlin/commit/049c24fc806c8a639adce58d065e56e025d688b9))
+* **api:** api update ([#250](https://github.com/Finch-API/finch-api-kotlin/issues/250)) ([25a9189](https://github.com/Finch-API/finch-api-kotlin/commit/25a918988798810961ec5d728ddf69c33eb6a5b6))
+
+
+### Chores
+
+* **internal:** version bump ([#252](https://github.com/Finch-API/finch-api-kotlin/issues/252)) ([9b8e32c](https://github.com/Finch-API/finch-api-kotlin/commit/9b8e32c6a8b2cf8ea36533866673a2ebe6818b19))
+
 ## 1.8.0 (2024-10-10)
 
 Full Changelog: [v1.7.0...v1.8.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.7.0...v1.8.0)
