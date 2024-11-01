@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
@@ -220,11 +220,11 @@ private constructor(
                 entity,
                 primaryEmail,
                 primaryPhoneNumber,
-                departments.map { it.toUnmodifiable() },
+                departments.map { it.toImmutable() },
                 ein,
-                locations.map { it.toUnmodifiable() },
-                accounts.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                locations.map { it.toImmutable() },
+                accounts.map { it.toImmutable() },
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -394,7 +394,7 @@ private constructor(
                     institutionName,
                     accountType,
                     accountNumber,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -564,7 +564,7 @@ private constructor(
                 Department(
                     name,
                     parent,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -636,7 +636,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Parent = Parent(name, additionalProperties.toUnmodifiable())
+                fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -770,7 +770,7 @@ private constructor(
                 Entity(
                     type,
                     subtype,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 

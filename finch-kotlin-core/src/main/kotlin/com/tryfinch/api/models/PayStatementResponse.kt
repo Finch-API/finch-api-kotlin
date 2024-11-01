@@ -11,7 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = PayStatementResponse.Builder::class)
@@ -109,7 +109,7 @@ private constructor(
                 paymentId,
                 code,
                 body,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 

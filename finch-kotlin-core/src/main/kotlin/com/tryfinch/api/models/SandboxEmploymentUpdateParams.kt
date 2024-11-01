@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -335,13 +335,13 @@ constructor(
             fun build(): SandboxEmploymentUpdateBody =
                 SandboxEmploymentUpdateBody(
                     classCode,
-                    customFields?.toUnmodifiable(),
+                    customFields?.toImmutable(),
                     department,
                     employment,
                     endDate,
                     firstName,
                     income,
-                    incomeHistory?.toUnmodifiable(),
+                    incomeHistory?.toImmutable(),
                     isActive,
                     lastName,
                     latestRehireDate,
@@ -351,7 +351,7 @@ constructor(
                     sourceId,
                     startDate,
                     title,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -586,13 +586,13 @@ constructor(
             SandboxEmploymentUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
                 classCode,
-                if (customFields.size == 0) null else customFields.toUnmodifiable(),
+                if (customFields.size == 0) null else customFields.toImmutable(),
                 department,
                 employment,
                 endDate,
                 firstName,
                 income,
-                if (incomeHistory.size == 0) null else incomeHistory.toUnmodifiable(),
+                if (incomeHistory.size == 0) null else incomeHistory.toImmutable(),
                 isActive,
                 lastName,
                 latestRehireDate,
@@ -602,9 +602,9 @@ constructor(
                 sourceId,
                 startDate,
                 title,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -666,7 +666,7 @@ constructor(
                 CustomField(
                     name,
                     value,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -741,7 +741,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
+            fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -835,7 +835,7 @@ constructor(
                 Employment(
                     type,
                     subtype,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -1048,7 +1048,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
+            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

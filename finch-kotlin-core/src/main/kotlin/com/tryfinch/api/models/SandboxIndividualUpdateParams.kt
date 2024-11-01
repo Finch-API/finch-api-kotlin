@@ -12,7 +12,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import com.tryfinch.api.models.*
 import java.util.Objects
@@ -261,18 +261,18 @@ constructor(
             fun build(): SandboxIndividualUpdateBody =
                 SandboxIndividualUpdateBody(
                     dob,
-                    emails?.toUnmodifiable(),
+                    emails?.toImmutable(),
                     encryptedSsn,
                     ethnicity,
                     firstName,
                     gender,
                     lastName,
                     middleName,
-                    phoneNumbers?.toUnmodifiable(),
+                    phoneNumbers?.toImmutable(),
                     preferredName,
                     residence,
                     ssn,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -474,20 +474,20 @@ constructor(
             SandboxIndividualUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
                 dob,
-                if (emails.size == 0) null else emails.toUnmodifiable(),
+                if (emails.size == 0) null else emails.toImmutable(),
                 encryptedSsn,
                 ethnicity,
                 firstName,
                 gender,
                 lastName,
                 middleName,
-                if (phoneNumbers.size == 0) null else phoneNumbers.toUnmodifiable(),
+                if (phoneNumbers.size == 0) null else phoneNumbers.toImmutable(),
                 preferredName,
                 residence,
                 ssn,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -549,7 +549,7 @@ constructor(
                 Email(
                     data,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -853,7 +853,7 @@ constructor(
                 PhoneNumber(
                     data,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
