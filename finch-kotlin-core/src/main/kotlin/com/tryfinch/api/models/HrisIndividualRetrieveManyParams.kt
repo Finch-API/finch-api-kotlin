@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.util.Objects
 
@@ -98,8 +98,8 @@ constructor(
             fun build(): HrisIndividualRetrieveManyBody =
                 HrisIndividualRetrieveManyBody(
                     options,
-                    requests?.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    requests?.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -236,10 +236,10 @@ constructor(
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
                 options,
-                if (requests.size == 0) null else requests.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                if (requests.size == 0) null else requests.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -292,7 +292,7 @@ constructor(
             }
 
             fun build(): Options =
-                Options(include?.toUnmodifiable(), additionalProperties.toUnmodifiable())
+                Options(include?.toImmutable(), additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -364,7 +364,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Request = Request(individualId, additionalProperties.toUnmodifiable())
+            fun build(): Request = Request(individualId, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

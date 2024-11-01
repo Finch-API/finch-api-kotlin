@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
@@ -187,7 +187,7 @@ private constructor(
                 accountId,
                 eventType,
                 data,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -278,7 +278,7 @@ private constructor(
                 Data(
                     status,
                     authenticationMethod,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -414,7 +414,7 @@ private constructor(
                         type,
                         benefitsSupport,
                         supportedFields,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -429,6 +429,7 @@ private constructor(
                 private val employment: JsonField<SupportedEmploymentFields>,
                 private val payment: JsonField<SupportedPaymentFields>,
                 private val payStatement: JsonField<SupportedPayStatementFields>,
+                private val payGroup: JsonField<SupportedPayGroupFields>,
                 private val additionalProperties: Map<String, JsonValue>,
             ) {
 
@@ -447,6 +448,8 @@ private constructor(
                 fun payStatement(): SupportedPayStatementFields? =
                     payStatement.getNullable("pay_statement")
 
+                fun payGroup(): SupportedPayGroupFields? = payGroup.getNullable("pay_group")
+
                 @JsonProperty("company") @ExcludeMissing fun _company() = company
 
                 @JsonProperty("directory") @ExcludeMissing fun _directory() = directory
@@ -458,6 +461,8 @@ private constructor(
                 @JsonProperty("payment") @ExcludeMissing fun _payment() = payment
 
                 @JsonProperty("pay_statement") @ExcludeMissing fun _payStatement() = payStatement
+
+                @JsonProperty("pay_group") @ExcludeMissing fun _payGroup() = payGroup
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -471,6 +476,7 @@ private constructor(
                         employment()?.validate()
                         payment()?.validate()
                         payStatement()?.validate()
+                        payGroup()?.validate()
                         validated = true
                     }
                 }
@@ -491,6 +497,7 @@ private constructor(
                     private var payment: JsonField<SupportedPaymentFields> = JsonMissing.of()
                     private var payStatement: JsonField<SupportedPayStatementFields> =
                         JsonMissing.of()
+                    private var payGroup: JsonField<SupportedPayGroupFields> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     internal fun from(supportedFields: SupportedFields) = apply {
@@ -500,6 +507,7 @@ private constructor(
                         this.employment = supportedFields.employment
                         this.payment = supportedFields.payment
                         this.payStatement = supportedFields.payStatement
+                        this.payGroup = supportedFields.payGroup
                         additionalProperties(supportedFields.additionalProperties)
                     }
 
@@ -555,6 +563,15 @@ private constructor(
                         this.payStatement = payStatement
                     }
 
+                    fun payGroup(payGroup: SupportedPayGroupFields) =
+                        payGroup(JsonField.of(payGroup))
+
+                    @JsonProperty("pay_group")
+                    @ExcludeMissing
+                    fun payGroup(payGroup: JsonField<SupportedPayGroupFields>) = apply {
+                        this.payGroup = payGroup
+                    }
+
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
                         this.additionalProperties.putAll(additionalProperties)
@@ -578,7 +595,8 @@ private constructor(
                             employment,
                             payment,
                             payStatement,
-                            additionalProperties.toUnmodifiable(),
+                            payGroup,
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -789,7 +807,7 @@ private constructor(
                                 accounts,
                                 departments,
                                 locations,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -946,7 +964,7 @@ private constructor(
                                     institutionName,
                                     accountType,
                                     accountNumber,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1053,7 +1071,7 @@ private constructor(
                                 Departments(
                                     name,
                                     parent,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1124,7 +1142,7 @@ private constructor(
                                 ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun build(): Parent =
-                                    Parent(name, additionalProperties.toUnmodifiable())
+                                    Parent(name, additionalProperties.toImmutable())
                             }
 
                             override fun equals(other: Any?): Boolean {
@@ -1253,7 +1271,7 @@ private constructor(
                                 Entity(
                                     type,
                                     subtype,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1425,7 +1443,7 @@ private constructor(
                                     state,
                                     postalCode,
                                     country,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1557,7 +1575,7 @@ private constructor(
                             SupportedDirectoryFields(
                                 paging,
                                 individuals,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -1732,7 +1750,7 @@ private constructor(
                                     isActive,
                                     department,
                                     manager,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -1803,7 +1821,7 @@ private constructor(
                                 ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun build(): Manager =
-                                    Manager(id, additionalProperties.toUnmodifiable())
+                                    Manager(id, additionalProperties.toImmutable())
                             }
 
                             override fun equals(other: Any?): Boolean {
@@ -1930,7 +1948,7 @@ private constructor(
                                 Paging(
                                     count,
                                     offset,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2299,7 +2317,7 @@ private constructor(
                                 income,
                                 location,
                                 manager,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -2368,7 +2386,7 @@ private constructor(
                             ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun build(): Department =
-                                Department(name, additionalProperties.toUnmodifiable())
+                                Department(name, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -2476,7 +2494,7 @@ private constructor(
                                 Employment(
                                     type,
                                     subtype,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2600,7 +2618,7 @@ private constructor(
                                     amount,
                                     currency,
                                     unit,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2772,7 +2790,7 @@ private constructor(
                                     state,
                                     postalCode,
                                     country,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -2861,8 +2879,7 @@ private constructor(
                                 additionalProperties: Map<String, JsonValue>
                             ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
-                            fun build(): Manager =
-                                Manager(id, additionalProperties.toUnmodifiable())
+                            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -3180,7 +3197,7 @@ private constructor(
                                 emails,
                                 phoneNumbers,
                                 residence,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3266,7 +3283,7 @@ private constructor(
                                 Emails(
                                     data,
                                     type,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -3373,7 +3390,7 @@ private constructor(
                                 PhoneNumbers(
                                     data,
                                     type,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -3545,7 +3562,7 @@ private constructor(
                                     line2,
                                     postalCode,
                                     state,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -3589,6 +3606,154 @@ private constructor(
 
                     override fun toString() =
                         "SupportedIndividualFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, dob=$dob, gender=$gender, ethnicity=$ethnicity, ssn=$ssn, encryptedSsn=$encryptedSsn, emails=$emails, phoneNumbers=$phoneNumbers, residence=$residence, additionalProperties=$additionalProperties}"
+                }
+
+                @JsonDeserialize(builder = SupportedPayGroupFields.Builder::class)
+                @NoAutoDetect
+                class SupportedPayGroupFields
+                private constructor(
+                    private val id: JsonField<Boolean>,
+                    private val name: JsonField<Boolean>,
+                    private val payFrequencies: JsonField<Boolean>,
+                    private val individualIds: JsonField<Boolean>,
+                    private val additionalProperties: Map<String, JsonValue>,
+                ) {
+
+                    private var validated: Boolean = false
+
+                    fun id(): Boolean? = id.getNullable("id")
+
+                    fun name(): Boolean? = name.getNullable("name")
+
+                    fun payFrequencies(): Boolean? = payFrequencies.getNullable("pay_frequencies")
+
+                    fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
+
+                    @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+                    @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+                    @JsonProperty("pay_frequencies")
+                    @ExcludeMissing
+                    fun _payFrequencies() = payFrequencies
+
+                    @JsonProperty("individual_ids")
+                    @ExcludeMissing
+                    fun _individualIds() = individualIds
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+                    fun validate(): SupportedPayGroupFields = apply {
+                        if (!validated) {
+                            id()
+                            name()
+                            payFrequencies()
+                            individualIds()
+                            validated = true
+                        }
+                    }
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        fun builder() = Builder()
+                    }
+
+                    class Builder {
+
+                        private var id: JsonField<Boolean> = JsonMissing.of()
+                        private var name: JsonField<Boolean> = JsonMissing.of()
+                        private var payFrequencies: JsonField<Boolean> = JsonMissing.of()
+                        private var individualIds: JsonField<Boolean> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        internal fun from(supportedPayGroupFields: SupportedPayGroupFields) =
+                            apply {
+                                this.id = supportedPayGroupFields.id
+                                this.name = supportedPayGroupFields.name
+                                this.payFrequencies = supportedPayGroupFields.payFrequencies
+                                this.individualIds = supportedPayGroupFields.individualIds
+                                additionalProperties(supportedPayGroupFields.additionalProperties)
+                            }
+
+                        fun id(id: Boolean) = id(JsonField.of(id))
+
+                        @JsonProperty("id")
+                        @ExcludeMissing
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                        fun name(name: Boolean) = name(JsonField.of(name))
+
+                        @JsonProperty("name")
+                        @ExcludeMissing
+                        fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                        fun payFrequencies(payFrequencies: Boolean) =
+                            payFrequencies(JsonField.of(payFrequencies))
+
+                        @JsonProperty("pay_frequencies")
+                        @ExcludeMissing
+                        fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
+                            this.payFrequencies = payFrequencies
+                        }
+
+                        fun individualIds(individualIds: Boolean) =
+                            individualIds(JsonField.of(individualIds))
+
+                        @JsonProperty("individual_ids")
+                        @ExcludeMissing
+                        fun individualIds(individualIds: JsonField<Boolean>) = apply {
+                            this.individualIds = individualIds
+                        }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                this.additionalProperties.putAll(additionalProperties)
+                            }
+
+                        @JsonAnySetter
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            this.additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun build(): SupportedPayGroupFields =
+                            SupportedPayGroupFields(
+                                id,
+                                name,
+                                payFrequencies,
+                                individualIds,
+                                additionalProperties.toImmutable(),
+                            )
+                    }
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return /* spotless:off */ other is SupportedPayGroupFields && this.id == other.id && this.name == other.name && this.payFrequencies == other.payFrequencies && this.individualIds == other.individualIds && this.additionalProperties == other.additionalProperties /* spotless:on */
+                    }
+
+                    private var hashCode: Int = 0
+
+                    override fun hashCode(): Int {
+                        if (hashCode == 0) {
+                            hashCode = /* spotless:off */ Objects.hash(id, name, payFrequencies, individualIds, additionalProperties) /* spotless:on */
+                        }
+                        return hashCode
+                    }
+
+                    override fun toString() =
+                        "SupportedPayGroupFields{id=$id, name=$name, payFrequencies=$payFrequencies, individualIds=$individualIds, additionalProperties=$additionalProperties}"
                 }
 
                 @JsonDeserialize(builder = SupportedPayStatementFields.Builder::class)
@@ -3681,7 +3846,7 @@ private constructor(
                             SupportedPayStatementFields(
                                 paging,
                                 payStatements,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -3767,7 +3932,7 @@ private constructor(
                                 Paging(
                                     count,
                                     offset,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -4026,7 +4191,7 @@ private constructor(
                                     employeeDeductions,
                                     employerContributions,
                                     taxes,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -4148,7 +4313,7 @@ private constructor(
                                         name,
                                         amount,
                                         currency,
-                                        additionalProperties.toUnmodifiable(),
+                                        additionalProperties.toImmutable(),
                                     )
                             }
 
@@ -4308,7 +4473,7 @@ private constructor(
                                         type,
                                         preTax,
                                         currency,
-                                        additionalProperties.toUnmodifiable(),
+                                        additionalProperties.toImmutable(),
                                     )
                             }
 
@@ -4439,7 +4604,7 @@ private constructor(
                                         name,
                                         amount,
                                         currency,
-                                        additionalProperties.toUnmodifiable(),
+                                        additionalProperties.toImmutable(),
                                     )
                             }
 
@@ -4599,7 +4764,7 @@ private constructor(
                                         employer,
                                         amount,
                                         currency,
-                                        additionalProperties.toUnmodifiable(),
+                                        additionalProperties.toImmutable(),
                                     )
                             }
 
@@ -4932,7 +5097,7 @@ private constructor(
                                 payPeriod,
                                 payGroupIds,
                                 payFrequencies,
-                                additionalProperties.toUnmodifiable(),
+                                additionalProperties.toImmutable(),
                             )
                     }
 
@@ -5022,7 +5187,7 @@ private constructor(
                                 PayPeriod(
                                     startDate,
                                     endDate,
-                                    additionalProperties.toUnmodifiable(),
+                                    additionalProperties.toImmutable(),
                                 )
                         }
 
@@ -5073,20 +5238,20 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is SupportedFields && this.company == other.company && this.directory == other.directory && this.individual == other.individual && this.employment == other.employment && this.payment == other.payment && this.payStatement == other.payStatement && this.additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is SupportedFields && this.company == other.company && this.directory == other.directory && this.individual == other.individual && this.employment == other.employment && this.payment == other.payment && this.payStatement == other.payStatement && this.payGroup == other.payGroup && this.additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 private var hashCode: Int = 0
 
                 override fun hashCode(): Int {
                     if (hashCode == 0) {
-                        hashCode = /* spotless:off */ Objects.hash(company, directory, individual, employment, payment, payStatement, additionalProperties) /* spotless:on */
+                        hashCode = /* spotless:off */ Objects.hash(company, directory, individual, employment, payment, payStatement, payGroup, additionalProperties) /* spotless:on */
                     }
                     return hashCode
                 }
 
                 override fun toString() =
-                    "SupportedFields{company=$company, directory=$directory, individual=$individual, employment=$employment, payment=$payment, payStatement=$payStatement, additionalProperties=$additionalProperties}"
+                    "SupportedFields{company=$company, directory=$directory, individual=$individual, employment=$employment, payment=$payment, payStatement=$payStatement, payGroup=$payGroup, additionalProperties=$additionalProperties}"
             }
 
             class Type
