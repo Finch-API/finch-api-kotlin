@@ -11,7 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = IndividualInDirectory.Builder::class)
@@ -195,7 +195,7 @@ private constructor(
                 manager,
                 department,
                 isActive,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -266,7 +266,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Department = Department(name, additionalProperties.toUnmodifiable())
+            fun build(): Department = Department(name, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -357,7 +357,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Manager = Manager(id, additionalProperties.toUnmodifiable())
+            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

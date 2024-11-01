@@ -3,7 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.models.*
 import java.util.Objects
 
@@ -24,7 +24,7 @@ constructor(
         this.individualId?.let { params.put("individual_id", listOf(it.toString())) }
         this.payFrequencies?.let { params.put("pay_frequencies[]", it.map(Any::toString)) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -122,9 +122,9 @@ constructor(
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
                 individualId,
-                if (payFrequencies.size == 0) null else payFrequencies.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                if (payFrequencies.size == 0) null else payFrequencies.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }
