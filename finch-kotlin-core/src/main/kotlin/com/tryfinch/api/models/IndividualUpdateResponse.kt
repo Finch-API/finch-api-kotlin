@@ -13,7 +13,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.toUnmodifiable
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
@@ -326,8 +326,8 @@ private constructor(
                 middleName,
                 lastName,
                 preferredName,
-                emails.map { it.toUnmodifiable() },
-                phoneNumbers.map { it.toUnmodifiable() },
+                emails.map { it.toImmutable() },
+                phoneNumbers.map { it.toImmutable() },
                 gender,
                 ethnicity,
                 dob,
@@ -335,7 +335,7 @@ private constructor(
                 encryptedSsn,
                 residence,
                 id,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -419,7 +419,7 @@ private constructor(
                 Email(
                     data,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -745,7 +745,7 @@ private constructor(
                 PhoneNumber(
                     data,
                     type,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
