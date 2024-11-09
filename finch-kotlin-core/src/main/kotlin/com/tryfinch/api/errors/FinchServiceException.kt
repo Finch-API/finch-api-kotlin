@@ -1,10 +1,10 @@
 package com.tryfinch.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.tryfinch.api.core.http.Headers
 
 abstract class FinchServiceException(
     private val statusCode: Int,
-    private val headers: ListMultimap<String, String>,
+    private val headers: Headers,
     private val body: String,
     private val error: FinchError,
     message: String = "$statusCode: $error",
@@ -13,7 +13,7 @@ abstract class FinchServiceException(
 
     fun statusCode(): Int = statusCode
 
-    fun headers(): ListMultimap<String, String> = headers
+    fun headers(): Headers = headers
 
     fun body(): String = body
 
