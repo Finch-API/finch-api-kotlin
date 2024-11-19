@@ -21,7 +21,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:1.11.0")
+implementation("com.tryfinch.api:finch-kotlin:1.12.0")
 ```
 
 #### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-kotlin:1.11.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>1.11.0</version>
+    <version>1.12.0</version>
 </dependency>
 ```
 
