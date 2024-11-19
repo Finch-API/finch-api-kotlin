@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.12.0 (2024-11-19)
+
+Full Changelog: [v1.11.0...v1.12.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.11.0...v1.12.0)
+
+### Features
+
+* **api:** api update ([#265](https://github.com/Finch-API/finch-api-kotlin/issues/265)) ([48f5d98](https://github.com/Finch-API/finch-api-kotlin/commit/48f5d9829e13dbe3561d9e3ce7ed0e346d8de5cc))
+
+
+### Chores
+
+* rebuild project due to codegen change ([#261](https://github.com/Finch-API/finch-api-kotlin/issues/261)) ([2f0254b](https://github.com/Finch-API/finch-api-kotlin/commit/2f0254b65cd322e09494d55eb99f311d8b099b27))
+* rebuild project due to codegen change ([#264](https://github.com/Finch-API/finch-api-kotlin/issues/264)) ([0d19b44](https://github.com/Finch-API/finch-api-kotlin/commit/0d19b44da53da385b507ec4b4d811292d34ff278))
+* rebuild project due to codegen change ([#266](https://github.com/Finch-API/finch-api-kotlin/issues/266)) ([9a8b47b](https://github.com/Finch-API/finch-api-kotlin/commit/9a8b47b794c2f2a1b09ebe3ec88dfdaef2f7b601))
+
 ## 1.11.0 (2024-11-01)
 
 Full Changelog: [v1.10.0...v1.11.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.10.0...v1.11.0)
