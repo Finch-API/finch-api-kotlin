@@ -288,17 +288,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Data && this.jobId == other.jobId && this.jobUrl == other.jobUrl && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Data && jobId == other.jobId && jobUrl == other.jobUrl && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(jobId, jobUrl, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(jobId, jobUrl, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Data{jobId=$jobId, jobUrl=$jobUrl, additionalProperties=$additionalProperties}"
@@ -317,7 +314,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is EventType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is EventType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -395,17 +392,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobCompletionEvent && this.connectionId == other.connectionId && this.companyId == other.companyId && this.accountId == other.accountId && this.eventType == other.eventType && this.data == other.data && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is JobCompletionEvent && connectionId == other.connectionId && companyId == other.companyId && accountId == other.accountId && eventType == other.eventType && data == other.data && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, accountId, eventType, data, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(connectionId, companyId, accountId, eventType, data, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "JobCompletionEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
