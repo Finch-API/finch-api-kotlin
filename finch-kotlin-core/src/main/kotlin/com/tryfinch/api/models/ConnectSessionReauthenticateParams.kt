@@ -38,6 +38,12 @@ constructor(
 
     fun redirectUri(): String? = redirectUri
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): ConnectSessionReauthenticateBody {
         return ConnectSessionReauthenticateBody(
             connectionId,
@@ -168,25 +174,6 @@ constructor(
             "ConnectSessionReauthenticateBody{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ConnectSessionReauthenticateParams && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ConnectSessionReauthenticateParams{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -207,15 +194,16 @@ constructor(
 
         internal fun from(connectSessionReauthenticateParams: ConnectSessionReauthenticateParams) =
             apply {
-                this.connectionId = connectSessionReauthenticateParams.connectionId
-                this.minutesToExpire = connectSessionReauthenticateParams.minutesToExpire
-                this.products(connectSessionReauthenticateParams.products ?: listOf())
-                this.redirectUri = connectSessionReauthenticateParams.redirectUri
-                additionalHeaders(connectSessionReauthenticateParams.additionalHeaders)
-                additionalQueryParams(connectSessionReauthenticateParams.additionalQueryParams)
-                additionalBodyProperties(
-                    connectSessionReauthenticateParams.additionalBodyProperties
-                )
+                connectionId = connectSessionReauthenticateParams.connectionId
+                minutesToExpire = connectSessionReauthenticateParams.minutesToExpire
+                products =
+                    connectSessionReauthenticateParams.products?.toMutableList() ?: mutableListOf()
+                redirectUri = connectSessionReauthenticateParams.redirectUri
+                additionalHeaders = connectSessionReauthenticateParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    connectSessionReauthenticateParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    connectSessionReauthenticateParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The ID of the existing connection to reauthenticate */
@@ -364,7 +352,7 @@ constructor(
             ConnectSessionReauthenticateParams(
                 checkNotNull(connectionId) { "`connectionId` is required but was not set" },
                 minutesToExpire,
-                if (products.size == 0) null else products.toImmutable(),
+                products.toImmutable().ifEmpty { null },
                 redirectUri,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -464,4 +452,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ConnectSessionReauthenticateParams && connectionId == other.connectionId && minutesToExpire == other.minutesToExpire && products == other.products && redirectUri == other.redirectUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(connectionId, minutesToExpire, products, redirectUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ConnectSessionReauthenticateParams{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

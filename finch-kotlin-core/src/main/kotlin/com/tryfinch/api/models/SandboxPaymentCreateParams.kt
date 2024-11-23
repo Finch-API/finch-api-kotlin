@@ -35,6 +35,12 @@ constructor(
 
     fun startDate(): String? = startDate
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): SandboxPaymentCreateBody {
         return SandboxPaymentCreateBody(
             endDate,
@@ -145,25 +151,6 @@ constructor(
             "SandboxPaymentCreateBody{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxPaymentCreateParams && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, payStatements, startDate, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxPaymentCreateParams{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -182,12 +169,14 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxPaymentCreateParams: SandboxPaymentCreateParams) = apply {
-            this.endDate = sandboxPaymentCreateParams.endDate
-            this.payStatements(sandboxPaymentCreateParams.payStatements ?: listOf())
-            this.startDate = sandboxPaymentCreateParams.startDate
-            additionalHeaders(sandboxPaymentCreateParams.additionalHeaders)
-            additionalQueryParams(sandboxPaymentCreateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxPaymentCreateParams.additionalBodyProperties)
+            endDate = sandboxPaymentCreateParams.endDate
+            payStatements =
+                sandboxPaymentCreateParams.payStatements?.toMutableList() ?: mutableListOf()
+            startDate = sandboxPaymentCreateParams.startDate
+            additionalHeaders = sandboxPaymentCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxPaymentCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun endDate(endDate: String) = apply { this.endDate = endDate }
@@ -326,7 +315,7 @@ constructor(
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
                 endDate,
-                if (payStatements.size == 0) null else payStatements.toImmutable(),
+                payStatements.toImmutable().ifEmpty { null },
                 startDate,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -1280,4 +1269,17 @@ constructor(
         override fun toString() =
             "PayStatement{individualId=$individualId, type=$type, paymentMethod=$paymentMethod, totalHours=$totalHours, grossPay=$grossPay, netPay=$netPay, earnings=$earnings, taxes=$taxes, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxPaymentCreateParams && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, payStatements, startDate, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxPaymentCreateParams{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
