@@ -17,6 +17,12 @@ constructor(
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): Map<String, JsonValue>? {
         return additionalBodyProperties.ifEmpty { null }
     }
@@ -24,25 +30,6 @@ constructor(
     internal fun getHeaders(): Headers = additionalHeaders
 
     internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is AccountDisconnectParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "AccountDisconnectParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -59,9 +46,10 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(accountDisconnectParams: AccountDisconnectParams) = apply {
-            additionalHeaders(accountDisconnectParams.additionalHeaders)
-            additionalQueryParams(accountDisconnectParams.additionalQueryParams)
-            additionalBodyProperties(accountDisconnectParams.additionalBodyProperties)
+            additionalHeaders = accountDisconnectParams.additionalHeaders.toBuilder()
+            additionalQueryParams = accountDisconnectParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                accountDisconnectParams.additionalBodyProperties.toMutableMap()
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -191,4 +179,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is AccountDisconnectParams && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "AccountDisconnectParams{additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

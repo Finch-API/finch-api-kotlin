@@ -40,6 +40,10 @@ constructor(
 
     fun w4DataSync(): W4DataSync? = w4DataSync
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     internal fun getBody(): JobAutomatedCreateBody {
         return JobAutomatedCreateBody(dataSyncAll, w4DataSync)
     }
@@ -158,23 +162,6 @@ constructor(
         }
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4DataSync=$w4DataSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -191,10 +178,10 @@ constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(jobAutomatedCreateParams: JobAutomatedCreateParams) = apply {
-            this.dataSyncAll = jobAutomatedCreateParams.dataSyncAll
-            this.w4DataSync = jobAutomatedCreateParams.w4DataSync
-            additionalHeaders(jobAutomatedCreateParams.additionalHeaders)
-            additionalQueryParams(jobAutomatedCreateParams.additionalQueryParams)
+            dataSyncAll = jobAutomatedCreateParams.dataSyncAll
+            w4DataSync = jobAutomatedCreateParams.w4DataSync
+            additionalHeaders = jobAutomatedCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
         fun forDataSyncAll(dataSyncAll: DataSyncAll) = apply {
@@ -574,4 +561,17 @@ constructor(
         override fun toString() =
             "W4DataSync{type=$type, individualId=$individualId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is JobAutomatedCreateParams && dataSyncAll == other.dataSyncAll && w4DataSync == other.w4DataSync && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(dataSyncAll, w4DataSync, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "JobAutomatedCreateParams{dataSyncAll=$dataSyncAll, w4DataSync=$w4DataSync, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

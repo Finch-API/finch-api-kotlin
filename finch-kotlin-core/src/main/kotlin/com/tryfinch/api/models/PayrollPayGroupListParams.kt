@@ -21,6 +21,10 @@ constructor(
 
     fun payFrequencies(): List<String>? = payFrequencies
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     internal fun getHeaders(): Headers = additionalHeaders
 
     internal fun getQueryParams(): QueryParams {
@@ -30,23 +34,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -64,10 +51,11 @@ constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(payrollPayGroupListParams: PayrollPayGroupListParams) = apply {
-            this.individualId = payrollPayGroupListParams.individualId
-            this.payFrequencies(payrollPayGroupListParams.payFrequencies ?: listOf())
-            additionalHeaders(payrollPayGroupListParams.additionalHeaders)
-            additionalQueryParams(payrollPayGroupListParams.additionalQueryParams)
+            individualId = payrollPayGroupListParams.individualId
+            payFrequencies =
+                payrollPayGroupListParams.payFrequencies?.toMutableList() ?: mutableListOf()
+            additionalHeaders = payrollPayGroupListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = payrollPayGroupListParams.additionalQueryParams.toBuilder()
         }
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
@@ -180,9 +168,22 @@ constructor(
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
                 individualId,
-                if (payFrequencies.size == 0) null else payFrequencies.toImmutable(),
+                payFrequencies.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
