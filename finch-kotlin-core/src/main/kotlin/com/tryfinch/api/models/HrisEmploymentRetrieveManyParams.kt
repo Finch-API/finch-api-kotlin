@@ -25,6 +25,12 @@ constructor(
 
     fun requests(): List<Request> = requests
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): HrisEmploymentRetrieveManyBody {
         return HrisEmploymentRetrieveManyBody(requests, additionalBodyProperties)
     }
@@ -111,25 +117,6 @@ constructor(
             "HrisEmploymentRetrieveManyBody{requests=$requests, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisEmploymentRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -147,10 +134,12 @@ constructor(
 
         internal fun from(hrisEmploymentRetrieveManyParams: HrisEmploymentRetrieveManyParams) =
             apply {
-                this.requests(hrisEmploymentRetrieveManyParams.requests)
-                additionalHeaders(hrisEmploymentRetrieveManyParams.additionalHeaders)
-                additionalQueryParams(hrisEmploymentRetrieveManyParams.additionalQueryParams)
-                additionalBodyProperties(hrisEmploymentRetrieveManyParams.additionalBodyProperties)
+                requests = hrisEmploymentRetrieveManyParams.requests.toMutableList()
+                additionalHeaders = hrisEmploymentRetrieveManyParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    hrisEmploymentRetrieveManyParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    hrisEmploymentRetrieveManyParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The array of batch requests. */
@@ -284,7 +273,7 @@ constructor(
 
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
-                checkNotNull(requests) { "`requests` is required but was not set" }.toImmutable(),
+                requests.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -373,4 +362,17 @@ constructor(
         override fun toString() =
             "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisEmploymentRetrieveManyParams && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "HrisEmploymentRetrieveManyParams{requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
