@@ -37,6 +37,12 @@ constructor(
 
     fun params(): JsonValue? = params
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): RequestForwardingForwardBody {
         return RequestForwardingForwardBody(
             method,
@@ -201,25 +207,6 @@ constructor(
             "RequestForwardingForwardBody{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is RequestForwardingForwardParams && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "RequestForwardingForwardParams{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -240,14 +227,15 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(requestForwardingForwardParams: RequestForwardingForwardParams) = apply {
-            this.method = requestForwardingForwardParams.method
-            this.route = requestForwardingForwardParams.route
-            this.data = requestForwardingForwardParams.data
-            this.headers = requestForwardingForwardParams.headers
-            this.params = requestForwardingForwardParams.params
-            additionalHeaders(requestForwardingForwardParams.additionalHeaders)
-            additionalQueryParams(requestForwardingForwardParams.additionalQueryParams)
-            additionalBodyProperties(requestForwardingForwardParams.additionalBodyProperties)
+            method = requestForwardingForwardParams.method
+            route = requestForwardingForwardParams.route
+            data = requestForwardingForwardParams.data
+            headers = requestForwardingForwardParams.headers
+            params = requestForwardingForwardParams.params
+            additionalHeaders = requestForwardingForwardParams.additionalHeaders.toBuilder()
+            additionalQueryParams = requestForwardingForwardParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                requestForwardingForwardParams.additionalBodyProperties.toMutableMap()
         }
 
         /**
@@ -413,4 +401,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is RequestForwardingForwardParams && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(method, route, data, headers, params, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "RequestForwardingForwardParams{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

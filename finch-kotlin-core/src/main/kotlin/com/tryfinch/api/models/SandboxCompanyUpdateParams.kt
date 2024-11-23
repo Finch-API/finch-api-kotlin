@@ -50,6 +50,12 @@ constructor(
 
     fun primaryPhoneNumber(): String? = primaryPhoneNumber
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): SandboxCompanyUpdateBody {
         return SandboxCompanyUpdateBody(
             accounts,
@@ -220,25 +226,6 @@ constructor(
             "SandboxCompanyUpdateBody{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxCompanyUpdateParams && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accounts, departments, ein, entity, legalName, locations, primaryEmail, primaryPhoneNumber, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxCompanyUpdateParams{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -262,17 +249,18 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxCompanyUpdateParams: SandboxCompanyUpdateParams) = apply {
-            this.accounts(sandboxCompanyUpdateParams.accounts ?: listOf())
-            this.departments(sandboxCompanyUpdateParams.departments ?: listOf())
-            this.ein = sandboxCompanyUpdateParams.ein
-            this.entity = sandboxCompanyUpdateParams.entity
-            this.legalName = sandboxCompanyUpdateParams.legalName
-            this.locations(sandboxCompanyUpdateParams.locations ?: listOf())
-            this.primaryEmail = sandboxCompanyUpdateParams.primaryEmail
-            this.primaryPhoneNumber = sandboxCompanyUpdateParams.primaryPhoneNumber
-            additionalHeaders(sandboxCompanyUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxCompanyUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxCompanyUpdateParams.additionalBodyProperties)
+            accounts = sandboxCompanyUpdateParams.accounts?.toMutableList() ?: mutableListOf()
+            departments = sandboxCompanyUpdateParams.departments?.toMutableList() ?: mutableListOf()
+            ein = sandboxCompanyUpdateParams.ein
+            entity = sandboxCompanyUpdateParams.entity
+            legalName = sandboxCompanyUpdateParams.legalName
+            locations = sandboxCompanyUpdateParams.locations?.toMutableList() ?: mutableListOf()
+            primaryEmail = sandboxCompanyUpdateParams.primaryEmail
+            primaryPhoneNumber = sandboxCompanyUpdateParams.primaryPhoneNumber
+            additionalHeaders = sandboxCompanyUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = sandboxCompanyUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxCompanyUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -439,12 +427,12 @@ constructor(
 
         fun build(): SandboxCompanyUpdateParams =
             SandboxCompanyUpdateParams(
-                if (accounts.size == 0) null else accounts.toImmutable(),
-                if (departments.size == 0) null else departments.toImmutable(),
+                accounts.toImmutable().ifEmpty { null },
+                departments.toImmutable().ifEmpty { null },
                 ein,
                 entity,
                 legalName,
-                if (locations.size == 0) null else locations.toImmutable(),
+                locations.toImmutable().ifEmpty { null },
                 primaryEmail,
                 primaryPhoneNumber,
                 additionalHeaders.build(),
@@ -1027,4 +1015,17 @@ constructor(
         override fun toString() =
             "Entity{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxCompanyUpdateParams && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accounts, departments, ein, entity, legalName, locations, primaryEmail, primaryPhoneNumber, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxCompanyUpdateParams{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

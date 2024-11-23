@@ -28,6 +28,12 @@ constructor(
 
     fun requests(): List<Request>? = requests
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): HrisIndividualRetrieveManyBody {
         return HrisIndividualRetrieveManyBody(
             options,
@@ -123,25 +129,6 @@ constructor(
             "HrisIndividualRetrieveManyBody{options=$options, requests=$requests, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && options == other.options && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(options, requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisIndividualRetrieveManyParams{options=$options, requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -160,11 +147,14 @@ constructor(
 
         internal fun from(hrisIndividualRetrieveManyParams: HrisIndividualRetrieveManyParams) =
             apply {
-                this.options = hrisIndividualRetrieveManyParams.options
-                this.requests(hrisIndividualRetrieveManyParams.requests ?: listOf())
-                additionalHeaders(hrisIndividualRetrieveManyParams.additionalHeaders)
-                additionalQueryParams(hrisIndividualRetrieveManyParams.additionalQueryParams)
-                additionalBodyProperties(hrisIndividualRetrieveManyParams.additionalBodyProperties)
+                options = hrisIndividualRetrieveManyParams.options
+                requests =
+                    hrisIndividualRetrieveManyParams.requests?.toMutableList() ?: mutableListOf()
+                additionalHeaders = hrisIndividualRetrieveManyParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    hrisIndividualRetrieveManyParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    hrisIndividualRetrieveManyParams.additionalBodyProperties.toMutableMap()
             }
 
         fun options(options: Options) = apply { this.options = options }
@@ -299,7 +289,7 @@ constructor(
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
                 options,
-                if (requests.size == 0) null else requests.toImmutable(),
+                requests.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -444,4 +434,17 @@ constructor(
         override fun toString() =
             "Request{individualId=$individualId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && options == other.options && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(options, requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "HrisIndividualRetrieveManyParams{options=$options, requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

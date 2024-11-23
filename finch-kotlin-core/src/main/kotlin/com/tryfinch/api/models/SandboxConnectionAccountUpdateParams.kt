@@ -25,6 +25,12 @@ constructor(
 
     fun connectionStatus(): ConnectionStatusType? = connectionStatus
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): SandboxConnectionAccountUpdateBody {
         return SandboxConnectionAccountUpdateBody(connectionStatus, additionalBodyProperties)
     }
@@ -111,25 +117,6 @@ constructor(
             "SandboxConnectionAccountUpdateBody{connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is SandboxConnectionAccountUpdateParams && connectionStatus == other.connectionStatus && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(connectionStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "SandboxConnectionAccountUpdateParams{connectionStatus=$connectionStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -148,10 +135,12 @@ constructor(
         internal fun from(
             sandboxConnectionAccountUpdateParams: SandboxConnectionAccountUpdateParams
         ) = apply {
-            this.connectionStatus = sandboxConnectionAccountUpdateParams.connectionStatus
-            additionalHeaders(sandboxConnectionAccountUpdateParams.additionalHeaders)
-            additionalQueryParams(sandboxConnectionAccountUpdateParams.additionalQueryParams)
-            additionalBodyProperties(sandboxConnectionAccountUpdateParams.additionalBodyProperties)
+            connectionStatus = sandboxConnectionAccountUpdateParams.connectionStatus
+            additionalHeaders = sandboxConnectionAccountUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                sandboxConnectionAccountUpdateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                sandboxConnectionAccountUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
@@ -286,4 +275,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is SandboxConnectionAccountUpdateParams && connectionStatus == other.connectionStatus && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(connectionStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "SandboxConnectionAccountUpdateParams{connectionStatus=$connectionStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

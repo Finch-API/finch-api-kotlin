@@ -28,6 +28,12 @@ constructor(
 
     fun individualIds(): List<String>? = individualIds
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     internal fun getBody(): HrisBenefitIndividualUnenrollManyBody {
         return HrisBenefitIndividualUnenrollManyBody(individualIds, additionalBodyProperties)
     }
@@ -122,25 +128,6 @@ constructor(
             "HrisBenefitIndividualUnenrollManyBody{individualIds=$individualIds, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitIndividualUnenrollManyParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -160,13 +147,16 @@ constructor(
         internal fun from(
             hrisBenefitIndividualUnenrollManyParams: HrisBenefitIndividualUnenrollManyParams
         ) = apply {
-            this.benefitId = hrisBenefitIndividualUnenrollManyParams.benefitId
-            this.individualIds(hrisBenefitIndividualUnenrollManyParams.individualIds ?: listOf())
-            additionalHeaders(hrisBenefitIndividualUnenrollManyParams.additionalHeaders)
-            additionalQueryParams(hrisBenefitIndividualUnenrollManyParams.additionalQueryParams)
-            additionalBodyProperties(
-                hrisBenefitIndividualUnenrollManyParams.additionalBodyProperties
-            )
+            benefitId = hrisBenefitIndividualUnenrollManyParams.benefitId
+            individualIds =
+                hrisBenefitIndividualUnenrollManyParams.individualIds?.toMutableList()
+                    ?: mutableListOf()
+            additionalHeaders =
+                hrisBenefitIndividualUnenrollManyParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                hrisBenefitIndividualUnenrollManyParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                hrisBenefitIndividualUnenrollManyParams.additionalBodyProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
@@ -303,10 +293,23 @@ constructor(
         fun build(): HrisBenefitIndividualUnenrollManyParams =
             HrisBenefitIndividualUnenrollManyParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                if (individualIds.size == 0) null else individualIds.toImmutable(),
+                individualIds.toImmutable().ifEmpty { null },
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitIndividualUnenrollManyParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
