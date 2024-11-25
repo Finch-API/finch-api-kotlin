@@ -53,7 +53,7 @@ class IndividualResponseTest {
                         .ssn("ssn")
                         .build()
                 )
-                .code(123L)
+                .code(0L)
                 .individualId("individual_id")
                 .build()
         assertThat(individualResponse).isNotNull
@@ -100,7 +100,7 @@ class IndividualResponseTest {
                     .ssn("ssn")
                     .build()
             )
-        assertThat(individualResponse.code()).isEqualTo(123L)
+        assertThat(individualResponse.code()).isEqualTo(0L)
         assertThat(individualResponse.individualId()).isEqualTo("individual_id")
     }
 }

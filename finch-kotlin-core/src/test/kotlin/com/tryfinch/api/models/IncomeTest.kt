@@ -11,13 +11,13 @@ class IncomeTest {
     fun createIncome() {
         val income =
             Income.builder()
-                .amount(123L)
+                .amount(0L)
                 .currency("currency")
                 .effectiveDate("effective_date")
                 .unit(Income.Unit.YEARLY)
                 .build()
         assertThat(income).isNotNull
-        assertThat(income.amount()).isEqualTo(123L)
+        assertThat(income.amount()).isEqualTo(0L)
         assertThat(income.currency()).isEqualTo("currency")
         assertThat(income.effectiveDate()).isEqualTo("effective_date")
         assertThat(income.unit()).isEqualTo(Income.Unit.YEARLY)
