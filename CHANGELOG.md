@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.13.0 (2024-11-27)
+
+Full Changelog: [v1.12.1...v1.13.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.12.1...v1.13.0)
+
+### Features
+
+* **api:** api update ([#277](https://github.com/Finch-API/finch-api-kotlin/issues/277)) ([1bec0f7](https://github.com/Finch-API/finch-api-kotlin/commit/1bec0f7d6509cb6eeddb7c7ab5a0d340ff03eafc))
+* derive gpg release key's id via gpg itself ([#276](https://github.com/Finch-API/finch-api-kotlin/issues/276)) ([1d906a7](https://github.com/Finch-API/finch-api-kotlin/commit/1d906a73715f0fc9d6ca62fa261711b3d9be4cab))
+
+
+### Bug Fixes
+
+* remove reference to removed deps 'guava' ([9935b97](https://github.com/Finch-API/finch-api-kotlin/commit/9935b971d1b719d2e4b1a99e49d1cf2d3253bb7f))
+
+
+### Chores
+
+* **internal:** codegen related update ([#272](https://github.com/Finch-API/finch-api-kotlin/issues/272)) ([d19ffaa](https://github.com/Finch-API/finch-api-kotlin/commit/d19ffaad26b2982daa7d9a32b855da1761b265d1))
+* **internal:** update example values ([#274](https://github.com/Finch-API/finch-api-kotlin/issues/274)) ([5f56afa](https://github.com/Finch-API/finch-api-kotlin/commit/5f56afa28f1b3d98f037ac2641ab254dc21dcaae))
+* publish to maven central portal ([#275](https://github.com/Finch-API/finch-api-kotlin/issues/275)) ([51ee512](https://github.com/Finch-API/finch-api-kotlin/commit/51ee5127661be6b46480d204c8c8dd4788f30b37))
+
 ## 1.12.1 (2024-11-21)
 
 Full Changelog: [v1.12.0...v1.12.1](https://github.com/Finch-API/finch-api-kotlin/compare/v1.12.0...v1.12.1)
