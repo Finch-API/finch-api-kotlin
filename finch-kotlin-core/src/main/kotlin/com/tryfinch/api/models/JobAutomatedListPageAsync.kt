@@ -44,11 +44,7 @@ private constructor(
         "JobAutomatedListPageAsync{automatedService=$automatedService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        if (data().isEmpty()) {
-            return false
-        }
-
-        return (paging().offset() ?: 0) + data().count() < (paging().count() ?: Long.MAX_VALUE)
+        return !data().isEmpty()
     }
 
     fun getNextPageParams(): JobAutomatedListParams? {
