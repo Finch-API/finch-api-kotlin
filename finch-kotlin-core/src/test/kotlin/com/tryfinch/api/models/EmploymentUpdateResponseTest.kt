@@ -29,6 +29,7 @@ class EmploymentUpdateResponseTest {
                         .type(EmploymentUpdateResponse.Employment.Type.EMPLOYEE)
                         .build()
                 )
+                .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
                 .income(
@@ -89,6 +90,8 @@ class EmploymentUpdateResponseTest {
                     .type(EmploymentUpdateResponse.Employment.Type.EMPLOYEE)
                     .build()
             )
+        assertThat(employmentUpdateResponse.employmentStatus())
+            .isEqualTo(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
         assertThat(employmentUpdateResponse.endDate()).isEqualTo("end_date")
         assertThat(employmentUpdateResponse.firstName()).isEqualTo("first_name")
         assertThat(employmentUpdateResponse.income())
