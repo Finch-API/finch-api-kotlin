@@ -1976,6 +1976,7 @@ private constructor(
                     private val startDate: JsonField<Boolean>,
                     private val endDate: JsonField<Boolean>,
                     private val isActive: JsonField<Boolean>,
+                    private val employmentStatus: JsonField<Boolean>,
                     private val incomeHistory: JsonField<Boolean>,
                     private val classCode: JsonField<Boolean>,
                     private val customFields: JsonField<Boolean>,
@@ -2004,6 +2005,9 @@ private constructor(
                     fun endDate(): Boolean? = endDate.getNullable("end_date")
 
                     fun isActive(): Boolean? = isActive.getNullable("is_active")
+
+                    fun employmentStatus(): Boolean? =
+                        employmentStatus.getNullable("employment_status")
 
                     fun incomeHistory(): Boolean? = incomeHistory.getNullable("income_history")
 
@@ -2036,6 +2040,10 @@ private constructor(
                     @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
 
                     @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+
+                    @JsonProperty("employment_status")
+                    @ExcludeMissing
+                    fun _employmentStatus() = employmentStatus
 
                     @JsonProperty("income_history")
                     @ExcludeMissing
@@ -2071,6 +2079,7 @@ private constructor(
                             startDate()
                             endDate()
                             isActive()
+                            employmentStatus()
                             incomeHistory()
                             classCode()
                             customFields()
@@ -2100,6 +2109,7 @@ private constructor(
                         private var startDate: JsonField<Boolean> = JsonMissing.of()
                         private var endDate: JsonField<Boolean> = JsonMissing.of()
                         private var isActive: JsonField<Boolean> = JsonMissing.of()
+                        private var employmentStatus: JsonField<Boolean> = JsonMissing.of()
                         private var incomeHistory: JsonField<Boolean> = JsonMissing.of()
                         private var classCode: JsonField<Boolean> = JsonMissing.of()
                         private var customFields: JsonField<Boolean> = JsonMissing.of()
@@ -2121,6 +2131,7 @@ private constructor(
                                 this.startDate = supportedEmploymentFields.startDate
                                 this.endDate = supportedEmploymentFields.endDate
                                 this.isActive = supportedEmploymentFields.isActive
+                                this.employmentStatus = supportedEmploymentFields.employmentStatus
                                 this.incomeHistory = supportedEmploymentFields.incomeHistory
                                 this.classCode = supportedEmploymentFields.classCode
                                 this.customFields = supportedEmploymentFields.customFields
@@ -2188,6 +2199,15 @@ private constructor(
                         @ExcludeMissing
                         fun isActive(isActive: JsonField<Boolean>) = apply {
                             this.isActive = isActive
+                        }
+
+                        fun employmentStatus(employmentStatus: Boolean) =
+                            employmentStatus(JsonField.of(employmentStatus))
+
+                        @JsonProperty("employment_status")
+                        @ExcludeMissing
+                        fun employmentStatus(employmentStatus: JsonField<Boolean>) = apply {
+                            this.employmentStatus = employmentStatus
                         }
 
                         fun incomeHistory(incomeHistory: Boolean) =
@@ -2279,6 +2299,7 @@ private constructor(
                                 startDate,
                                 endDate,
                                 isActive,
+                                employmentStatus,
                                 incomeHistory,
                                 classCode,
                                 customFields,
@@ -2863,17 +2884,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedEmploymentFields && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && title == other.title && startDate == other.startDate && endDate == other.endDate && isActive == other.isActive && incomeHistory == other.incomeHistory && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && income == other.income && location == other.location && manager == other.manager && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedEmploymentFields && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && title == other.title && startDate == other.startDate && endDate == other.endDate && isActive == other.isActive && employmentStatus == other.employmentStatus && incomeHistory == other.incomeHistory && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && income == other.income && location == other.location && manager == other.manager && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, title, startDate, endDate, isActive, incomeHistory, classCode, customFields, department, employment, income, location, manager, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, title, startDate, endDate, isActive, employmentStatus, incomeHistory, classCode, customFields, department, employment, income, location, manager, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedEmploymentFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, startDate=$startDate, endDate=$endDate, isActive=$isActive, incomeHistory=$incomeHistory, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, income=$income, location=$location, manager=$manager, additionalProperties=$additionalProperties}"
+                        "SupportedEmploymentFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, startDate=$startDate, endDate=$endDate, isActive=$isActive, employmentStatus=$employmentStatus, incomeHistory=$incomeHistory, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, income=$income, location=$location, manager=$manager, additionalProperties=$additionalProperties}"
                 }
 
                 @JsonDeserialize(builder = SupportedIndividualFields.Builder::class)
