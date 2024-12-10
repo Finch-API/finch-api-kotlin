@@ -254,10 +254,10 @@ private constructor(
     class Code
     @JsonCreator
     private constructor(
-        private val value: JsonField<Int>,
+        private val value: JsonField<Long>,
     ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Int> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Long> = value
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -281,7 +281,7 @@ private constructor(
 
             val FORBIDDEN = Code(JsonField.of(403))
 
-            fun of(value: Int) = Code(JsonField.of(value))
+            fun of(value: Long) = Code(JsonField.of(value))
         }
 
         enum class Known {

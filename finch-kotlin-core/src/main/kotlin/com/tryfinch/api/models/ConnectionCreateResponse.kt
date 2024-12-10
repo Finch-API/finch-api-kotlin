@@ -28,6 +28,7 @@ private constructor(
     private val authenticationType: JsonField<AuthenticationType>,
     private val products: JsonField<List<String>>,
     private val accessToken: JsonField<String>,
+    private val tokenType: JsonField<String>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
@@ -52,6 +53,8 @@ private constructor(
 
     fun accessToken(): String = accessToken.getRequired("access_token")
 
+    fun tokenType(): String? = tokenType.getNullable("token_type")
+
     /** The ID of the new connection */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
 
@@ -72,6 +75,8 @@ private constructor(
 
     @JsonProperty("access_token") @ExcludeMissing fun _accessToken() = accessToken
 
+    @JsonProperty("token_type") @ExcludeMissing fun _tokenType() = tokenType
+
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -85,6 +90,7 @@ private constructor(
             authenticationType()
             products()
             accessToken()
+            tokenType()
             validated = true
         }
     }
@@ -105,6 +111,7 @@ private constructor(
         private var authenticationType: JsonField<AuthenticationType> = JsonMissing.of()
         private var products: JsonField<List<String>> = JsonMissing.of()
         private var accessToken: JsonField<String> = JsonMissing.of()
+        private var tokenType: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(connectionCreateResponse: ConnectionCreateResponse) = apply {
@@ -115,6 +122,7 @@ private constructor(
             this.authenticationType = connectionCreateResponse.authenticationType
             this.products = connectionCreateResponse.products
             this.accessToken = connectionCreateResponse.accessToken
+            this.tokenType = connectionCreateResponse.tokenType
             additionalProperties(connectionCreateResponse.additionalProperties)
         }
 
@@ -173,6 +181,12 @@ private constructor(
         @ExcludeMissing
         fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
 
+        fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
+
+        @JsonProperty("token_type")
+        @ExcludeMissing
+        fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             this.additionalProperties.putAll(additionalProperties)
@@ -196,6 +210,7 @@ private constructor(
                 authenticationType,
                 products.map { it.toImmutable() },
                 accessToken,
+                tokenType,
                 additionalProperties.toImmutable(),
             )
     }
@@ -274,15 +289,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ConnectionCreateResponse && connectionId == other.connectionId && companyId == other.companyId && providerId == other.providerId && accountId == other.accountId && authenticationType == other.authenticationType && products == other.products && accessToken == other.accessToken && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ConnectionCreateResponse && connectionId == other.connectionId && companyId == other.companyId && providerId == other.providerId && accountId == other.accountId && authenticationType == other.authenticationType && products == other.products && accessToken == other.accessToken && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, providerId, accountId, authenticationType, products, accessToken, tokenType, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ConnectionCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, additionalProperties=$additionalProperties}"
+        "ConnectionCreateResponse{connectionId=$connectionId, companyId=$companyId, providerId=$providerId, accountId=$accountId, authenticationType=$authenticationType, products=$products, accessToken=$accessToken, tokenType=$tokenType, additionalProperties=$additionalProperties}"
 }

@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.0 (2024-12-10)
+
+Full Changelog: [v1.13.0...v2.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.13.0...v2.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** numeric enum member type ([#283](https://github.com/Finch-API/finch-api-kotlin/issues/283))
+
+### Features
+
+* **api:** api update ([#281](https://github.com/Finch-API/finch-api-kotlin/issues/281)) ([7312af9](https://github.com/Finch-API/finch-api-kotlin/commit/7312af979a060c0be68609edc79b4beb3e585320))
+* **api:** api update ([#282](https://github.com/Finch-API/finch-api-kotlin/issues/282)) ([e69c17b](https://github.com/Finch-API/finch-api-kotlin/commit/e69c17b98e316b46a5bbffadc2fe01a75e6901d6))
+
+
+### Bug Fixes
+
+* **client:** numeric enum member type ([#283](https://github.com/Finch-API/finch-api-kotlin/issues/283)) ([fc2c7b1](https://github.com/Finch-API/finch-api-kotlin/commit/fc2c7b14eb243c59f9074aee114d37a1252fde7a))
+
+
+### Chores
+
+* **internal:** codegen related update ([#279](https://github.com/Finch-API/finch-api-kotlin/issues/279)) ([d452c47](https://github.com/Finch-API/finch-api-kotlin/commit/d452c47a35484d4b507ca48e66cf3d0957b86f58))
+
 ## 1.13.0 (2024-11-27)
 
 Full Changelog: [v1.12.1...v1.13.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.12.1...v1.13.0)
