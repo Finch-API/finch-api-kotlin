@@ -382,21 +382,21 @@ constructor(
 
         companion object {
 
-            val COMPANY = ConnectProducts(JsonField.of("company"))
+            val COMPANY = of("company")
 
-            val DIRECTORY = ConnectProducts(JsonField.of("directory"))
+            val DIRECTORY = of("directory")
 
-            val INDIVIDUAL = ConnectProducts(JsonField.of("individual"))
+            val INDIVIDUAL = of("individual")
 
-            val EMPLOYMENT = ConnectProducts(JsonField.of("employment"))
+            val EMPLOYMENT = of("employment")
 
-            val PAYMENT = ConnectProducts(JsonField.of("payment"))
+            val PAYMENT = of("payment")
 
-            val PAY_STATEMENT = ConnectProducts(JsonField.of("pay_statement"))
+            val PAY_STATEMENT = of("pay_statement")
 
-            val BENEFITS = ConnectProducts(JsonField.of("benefits"))
+            val BENEFITS = of("benefits")
 
-            val SSN = ConnectProducts(JsonField.of("ssn"))
+            val SSN = of("ssn")
 
             fun of(value: String) = ConnectProducts(JsonField.of(value))
         }

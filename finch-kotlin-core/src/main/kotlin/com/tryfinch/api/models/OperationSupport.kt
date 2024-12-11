@@ -30,13 +30,13 @@ private constructor(
 
     companion object {
 
-        val SUPPORTED = OperationSupport(JsonField.of("supported"))
+        val SUPPORTED = of("supported")
 
-        val NOT_SUPPORTED_BY_FINCH = OperationSupport(JsonField.of("not_supported_by_finch"))
+        val NOT_SUPPORTED_BY_FINCH = of("not_supported_by_finch")
 
-        val NOT_SUPPORTED_BY_PROVIDER = OperationSupport(JsonField.of("not_supported_by_provider"))
+        val NOT_SUPPORTED_BY_PROVIDER = of("not_supported_by_provider")
 
-        val CLIENT_ACCESS_ONLY = OperationSupport(JsonField.of("client_access_only"))
+        val CLIENT_ACCESS_ONLY = of("client_access_only")
 
         fun of(value: String) = OperationSupport(JsonField.of(value))
     }

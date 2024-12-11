@@ -126,13 +126,13 @@ private constructor(
 
         companion object {
 
-            val COMPLETE = CompletionStatus(JsonField.of("complete"))
+            val COMPLETE = of("complete")
 
-            val REAUTH_ERROR = CompletionStatus(JsonField.of("reauth_error"))
+            val REAUTH_ERROR = of("reauth_error")
 
-            val PERMISSIONS_ERROR = CompletionStatus(JsonField.of("permissions_error"))
+            val PERMISSIONS_ERROR = of("permissions_error")
 
-            val ERROR = CompletionStatus(JsonField.of("error"))
+            val ERROR = of("error")
 
             fun of(value: String) = CompletionStatus(JsonField.of(value))
         }
@@ -195,7 +195,7 @@ private constructor(
 
         companion object {
 
-            val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            val DATA_SYNC_ALL = of("data_sync_all")
 
             fun of(value: String) = Type(JsonField.of(value))
         }

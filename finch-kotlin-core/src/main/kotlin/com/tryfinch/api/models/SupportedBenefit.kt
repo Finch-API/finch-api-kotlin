@@ -292,9 +292,9 @@ private constructor(
 
         companion object {
 
-            val FIXED = CompanyContribution(JsonField.of("fixed"))
+            val FIXED = of("fixed")
 
-            val PERCENT = CompanyContribution(JsonField.of("percent"))
+            val PERCENT = of("percent")
 
             fun of(value: String) = CompanyContribution(JsonField.of(value))
         }
@@ -349,9 +349,9 @@ private constructor(
 
         companion object {
 
-            val FIXED = EmployeeDeduction(JsonField.of("fixed"))
+            val FIXED = of("fixed")
 
-            val PERCENT = EmployeeDeduction(JsonField.of("percent"))
+            val PERCENT = of("percent")
 
             fun of(value: String) = EmployeeDeduction(JsonField.of(value))
         }
@@ -406,9 +406,9 @@ private constructor(
 
         companion object {
 
-            val INDIVIDUAL = HsaContributionLimit(JsonField.of("individual"))
+            val INDIVIDUAL = of("individual")
 
-            val FAMILY = HsaContributionLimit(JsonField.of("family"))
+            val FAMILY = of("family")
 
             fun of(value: String) = HsaContributionLimit(JsonField.of(value))
         }

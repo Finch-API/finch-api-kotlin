@@ -764,17 +764,17 @@ private constructor(
 
             companion object {
 
-                val FULL_TIME = Subtype(JsonField.of("full_time"))
+                val FULL_TIME = of("full_time")
 
-                val INTERN = Subtype(JsonField.of("intern"))
+                val INTERN = of("intern")
 
-                val PART_TIME = Subtype(JsonField.of("part_time"))
+                val PART_TIME = of("part_time")
 
-                val TEMP = Subtype(JsonField.of("temp"))
+                val TEMP = of("temp")
 
-                val SEASONAL = Subtype(JsonField.of("seasonal"))
+                val SEASONAL = of("seasonal")
 
-                val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
+                val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
 
                 fun of(value: String) = Subtype(JsonField.of(value))
             }
@@ -845,9 +845,9 @@ private constructor(
 
             companion object {
 
-                val EMPLOYEE = Type(JsonField.of("employee"))
+                val EMPLOYEE = of("employee")
 
-                val CONTRACTOR = Type(JsonField.of("contractor"))
+                val CONTRACTOR = of("contractor")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -920,19 +920,19 @@ private constructor(
 
         companion object {
 
-            val ACTIVE = EmploymentStatus(JsonField.of("active"))
+            val ACTIVE = of("active")
 
-            val DECEASED = EmploymentStatus(JsonField.of("deceased"))
+            val DECEASED = of("deceased")
 
-            val LEAVE = EmploymentStatus(JsonField.of("leave"))
+            val LEAVE = of("leave")
 
-            val ONBOARDING = EmploymentStatus(JsonField.of("onboarding"))
+            val ONBOARDING = of("onboarding")
 
-            val PREHIRE = EmploymentStatus(JsonField.of("prehire"))
+            val PREHIRE = of("prehire")
 
-            val RETIRED = EmploymentStatus(JsonField.of("retired"))
+            val RETIRED = of("retired")
 
-            val TERMINATED = EmploymentStatus(JsonField.of("terminated"))
+            val TERMINATED = of("terminated")
 
             fun of(value: String) = EmploymentStatus(JsonField.of(value))
         }

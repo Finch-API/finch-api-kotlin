@@ -302,11 +302,11 @@ private constructor(
 
         companion object {
 
-            val INDIVIDUAL_CREATED = EventType(JsonField.of("individual.created"))
+            val INDIVIDUAL_CREATED = of("individual.created")
 
-            val INDIVIDUAL_UPDATED = EventType(JsonField.of("individual.updated"))
+            val INDIVIDUAL_UPDATED = of("individual.updated")
 
-            val INDIVIDUAL_DELETED = EventType(JsonField.of("individual.deleted"))
+            val INDIVIDUAL_DELETED = of("individual.deleted")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }

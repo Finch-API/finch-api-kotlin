@@ -294,7 +294,7 @@ constructor(
 
         companion object {
 
-            val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            val DATA_SYNC_ALL = of("data_sync_all")
 
             fun of(value: String) = Type(JsonField.of(value))
         }

@@ -281,7 +281,7 @@ private constructor(
 
         companion object {
 
-            val COMPANY_UPDATED = EventType(JsonField.of("company.updated"))
+            val COMPANY_UPDATED = of("company.updated")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }
