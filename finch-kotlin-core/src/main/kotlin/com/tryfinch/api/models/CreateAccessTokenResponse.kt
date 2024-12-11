@@ -324,11 +324,11 @@ private constructor(
 
         companion object {
 
-            val PRODUCTION = ClientType(JsonField.of("production"))
+            val PRODUCTION = of("production")
 
-            val DEVELOPMENT = ClientType(JsonField.of("development"))
+            val DEVELOPMENT = of("development")
 
-            val SANDBOX = ClientType(JsonField.of("sandbox"))
+            val SANDBOX = of("sandbox")
 
             fun of(value: String) = ClientType(JsonField.of(value))
         }
@@ -387,9 +387,9 @@ private constructor(
 
         companion object {
 
-            val PROVIDER = ConnectionType(JsonField.of("provider"))
+            val PROVIDER = of("provider")
 
-            val FINCH = ConnectionType(JsonField.of("finch"))
+            val FINCH = of("finch")
 
             fun of(value: String) = ConnectionType(JsonField.of(value))
         }

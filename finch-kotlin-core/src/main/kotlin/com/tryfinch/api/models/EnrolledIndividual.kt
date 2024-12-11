@@ -273,13 +273,13 @@ private constructor(
 
         companion object {
 
-            val OK = Code(JsonField.of(200))
+            val OK = of(200)
 
-            val CREATED = Code(JsonField.of(201))
+            val CREATED = of(201)
 
-            val NOT_FOUND = Code(JsonField.of(404))
+            val NOT_FOUND = of(404)
 
-            val FORBIDDEN = Code(JsonField.of(403))
+            val FORBIDDEN = of(403)
 
             fun of(value: Long) = Code(JsonField.of(value))
         }

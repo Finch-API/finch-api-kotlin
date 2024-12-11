@@ -131,9 +131,9 @@ private constructor(
 
         companion object {
 
-            val FIXED = Type(JsonField.of("fixed"))
+            val FIXED = of("fixed")
 
-            val PERCENT = Type(JsonField.of("percent"))
+            val PERCENT = of("percent")
 
             fun of(value: String) = Type(JsonField.of(value))
         }

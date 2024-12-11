@@ -5204,15 +5204,15 @@ private constructor(
 
                 companion object {
 
-                    val ASSISTED = Type(JsonField.of("assisted"))
+                    val ASSISTED = of("assisted")
 
-                    val CREDENTIAL = Type(JsonField.of("credential"))
+                    val CREDENTIAL = of("credential")
 
-                    val API_TOKEN = Type(JsonField.of("api_token"))
+                    val API_TOKEN = of("api_token")
 
-                    val API_CREDENTIAL = Type(JsonField.of("api_credential"))
+                    val API_CREDENTIAL = of("api_credential")
 
-                    val OAUTH = Type(JsonField.of("oauth"))
+                    val OAUTH = of("oauth")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -5315,7 +5315,7 @@ private constructor(
 
         companion object {
 
-            val ACCOUNT_UPDATED = EventType(JsonField.of("account.updated"))
+            val ACCOUNT_UPDATED = of("account.updated")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }

@@ -384,13 +384,13 @@ constructor(
 
         companion object {
 
-            val CREDENTIAL = AuthenticationType(JsonField.of("credential"))
+            val CREDENTIAL = of("credential")
 
-            val API_TOKEN = AuthenticationType(JsonField.of("api_token"))
+            val API_TOKEN = of("api_token")
 
-            val OAUTH = AuthenticationType(JsonField.of("oauth"))
+            val OAUTH = of("oauth")
 
-            val ASSISTED = AuthenticationType(JsonField.of("assisted"))
+            val ASSISTED = of("assisted")
 
             fun of(value: String) = AuthenticationType(JsonField.of(value))
         }
