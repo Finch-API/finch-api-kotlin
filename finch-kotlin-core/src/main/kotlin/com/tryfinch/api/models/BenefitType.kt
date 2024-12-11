@@ -30,43 +30,43 @@ private constructor(
 
     companion object {
 
-        val _401K = BenefitType(JsonField.of("401k"))
+        val _401K = of("401k")
 
-        val _401K_ROTH = BenefitType(JsonField.of("401k_roth"))
+        val _401K_ROTH = of("401k_roth")
 
-        val _401K_LOAN = BenefitType(JsonField.of("401k_loan"))
+        val _401K_LOAN = of("401k_loan")
 
-        val _403B = BenefitType(JsonField.of("403b"))
+        val _403B = of("403b")
 
-        val _403B_ROTH = BenefitType(JsonField.of("403b_roth"))
+        val _403B_ROTH = of("403b_roth")
 
-        val _457 = BenefitType(JsonField.of("457"))
+        val _457 = of("457")
 
-        val _457_ROTH = BenefitType(JsonField.of("457_roth"))
+        val _457_ROTH = of("457_roth")
 
-        val S125_MEDICAL = BenefitType(JsonField.of("s125_medical"))
+        val S125_MEDICAL = of("s125_medical")
 
-        val S125_DENTAL = BenefitType(JsonField.of("s125_dental"))
+        val S125_DENTAL = of("s125_dental")
 
-        val S125_VISION = BenefitType(JsonField.of("s125_vision"))
+        val S125_VISION = of("s125_vision")
 
-        val HSA_PRE = BenefitType(JsonField.of("hsa_pre"))
+        val HSA_PRE = of("hsa_pre")
 
-        val HSA_POST = BenefitType(JsonField.of("hsa_post"))
+        val HSA_POST = of("hsa_post")
 
-        val FSA_MEDICAL = BenefitType(JsonField.of("fsa_medical"))
+        val FSA_MEDICAL = of("fsa_medical")
 
-        val FSA_DEPENDENT_CARE = BenefitType(JsonField.of("fsa_dependent_care"))
+        val FSA_DEPENDENT_CARE = of("fsa_dependent_care")
 
-        val SIMPLE_IRA = BenefitType(JsonField.of("simple_ira"))
+        val SIMPLE_IRA = of("simple_ira")
 
-        val SIMPLE = BenefitType(JsonField.of("simple"))
+        val SIMPLE = of("simple")
 
-        val COMMUTER = BenefitType(JsonField.of("commuter"))
+        val COMMUTER = of("commuter")
 
-        val CUSTOM_POST_TAX = BenefitType(JsonField.of("custom_post_tax"))
+        val CUSTOM_POST_TAX = of("custom_post_tax")
 
-        val CUSTOM_PRE_TAX = BenefitType(JsonField.of("custom_pre_tax"))
+        val CUSTOM_PRE_TAX = of("custom_pre_tax")
 
         fun of(value: String) = BenefitType(JsonField.of(value))
     }

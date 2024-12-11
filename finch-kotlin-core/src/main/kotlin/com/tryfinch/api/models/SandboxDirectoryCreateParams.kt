@@ -838,9 +838,9 @@ constructor(
 
                 companion object {
 
-                    val WORK = Type(JsonField.of("work"))
+                    val WORK = of("work")
 
-                    val PERSONAL = Type(JsonField.of("personal"))
+                    val PERSONAL = of("personal")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -988,17 +988,17 @@ constructor(
 
                 companion object {
 
-                    val FULL_TIME = Subtype(JsonField.of("full_time"))
+                    val FULL_TIME = of("full_time")
 
-                    val INTERN = Subtype(JsonField.of("intern"))
+                    val INTERN = of("intern")
 
-                    val PART_TIME = Subtype(JsonField.of("part_time"))
+                    val PART_TIME = of("part_time")
 
-                    val TEMP = Subtype(JsonField.of("temp"))
+                    val TEMP = of("temp")
 
-                    val SEASONAL = Subtype(JsonField.of("seasonal"))
+                    val SEASONAL = of("seasonal")
 
-                    val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
+                    val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
 
                     fun of(value: String) = Subtype(JsonField.of(value))
                 }
@@ -1069,9 +1069,9 @@ constructor(
 
                 companion object {
 
-                    val EMPLOYEE = Type(JsonField.of("employee"))
+                    val EMPLOYEE = of("employee")
 
-                    val CONTRACTOR = Type(JsonField.of("contractor"))
+                    val CONTRACTOR = of("contractor")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -1144,19 +1144,19 @@ constructor(
 
             companion object {
 
-                val ACTIVE = EmploymentStatus(JsonField.of("active"))
+                val ACTIVE = of("active")
 
-                val DECEASED = EmploymentStatus(JsonField.of("deceased"))
+                val DECEASED = of("deceased")
 
-                val LEAVE = EmploymentStatus(JsonField.of("leave"))
+                val LEAVE = of("leave")
 
-                val ONBOARDING = EmploymentStatus(JsonField.of("onboarding"))
+                val ONBOARDING = of("onboarding")
 
-                val PREHIRE = EmploymentStatus(JsonField.of("prehire"))
+                val PREHIRE = of("prehire")
 
-                val RETIRED = EmploymentStatus(JsonField.of("retired"))
+                val RETIRED = of("retired")
 
-                val TERMINATED = EmploymentStatus(JsonField.of("terminated"))
+                val TERMINATED = of("terminated")
 
                 fun of(value: String) = EmploymentStatus(JsonField.of(value))
             }
@@ -1231,23 +1231,21 @@ constructor(
 
             companion object {
 
-                val ASIAN = Ethnicity(JsonField.of("asian"))
+                val ASIAN = of("asian")
 
-                val WHITE = Ethnicity(JsonField.of("white"))
+                val WHITE = of("white")
 
-                val BLACK_OR_AFRICAN_AMERICAN = Ethnicity(JsonField.of("black_or_african_american"))
+                val BLACK_OR_AFRICAN_AMERICAN = of("black_or_african_american")
 
-                val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER =
-                    Ethnicity(JsonField.of("native_hawaiian_or_pacific_islander"))
+                val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER = of("native_hawaiian_or_pacific_islander")
 
-                val AMERICAN_INDIAN_OR_ALASKA_NATIVE =
-                    Ethnicity(JsonField.of("american_indian_or_alaska_native"))
+                val AMERICAN_INDIAN_OR_ALASKA_NATIVE = of("american_indian_or_alaska_native")
 
-                val HISPANIC_OR_LATINO = Ethnicity(JsonField.of("hispanic_or_latino"))
+                val HISPANIC_OR_LATINO = of("hispanic_or_latino")
 
-                val TWO_OR_MORE_RACES = Ethnicity(JsonField.of("two_or_more_races"))
+                val TWO_OR_MORE_RACES = of("two_or_more_races")
 
-                val DECLINE_TO_SPECIFY = Ethnicity(JsonField.of("decline_to_specify"))
+                val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
                 fun of(value: String) = Ethnicity(JsonField.of(value))
             }
@@ -1326,13 +1324,13 @@ constructor(
 
             companion object {
 
-                val FEMALE = Gender(JsonField.of("female"))
+                val FEMALE = of("female")
 
-                val MALE = Gender(JsonField.of("male"))
+                val MALE = of("male")
 
-                val OTHER = Gender(JsonField.of("other"))
+                val OTHER = of("other")
 
-                val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
+                val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
                 fun of(value: String) = Gender(JsonField.of(value))
             }
@@ -1529,9 +1527,9 @@ constructor(
 
                 companion object {
 
-                    val WORK = Type(JsonField.of("work"))
+                    val WORK = of("work")
 
-                    val PERSONAL = Type(JsonField.of("personal"))
+                    val PERSONAL = of("personal")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }

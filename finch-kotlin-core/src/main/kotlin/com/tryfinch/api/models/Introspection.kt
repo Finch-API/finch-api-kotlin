@@ -727,15 +727,15 @@ private constructor(
 
             companion object {
 
-                val ASSISTED = Type(JsonField.of("assisted"))
+                val ASSISTED = of("assisted")
 
-                val CREDENTIAL = Type(JsonField.of("credential"))
+                val CREDENTIAL = of("credential")
 
-                val API_TOKEN = Type(JsonField.of("api_token"))
+                val API_TOKEN = of("api_token")
 
-                val API_CREDENTIAL = Type(JsonField.of("api_credential"))
+                val API_CREDENTIAL = of("api_credential")
 
-                val OAUTH = Type(JsonField.of("oauth"))
+                val OAUTH = of("oauth")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -820,11 +820,11 @@ private constructor(
 
         companion object {
 
-            val PRODUCTION = ClientType(JsonField.of("production"))
+            val PRODUCTION = of("production")
 
-            val DEVELOPMENT = ClientType(JsonField.of("development"))
+            val DEVELOPMENT = of("development")
 
-            val SANDBOX = ClientType(JsonField.of("sandbox"))
+            val SANDBOX = of("sandbox")
 
             fun of(value: String) = ClientType(JsonField.of(value))
         }
@@ -985,9 +985,9 @@ private constructor(
 
         companion object {
 
-            val PROVIDER = ConnectionType(JsonField.of("provider"))
+            val PROVIDER = of("provider")
 
-            val FINCH = ConnectionType(JsonField.of("finch"))
+            val FINCH = of("finch")
 
             fun of(value: String) = ConnectionType(JsonField.of(value))
         }

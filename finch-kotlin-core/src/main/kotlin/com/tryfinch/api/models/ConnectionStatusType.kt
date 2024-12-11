@@ -30,17 +30,17 @@ private constructor(
 
     companion object {
 
-        val PENDING = ConnectionStatusType(JsonField.of("pending"))
+        val PENDING = of("pending")
 
-        val PROCESSING = ConnectionStatusType(JsonField.of("processing"))
+        val PROCESSING = of("processing")
 
-        val CONNECTED = ConnectionStatusType(JsonField.of("connected"))
+        val CONNECTED = of("connected")
 
-        val ERROR_NO_ACCOUNT_SETUP = ConnectionStatusType(JsonField.of("error_no_account_setup"))
+        val ERROR_NO_ACCOUNT_SETUP = of("error_no_account_setup")
 
-        val ERROR_PERMISSIONS = ConnectionStatusType(JsonField.of("error_permissions"))
+        val ERROR_PERMISSIONS = of("error_permissions")
 
-        val REAUTH = ConnectionStatusType(JsonField.of("reauth"))
+        val REAUTH = of("reauth")
 
         fun of(value: String) = ConnectionStatusType(JsonField.of(value))
     }

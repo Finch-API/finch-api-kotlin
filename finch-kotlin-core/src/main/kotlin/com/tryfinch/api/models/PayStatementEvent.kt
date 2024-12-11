@@ -325,11 +325,11 @@ private constructor(
 
         companion object {
 
-            val PAY_STATEMENT_CREATED = EventType(JsonField.of("pay_statement.created"))
+            val PAY_STATEMENT_CREATED = of("pay_statement.created")
 
-            val PAY_STATEMENT_UPDATED = EventType(JsonField.of("pay_statement.updated"))
+            val PAY_STATEMENT_UPDATED = of("pay_statement.updated")
 
-            val PAY_STATEMENT_DELETED = EventType(JsonField.of("pay_statement.deleted"))
+            val PAY_STATEMENT_DELETED = of("pay_statement.deleted")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }
