@@ -302,11 +302,11 @@ private constructor(
 
         companion object {
 
-            val DIRECTORY_CREATED = EventType(JsonField.of("directory.created"))
+            val DIRECTORY_CREATED = of("directory.created")
 
-            val DIRECTORY_UPDATED = EventType(JsonField.of("directory.updated"))
+            val DIRECTORY_UPDATED = of("directory.updated")
 
-            val DIRECTORY_DELETED = EventType(JsonField.of("directory.deleted"))
+            val DIRECTORY_DELETED = of("directory.deleted")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }

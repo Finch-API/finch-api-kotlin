@@ -274,17 +274,17 @@ private constructor(
 
         companion object {
 
-            val PENDING = Status(JsonField.of("pending"))
+            val PENDING = of("pending")
 
-            val IN_PROGRESS = Status(JsonField.of("in_progress"))
+            val IN_PROGRESS = of("in_progress")
 
-            val COMPLETE = Status(JsonField.of("complete"))
+            val COMPLETE = of("complete")
 
-            val ERROR = Status(JsonField.of("error"))
+            val ERROR = of("error")
 
-            val REAUTH_ERROR = Status(JsonField.of("reauth_error"))
+            val REAUTH_ERROR = of("reauth_error")
 
-            val PERMISSIONS_ERROR = Status(JsonField.of("permissions_error"))
+            val PERMISSIONS_ERROR = of("permissions_error")
 
             fun of(value: String) = Status(JsonField.of(value))
         }
@@ -355,7 +355,7 @@ private constructor(
 
         companion object {
 
-            val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            val DATA_SYNC_ALL = of("data_sync_all")
 
             fun of(value: String) = Type(JsonField.of(value))
         }

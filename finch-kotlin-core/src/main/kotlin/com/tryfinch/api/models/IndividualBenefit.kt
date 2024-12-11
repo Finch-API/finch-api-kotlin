@@ -314,9 +314,9 @@ private constructor(
 
             companion object {
 
-                val INDIVIDUAL = HsaContributionLimit(JsonField.of("individual"))
+                val INDIVIDUAL = of("individual")
 
-                val FAMILY = HsaContributionLimit(JsonField.of("family"))
+                val FAMILY = of("family")
 
                 fun of(value: String) = HsaContributionLimit(JsonField.of(value))
             }

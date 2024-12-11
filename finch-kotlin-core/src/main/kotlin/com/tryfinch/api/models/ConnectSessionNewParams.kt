@@ -458,21 +458,21 @@ constructor(
 
         companion object {
 
-            val COMPANY = ConnectProducts(JsonField.of("company"))
+            val COMPANY = of("company")
 
-            val DIRECTORY = ConnectProducts(JsonField.of("directory"))
+            val DIRECTORY = of("directory")
 
-            val INDIVIDUAL = ConnectProducts(JsonField.of("individual"))
+            val INDIVIDUAL = of("individual")
 
-            val EMPLOYMENT = ConnectProducts(JsonField.of("employment"))
+            val EMPLOYMENT = of("employment")
 
-            val PAYMENT = ConnectProducts(JsonField.of("payment"))
+            val PAYMENT = of("payment")
 
-            val PAY_STATEMENT = ConnectProducts(JsonField.of("pay_statement"))
+            val PAY_STATEMENT = of("pay_statement")
 
-            val BENEFITS = ConnectProducts(JsonField.of("benefits"))
+            val BENEFITS = of("benefits")
 
-            val SSN = ConnectProducts(JsonField.of("ssn"))
+            val SSN = of("ssn")
 
             fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
@@ -615,13 +615,13 @@ constructor(
 
             companion object {
 
-                val ASSISTED = AuthMethod(JsonField.of("assisted"))
+                val ASSISTED = of("assisted")
 
-                val CREDENTIAL = AuthMethod(JsonField.of("credential"))
+                val CREDENTIAL = of("credential")
 
-                val OAUTH = AuthMethod(JsonField.of("oauth"))
+                val OAUTH = of("oauth")
 
-                val API_TOKEN = AuthMethod(JsonField.of("api_token"))
+                val API_TOKEN = of("api_token")
 
                 fun of(value: String) = AuthMethod(JsonField.of(value))
             }
@@ -702,9 +702,9 @@ constructor(
 
         companion object {
 
-            val FINCH = Sandbox(JsonField.of("finch"))
+            val FINCH = of("finch")
 
-            val PROVIDER = Sandbox(JsonField.of("provider"))
+            val PROVIDER = of("provider")
 
             fun of(value: String) = Sandbox(JsonField.of(value))
         }
