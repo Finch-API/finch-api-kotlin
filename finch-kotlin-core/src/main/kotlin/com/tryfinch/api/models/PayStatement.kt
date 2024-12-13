@@ -25,8 +25,8 @@ private constructor(
     private val type: JsonField<Type>,
     private val paymentMethod: JsonField<PaymentMethod>,
     private val totalHours: JsonField<Double>,
-    private val grossPay: JsonField<Double>,
-    private val netPay: JsonField<Double>,
+    private val grossPay: JsonField<Money>,
+    private val netPay: JsonField<Money>,
     private val earnings: JsonField<List<Earning?>>,
     private val taxes: JsonField<List<Tax?>>,
     private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
@@ -48,11 +48,9 @@ private constructor(
     /** The number of hours worked for this pay period */
     fun totalHours(): Double? = totalHours.getNullable("total_hours")
 
-    /** The gross pay for the pay period */
-    fun grossPay(): Double? = grossPay.getNullable("gross_pay")
+    fun grossPay(): Money? = grossPay.getNullable("gross_pay")
 
-    /** The net pay for the pay period */
-    fun netPay(): Double? = netPay.getNullable("net_pay")
+    fun netPay(): Money? = netPay.getNullable("net_pay")
 
     /** The array of earnings objects associated with this pay statement */
     fun earnings(): List<Earning?>? = earnings.getNullable("earnings")
@@ -79,10 +77,8 @@ private constructor(
     /** The number of hours worked for this pay period */
     @JsonProperty("total_hours") @ExcludeMissing fun _totalHours() = totalHours
 
-    /** The gross pay for the pay period */
     @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
 
-    /** The net pay for the pay period */
     @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
 
     /** The array of earnings objects associated with this pay statement */
@@ -110,8 +106,8 @@ private constructor(
             type()
             paymentMethod()
             totalHours()
-            grossPay()
-            netPay()
+            grossPay()?.validate()
+            netPay()?.validate()
             earnings()?.forEach { it?.validate() }
             taxes()?.forEach { it?.validate() }
             employeeDeductions()?.forEach { it?.validate() }
@@ -133,8 +129,8 @@ private constructor(
         private var type: JsonField<Type> = JsonMissing.of()
         private var paymentMethod: JsonField<PaymentMethod> = JsonMissing.of()
         private var totalHours: JsonField<Double> = JsonMissing.of()
-        private var grossPay: JsonField<Double> = JsonMissing.of()
-        private var netPay: JsonField<Double> = JsonMissing.of()
+        private var grossPay: JsonField<Money> = JsonMissing.of()
+        private var netPay: JsonField<Money> = JsonMissing.of()
         private var earnings: JsonField<List<Earning?>> = JsonMissing.of()
         private var taxes: JsonField<List<Tax?>> = JsonMissing.of()
         private var employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
@@ -191,21 +187,17 @@ private constructor(
         @ExcludeMissing
         fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
-        /** The gross pay for the pay period */
-        fun grossPay(grossPay: Double) = grossPay(JsonField.of(grossPay))
+        fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
 
-        /** The gross pay for the pay period */
         @JsonProperty("gross_pay")
         @ExcludeMissing
-        fun grossPay(grossPay: JsonField<Double>) = apply { this.grossPay = grossPay }
+        fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
-        /** The net pay for the pay period */
-        fun netPay(netPay: Double) = netPay(JsonField.of(netPay))
+        fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
 
-        /** The net pay for the pay period */
         @JsonProperty("net_pay")
         @ExcludeMissing
-        fun netPay(netPay: JsonField<Double>) = apply { this.netPay = netPay }
+        fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         /** The array of earnings objects associated with this pay statement */
         fun earnings(earnings: List<Earning?>) = earnings(JsonField.of(earnings))
