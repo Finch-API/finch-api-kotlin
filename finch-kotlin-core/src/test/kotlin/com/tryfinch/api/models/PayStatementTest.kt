@@ -43,9 +43,9 @@ class PayStatementTest {
                             .build()
                     )
                 )
-                .grossPay(0.0)
+                .grossPay(Money.builder().amount(0L).currency("currency").build())
                 .individualId("individual_id")
-                .netPay(0.0)
+                .netPay(Money.builder().amount(0L).currency("currency").build())
                 .paymentMethod(PayStatement.PaymentMethod.CHECK)
                 .taxes(
                     listOf(
@@ -91,9 +91,11 @@ class PayStatementTest {
                     .type(BenefitType._401K)
                     .build()
             )
-        assertThat(payStatement.grossPay()).isEqualTo(0.0)
+        assertThat(payStatement.grossPay())
+            .isEqualTo(Money.builder().amount(0L).currency("currency").build())
         assertThat(payStatement.individualId()).isEqualTo("individual_id")
-        assertThat(payStatement.netPay()).isEqualTo(0.0)
+        assertThat(payStatement.netPay())
+            .isEqualTo(Money.builder().amount(0L).currency("currency").build())
         assertThat(payStatement.paymentMethod()).isEqualTo(PayStatement.PaymentMethod.CHECK)
         assertThat(payStatement.taxes())
             .containsExactly(
