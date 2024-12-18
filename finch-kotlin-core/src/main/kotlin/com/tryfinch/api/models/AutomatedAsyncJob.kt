@@ -260,31 +260,19 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val PENDING = Status(JsonField.of("pending"))
+            val PENDING = of("pending")
 
-            val IN_PROGRESS = Status(JsonField.of("in_progress"))
+            val IN_PROGRESS = of("in_progress")
 
-            val COMPLETE = Status(JsonField.of("complete"))
+            val COMPLETE = of("complete")
 
-            val ERROR = Status(JsonField.of("error"))
+            val ERROR = of("error")
 
-            val REAUTH_ERROR = Status(JsonField.of("reauth_error"))
+            val REAUTH_ERROR = of("reauth_error")
 
-            val PERMISSIONS_ERROR = Status(JsonField.of("permissions_error"))
+            val PERMISSIONS_ERROR = of("permissions_error")
 
             fun of(value: String) = Status(JsonField.of(value))
         }
@@ -331,6 +319,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     class Type
@@ -341,21 +341,9 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val DATA_SYNC_ALL = Type(JsonField.of("data_sync_all"))
+            val DATA_SYNC_ALL = of("data_sync_all")
 
             fun of(value: String) = Type(JsonField.of(value))
         }
@@ -382,6 +370,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

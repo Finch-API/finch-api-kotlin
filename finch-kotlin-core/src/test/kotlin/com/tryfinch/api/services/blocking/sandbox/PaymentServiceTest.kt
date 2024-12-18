@@ -4,7 +4,8 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.*
+import com.tryfinch.api.models.BenefitType
+import com.tryfinch.api.models.SandboxPaymentCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -63,9 +64,9 @@ class PaymentServiceTest {
                                             .build()
                                     )
                                 )
-                                .grossPay(Money.builder().amount(0L).currency("currency").build())
+                                .grossPay(0.0)
                                 .individualId("individual_id")
-                                .netPay(Money.builder().amount(0L).currency("currency").build())
+                                .netPay(0.0)
                                 .paymentMethod(
                                     SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
                                 )

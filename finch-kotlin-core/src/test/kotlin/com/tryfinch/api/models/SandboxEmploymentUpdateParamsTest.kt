@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -29,6 +28,7 @@ class SandboxEmploymentUpdateParamsTest {
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
+            .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
             .endDate("end_date")
             .firstName("first_name")
             .income(
@@ -93,6 +93,7 @@ class SandboxEmploymentUpdateParamsTest {
                         .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                         .build()
                 )
+                .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
                 .income(
@@ -155,6 +156,8 @@ class SandboxEmploymentUpdateParamsTest {
                     .type(SandboxEmploymentUpdateParams.Employment.Type.EMPLOYEE)
                     .build()
             )
+        assertThat(body.employmentStatus())
+            .isEqualTo(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.firstName()).isEqualTo("first_name")
         assertThat(body.income())

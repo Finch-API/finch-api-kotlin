@@ -309,36 +309,19 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is EventType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val JOB_BENEFIT_CREATE_COMPLETED =
-                EventType(JsonField.of("job.benefit_create.completed"))
+            val JOB_BENEFIT_CREATE_COMPLETED = of("job.benefit_create.completed")
 
-            val JOB_BENEFIT_ENROLL_COMPLETED =
-                EventType(JsonField.of("job.benefit_enroll.completed"))
+            val JOB_BENEFIT_ENROLL_COMPLETED = of("job.benefit_enroll.completed")
 
-            val JOB_BENEFIT_REGISTER_COMPLETED =
-                EventType(JsonField.of("job.benefit_register.completed"))
+            val JOB_BENEFIT_REGISTER_COMPLETED = of("job.benefit_register.completed")
 
-            val JOB_BENEFIT_UNENROLL_COMPLETED =
-                EventType(JsonField.of("job.benefit_unenroll.completed"))
+            val JOB_BENEFIT_UNENROLL_COMPLETED = of("job.benefit_unenroll.completed")
 
-            val JOB_BENEFIT_UPDATE_COMPLETED =
-                EventType(JsonField.of("job.benefit_update.completed"))
+            val JOB_BENEFIT_UPDATE_COMPLETED = of("job.benefit_update.completed")
 
-            val JOB_DATA_SYNC_ALL_COMPLETED = EventType(JsonField.of("job.data_sync_all.completed"))
+            val JOB_DATA_SYNC_ALL_COMPLETED = of("job.data_sync_all.completed")
 
             fun of(value: String) = EventType(JsonField.of(value))
         }
@@ -385,6 +368,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is EventType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

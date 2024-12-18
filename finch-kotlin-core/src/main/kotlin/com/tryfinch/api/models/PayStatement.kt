@@ -25,8 +25,8 @@ private constructor(
     private val type: JsonField<Type>,
     private val paymentMethod: JsonField<PaymentMethod>,
     private val totalHours: JsonField<Double>,
-    private val grossPay: JsonField<Money>,
-    private val netPay: JsonField<Money>,
+    private val grossPay: JsonField<Double>,
+    private val netPay: JsonField<Double>,
     private val earnings: JsonField<List<Earning?>>,
     private val taxes: JsonField<List<Tax?>>,
     private val employeeDeductions: JsonField<List<EmployeeDeduction?>>,
@@ -48,9 +48,11 @@ private constructor(
     /** The number of hours worked for this pay period */
     fun totalHours(): Double? = totalHours.getNullable("total_hours")
 
-    fun grossPay(): Money? = grossPay.getNullable("gross_pay")
+    /** The gross pay for the pay period */
+    fun grossPay(): Double? = grossPay.getNullable("gross_pay")
 
-    fun netPay(): Money? = netPay.getNullable("net_pay")
+    /** The net pay for the pay period */
+    fun netPay(): Double? = netPay.getNullable("net_pay")
 
     /** The array of earnings objects associated with this pay statement */
     fun earnings(): List<Earning?>? = earnings.getNullable("earnings")
@@ -77,8 +79,10 @@ private constructor(
     /** The number of hours worked for this pay period */
     @JsonProperty("total_hours") @ExcludeMissing fun _totalHours() = totalHours
 
+    /** The gross pay for the pay period */
     @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
 
+    /** The net pay for the pay period */
     @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
 
     /** The array of earnings objects associated with this pay statement */
@@ -106,8 +110,8 @@ private constructor(
             type()
             paymentMethod()
             totalHours()
-            grossPay()?.validate()
-            netPay()?.validate()
+            grossPay()
+            netPay()
             earnings()?.forEach { it?.validate() }
             taxes()?.forEach { it?.validate() }
             employeeDeductions()?.forEach { it?.validate() }
@@ -129,8 +133,8 @@ private constructor(
         private var type: JsonField<Type> = JsonMissing.of()
         private var paymentMethod: JsonField<PaymentMethod> = JsonMissing.of()
         private var totalHours: JsonField<Double> = JsonMissing.of()
-        private var grossPay: JsonField<Money> = JsonMissing.of()
-        private var netPay: JsonField<Money> = JsonMissing.of()
+        private var grossPay: JsonField<Double> = JsonMissing.of()
+        private var netPay: JsonField<Double> = JsonMissing.of()
         private var earnings: JsonField<List<Earning?>> = JsonMissing.of()
         private var taxes: JsonField<List<Tax?>> = JsonMissing.of()
         private var employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
@@ -187,17 +191,21 @@ private constructor(
         @ExcludeMissing
         fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
-        fun grossPay(grossPay: Money) = grossPay(JsonField.of(grossPay))
+        /** The gross pay for the pay period */
+        fun grossPay(grossPay: Double) = grossPay(JsonField.of(grossPay))
 
+        /** The gross pay for the pay period */
         @JsonProperty("gross_pay")
         @ExcludeMissing
-        fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
+        fun grossPay(grossPay: JsonField<Double>) = apply { this.grossPay = grossPay }
 
-        fun netPay(netPay: Money) = netPay(JsonField.of(netPay))
+        /** The net pay for the pay period */
+        fun netPay(netPay: Double) = netPay(JsonField.of(netPay))
 
+        /** The net pay for the pay period */
         @JsonProperty("net_pay")
         @ExcludeMissing
-        fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
+        fun netPay(netPay: JsonField<Double>) = apply { this.netPay = netPay }
 
         /** The array of earnings objects associated with this pay statement */
         fun earnings(earnings: List<Earning?>) = earnings(JsonField.of(earnings))
@@ -435,45 +443,33 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val SALARY = Type(JsonField.of("salary"))
+                val SALARY = of("salary")
 
-                val WAGE = Type(JsonField.of("wage"))
+                val WAGE = of("wage")
 
-                val REIMBURSEMENT = Type(JsonField.of("reimbursement"))
+                val REIMBURSEMENT = of("reimbursement")
 
-                val OVERTIME = Type(JsonField.of("overtime"))
+                val OVERTIME = of("overtime")
 
-                val SEVERANCE = Type(JsonField.of("severance"))
+                val SEVERANCE = of("severance")
 
-                val DOUBLE_OVERTIME = Type(JsonField.of("double_overtime"))
+                val DOUBLE_OVERTIME = of("double_overtime")
 
-                val PTO = Type(JsonField.of("pto"))
+                val PTO = of("pto")
 
-                val SICK = Type(JsonField.of("sick"))
+                val SICK = of("sick")
 
-                val BONUS = Type(JsonField.of("bonus"))
+                val BONUS = of("bonus")
 
-                val COMMISSION = Type(JsonField.of("commission"))
+                val COMMISSION = of("commission")
 
-                val TIPS = Type(JsonField.of("tips"))
+                val TIPS = of("tips")
 
-                val _1099 = Type(JsonField.of("1099"))
+                val _1099 = of("1099")
 
-                val OTHER = Type(JsonField.of("other"))
+                val OTHER = of("other")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -548,6 +544,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -891,23 +899,11 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val CHECK = PaymentMethod(JsonField.of("check"))
+            val CHECK = of("check")
 
-            val DIRECT_DEPOSIT = PaymentMethod(JsonField.of("direct_deposit"))
+            val DIRECT_DEPOSIT = of("direct_deposit")
 
             fun of(value: String) = PaymentMethod(JsonField.of(value))
         }
@@ -938,6 +934,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     @JsonDeserialize(builder = Tax.Builder::class)
@@ -1097,27 +1105,15 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val STATE = Type(JsonField.of("state"))
+                val STATE = of("state")
 
-                val FEDERAL = Type(JsonField.of("federal"))
+                val FEDERAL = of("federal")
 
-                val LOCAL = Type(JsonField.of("local"))
+                val LOCAL = of("local")
 
-                val FICA = Type(JsonField.of("fica"))
+                val FICA = of("fica")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -1156,6 +1152,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1184,25 +1192,13 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val REGULAR_PAYROLL = Type(JsonField.of("regular_payroll"))
+            val REGULAR_PAYROLL = of("regular_payroll")
 
-            val OFF_CYCLE_PAYROLL = Type(JsonField.of("off_cycle_payroll"))
+            val OFF_CYCLE_PAYROLL = of("off_cycle_payroll")
 
-            val ONE_TIME_PAYMENT = Type(JsonField.of("one_time_payment"))
+            val ONE_TIME_PAYMENT = of("one_time_payment")
 
             fun of(value: String) = Type(JsonField.of(value))
         }
@@ -1237,6 +1233,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

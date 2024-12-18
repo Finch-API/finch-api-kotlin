@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 class ConnectionStatusType
@@ -16,31 +15,19 @@ private constructor(
 
     @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ConnectionStatusType && value == other.value /* spotless:on */
-    }
-
-    override fun hashCode() = value.hashCode()
-
-    override fun toString() = value.toString()
-
     companion object {
 
-        val PENDING = ConnectionStatusType(JsonField.of("pending"))
+        val PENDING = of("pending")
 
-        val PROCESSING = ConnectionStatusType(JsonField.of("processing"))
+        val PROCESSING = of("processing")
 
-        val CONNECTED = ConnectionStatusType(JsonField.of("connected"))
+        val CONNECTED = of("connected")
 
-        val ERROR_NO_ACCOUNT_SETUP = ConnectionStatusType(JsonField.of("error_no_account_setup"))
+        val ERROR_NO_ACCOUNT_SETUP = of("error_no_account_setup")
 
-        val ERROR_PERMISSIONS = ConnectionStatusType(JsonField.of("error_permissions"))
+        val ERROR_PERMISSIONS = of("error_permissions")
 
-        val REAUTH = ConnectionStatusType(JsonField.of("reauth"))
+        val REAUTH = of("reauth")
 
         fun of(value: String) = ConnectionStatusType(JsonField.of(value))
     }
@@ -87,4 +74,16 @@ private constructor(
         }
 
     fun asString(): String = _value().asStringOrThrow()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ConnectionStatusType && value == other.value /* spotless:on */
+    }
+
+    override fun hashCode() = value.hashCode()
+
+    override fun toString() = value.toString()
 }

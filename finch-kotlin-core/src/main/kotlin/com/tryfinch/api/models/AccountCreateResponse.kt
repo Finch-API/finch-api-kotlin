@@ -208,27 +208,15 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is AuthenticationType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val CREDENTIAL = AuthenticationType(JsonField.of("credential"))
+            val CREDENTIAL = of("credential")
 
-            val API_TOKEN = AuthenticationType(JsonField.of("api_token"))
+            val API_TOKEN = of("api_token")
 
-            val OAUTH = AuthenticationType(JsonField.of("oauth"))
+            val OAUTH = of("oauth")
 
-            val ASSISTED = AuthenticationType(JsonField.of("assisted"))
+            val ASSISTED = of("assisted")
 
             fun of(value: String) = AuthenticationType(JsonField.of(value))
         }
@@ -267,6 +255,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is AuthenticationType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

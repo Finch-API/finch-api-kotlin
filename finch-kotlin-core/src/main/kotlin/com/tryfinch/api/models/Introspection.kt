@@ -713,29 +713,17 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val ASSISTED = Type(JsonField.of("assisted"))
+                val ASSISTED = of("assisted")
 
-                val CREDENTIAL = Type(JsonField.of("credential"))
+                val CREDENTIAL = of("credential")
 
-                val API_TOKEN = Type(JsonField.of("api_token"))
+                val API_TOKEN = of("api_token")
 
-                val API_CREDENTIAL = Type(JsonField.of("api_credential"))
+                val API_CREDENTIAL = of("api_credential")
 
-                val OAUTH = Type(JsonField.of("oauth"))
+                val OAUTH = of("oauth")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -778,6 +766,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -806,25 +806,13 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val PRODUCTION = ClientType(JsonField.of("production"))
+            val PRODUCTION = of("production")
 
-            val DEVELOPMENT = ClientType(JsonField.of("development"))
+            val DEVELOPMENT = of("development")
 
-            val SANDBOX = ClientType(JsonField.of("sandbox"))
+            val SANDBOX = of("sandbox")
 
             fun of(value: String) = ClientType(JsonField.of(value))
         }
@@ -859,6 +847,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     @JsonDeserialize(builder = ConnectionStatus.Builder::class)
@@ -971,23 +971,11 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val PROVIDER = ConnectionType(JsonField.of("provider"))
+            val PROVIDER = of("provider")
 
-            val FINCH = ConnectionType(JsonField.of("finch"))
+            val FINCH = of("finch")
 
             fun of(value: String) = ConnectionType(JsonField.of(value))
         }
@@ -1018,6 +1006,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

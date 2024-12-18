@@ -174,37 +174,25 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val YEARLY = Unit(JsonField.of("yearly"))
+            val YEARLY = of("yearly")
 
-            val QUARTERLY = Unit(JsonField.of("quarterly"))
+            val QUARTERLY = of("quarterly")
 
-            val MONTHLY = Unit(JsonField.of("monthly"))
+            val MONTHLY = of("monthly")
 
-            val SEMI_MONTHLY = Unit(JsonField.of("semi_monthly"))
+            val SEMI_MONTHLY = of("semi_monthly")
 
-            val BI_WEEKLY = Unit(JsonField.of("bi_weekly"))
+            val BI_WEEKLY = of("bi_weekly")
 
-            val WEEKLY = Unit(JsonField.of("weekly"))
+            val WEEKLY = of("weekly")
 
-            val DAILY = Unit(JsonField.of("daily"))
+            val DAILY = of("daily")
 
-            val HOURLY = Unit(JsonField.of("hourly"))
+            val HOURLY = of("hourly")
 
-            val FIXED = Unit(JsonField.of("fixed"))
+            val FIXED = of("fixed")
 
             fun of(value: String) = Unit(JsonField.of(value))
         }
@@ -263,6 +251,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Unit && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
