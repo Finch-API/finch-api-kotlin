@@ -1,5 +1,46 @@
 # Changelog
 
+## 2.0.0 (2024-12-19)
+
+Full Changelog: [v1.13.0...v2.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.13.0...v2.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** numeric enum member type ([#283](https://github.com/Finch-API/finch-api-kotlin/issues/283))
+
+### Features
+
+* **api:** api update ([#281](https://github.com/Finch-API/finch-api-kotlin/issues/281)) ([7312af9](https://github.com/Finch-API/finch-api-kotlin/commit/7312af979a060c0be68609edc79b4beb3e585320))
+* **api:** api update ([#282](https://github.com/Finch-API/finch-api-kotlin/issues/282)) ([e69c17b](https://github.com/Finch-API/finch-api-kotlin/commit/e69c17b98e316b46a5bbffadc2fe01a75e6901d6))
+* **api:** api update ([#291](https://github.com/Finch-API/finch-api-kotlin/issues/291)) ([f475cda](https://github.com/Finch-API/finch-api-kotlin/commit/f475cdafd9a99707049aca51605f0ad73c8615c8))
+* **api:** api update ([#295](https://github.com/Finch-API/finch-api-kotlin/issues/295)) ([0cab1cf](https://github.com/Finch-API/finch-api-kotlin/commit/0cab1cf160031c9f23d2e08a3db5c1844e24b100))
+
+
+### Bug Fixes
+
+* **client:** numeric enum member type ([#283](https://github.com/Finch-API/finch-api-kotlin/issues/283)) ([fc2c7b1](https://github.com/Finch-API/finch-api-kotlin/commit/fc2c7b14eb243c59f9074aee114d37a1252fde7a))
+
+
+### Chores
+
+* **docs:** add example project ([#299](https://github.com/Finch-API/finch-api-kotlin/issues/299)) ([1edf6a7](https://github.com/Finch-API/finch-api-kotlin/commit/1edf6a7678e6ed4757ec3c814ef3c1cb23fee286))
+* **docs:** update readme ([#298](https://github.com/Finch-API/finch-api-kotlin/issues/298)) ([0add28f](https://github.com/Finch-API/finch-api-kotlin/commit/0add28f2c18b392feae53bac3196dbb338c43dba))
+* **internal:** codegen related update ([#279](https://github.com/Finch-API/finch-api-kotlin/issues/279)) ([d452c47](https://github.com/Finch-API/finch-api-kotlin/commit/d452c47a35484d4b507ca48e66cf3d0957b86f58))
+* **internal:** codegen related update ([#288](https://github.com/Finch-API/finch-api-kotlin/issues/288)) ([88f2494](https://github.com/Finch-API/finch-api-kotlin/commit/88f249416d434bbe6ef53d331860f7fb3ef36aeb))
+* **internal:** remove unused and expand used wildcard imports ([#292](https://github.com/Finch-API/finch-api-kotlin/issues/292)) ([5c75886](https://github.com/Finch-API/finch-api-kotlin/commit/5c7588674a5bd66e21d96976b097d9a427bea5af))
+* **internal:** remove unused and expand used wildcard imports ([#294](https://github.com/Finch-API/finch-api-kotlin/issues/294)) ([ff489d1](https://github.com/Finch-API/finch-api-kotlin/commit/ff489d1fb004c6869d248fc1fc9c69a4395e823f))
+* **internal:** remove unused imports ([#287](https://github.com/Finch-API/finch-api-kotlin/issues/287)) ([0d53a33](https://github.com/Finch-API/finch-api-kotlin/commit/0d53a33a5d6388d7b9905da7986c01f130d38901))
+* **test:** remove unused imports ([#289](https://github.com/Finch-API/finch-api-kotlin/issues/289)) ([b6a2588](https://github.com/Finch-API/finch-api-kotlin/commit/b6a25884f9ce242c4748548d5d3343de33e7660e))
+* **test:** use `JsonValue` instead of `JsonString` ([#290](https://github.com/Finch-API/finch-api-kotlin/issues/290)) ([2bbd395](https://github.com/Finch-API/finch-api-kotlin/commit/2bbd39574118f00a70bd36e3653b11d0267db3a1))
+* update example values in tests and docs ([#284](https://github.com/Finch-API/finch-api-kotlin/issues/284)) ([afdc50b](https://github.com/Finch-API/finch-api-kotlin/commit/afdc50b76c04464aec4648dc19c508c3ca5ccfc7))
+* update parameter examples in tests and docs ([#297](https://github.com/Finch-API/finch-api-kotlin/issues/297)) ([c2b350e](https://github.com/Finch-API/finch-api-kotlin/commit/c2b350ec208409b0a2ac06895e2599f6ec96132f))
+
+
+### Styles
+
+* **internal:** make enum value definitions less verbose ([#285](https://github.com/Finch-API/finch-api-kotlin/issues/285)) ([f63f9ae](https://github.com/Finch-API/finch-api-kotlin/commit/f63f9ae3bea9a36a9e7940dc5b0fa1d938d1eaaf))
+* **internal:** move enum identity methods to bottom of class ([#286](https://github.com/Finch-API/finch-api-kotlin/issues/286)) ([76b11a6](https://github.com/Finch-API/finch-api-kotlin/commit/76b11a6b7321ab137c173c9066ceb631d929647f))
+
 ## 1.13.0 (2024-11-27)
 
 Full Changelog: [v1.12.1...v1.13.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.12.1...v1.13.0)

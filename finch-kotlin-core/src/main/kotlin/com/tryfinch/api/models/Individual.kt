@@ -431,23 +431,11 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val WORK = Type(JsonField.of("work"))
+                val WORK = of("work")
 
-                val PERSONAL = Type(JsonField.of("personal"))
+                val PERSONAL = of("personal")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -478,6 +466,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
@@ -506,37 +506,23 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val ASIAN = Ethnicity(JsonField.of("asian"))
+            val ASIAN = of("asian")
 
-            val WHITE = Ethnicity(JsonField.of("white"))
+            val WHITE = of("white")
 
-            val BLACK_OR_AFRICAN_AMERICAN = Ethnicity(JsonField.of("black_or_african_american"))
+            val BLACK_OR_AFRICAN_AMERICAN = of("black_or_african_american")
 
-            val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER =
-                Ethnicity(JsonField.of("native_hawaiian_or_pacific_islander"))
+            val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER = of("native_hawaiian_or_pacific_islander")
 
-            val AMERICAN_INDIAN_OR_ALASKA_NATIVE =
-                Ethnicity(JsonField.of("american_indian_or_alaska_native"))
+            val AMERICAN_INDIAN_OR_ALASKA_NATIVE = of("american_indian_or_alaska_native")
 
-            val HISPANIC_OR_LATINO = Ethnicity(JsonField.of("hispanic_or_latino"))
+            val HISPANIC_OR_LATINO = of("hispanic_or_latino")
 
-            val TWO_OR_MORE_RACES = Ethnicity(JsonField.of("two_or_more_races"))
+            val TWO_OR_MORE_RACES = of("two_or_more_races")
 
-            val DECLINE_TO_SPECIFY = Ethnicity(JsonField.of("decline_to_specify"))
+            val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
             fun of(value: String) = Ethnicity(JsonField.of(value))
         }
@@ -591,6 +577,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     class Gender
@@ -601,27 +599,15 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            val FEMALE = Gender(JsonField.of("female"))
+            val FEMALE = of("female")
 
-            val MALE = Gender(JsonField.of("male"))
+            val MALE = of("male")
 
-            val OTHER = Gender(JsonField.of("other"))
+            val OTHER = of("other")
 
-            val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
+            val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
             fun of(value: String) = Gender(JsonField.of(value))
         }
@@ -660,6 +646,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     @JsonDeserialize(builder = PhoneNumber.Builder::class)
@@ -754,23 +752,11 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val WORK = Type(JsonField.of("work"))
+                val WORK = of("work")
 
-                val PERSONAL = Type(JsonField.of("personal"))
+                val PERSONAL = of("personal")
 
                 fun of(value: String) = Type(JsonField.of(value))
             }
@@ -801,6 +787,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {

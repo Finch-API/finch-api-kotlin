@@ -5,7 +5,6 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.errors.FinchInvalidDataException
 
 class OperationSupport
@@ -16,27 +15,15 @@ private constructor(
 
     @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is OperationSupport && value == other.value /* spotless:on */
-    }
-
-    override fun hashCode() = value.hashCode()
-
-    override fun toString() = value.toString()
-
     companion object {
 
-        val SUPPORTED = OperationSupport(JsonField.of("supported"))
+        val SUPPORTED = of("supported")
 
-        val NOT_SUPPORTED_BY_FINCH = OperationSupport(JsonField.of("not_supported_by_finch"))
+        val NOT_SUPPORTED_BY_FINCH = of("not_supported_by_finch")
 
-        val NOT_SUPPORTED_BY_PROVIDER = OperationSupport(JsonField.of("not_supported_by_provider"))
+        val NOT_SUPPORTED_BY_PROVIDER = of("not_supported_by_provider")
 
-        val CLIENT_ACCESS_ONLY = OperationSupport(JsonField.of("client_access_only"))
+        val CLIENT_ACCESS_ONLY = of("client_access_only")
 
         fun of(value: String) = OperationSupport(JsonField.of(value))
     }
@@ -75,4 +62,16 @@ private constructor(
         }
 
     fun asString(): String = _value().asStringOrThrow()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is OperationSupport && value == other.value /* spotless:on */
+    }
+
+    override fun hashCode() = value.hashCode()
+
+    override fun toString() = value.toString()
 }

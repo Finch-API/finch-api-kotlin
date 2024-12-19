@@ -16,7 +16,6 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
-import com.tryfinch.api.models.*
 import java.util.Objects
 
 class SandboxDirectoryCreateParams
@@ -262,6 +261,7 @@ constructor(
         private val endDate: String?,
         private val latestRehireDate: String?,
         private val isActive: Boolean?,
+        private val employmentStatus: EmploymentStatus?,
         private val classCode: String?,
         private val location: Location?,
         private val income: Income?,
@@ -332,6 +332,10 @@ constructor(
         /** `true` if the individual an an active employee or contractor at the company. */
         @JsonProperty("is_active") fun isActive(): Boolean? = isActive
 
+        /** The detailed employment status of the individual. */
+        @JsonProperty("employment_status")
+        fun employmentStatus(): EmploymentStatus? = employmentStatus
+
         /** Worker's compensation classification code for this employee */
         @JsonProperty("class_code") fun classCode(): String? = classCode
 
@@ -389,6 +393,7 @@ constructor(
             private var endDate: String? = null
             private var latestRehireDate: String? = null
             private var isActive: Boolean? = null
+            private var employmentStatus: EmploymentStatus? = null
             private var classCode: String? = null
             private var location: Location? = null
             private var income: Income? = null
@@ -418,6 +423,7 @@ constructor(
                 this.endDate = individualOrEmployment.endDate
                 this.latestRehireDate = individualOrEmployment.latestRehireDate
                 this.isActive = individualOrEmployment.isActive
+                this.employmentStatus = individualOrEmployment.employmentStatus
                 this.classCode = individualOrEmployment.classCode
                 this.location = individualOrEmployment.location
                 this.income = individualOrEmployment.income
@@ -507,6 +513,12 @@ constructor(
             @JsonProperty("is_active")
             fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
 
+            /** The detailed employment status of the individual. */
+            @JsonProperty("employment_status")
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
+                this.employmentStatus = employmentStatus
+            }
+
             /** Worker's compensation classification code for this employee */
             @JsonProperty("class_code")
             fun classCode(classCode: String) = apply { this.classCode = classCode }
@@ -576,6 +588,7 @@ constructor(
                     endDate,
                     latestRehireDate,
                     isActive,
+                    employmentStatus,
                     classCode,
                     location,
                     income,
@@ -810,23 +823,11 @@ constructor(
 
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
                 companion object {
 
-                    val WORK = Type(JsonField.of("work"))
+                    val WORK = of("work")
 
-                    val PERSONAL = Type(JsonField.of("personal"))
+                    val PERSONAL = of("personal")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -857,6 +858,18 @@ constructor(
                     }
 
                 fun asString(): String = _value().asStringOrThrow()
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
             }
 
             override fun equals(other: Any?): Boolean {
@@ -960,31 +973,19 @@ constructor(
 
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
                 companion object {
 
-                    val FULL_TIME = Subtype(JsonField.of("full_time"))
+                    val FULL_TIME = of("full_time")
 
-                    val INTERN = Subtype(JsonField.of("intern"))
+                    val INTERN = of("intern")
 
-                    val PART_TIME = Subtype(JsonField.of("part_time"))
+                    val PART_TIME = of("part_time")
 
-                    val TEMP = Subtype(JsonField.of("temp"))
+                    val TEMP = of("temp")
 
-                    val SEASONAL = Subtype(JsonField.of("seasonal"))
+                    val SEASONAL = of("seasonal")
 
-                    val INDIVIDUAL_CONTRACTOR = Subtype(JsonField.of("individual_contractor"))
+                    val INDIVIDUAL_CONTRACTOR = of("individual_contractor")
 
                     fun of(value: String) = Subtype(JsonField.of(value))
                 }
@@ -1031,6 +1032,18 @@ constructor(
                     }
 
                 fun asString(): String = _value().asStringOrThrow()
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
             }
 
             class Type
@@ -1041,23 +1054,11 @@ constructor(
 
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
                 companion object {
 
-                    val EMPLOYEE = Type(JsonField.of("employee"))
+                    val EMPLOYEE = of("employee")
 
-                    val CONTRACTOR = Type(JsonField.of("contractor"))
+                    val CONTRACTOR = of("contractor")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -1088,6 +1089,18 @@ constructor(
                     }
 
                 fun asString(): String = _value().asStringOrThrow()
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1108,6 +1121,93 @@ constructor(
                 "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
         }
 
+        class EmploymentStatus
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
+
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                val ACTIVE = of("active")
+
+                val DECEASED = of("deceased")
+
+                val LEAVE = of("leave")
+
+                val ONBOARDING = of("onboarding")
+
+                val PREHIRE = of("prehire")
+
+                val RETIRED = of("retired")
+
+                val TERMINATED = of("terminated")
+
+                fun of(value: String) = EmploymentStatus(JsonField.of(value))
+            }
+
+            enum class Known {
+                ACTIVE,
+                DECEASED,
+                LEAVE,
+                ONBOARDING,
+                PREHIRE,
+                RETIRED,
+                TERMINATED,
+            }
+
+            enum class Value {
+                ACTIVE,
+                DECEASED,
+                LEAVE,
+                ONBOARDING,
+                PREHIRE,
+                RETIRED,
+                TERMINATED,
+                _UNKNOWN,
+            }
+
+            fun value(): Value =
+                when (this) {
+                    ACTIVE -> Value.ACTIVE
+                    DECEASED -> Value.DECEASED
+                    LEAVE -> Value.LEAVE
+                    ONBOARDING -> Value.ONBOARDING
+                    PREHIRE -> Value.PREHIRE
+                    RETIRED -> Value.RETIRED
+                    TERMINATED -> Value.TERMINATED
+                    else -> Value._UNKNOWN
+                }
+
+            fun known(): Known =
+                when (this) {
+                    ACTIVE -> Known.ACTIVE
+                    DECEASED -> Known.DECEASED
+                    LEAVE -> Known.LEAVE
+                    ONBOARDING -> Known.ONBOARDING
+                    PREHIRE -> Known.PREHIRE
+                    RETIRED -> Known.RETIRED
+                    TERMINATED -> Known.TERMINATED
+                    else -> throw FinchInvalidDataException("Unknown EmploymentStatus: $value")
+                }
+
+            fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is EmploymentStatus && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         class Ethnicity
         @JsonCreator
         private constructor(
@@ -1116,37 +1216,23 @@ constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val ASIAN = Ethnicity(JsonField.of("asian"))
+                val ASIAN = of("asian")
 
-                val WHITE = Ethnicity(JsonField.of("white"))
+                val WHITE = of("white")
 
-                val BLACK_OR_AFRICAN_AMERICAN = Ethnicity(JsonField.of("black_or_african_american"))
+                val BLACK_OR_AFRICAN_AMERICAN = of("black_or_african_american")
 
-                val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER =
-                    Ethnicity(JsonField.of("native_hawaiian_or_pacific_islander"))
+                val NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER = of("native_hawaiian_or_pacific_islander")
 
-                val AMERICAN_INDIAN_OR_ALASKA_NATIVE =
-                    Ethnicity(JsonField.of("american_indian_or_alaska_native"))
+                val AMERICAN_INDIAN_OR_ALASKA_NATIVE = of("american_indian_or_alaska_native")
 
-                val HISPANIC_OR_LATINO = Ethnicity(JsonField.of("hispanic_or_latino"))
+                val HISPANIC_OR_LATINO = of("hispanic_or_latino")
 
-                val TWO_OR_MORE_RACES = Ethnicity(JsonField.of("two_or_more_races"))
+                val TWO_OR_MORE_RACES = of("two_or_more_races")
 
-                val DECLINE_TO_SPECIFY = Ethnicity(JsonField.of("decline_to_specify"))
+                val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
                 fun of(value: String) = Ethnicity(JsonField.of(value))
             }
@@ -1201,6 +1287,18 @@ constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         class Gender
@@ -1211,27 +1309,15 @@ constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                val FEMALE = Gender(JsonField.of("female"))
+                val FEMALE = of("female")
 
-                val MALE = Gender(JsonField.of("male"))
+                val MALE = of("male")
 
-                val OTHER = Gender(JsonField.of("other"))
+                val OTHER = of("other")
 
-                val DECLINE_TO_SPECIFY = Gender(JsonField.of("decline_to_specify"))
+                val DECLINE_TO_SPECIFY = of("decline_to_specify")
 
                 fun of(value: String) = Gender(JsonField.of(value))
             }
@@ -1270,6 +1356,18 @@ constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         /** The manager object representing the manager of the individual within the org. */
@@ -1414,23 +1512,11 @@ constructor(
 
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-
                 companion object {
 
-                    val WORK = Type(JsonField.of("work"))
+                    val WORK = of("work")
 
-                    val PERSONAL = Type(JsonField.of("personal"))
+                    val PERSONAL = of("personal")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
@@ -1461,6 +1547,18 @@ constructor(
                     }
 
                 fun asString(): String = _value().asStringOrThrow()
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1486,17 +1584,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualOrEmployment && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && ssn == other.ssn && encryptedSsn == other.encryptedSsn && residence == other.residence && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is IndividualOrEmployment && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && emails == other.emails && phoneNumbers == other.phoneNumbers && gender == other.gender && ethnicity == other.ethnicity && dob == other.dob && ssn == other.ssn && encryptedSsn == other.encryptedSsn && residence == other.residence && title == other.title && manager == other.manager && department == other.department && employment == other.employment && startDate == other.startDate && endDate == other.endDate && latestRehireDate == other.latestRehireDate && isActive == other.isActive && employmentStatus == other.employmentStatus && classCode == other.classCode && location == other.location && income == other.income && incomeHistory == other.incomeHistory && customFields == other.customFields && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, classCode, location, income, incomeHistory, customFields, sourceId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(firstName, middleName, lastName, preferredName, emails, phoneNumbers, gender, ethnicity, dob, ssn, encryptedSsn, residence, title, manager, department, employment, startDate, endDate, latestRehireDate, isActive, employmentStatus, classCode, location, income, incomeHistory, customFields, sourceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, emails=$emails, phoneNumbers=$phoneNumbers, gender=$gender, ethnicity=$ethnicity, dob=$dob, ssn=$ssn, encryptedSsn=$encryptedSsn, residence=$residence, title=$title, manager=$manager, department=$department, employment=$employment, startDate=$startDate, endDate=$endDate, latestRehireDate=$latestRehireDate, isActive=$isActive, employmentStatus=$employmentStatus, classCode=$classCode, location=$location, income=$income, incomeHistory=$incomeHistory, customFields=$customFields, sourceId=$sourceId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
