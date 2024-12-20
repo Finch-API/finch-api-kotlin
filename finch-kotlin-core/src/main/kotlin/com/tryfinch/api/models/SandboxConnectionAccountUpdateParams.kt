@@ -68,27 +68,34 @@ constructor(
             internal fun from(
                 sandboxConnectionAccountUpdateBody: SandboxConnectionAccountUpdateBody
             ) = apply {
-                this.connectionStatus = sandboxConnectionAccountUpdateBody.connectionStatus
-                additionalProperties(sandboxConnectionAccountUpdateBody.additionalProperties)
+                connectionStatus = sandboxConnectionAccountUpdateBody.connectionStatus
+                additionalProperties =
+                    sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("connection_status")
-            fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
+            fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
                 this.connectionStatus = connectionStatus
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxConnectionAccountUpdateBody =
