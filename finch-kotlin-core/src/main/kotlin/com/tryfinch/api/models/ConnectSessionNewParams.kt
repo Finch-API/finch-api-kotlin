@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,6 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -77,20 +77,21 @@ constructor(
 
     internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = ConnectSessionNewBody.Builder::class)
     @NoAutoDetect
     class ConnectSessionNewBody
+    @JsonCreator
     internal constructor(
-        private val customerId: String,
-        private val customerName: String,
-        private val products: List<ConnectProducts>,
-        private val customerEmail: String?,
-        private val integration: Integration?,
-        private val manual: Boolean?,
-        private val minutesToExpire: Double?,
-        private val redirectUri: String?,
-        private val sandbox: Sandbox?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("customer_id") private val customerId: String,
+        @JsonProperty("customer_name") private val customerName: String,
+        @JsonProperty("products") private val products: List<ConnectProducts>,
+        @JsonProperty("customer_email") private val customerEmail: String?,
+        @JsonProperty("integration") private val integration: Integration?,
+        @JsonProperty("manual") private val manual: Boolean?,
+        @JsonProperty("minutes_to_expire") private val minutesToExpire: Double?,
+        @JsonProperty("redirect_uri") private val redirectUri: String?,
+        @JsonProperty("sandbox") private val sandbox: Sandbox?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("customer_id") fun customerId(): String = customerId
@@ -151,36 +152,28 @@ constructor(
                 additionalProperties = connectSessionNewBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("customer_id")
             fun customerId(customerId: String) = apply { this.customerId = customerId }
 
-            @JsonProperty("customer_name")
             fun customerName(customerName: String) = apply { this.customerName = customerName }
 
-            @JsonProperty("products")
             fun products(products: List<ConnectProducts>) = apply { this.products = products }
 
-            @JsonProperty("customer_email")
             fun customerEmail(customerEmail: String?) = apply { this.customerEmail = customerEmail }
 
-            @JsonProperty("integration")
             fun integration(integration: Integration?) = apply { this.integration = integration }
 
-            @JsonProperty("manual") fun manual(manual: Boolean?) = apply { this.manual = manual }
+            fun manual(manual: Boolean?) = apply { this.manual = manual }
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            @JsonProperty("minutes_to_expire")
             fun minutesToExpire(minutesToExpire: Double?) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
-            @JsonProperty("redirect_uri")
             fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
 
-            @JsonProperty("sandbox")
             fun sandbox(sandbox: Sandbox?) = apply { this.sandbox = sandbox }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -188,7 +181,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -534,13 +526,14 @@ constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = Integration.Builder::class)
     @NoAutoDetect
     class Integration
+    @JsonCreator
     private constructor(
-        private val provider: String?,
-        private val authMethod: AuthMethod?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("provider") private val provider: String?,
+        @JsonProperty("auth_method") private val authMethod: AuthMethod?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("provider") fun provider(): String? = provider
@@ -570,10 +563,8 @@ constructor(
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("provider")
             fun provider(provider: String?) = apply { this.provider = provider }
 
-            @JsonProperty("auth_method")
             fun authMethod(authMethod: AuthMethod?) = apply { this.authMethod = authMethod }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -581,7 +572,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
