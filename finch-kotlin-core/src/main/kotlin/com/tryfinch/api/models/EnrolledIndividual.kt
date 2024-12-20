@@ -27,8 +27,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     fun individualId(): String? = individualId.getNullable("individual_id")
 
     /** HTTP status code. Either 201 or 200 */
@@ -46,6 +44,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): EnrolledIndividual = apply {
         if (!validated) {
@@ -71,10 +71,10 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(enrolledIndividual: EnrolledIndividual) = apply {
-            this.individualId = enrolledIndividual.individualId
-            this.code = enrolledIndividual.code
-            this.body = enrolledIndividual.body
-            additionalProperties(enrolledIndividual.additionalProperties)
+            individualId = enrolledIndividual.individualId
+            code = enrolledIndividual.code
+            body = enrolledIndividual.body
+            additionalProperties = enrolledIndividual.additionalProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
@@ -101,16 +101,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): EnrolledIndividual =
@@ -131,8 +137,6 @@ private constructor(
         private val message: JsonField<String>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var validated: Boolean = false
 
         /** Identifier indicating whether the benefit was newly enrolled or updated. */
         fun name(): String? = name.getNullable("name")
@@ -155,6 +159,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Body = apply {
             if (!validated) {
@@ -180,10 +186,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(body: Body) = apply {
-                this.name = body.name
-                this.finchCode = body.finchCode
-                this.message = body.message
-                additionalProperties(body.additionalProperties)
+                name = body.name
+                finchCode = body.finchCode
+                message = body.message
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
@@ -212,16 +218,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Body =

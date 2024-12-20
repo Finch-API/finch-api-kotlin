@@ -34,8 +34,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** A stable Finch `id` (UUID v4) for an individual in the company */
     fun individualId(): String? = individualId.getNullable("individual_id")
 
@@ -100,6 +98,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): PayStatement = apply {
         if (!validated) {
             individualId()
@@ -138,17 +138,17 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payStatement: PayStatement) = apply {
-            this.individualId = payStatement.individualId
-            this.type = payStatement.type
-            this.paymentMethod = payStatement.paymentMethod
-            this.totalHours = payStatement.totalHours
-            this.grossPay = payStatement.grossPay
-            this.netPay = payStatement.netPay
-            this.earnings = payStatement.earnings
-            this.taxes = payStatement.taxes
-            this.employeeDeductions = payStatement.employeeDeductions
-            this.employerContributions = payStatement.employerContributions
-            additionalProperties(payStatement.additionalProperties)
+            individualId = payStatement.individualId
+            type = payStatement.type
+            paymentMethod = payStatement.paymentMethod
+            totalHours = payStatement.totalHours
+            grossPay = payStatement.grossPay
+            netPay = payStatement.netPay
+            earnings = payStatement.earnings
+            taxes = payStatement.taxes
+            employeeDeductions = payStatement.employeeDeductions
+            employerContributions = payStatement.employerContributions
+            additionalProperties = payStatement.additionalProperties.toMutableMap()
         }
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
@@ -238,16 +238,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): PayStatement =
@@ -277,8 +283,6 @@ private constructor(
         private val hours: JsonField<Double>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var validated: Boolean = false
 
         /** The type of earning. */
         fun type(): Type? = type.getNullable("type")
@@ -320,6 +324,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Earning = apply {
             if (!validated) {
                 type()
@@ -348,12 +354,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(earning: Earning) = apply {
-                this.type = earning.type
-                this.name = earning.name
-                this.amount = earning.amount
-                this.currency = earning.currency
-                this.hours = earning.hours
-                additionalProperties(earning.additionalProperties)
+                type = earning.type
+                name = earning.name
+                amount = earning.amount
+                currency = earning.currency
+                hours = earning.hours
+                additionalProperties = earning.additionalProperties.toMutableMap()
             }
 
             /** The type of earning. */
@@ -404,16 +410,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Earning =
@@ -580,8 +592,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The deduction name from the pay statement. */
         fun name(): String? = name.getNullable("name")
 
@@ -616,6 +626,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): EmployeeDeduction = apply {
             if (!validated) {
                 name()
@@ -644,12 +656,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(employeeDeduction: EmployeeDeduction) = apply {
-                this.name = employeeDeduction.name
-                this.amount = employeeDeduction.amount
-                this.currency = employeeDeduction.currency
-                this.preTax = employeeDeduction.preTax
-                this.type = employeeDeduction.type
-                additionalProperties(employeeDeduction.additionalProperties)
+                name = employeeDeduction.name
+                amount = employeeDeduction.amount
+                currency = employeeDeduction.currency
+                preTax = employeeDeduction.preTax
+                type = employeeDeduction.type
+                additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
             }
 
             /** The deduction name from the pay statement. */
@@ -694,16 +706,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): EmployeeDeduction =
@@ -746,8 +764,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The contribution name from the pay statement. */
         fun name(): String? = name.getNullable("name")
 
@@ -776,6 +792,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): EmployerContribution = apply {
             if (!validated) {
                 name()
@@ -802,11 +820,11 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(employerContribution: EmployerContribution) = apply {
-                this.name = employerContribution.name
-                this.amount = employerContribution.amount
-                this.currency = employerContribution.currency
-                this.type = employerContribution.type
-                additionalProperties(employerContribution.additionalProperties)
+                name = employerContribution.name
+                amount = employerContribution.amount
+                currency = employerContribution.currency
+                type = employerContribution.type
+                additionalProperties = employerContribution.additionalProperties.toMutableMap()
             }
 
             /** The contribution name from the pay statement. */
@@ -843,16 +861,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): EmployerContribution =
@@ -952,8 +976,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The type of taxes. */
         fun type(): Type? = type.getNullable("type")
 
@@ -988,6 +1010,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Tax = apply {
             if (!validated) {
                 type()
@@ -1016,12 +1040,12 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(tax: Tax) = apply {
-                this.type = tax.type
-                this.name = tax.name
-                this.employer = tax.employer
-                this.amount = tax.amount
-                this.currency = tax.currency
-                additionalProperties(tax.additionalProperties)
+                type = tax.type
+                name = tax.name
+                employer = tax.employer
+                amount = tax.amount
+                currency = tax.currency
+                additionalProperties = tax.additionalProperties.toMutableMap()
             }
 
             /** The type of taxes. */
@@ -1066,16 +1090,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Tax =

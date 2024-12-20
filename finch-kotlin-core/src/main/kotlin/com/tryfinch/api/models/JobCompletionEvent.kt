@@ -29,8 +29,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
 
@@ -49,13 +47,6 @@ private constructor(
     fun eventType(): EventType? = eventType.getNullable("event_type")
 
     fun data(): Data? = data.getNullable("data")
-
-    fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder()
-            .connectionId(connectionId)
-            .companyId(companyId)
-            .accountId(accountId)
-            .build()
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
@@ -79,6 +70,15 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    fun toBaseWebhookEvent(): BaseWebhookEvent =
+        BaseWebhookEvent.builder()
+            .connectionId(connectionId)
+            .companyId(companyId)
+            .accountId(accountId)
+            .build()
+
+    private var validated: Boolean = false
 
     fun validate(): JobCompletionEvent = apply {
         if (!validated) {
@@ -108,12 +108,12 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(jobCompletionEvent: JobCompletionEvent) = apply {
-            this.connectionId = jobCompletionEvent.connectionId
-            this.companyId = jobCompletionEvent.companyId
-            this.accountId = jobCompletionEvent.accountId
-            this.eventType = jobCompletionEvent.eventType
-            this.data = jobCompletionEvent.data
-            additionalProperties(jobCompletionEvent.additionalProperties)
+            connectionId = jobCompletionEvent.connectionId
+            companyId = jobCompletionEvent.companyId
+            accountId = jobCompletionEvent.accountId
+            eventType = jobCompletionEvent.eventType
+            data = jobCompletionEvent.data
+            additionalProperties = jobCompletionEvent.additionalProperties.toMutableMap()
         }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -168,16 +168,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): JobCompletionEvent =
@@ -200,8 +206,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The id of the job which has completed. */
         fun jobId(): String = jobId.getRequired("job_id")
 
@@ -217,6 +221,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Data = apply {
             if (!validated) {
@@ -240,9 +246,9 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(data: Data) = apply {
-                this.jobId = data.jobId
-                this.jobUrl = data.jobUrl
-                additionalProperties(data.additionalProperties)
+                jobId = data.jobId
+                jobUrl = data.jobUrl
+                additionalProperties = data.additionalProperties.toMutableMap()
             }
 
             /** The id of the job which has completed. */
@@ -263,16 +269,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Data =

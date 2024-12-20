@@ -186,24 +186,26 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxIndividualUpdateBody: SandboxIndividualUpdateBody) = apply {
-                this.dob = sandboxIndividualUpdateBody.dob
-                this.emails = sandboxIndividualUpdateBody.emails
-                this.encryptedSsn = sandboxIndividualUpdateBody.encryptedSsn
-                this.ethnicity = sandboxIndividualUpdateBody.ethnicity
-                this.firstName = sandboxIndividualUpdateBody.firstName
-                this.gender = sandboxIndividualUpdateBody.gender
-                this.lastName = sandboxIndividualUpdateBody.lastName
-                this.middleName = sandboxIndividualUpdateBody.middleName
-                this.phoneNumbers = sandboxIndividualUpdateBody.phoneNumbers
-                this.preferredName = sandboxIndividualUpdateBody.preferredName
-                this.residence = sandboxIndividualUpdateBody.residence
-                this.ssn = sandboxIndividualUpdateBody.ssn
-                additionalProperties(sandboxIndividualUpdateBody.additionalProperties)
+                dob = sandboxIndividualUpdateBody.dob
+                emails = sandboxIndividualUpdateBody.emails?.toMutableList()
+                encryptedSsn = sandboxIndividualUpdateBody.encryptedSsn
+                ethnicity = sandboxIndividualUpdateBody.ethnicity
+                firstName = sandboxIndividualUpdateBody.firstName
+                gender = sandboxIndividualUpdateBody.gender
+                lastName = sandboxIndividualUpdateBody.lastName
+                middleName = sandboxIndividualUpdateBody.middleName
+                phoneNumbers = sandboxIndividualUpdateBody.phoneNumbers?.toMutableList()
+                preferredName = sandboxIndividualUpdateBody.preferredName
+                residence = sandboxIndividualUpdateBody.residence
+                ssn = sandboxIndividualUpdateBody.ssn
+                additionalProperties =
+                    sandboxIndividualUpdateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("dob") fun dob(dob: String) = apply { this.dob = dob }
+            @JsonProperty("dob") fun dob(dob: String?) = apply { this.dob = dob }
 
-            @JsonProperty("emails") fun emails(emails: List<Email>) = apply { this.emails = emails }
+            @JsonProperty("emails")
+            fun emails(emails: List<Email>?) = apply { this.emails = emails }
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
@@ -211,58 +213,64 @@ constructor(
              * set in the body.
              */
             @JsonProperty("encrypted_ssn")
-            fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
+            fun encryptedSsn(encryptedSsn: String?) = apply { this.encryptedSsn = encryptedSsn }
 
             /** The EEOC-defined ethnicity of the individual. */
             @JsonProperty("ethnicity")
-            fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
+            fun ethnicity(ethnicity: Ethnicity?) = apply { this.ethnicity = ethnicity }
 
             /** The legal first name of the individual. */
             @JsonProperty("first_name")
-            fun firstName(firstName: String) = apply { this.firstName = firstName }
+            fun firstName(firstName: String?) = apply { this.firstName = firstName }
 
             /** The gender of the individual. */
-            @JsonProperty("gender") fun gender(gender: Gender) = apply { this.gender = gender }
+            @JsonProperty("gender") fun gender(gender: Gender?) = apply { this.gender = gender }
 
             /** The legal last name of the individual. */
             @JsonProperty("last_name")
-            fun lastName(lastName: String) = apply { this.lastName = lastName }
+            fun lastName(lastName: String?) = apply { this.lastName = lastName }
 
             /** The legal middle name of the individual. */
             @JsonProperty("middle_name")
-            fun middleName(middleName: String) = apply { this.middleName = middleName }
+            fun middleName(middleName: String?) = apply { this.middleName = middleName }
 
             @JsonProperty("phone_numbers")
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
                 this.phoneNumbers = phoneNumbers
             }
 
             /** The preferred name of the individual. */
             @JsonProperty("preferred_name")
-            fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
+            fun preferredName(preferredName: String?) = apply { this.preferredName = preferredName }
 
             @JsonProperty("residence")
-            fun residence(residence: Location) = apply { this.residence = residence }
+            fun residence(residence: Location?) = apply { this.residence = residence }
 
             /**
              * Social Security Number of the individual. This field is only available with the `ssn`
              * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
              * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
              */
-            @JsonProperty("ssn") fun ssn(ssn: String) = apply { this.ssn = ssn }
+            @JsonProperty("ssn") fun ssn(ssn: String?) = apply { this.ssn = ssn }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxIndividualUpdateBody =
@@ -573,27 +581,33 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(email: Email) = apply {
-                this.data = email.data
-                this.type = email.type
-                additionalProperties(email.additionalProperties)
+                data = email.data
+                type = email.type
+                additionalProperties = email.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            @JsonProperty("data") fun data(data: String?) = apply { this.data = data }
 
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            @JsonProperty("type") fun type(type: Type?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Email =
@@ -872,27 +886,33 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(phoneNumber: PhoneNumber) = apply {
-                this.data = phoneNumber.data
-                this.type = phoneNumber.type
-                additionalProperties(phoneNumber.additionalProperties)
+                data = phoneNumber.data
+                type = phoneNumber.type
+                additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("data") fun data(data: String) = apply { this.data = data }
+            @JsonProperty("data") fun data(data: String?) = apply { this.data = data }
 
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            @JsonProperty("type") fun type(type: Type?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PhoneNumber =

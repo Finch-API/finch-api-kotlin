@@ -29,8 +29,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
 
@@ -49,13 +47,6 @@ private constructor(
     fun eventType(): EventType? = eventType.getNullable("event_type")
 
     fun data(): Data? = data.getNullable("data")
-
-    fun toBaseWebhookEvent(): BaseWebhookEvent =
-        BaseWebhookEvent.builder()
-            .connectionId(connectionId)
-            .companyId(companyId)
-            .accountId(accountId)
-            .build()
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
@@ -79,6 +70,15 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    fun toBaseWebhookEvent(): BaseWebhookEvent =
+        BaseWebhookEvent.builder()
+            .connectionId(connectionId)
+            .companyId(companyId)
+            .accountId(accountId)
+            .build()
+
+    private var validated: Boolean = false
 
     fun validate(): IndividualEvent = apply {
         if (!validated) {
@@ -108,12 +108,12 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(individualEvent: IndividualEvent) = apply {
-            this.connectionId = individualEvent.connectionId
-            this.companyId = individualEvent.companyId
-            this.accountId = individualEvent.accountId
-            this.eventType = individualEvent.eventType
-            this.data = individualEvent.data
-            additionalProperties(individualEvent.additionalProperties)
+            connectionId = individualEvent.connectionId
+            companyId = individualEvent.companyId
+            accountId = individualEvent.accountId
+            eventType = individualEvent.eventType
+            data = individualEvent.data
+            additionalProperties = individualEvent.additionalProperties.toMutableMap()
         }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -168,16 +168,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): IndividualEvent =
@@ -199,8 +205,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The ID of the individual related to the event. */
         fun individualId(): String? = individualId.getNullable("individual_id")
 
@@ -210,6 +214,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Data = apply {
             if (!validated) {
@@ -231,8 +237,8 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(data: Data) = apply {
-                this.individualId = data.individualId
-                additionalProperties(data.additionalProperties)
+                individualId = data.individualId
+                additionalProperties = data.additionalProperties.toMutableMap()
             }
 
             /** The ID of the individual related to the event. */
@@ -247,16 +253,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Data = Data(individualId, additionalProperties.toImmutable())

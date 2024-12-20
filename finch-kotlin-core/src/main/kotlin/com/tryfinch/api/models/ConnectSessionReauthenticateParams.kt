@@ -61,7 +61,7 @@ constructor(
     @NoAutoDetect
     class ConnectSessionReauthenticateBody
     internal constructor(
-        private val connectionId: String?,
+        private val connectionId: String,
         private val minutesToExpire: Long?,
         private val products: List<ConnectProducts>?,
         private val redirectUri: String?,
@@ -69,7 +69,7 @@ constructor(
     ) {
 
         /** The ID of the existing connection to reauthenticate */
-        @JsonProperty("connection_id") fun connectionId(): String? = connectionId
+        @JsonProperty("connection_id") fun connectionId(): String = connectionId
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
@@ -103,11 +103,12 @@ constructor(
 
             internal fun from(connectSessionReauthenticateBody: ConnectSessionReauthenticateBody) =
                 apply {
-                    this.connectionId = connectSessionReauthenticateBody.connectionId
-                    this.minutesToExpire = connectSessionReauthenticateBody.minutesToExpire
-                    this.products = connectSessionReauthenticateBody.products
-                    this.redirectUri = connectSessionReauthenticateBody.redirectUri
-                    additionalProperties(connectSessionReauthenticateBody.additionalProperties)
+                    connectionId = connectSessionReauthenticateBody.connectionId
+                    minutesToExpire = connectSessionReauthenticateBody.minutesToExpire
+                    products = connectSessionReauthenticateBody.products?.toMutableList()
+                    redirectUri = connectSessionReauthenticateBody.redirectUri
+                    additionalProperties =
+                        connectSessionReauthenticateBody.additionalProperties.toMutableMap()
                 }
 
             /** The ID of the existing connection to reauthenticate */
@@ -119,30 +120,36 @@ constructor(
              * days)
              */
             @JsonProperty("minutes_to_expire")
-            fun minutesToExpire(minutesToExpire: Long) = apply {
+            fun minutesToExpire(minutesToExpire: Long?) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
             /** The products to request access to (optional for reauthentication) */
             @JsonProperty("products")
-            fun products(products: List<ConnectProducts>) = apply { this.products = products }
+            fun products(products: List<ConnectProducts>?) = apply { this.products = products }
 
             /** The URI to redirect to after the Connect flow is completed */
             @JsonProperty("redirect_uri")
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ConnectSessionReauthenticateBody =
