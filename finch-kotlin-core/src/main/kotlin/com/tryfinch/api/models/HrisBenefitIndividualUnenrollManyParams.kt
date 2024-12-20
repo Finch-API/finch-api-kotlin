@@ -4,13 +4,14 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
@@ -48,12 +49,13 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = HrisBenefitIndividualUnenrollManyBody.Builder::class)
     @NoAutoDetect
     class HrisBenefitIndividualUnenrollManyBody
+    @JsonCreator
     internal constructor(
-        private val individualIds: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("individual_ids") private val individualIds: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Array of individual_ids to unenroll. */
@@ -84,7 +86,6 @@ constructor(
             }
 
             /** Array of individual_ids to unenroll. */
-            @JsonProperty("individual_ids")
             fun individualIds(individualIds: List<String>?) = apply {
                 this.individualIds = individualIds
             }
@@ -94,7 +95,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
