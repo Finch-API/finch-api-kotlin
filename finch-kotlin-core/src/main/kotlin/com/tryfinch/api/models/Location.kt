@@ -29,8 +29,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** Street address or PO box. */
     fun line1(): String? = line1.getNullable("line1")
 
@@ -79,6 +77,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): Location = apply {
         if (!validated) {
             line1()
@@ -113,15 +113,15 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(location: Location) = apply {
-            this.line1 = location.line1
-            this.line2 = location.line2
-            this.city = location.city
-            this.state = location.state
-            this.postalCode = location.postalCode
-            this.country = location.country
-            this.name = location.name
-            this.sourceId = location.sourceId
-            additionalProperties(location.additionalProperties)
+            line1 = location.line1
+            line2 = location.line2
+            city = location.city
+            state = location.state
+            postalCode = location.postalCode
+            country = location.country
+            name = location.name
+            sourceId = location.sourceId
+            additionalProperties = location.additionalProperties.toMutableMap()
         }
 
         /** Street address or PO box. */
@@ -186,16 +186,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): Location =

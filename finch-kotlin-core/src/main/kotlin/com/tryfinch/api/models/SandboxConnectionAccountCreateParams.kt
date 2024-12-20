@@ -61,17 +61,17 @@ constructor(
     @NoAutoDetect
     class SandboxConnectionAccountCreateBody
     internal constructor(
-        private val companyId: String?,
-        private val providerId: String?,
+        private val companyId: String,
+        private val providerId: String,
         private val authenticationType: AuthenticationType?,
         private val products: List<String>?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        @JsonProperty("company_id") fun companyId(): String? = companyId
+        @JsonProperty("company_id") fun companyId(): String = companyId
 
         /** The provider associated with the `access_token` */
-        @JsonProperty("provider_id") fun providerId(): String? = providerId
+        @JsonProperty("provider_id") fun providerId(): String = providerId
 
         @JsonProperty("authentication_type")
         fun authenticationType(): AuthenticationType? = authenticationType
@@ -104,11 +104,12 @@ constructor(
             internal fun from(
                 sandboxConnectionAccountCreateBody: SandboxConnectionAccountCreateBody
             ) = apply {
-                this.companyId = sandboxConnectionAccountCreateBody.companyId
-                this.providerId = sandboxConnectionAccountCreateBody.providerId
-                this.authenticationType = sandboxConnectionAccountCreateBody.authenticationType
-                this.products = sandboxConnectionAccountCreateBody.products
-                additionalProperties(sandboxConnectionAccountCreateBody.additionalProperties)
+                companyId = sandboxConnectionAccountCreateBody.companyId
+                providerId = sandboxConnectionAccountCreateBody.providerId
+                authenticationType = sandboxConnectionAccountCreateBody.authenticationType
+                products = sandboxConnectionAccountCreateBody.products?.toMutableList()
+                additionalProperties =
+                    sandboxConnectionAccountCreateBody.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("company_id")
@@ -119,7 +120,7 @@ constructor(
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
             @JsonProperty("authentication_type")
-            fun authenticationType(authenticationType: AuthenticationType) = apply {
+            fun authenticationType(authenticationType: AuthenticationType?) = apply {
                 this.authenticationType = authenticationType
             }
 
@@ -128,20 +129,26 @@ constructor(
              * `individual`)
              */
             @JsonProperty("products")
-            fun products(products: List<String>) = apply { this.products = products }
+            fun products(products: List<String>?) = apply { this.products = products }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxConnectionAccountCreateBody =

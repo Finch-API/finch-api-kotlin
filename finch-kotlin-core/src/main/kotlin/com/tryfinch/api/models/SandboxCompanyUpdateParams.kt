@@ -135,62 +135,68 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                this.accounts = sandboxCompanyUpdateBody.accounts
-                this.departments = sandboxCompanyUpdateBody.departments
-                this.ein = sandboxCompanyUpdateBody.ein
-                this.entity = sandboxCompanyUpdateBody.entity
-                this.legalName = sandboxCompanyUpdateBody.legalName
-                this.locations = sandboxCompanyUpdateBody.locations
-                this.primaryEmail = sandboxCompanyUpdateBody.primaryEmail
-                this.primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
-                additionalProperties(sandboxCompanyUpdateBody.additionalProperties)
+                accounts = sandboxCompanyUpdateBody.accounts?.toMutableList()
+                departments = sandboxCompanyUpdateBody.departments?.toMutableList()
+                ein = sandboxCompanyUpdateBody.ein
+                entity = sandboxCompanyUpdateBody.entity
+                legalName = sandboxCompanyUpdateBody.legalName
+                locations = sandboxCompanyUpdateBody.locations?.toMutableList()
+                primaryEmail = sandboxCompanyUpdateBody.primaryEmail
+                primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
+                additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
             @JsonProperty("accounts")
-            fun accounts(accounts: List<Account>) = apply { this.accounts = accounts }
+            fun accounts(accounts: List<Account>?) = apply { this.accounts = accounts }
 
             /** The array of company departments. */
             @JsonProperty("departments")
-            fun departments(departments: List<Department?>) = apply {
+            fun departments(departments: List<Department?>?) = apply {
                 this.departments = departments
             }
 
             /** The employer identification number. */
-            @JsonProperty("ein") fun ein(ein: String) = apply { this.ein = ein }
+            @JsonProperty("ein") fun ein(ein: String?) = apply { this.ein = ein }
 
             /** The entity type object. */
-            @JsonProperty("entity") fun entity(entity: Entity) = apply { this.entity = entity }
+            @JsonProperty("entity") fun entity(entity: Entity?) = apply { this.entity = entity }
 
             /** The legal name of the company. */
             @JsonProperty("legal_name")
-            fun legalName(legalName: String) = apply { this.legalName = legalName }
+            fun legalName(legalName: String?) = apply { this.legalName = legalName }
 
             @JsonProperty("locations")
-            fun locations(locations: List<Location?>) = apply { this.locations = locations }
+            fun locations(locations: List<Location?>?) = apply { this.locations = locations }
 
             /** The email of the main administrator on the account. */
             @JsonProperty("primary_email")
-            fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
+            fun primaryEmail(primaryEmail: String?) = apply { this.primaryEmail = primaryEmail }
 
             /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
             @JsonProperty("primary_phone_number")
-            fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
+            fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
                 this.primaryPhoneNumber = primaryPhoneNumber
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxCompanyUpdateBody =
@@ -490,12 +496,12 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(account: Account) = apply {
-                this.routingNumber = account.routingNumber
-                this.accountName = account.accountName
-                this.institutionName = account.institutionName
-                this.accountType = account.accountType
-                this.accountNumber = account.accountNumber
-                additionalProperties(account.additionalProperties)
+                routingNumber = account.routingNumber
+                accountName = account.accountName
+                institutionName = account.institutionName
+                accountType = account.accountType
+                accountNumber = account.accountNumber
+                additionalProperties = account.additionalProperties.toMutableMap()
             }
 
             /**
@@ -503,38 +509,44 @@ constructor(
              * opened.
              */
             @JsonProperty("routing_number")
-            fun routingNumber(routingNumber: String) = apply { this.routingNumber = routingNumber }
+            fun routingNumber(routingNumber: String?) = apply { this.routingNumber = routingNumber }
 
             /** The name of the bank associated in the payroll/HRIS system. */
             @JsonProperty("account_name")
-            fun accountName(accountName: String) = apply { this.accountName = accountName }
+            fun accountName(accountName: String?) = apply { this.accountName = accountName }
 
             /** Name of the banking institution. */
             @JsonProperty("institution_name")
-            fun institutionName(institutionName: String) = apply {
+            fun institutionName(institutionName: String?) = apply {
                 this.institutionName = institutionName
             }
 
             /** The type of bank account. */
             @JsonProperty("account_type")
-            fun accountType(accountType: AccountType) = apply { this.accountType = accountType }
+            fun accountType(accountType: AccountType?) = apply { this.accountType = accountType }
 
             /** 10-12 digit number to specify the bank account */
             @JsonProperty("account_number")
-            fun accountNumber(accountNumber: String) = apply { this.accountNumber = accountNumber }
+            fun accountNumber(accountNumber: String?) = apply { this.accountNumber = accountNumber }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Account =
@@ -656,29 +668,35 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(department: Department) = apply {
-                this.name = department.name
-                this.parent = department.parent
-                additionalProperties(department.additionalProperties)
+                name = department.name
+                parent = department.parent
+                additionalProperties = department.additionalProperties.toMutableMap()
             }
 
             /** The department name. */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            @JsonProperty("name") fun name(name: String?) = apply { this.name = name }
 
             /** The parent department, if present. */
-            @JsonProperty("parent") fun parent(parent: Parent) = apply { this.parent = parent }
+            @JsonProperty("parent") fun parent(parent: Parent?) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Department =
@@ -718,27 +736,35 @@ constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(parent: Parent) = apply {
-                    this.name = parent.name
-                    additionalProperties(parent.additionalProperties)
+                    name = parent.name
+                    additionalProperties = parent.additionalProperties.toMutableMap()
                 }
 
                 /** The parent department's name. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                @JsonProperty("name") fun name(name: String?) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Parent = Parent(name, additionalProperties.toImmutable())
             }
@@ -813,30 +839,36 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(entity: Entity) = apply {
-                this.type = entity.type
-                this.subtype = entity.subtype
-                additionalProperties(entity.additionalProperties)
+                type = entity.type
+                subtype = entity.subtype
+                additionalProperties = entity.additionalProperties.toMutableMap()
             }
 
             /** The tax payer type of the company. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            @JsonProperty("type") fun type(type: Type?) = apply { this.type = type }
 
             /** The tax payer subtype of the company. */
             @JsonProperty("subtype")
-            fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+            fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Entity =

@@ -53,15 +53,15 @@ constructor(
     @NoAutoDetect
     class SandboxJobConfigurationUpdateBody
     internal constructor(
-        private val completionStatus: CompletionStatus?,
-        private val type: Type?,
+        private val completionStatus: CompletionStatus,
+        private val type: Type,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         @JsonProperty("completion_status")
-        fun completionStatus(): CompletionStatus? = completionStatus
+        fun completionStatus(): CompletionStatus = completionStatus
 
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -83,9 +83,10 @@ constructor(
             internal fun from(
                 sandboxJobConfigurationUpdateBody: SandboxJobConfigurationUpdateBody
             ) = apply {
-                this.completionStatus = sandboxJobConfigurationUpdateBody.completionStatus
-                this.type = sandboxJobConfigurationUpdateBody.type
-                additionalProperties(sandboxJobConfigurationUpdateBody.additionalProperties)
+                completionStatus = sandboxJobConfigurationUpdateBody.completionStatus
+                type = sandboxJobConfigurationUpdateBody.type
+                additionalProperties =
+                    sandboxJobConfigurationUpdateBody.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("completion_status")
@@ -97,16 +98,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxJobConfigurationUpdateBody =

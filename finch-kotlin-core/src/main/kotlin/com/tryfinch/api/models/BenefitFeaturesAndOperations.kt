@@ -26,8 +26,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     fun supportedFeatures(): BenefitFeature? = supportedFeatures.getNullable("supported_features")
 
     fun supportedOperations(): SupportPerBenefitType? =
@@ -42,6 +40,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): BenefitFeaturesAndOperations = apply {
         if (!validated) {
@@ -65,9 +65,9 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(benefitFeaturesAndOperations: BenefitFeaturesAndOperations) = apply {
-            this.supportedFeatures = benefitFeaturesAndOperations.supportedFeatures
-            this.supportedOperations = benefitFeaturesAndOperations.supportedOperations
-            additionalProperties(benefitFeaturesAndOperations.additionalProperties)
+            supportedFeatures = benefitFeaturesAndOperations.supportedFeatures
+            supportedOperations = benefitFeaturesAndOperations.supportedOperations
+            additionalProperties = benefitFeaturesAndOperations.additionalProperties.toMutableMap()
         }
 
         fun supportedFeatures(supportedFeatures: BenefitFeature) =
@@ -90,16 +90,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): BenefitFeaturesAndOperations =
@@ -123,8 +129,6 @@ private constructor(
         private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var validated: Boolean = false
 
         fun description(): String? = description.getNullable("description")
 
@@ -195,6 +199,8 @@ private constructor(
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): BenefitFeature = apply {
             if (!validated) {
                 description()
@@ -229,14 +235,14 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(benefitFeature: BenefitFeature) = apply {
-                this.description = benefitFeature.description
-                this.frequencies = benefitFeature.frequencies
-                this.employeeDeduction = benefitFeature.employeeDeduction
-                this.companyContribution = benefitFeature.companyContribution
-                this.annualMaximum = benefitFeature.annualMaximum
-                this.catchUp = benefitFeature.catchUp
-                this.hsaContributionLimit = benefitFeature.hsaContributionLimit
-                additionalProperties(benefitFeature.additionalProperties)
+                description = benefitFeature.description
+                frequencies = benefitFeature.frequencies
+                employeeDeduction = benefitFeature.employeeDeduction
+                companyContribution = benefitFeature.companyContribution
+                annualMaximum = benefitFeature.annualMaximum
+                catchUp = benefitFeature.catchUp
+                hsaContributionLimit = benefitFeature.hsaContributionLimit
+                additionalProperties = benefitFeature.additionalProperties.toMutableMap()
             }
 
             fun description(description: String) = description(JsonField.of(description))
@@ -331,16 +337,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): BenefitFeature =
