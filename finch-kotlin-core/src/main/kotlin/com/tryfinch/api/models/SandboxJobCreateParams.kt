@@ -46,12 +46,12 @@ constructor(
     @NoAutoDetect
     class SandboxJobCreateBody
     internal constructor(
-        private val type: Type?,
+        private val type: Type,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of job to start. Currently the only supported type is `data_sync_all` */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -70,8 +70,8 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxJobCreateBody: SandboxJobCreateBody) = apply {
-                this.type = sandboxJobCreateBody.type
-                additionalProperties(sandboxJobCreateBody.additionalProperties)
+                type = sandboxJobCreateBody.type
+                additionalProperties = sandboxJobCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The type of job to start. Currently the only supported type is `data_sync_all` */
@@ -79,16 +79,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxJobCreateBody =

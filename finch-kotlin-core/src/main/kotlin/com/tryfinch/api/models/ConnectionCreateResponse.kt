@@ -32,8 +32,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The ID of the new connection */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
@@ -81,6 +79,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ConnectionCreateResponse = apply {
         if (!validated) {
             connectionId()
@@ -115,15 +115,15 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(connectionCreateResponse: ConnectionCreateResponse) = apply {
-            this.connectionId = connectionCreateResponse.connectionId
-            this.companyId = connectionCreateResponse.companyId
-            this.providerId = connectionCreateResponse.providerId
-            this.accountId = connectionCreateResponse.accountId
-            this.authenticationType = connectionCreateResponse.authenticationType
-            this.products = connectionCreateResponse.products
-            this.accessToken = connectionCreateResponse.accessToken
-            this.tokenType = connectionCreateResponse.tokenType
-            additionalProperties(connectionCreateResponse.additionalProperties)
+            connectionId = connectionCreateResponse.connectionId
+            companyId = connectionCreateResponse.companyId
+            providerId = connectionCreateResponse.providerId
+            accountId = connectionCreateResponse.accountId
+            authenticationType = connectionCreateResponse.authenticationType
+            products = connectionCreateResponse.products
+            accessToken = connectionCreateResponse.accessToken
+            tokenType = connectionCreateResponse.tokenType
+            additionalProperties = connectionCreateResponse.additionalProperties.toMutableMap()
         }
 
         /** The ID of the new connection */
@@ -189,16 +189,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): ConnectionCreateResponse =

@@ -40,8 +40,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
@@ -191,6 +189,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): Introspection = apply {
         if (!validated) {
             connectionId()
@@ -241,23 +241,23 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(introspection: Introspection) = apply {
-            this.connectionId = introspection.connectionId
-            this.connectionStatus = introspection.connectionStatus
-            this.clientId = introspection.clientId
-            this.clientType = introspection.clientType
-            this.connectionType = introspection.connectionType
-            this.companyId = introspection.companyId
-            this.accountId = introspection.accountId
-            this.customerId = introspection.customerId
-            this.customerName = introspection.customerName
-            this.customerEmail = introspection.customerEmail
-            this.authenticationMethods = introspection.authenticationMethods
-            this.products = introspection.products
-            this.username = introspection.username
-            this.providerId = introspection.providerId
-            this.payrollProviderId = introspection.payrollProviderId
-            this.manual = introspection.manual
-            additionalProperties(introspection.additionalProperties)
+            connectionId = introspection.connectionId
+            connectionStatus = introspection.connectionStatus
+            clientId = introspection.clientId
+            clientType = introspection.clientType
+            connectionType = introspection.connectionType
+            companyId = introspection.companyId
+            accountId = introspection.accountId
+            customerId = introspection.customerId
+            customerName = introspection.customerName
+            customerEmail = introspection.customerEmail
+            authenticationMethods = introspection.authenticationMethods
+            products = introspection.products
+            username = introspection.username
+            providerId = introspection.providerId
+            payrollProviderId = introspection.payrollProviderId
+            manual = introspection.manual
+            additionalProperties = introspection.additionalProperties.toMutableMap()
         }
 
         /** The Finch UUID of the connection associated with the `access_token`. */
@@ -455,16 +455,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): Introspection =
@@ -499,8 +505,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** The type of authentication method. */
         fun type(): Type? = type.getNullable("type")
 
@@ -523,6 +527,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): AuthenticationMethod = apply {
             if (!validated) {
@@ -548,10 +554,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(authenticationMethod: AuthenticationMethod) = apply {
-                this.type = authenticationMethod.type
-                this.connectionStatus = authenticationMethod.connectionStatus
-                this.products = authenticationMethod.products
-                additionalProperties(authenticationMethod.additionalProperties)
+                type = authenticationMethod.type
+                connectionStatus = authenticationMethod.connectionStatus
+                products = authenticationMethod.products
+                additionalProperties = authenticationMethod.additionalProperties.toMutableMap()
             }
 
             /** The type of authentication method. */
@@ -581,16 +587,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): AuthenticationMethod =
@@ -611,8 +623,6 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue>,
         ) {
 
-            private var validated: Boolean = false
-
             fun status(): ConnectionStatusType? = status.getNullable("status")
 
             fun message(): String? = message.getNullable("message")
@@ -624,6 +634,8 @@ private constructor(
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
 
             fun validate(): ConnectionStatus = apply {
                 if (!validated) {
@@ -647,9 +659,9 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(connectionStatus: ConnectionStatus) = apply {
-                    this.status = connectionStatus.status
-                    this.message = connectionStatus.message
-                    additionalProperties(connectionStatus.additionalProperties)
+                    status = connectionStatus.status
+                    message = connectionStatus.message
+                    additionalProperties = connectionStatus.additionalProperties.toMutableMap()
                 }
 
                 fun status(status: ConnectionStatusType) = status(JsonField.of(status))
@@ -666,18 +678,26 @@ private constructor(
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
                 @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): ConnectionStatus =
                     ConnectionStatus(
@@ -870,8 +890,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun status(): ConnectionStatusType? = status.getNullable("status")
 
         fun message(): String? = message.getNullable("message")
@@ -883,6 +901,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): ConnectionStatus = apply {
             if (!validated) {
@@ -906,9 +926,9 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(connectionStatus: ConnectionStatus) = apply {
-                this.status = connectionStatus.status
-                this.message = connectionStatus.message
-                additionalProperties(connectionStatus.additionalProperties)
+                status = connectionStatus.status
+                message = connectionStatus.message
+                additionalProperties = connectionStatus.additionalProperties.toMutableMap()
             }
 
             fun status(status: ConnectionStatusType) = status(JsonField.of(status))
@@ -925,16 +945,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): ConnectionStatus =

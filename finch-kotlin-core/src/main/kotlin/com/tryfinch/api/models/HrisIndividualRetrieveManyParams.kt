@@ -77,29 +77,36 @@ constructor(
 
             internal fun from(hrisIndividualRetrieveManyBody: HrisIndividualRetrieveManyBody) =
                 apply {
-                    this.options = hrisIndividualRetrieveManyBody.options
-                    this.requests = hrisIndividualRetrieveManyBody.requests
-                    additionalProperties(hrisIndividualRetrieveManyBody.additionalProperties)
+                    options = hrisIndividualRetrieveManyBody.options
+                    requests = hrisIndividualRetrieveManyBody.requests?.toMutableList()
+                    additionalProperties =
+                        hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             @JsonProperty("options")
-            fun options(options: Options) = apply { this.options = options }
+            fun options(options: Options?) = apply { this.options = options }
 
             @JsonProperty("requests")
-            fun requests(requests: List<Request>) = apply { this.requests = requests }
+            fun requests(requests: List<Request>?) = apply { this.requests = requests }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisIndividualRetrieveManyBody =
@@ -322,25 +329,31 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(options: Options) = apply {
-                this.include = options.include
-                additionalProperties(options.additionalProperties)
+                include = options.include?.toMutableList()
+                additionalProperties = options.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("include")
-            fun include(include: List<String>) = apply { this.include = include }
+            fun include(include: List<String>?) = apply { this.include = include }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Options =
@@ -392,25 +405,31 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
             @JsonProperty("individual_id")
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String?) = apply { this.individualId = individualId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request = Request(individualId, additionalProperties.toImmutable())
