@@ -6,25 +6,27 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = EnrolledIndividual.Builder::class)
 @NoAutoDetect
 class EnrolledIndividual
+@JsonCreator
 private constructor(
-    private val individualId: JsonField<String>,
-    private val code: JsonField<Code>,
-    private val body: JsonField<Body>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    private val individualId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Code> = JsonMissing.of(),
+    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun individualId(): String? = individualId.getNullable("individual_id")
@@ -79,8 +81,6 @@ private constructor(
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-        @JsonProperty("individual_id")
-        @ExcludeMissing
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
@@ -89,14 +89,10 @@ private constructor(
         fun code(code: Code) = code(JsonField.of(code))
 
         /** HTTP status code. Either 201 or 200 */
-        @JsonProperty("code")
-        @ExcludeMissing
         fun code(code: JsonField<Code>) = apply { this.code = code }
 
         fun body(body: Body) = body(JsonField.of(body))
 
-        @JsonProperty("body")
-        @ExcludeMissing
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -104,7 +100,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -128,14 +123,21 @@ private constructor(
             )
     }
 
-    @JsonDeserialize(builder = Body.Builder::class)
     @NoAutoDetect
     class Body
+    @JsonCreator
     private constructor(
-        private val name: JsonField<String>,
-        private val finchCode: JsonField<String>,
-        private val message: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("finch_code")
+        @ExcludeMissing
+        private val finchCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("message")
+        @ExcludeMissing
+        private val message: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Identifier indicating whether the benefit was newly enrolled or updated. */
@@ -196,24 +198,18 @@ private constructor(
             fun name(name: String) = name(JsonField.of(name))
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
-            @JsonProperty("name")
-            @ExcludeMissing
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** A descriptive identifier for the response */
             fun finchCode(finchCode: String) = finchCode(JsonField.of(finchCode))
 
             /** A descriptive identifier for the response */
-            @JsonProperty("finch_code")
-            @ExcludeMissing
             fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
 
             /** Short description in English that provides more information about the response. */
             fun message(message: String) = message(JsonField.of(message))
 
             /** Short description in English that provides more information about the response. */
-            @JsonProperty("message")
-            @ExcludeMissing
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -221,7 +217,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
