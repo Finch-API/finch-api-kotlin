@@ -8,7 +8,7 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/).
+The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
 ---
 
@@ -21,7 +21,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://dev
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:1.13.0")
+implementation("com.tryfinch.api:finch-kotlin:2.0.0")
 ```
 
 #### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-kotlin:1.13.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>1.13.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -230,6 +230,20 @@ while (page != null) {
     page = page.getNextPage()
 }
 ```
+
+---
+
+---
+
+## Webhook Verification
+
+We provide helper methods for verifying that a webhook request came from Finch, and not a malicious third party.
+
+You can use `finch.webhooks().verifySignature(body, headers, secret?)` or `finch.webhooks().unwrap(body, headers, secret?)`,
+both of which will raise an error if the signature is invalid.
+
+Note that the "body" parameter must be the raw JSON string sent from the server (do not parse it first).
+The `.unwrap()` method can parse this JSON for you.
 
 ---
 
