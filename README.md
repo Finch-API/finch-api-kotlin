@@ -46,10 +46,10 @@ Alternately, set the environment with `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET` o
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 
-val client = FinchOkHttpClient.fromEnv()
+val client: FinchClient = FinchOkHttpClient.fromEnv()
 
 // Note: you can also call fromEnv() from the client builder, for example if you need to set additional properties
-val client = FinchOkHttpClient.builder()
+val client: FinchClient = FinchOkHttpClient.builder()
     .fromEnv()
     // ... set properties on the builder
     .build()
@@ -73,10 +73,8 @@ To create a new hris directory, first use the `HrisDirectoryListParams` builder 
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params = HrisDirectoryListParams.builder()
-    .candidateId("<candidate id>")
-    .build()
-val page = client.hris().directory().list(params)
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
+val page: HrisDirectoryListPage = client.hris().directory().list(params)
 ```
 
 ### Example: listing resources
@@ -87,7 +85,7 @@ The Finch API provides a `list` method to get a paginated list of directory. You
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.IndividualInDirectory
 
-val page = client.hris().directory().list()
+val page: HrisDirectoryListPage = client.hris().directory().list()
 for (directory: IndividualInDirectory in page.individuals()) {
     print(directory)
 }
@@ -99,19 +97,19 @@ Use the `HrisDirectoryListParams` builder to set parameters:
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params = HrisDirectoryListParams.builder()
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
     .limit(0L)
     .offset(0L)
     .build()
-val page1 = client.hris().directory().list(params)
+val page1: HrisDirectoryListPage = client.hris().directory().list(params)
 
 // Using the `from` method of the builder you can reuse previous params values:
-val page2 = client.hris().directory().list(HrisDirectoryListParams.builder()
+val page2: HrisDirectoryListPage = client.hris().directory().list(HrisDirectoryListParams.builder()
     .from(params)
     .build())
 
 // Or easily get params for the next page by using the helper `getNextPageParams`:
-val page3 = client.hris().directory().list(params.getNextPageParams(page2))
+val page3: HrisDirectoryListPage = client.hris().directory().list(params.getNextPageParams(page2))
 ```
 
 See [Pagination](#pagination) below for more information on transparently working with lists of objects without worrying about fetching each page.
@@ -132,7 +130,7 @@ Sometimes, the API may support other properties that are not yet supported in th
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params = HrisDirectoryListParams.builder()
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", JsonValue.from("4242"))
     .build()
@@ -147,7 +145,7 @@ When receiving a response, the Finch Kotlin SDK will deserialize it into instanc
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
 
-val page = client.hris().directory().list().validate()
+val page: HrisDirectoryListPage = client.hris().directory().list().validate()
 ```
 
 ### Response properties as JSON
@@ -158,7 +156,7 @@ In rare cases, you may want to access the underlying JSON value for a response p
 import com.tryfinch.api.core.JsonField
 import java.util.Optional
 
-val field = responseObj._field
+val field: JsonField = responseObj._field
 
 if (field.isMissing()) {
   // Value was not specified in the JSON response
@@ -170,7 +168,7 @@ if (field.isMissing()) {
 
   // If the value given by the API did not match the shape that the SDK expects
   // you can deserialise into a custom type
-  val myObj = responseObj._field.asUnknown()?.convert(MyClass.class)
+  val myObj: MyClass = responseObj._field.asUnknown()?.convert(MyClass.class)
 }
 ```
 
@@ -181,7 +179,7 @@ Sometimes, the server response may include additional properties that are not ye
 ```kotlin
 import com.tryfinch.api.core.JsonValue
 
-val secret = operationSupportMatrix._additionalProperties().get("secret_field")
+val secret: JsonValue = operationSupportMatrix._additionalProperties().get("secret_field")
 ```
 
 ---
@@ -282,7 +280,7 @@ Requests that experience certain errors are automatically retried 2 times by def
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 
-val client = FinchOkHttpClient.builder()
+val client: FinchClient = FinchOkHttpClient.builder()
     .fromEnv()
     .maxRetries(4)
     .build()
@@ -297,7 +295,7 @@ import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import java.time.Duration
 
-val client = FinchOkHttpClient.builder()
+val client: FinchClient = FinchOkHttpClient.builder()
     .fromEnv()
     .timeout(Duration.ofSeconds(30))
     .build()
@@ -313,7 +311,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import java.net.InetSocketAddress
 import java.net.Proxy
 
-val client = FinchOkHttpClient.builder()
+val client: FinchClient = FinchOkHttpClient.builder()
     .fromEnv()
     .proxy(Proxy(Proxy.Type.HTTP, InetSocketAddress("example.com", 8080)))
     .build()
