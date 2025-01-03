@@ -18,25 +18,23 @@ import java.util.Objects
 class HrisBenefitUpdateParams
 constructor(
     private val benefitId: String,
-    private val description: String?,
+    private val body: HrisBenefitUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun benefitId(): String = benefitId
 
-    fun description(): String? = description
+    /** Updated name or description. */
+    fun description(): String? = body.description()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): HrisBenefitUpdateBody {
-        return HrisBenefitUpdateBody(description, additionalBodyProperties)
-    }
+    internal fun getBody(): HrisBenefitUpdateBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
@@ -83,7 +81,7 @@ constructor(
             }
 
             /** Updated name or description. */
-            fun description(description: String?) = apply { this.description = description }
+            fun description(description: String) = apply { this.description = description }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -137,24 +135,21 @@ constructor(
     class Builder {
 
         private var benefitId: String? = null
-        private var description: String? = null
+        private var body: HrisBenefitUpdateBody.Builder = HrisBenefitUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(hrisBenefitUpdateParams: HrisBenefitUpdateParams) = apply {
             benefitId = hrisBenefitUpdateParams.benefitId
-            description = hrisBenefitUpdateParams.description
+            body = hrisBenefitUpdateParams.body.toBuilder()
             additionalHeaders = hrisBenefitUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                hrisBenefitUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Updated name or description. */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String) = apply { body.description(description) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -255,34 +250,30 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitUpdateParams =
             HrisBenefitUpdateParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                description,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -291,11 +282,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitUpdateParams && benefitId == other.benefitId && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitUpdateParams && benefitId == other.benefitId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "HrisBenefitUpdateParams{benefitId=$benefitId, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitUpdateParams{benefitId=$benefitId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

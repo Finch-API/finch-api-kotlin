@@ -25,80 +25,21 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /**
+     * Array of individuals to create. Takes all combined fields from `/individual` and
+     * `/employment` endpoints. All fields are optional.
+     */
     fun body(): List<IndividualOrEmployment> = body
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): List<IndividualOrEmployment> {
-        return body
-    }
+    internal fun getBody(): List<IndividualOrEmployment> = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
     internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    /**
-     * Array of individuals to create. Takes all combined fields from `/individual` and
-     * `/employment` endpoints. All fields are optional.
-     */
-    @NoAutoDetect
-    class SandboxDirectoryCreateBody
-    @JsonCreator
-    internal constructor(
-        @JsonProperty("body") private val body: List<IndividualOrEmployment>,
-    ) {
-
-        /**
-         * Array of individuals to create. Takes all combined fields from `/individual` and
-         * `/employment` endpoints. All fields are optional.
-         */
-        @JsonProperty("body") fun body(): List<IndividualOrEmployment> = body
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var body: List<IndividualOrEmployment>? = null
-
-            internal fun from(sandboxDirectoryCreateBody: SandboxDirectoryCreateBody) = apply {
-                body = sandboxDirectoryCreateBody.body.toMutableList()
-            }
-
-            /**
-             * Array of individuals to create. Takes all combined fields from `/individual` and
-             * `/employment` endpoints. All fields are optional.
-             */
-            fun body(body: List<IndividualOrEmployment>) = apply { this.body = body }
-
-            fun build(): SandboxDirectoryCreateBody =
-                SandboxDirectoryCreateBody(
-                    checkNotNull(body) { "`body` is required but was not set" }.toImmutable()
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is SandboxDirectoryCreateBody && body == other.body /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(body) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() = "SandboxDirectoryCreateBody{body=$body}"
-    }
 
     fun toBuilder() = Builder().from(this)
 
@@ -110,7 +51,7 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var body: MutableList<IndividualOrEmployment> = mutableListOf()
+        private var body: MutableList<IndividualOrEmployment>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -124,16 +65,15 @@ constructor(
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        fun body(body: List<IndividualOrEmployment>) = apply {
-            this.body.clear()
-            this.body.addAll(body)
-        }
+        fun body(body: List<IndividualOrEmployment>) = apply { this.body = body.toMutableList() }
 
         /**
          * Array of individuals to create. Takes all combined fields from `/individual` and
          * `/employment` endpoints. All fields are optional.
          */
-        fun addBody(body: IndividualOrEmployment) = apply { this.body.add(body) }
+        fun addBody(body: IndividualOrEmployment) = apply {
+            this.body = (this.body ?: mutableListOf()).apply { add(body) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -235,7 +175,7 @@ constructor(
 
         fun build(): SandboxDirectoryCreateParams =
             SandboxDirectoryCreateParams(
-                body.toImmutable(),
+                checkNotNull(body) { "`body` is required but was not set" }.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -382,8 +322,8 @@ constructor(
             private var middleName: String? = null
             private var lastName: String? = null
             private var preferredName: String? = null
-            private var emails: List<Email>? = null
-            private var phoneNumbers: List<PhoneNumber?>? = null
+            private var emails: MutableList<Email>? = null
+            private var phoneNumbers: MutableList<PhoneNumber?>? = null
             private var gender: Gender? = null
             private var ethnicity: Ethnicity? = null
             private var dob: String? = null
@@ -402,8 +342,8 @@ constructor(
             private var classCode: String? = null
             private var location: Location? = null
             private var income: Income? = null
-            private var incomeHistory: List<Income?>? = null
-            private var customFields: List<CustomField>? = null
+            private var incomeHistory: MutableList<Income?>? = null
+            private var customFields: MutableList<CustomField>? = null
             private var sourceId: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -439,102 +379,124 @@ constructor(
             }
 
             /** The legal first name of the individual. */
-            fun firstName(firstName: String?) = apply { this.firstName = firstName }
+            fun firstName(firstName: String) = apply { this.firstName = firstName }
 
             /** The legal middle name of the individual. */
-            fun middleName(middleName: String?) = apply { this.middleName = middleName }
+            fun middleName(middleName: String) = apply { this.middleName = middleName }
 
             /** The legal last name of the individual. */
-            fun lastName(lastName: String?) = apply { this.lastName = lastName }
+            fun lastName(lastName: String) = apply { this.lastName = lastName }
 
             /** The preferred name of the individual. */
-            fun preferredName(preferredName: String?) = apply { this.preferredName = preferredName }
+            fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
 
-            fun emails(emails: List<Email>?) = apply { this.emails = emails }
+            fun emails(emails: List<Email>) = apply { this.emails = emails.toMutableList() }
 
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
-                this.phoneNumbers = phoneNumbers
+            fun addEmail(email: Email) = apply {
+                emails = (emails ?: mutableListOf()).apply { add(email) }
+            }
+
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
+                this.phoneNumbers = phoneNumbers.toMutableList()
+            }
+
+            fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+                phoneNumbers = (phoneNumbers ?: mutableListOf()).apply { add(phoneNumber) }
             }
 
             /** The gender of the individual. */
-            fun gender(gender: Gender?) = apply { this.gender = gender }
+            fun gender(gender: Gender) = apply { this.gender = gender }
 
             /** The EEOC-defined ethnicity of the individual. */
-            fun ethnicity(ethnicity: Ethnicity?) = apply { this.ethnicity = ethnicity }
+            fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
 
-            fun dob(dob: String?) = apply { this.dob = dob }
+            fun dob(dob: String) = apply { this.dob = dob }
 
             /**
              * Social Security Number of the individual. This field is only available with the `ssn`
              * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
              * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
              */
-            fun ssn(ssn: String?) = apply { this.ssn = ssn }
+            fun ssn(ssn: String) = apply { this.ssn = ssn }
 
             /**
              * Social Security Number of the individual in **encrypted** format. This field is only
              * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param
              * set in the body.
              */
-            fun encryptedSsn(encryptedSsn: String?) = apply { this.encryptedSsn = encryptedSsn }
+            fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
 
-            fun residence(residence: Location?) = apply { this.residence = residence }
+            fun residence(residence: Location) = apply { this.residence = residence }
 
             /** The current title of the individual. */
-            fun title(title: String?) = apply { this.title = title }
+            fun title(title: String) = apply { this.title = title }
 
             /** The manager object representing the manager of the individual within the org. */
-            fun manager(manager: Manager?) = apply { this.manager = manager }
+            fun manager(manager: Manager) = apply { this.manager = manager }
 
             /** The department object. */
-            fun department(department: Department?) = apply { this.department = department }
+            fun department(department: Department) = apply { this.department = department }
 
             /** The employment object. */
-            fun employment(employment: Employment?) = apply { this.employment = employment }
+            fun employment(employment: Employment) = apply { this.employment = employment }
 
-            fun startDate(startDate: String?) = apply { this.startDate = startDate }
+            fun startDate(startDate: String) = apply { this.startDate = startDate }
 
-            fun endDate(endDate: String?) = apply { this.endDate = endDate }
+            fun endDate(endDate: String) = apply { this.endDate = endDate }
 
-            fun latestRehireDate(latestRehireDate: String?) = apply {
+            fun latestRehireDate(latestRehireDate: String) = apply {
                 this.latestRehireDate = latestRehireDate
             }
 
             /** `true` if the individual an an active employee or contractor at the company. */
-            fun isActive(isActive: Boolean?) = apply { this.isActive = isActive }
+            fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
 
             /** The detailed employment status of the individual. */
-            fun employmentStatus(employmentStatus: EmploymentStatus?) = apply {
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
                 this.employmentStatus = employmentStatus
             }
 
             /** Worker's compensation classification code for this employee */
-            fun classCode(classCode: String?) = apply { this.classCode = classCode }
+            fun classCode(classCode: String) = apply { this.classCode = classCode }
 
-            fun location(location: Location?) = apply { this.location = location }
+            fun location(location: Location) = apply { this.location = location }
 
             /**
              * The employee's income as reported by the provider. This may not always be annualized
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
              */
-            fun income(income: Income?) = apply { this.income = income }
+            fun income(income: Income) = apply { this.income = income }
 
             /** The array of income history. */
-            fun incomeHistory(incomeHistory: List<Income?>?) = apply {
-                this.incomeHistory = incomeHistory
+            fun incomeHistory(incomeHistory: List<Income?>) = apply {
+                this.incomeHistory = incomeHistory.toMutableList()
+            }
+
+            /** The array of income history. */
+            fun addIncomeHistory(incomeHistory: Income) = apply {
+                this.incomeHistory =
+                    (this.incomeHistory ?: mutableListOf()).apply { add(incomeHistory) }
             }
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
              * in the system. Custom fields are not currently supported for assisted connections.
              */
-            fun customFields(customFields: List<CustomField>?) = apply {
-                this.customFields = customFields
+            fun customFields(customFields: List<CustomField>) = apply {
+                this.customFields = customFields.toMutableList()
+            }
+
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun addCustomField(customField: CustomField) = apply {
+                customFields = (customFields ?: mutableListOf()).apply { add(customField) }
             }
 
             /** The source system's unique employment identifier for this individual */
-            fun sourceId(sourceId: String?) = apply { this.sourceId = sourceId }
+            fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -625,9 +587,9 @@ constructor(
                     additionalProperties = customField.additionalProperties.toMutableMap()
                 }
 
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
-                fun value(value: JsonValue?) = apply { this.value = value }
+                fun value(value: JsonValue) = apply { this.value = value }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -712,7 +674,7 @@ constructor(
                 }
 
                 /** The name of the department associated with the individual. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -794,9 +756,9 @@ constructor(
                     additionalProperties = email.additionalProperties.toMutableMap()
                 }
 
-                fun data(data: String?) = apply { this.data = data }
+                fun data(data: String) = apply { this.data = data }
 
-                fun type(type: Type?) = apply { this.type = type }
+                fun type(type: Type) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -947,13 +909,13 @@ constructor(
                 }
 
                 /** The main employment type of the individual. */
-                fun type(type: Type?) = apply { this.type = type }
+                fun type(type: Type) = apply { this.type = type }
 
                 /**
                  * The secondary employment type of the individual. Options: `full_time`,
                  * `part_time`, `intern`, `temp`, `seasonal` and `individual_contractor`.
                  */
-                fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
+                fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1425,7 +1387,7 @@ constructor(
                 }
 
                 /** A stable Finch `id` (UUID v4) for an individual in the company. */
-                fun id(id: String?) = apply { this.id = id }
+                fun id(id: String) = apply { this.id = id }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1506,9 +1468,9 @@ constructor(
                     additionalProperties = phoneNumber.additionalProperties.toMutableMap()
                 }
 
-                fun data(data: String?) = apply { this.data = data }
+                fun data(data: String) = apply { this.data = data }
 
-                fun type(type: Type?) = apply { this.type = type }
+                fun type(type: Type) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()

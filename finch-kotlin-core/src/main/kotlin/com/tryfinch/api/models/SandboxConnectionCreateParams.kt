@@ -20,38 +20,32 @@ import java.util.Objects
 
 class SandboxConnectionCreateParams
 constructor(
-    private val providerId: String,
-    private val authenticationType: AuthenticationType?,
-    private val employeeSize: Long?,
-    private val products: List<String>?,
+    private val body: SandboxConnectionCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun providerId(): String = providerId
+    /** The provider associated with the connection */
+    fun providerId(): String = body.providerId()
 
-    fun authenticationType(): AuthenticationType? = authenticationType
+    fun authenticationType(): AuthenticationType? = body.authenticationType()
 
-    fun employeeSize(): Long? = employeeSize
+    /**
+     * Optional: the size of the employer to be created with this connection. Defaults to 20. Note
+     * that if this is higher than 100, historical payroll data will not be generated, and instead
+     * only one pay period will be created.
+     */
+    fun employeeSize(): Long? = body.employeeSize()
 
-    fun products(): List<String>? = products
+    fun products(): List<String>? = body.products()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): SandboxConnectionCreateBody {
-        return SandboxConnectionCreateBody(
-            providerId,
-            authenticationType,
-            employeeSize,
-            products,
-            additionalBodyProperties,
-        )
-    }
+    internal fun getBody(): SandboxConnectionCreateBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
@@ -100,7 +94,7 @@ constructor(
             private var providerId: String? = null
             private var authenticationType: AuthenticationType? = null
             private var employeeSize: Long? = null
-            private var products: List<String>? = null
+            private var products: MutableList<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxConnectionCreateBody: SandboxConnectionCreateBody) = apply {
@@ -115,7 +109,7 @@ constructor(
             /** The provider associated with the connection */
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            fun authenticationType(authenticationType: AuthenticationType?) = apply {
+            fun authenticationType(authenticationType: AuthenticationType) = apply {
                 this.authenticationType = authenticationType
             }
 
@@ -124,9 +118,15 @@ constructor(
              * to 20. Note that if this is higher than 100, historical payroll data will not be
              * generated, and instead only one pay period will be created.
              */
-            fun employeeSize(employeeSize: Long?) = apply { this.employeeSize = employeeSize }
+            fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
 
-            fun products(products: List<String>?) = apply { this.products = products }
+            fun products(products: List<String>) = apply {
+                this.products = products.toMutableList()
+            }
+
+            fun addProduct(product: String) = apply {
+                products = (products ?: mutableListOf()).apply { add(product) }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -185,30 +185,22 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var providerId: String? = null
-        private var authenticationType: AuthenticationType? = null
-        private var employeeSize: Long? = null
-        private var products: MutableList<String> = mutableListOf()
+        private var body: SandboxConnectionCreateBody.Builder =
+            SandboxConnectionCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxConnectionCreateParams: SandboxConnectionCreateParams) = apply {
-            providerId = sandboxConnectionCreateParams.providerId
-            authenticationType = sandboxConnectionCreateParams.authenticationType
-            employeeSize = sandboxConnectionCreateParams.employeeSize
-            products = sandboxConnectionCreateParams.products?.toMutableList() ?: mutableListOf()
+            body = sandboxConnectionCreateParams.body.toBuilder()
             additionalHeaders = sandboxConnectionCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxConnectionCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxConnectionCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The provider associated with the connection */
-        fun providerId(providerId: String) = apply { this.providerId = providerId }
+        fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
-            this.authenticationType = authenticationType
+            body.authenticationType(authenticationType)
         }
 
         /**
@@ -216,14 +208,11 @@ constructor(
          * Note that if this is higher than 100, historical payroll data will not be generated, and
          * instead only one pay period will be created.
          */
-        fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
+        fun employeeSize(employeeSize: Long) = apply { body.employeeSize(employeeSize) }
 
-        fun products(products: List<String>) = apply {
-            this.products.clear()
-            this.products.addAll(products)
-        }
+        fun products(products: List<String>) = apply { body.products(products) }
 
-        fun addProduct(product: String) = apply { this.products.add(product) }
+        fun addProduct(product: String) = apply { body.addProduct(product) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -324,36 +313,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxConnectionCreateParams =
             SandboxConnectionCreateParams(
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
-                authenticationType,
-                employeeSize,
-                products.toImmutable().ifEmpty { null },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -431,11 +413,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxConnectionCreateParams && providerId == other.providerId && authenticationType == other.authenticationType && employeeSize == other.employeeSize && products == other.products && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxConnectionCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(providerId, authenticationType, employeeSize, products, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxConnectionCreateParams{providerId=$providerId, authenticationType=$authenticationType, employeeSize=$employeeSize, products=$products, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxConnectionCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
