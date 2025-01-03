@@ -4,54 +4,48 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 class HrisIndividualRetrieveManyParams
 constructor(
-    private val options: Options?,
-    private val requests: List<Request>?,
+    private val body: HrisIndividualRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun options(): Options? = options
+    fun options(): Options? = body.options()
 
-    fun requests(): List<Request>? = requests
+    fun requests(): List<Request>? = body.requests()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): HrisIndividualRetrieveManyBody {
-        return HrisIndividualRetrieveManyBody(
-            options,
-            requests,
-            additionalBodyProperties,
-        )
-    }
+    internal fun getBody(): HrisIndividualRetrieveManyBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
     internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = HrisIndividualRetrieveManyBody.Builder::class)
     @NoAutoDetect
     class HrisIndividualRetrieveManyBody
+    @JsonCreator
     internal constructor(
-        private val options: Options?,
-        private val requests: List<Request>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("options") private val options: Options?,
+        @JsonProperty("requests") private val requests: List<Request>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("options") fun options(): Options? = options
@@ -72,34 +66,44 @@ constructor(
         class Builder {
 
             private var options: Options? = null
-            private var requests: List<Request>? = null
+            private var requests: MutableList<Request>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(hrisIndividualRetrieveManyBody: HrisIndividualRetrieveManyBody) =
                 apply {
-                    this.options = hrisIndividualRetrieveManyBody.options
-                    this.requests = hrisIndividualRetrieveManyBody.requests
-                    additionalProperties(hrisIndividualRetrieveManyBody.additionalProperties)
+                    options = hrisIndividualRetrieveManyBody.options
+                    requests = hrisIndividualRetrieveManyBody.requests?.toMutableList()
+                    additionalProperties =
+                        hrisIndividualRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
-            @JsonProperty("options")
             fun options(options: Options) = apply { this.options = options }
 
-            @JsonProperty("requests")
-            fun requests(requests: List<Request>) = apply { this.requests = requests }
+            fun requests(requests: List<Request>) = apply {
+                this.requests = requests.toMutableList()
+            }
+
+            fun addRequest(request: Request) = apply {
+                requests = (requests ?: mutableListOf()).apply { add(request) }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): HrisIndividualRetrieveManyBody =
@@ -138,32 +142,24 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var options: Options? = null
-        private var requests: MutableList<Request> = mutableListOf()
+        private var body: HrisIndividualRetrieveManyBody.Builder =
+            HrisIndividualRetrieveManyBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(hrisIndividualRetrieveManyParams: HrisIndividualRetrieveManyParams) =
             apply {
-                options = hrisIndividualRetrieveManyParams.options
-                requests =
-                    hrisIndividualRetrieveManyParams.requests?.toMutableList() ?: mutableListOf()
+                body = hrisIndividualRetrieveManyParams.body.toBuilder()
                 additionalHeaders = hrisIndividualRetrieveManyParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     hrisIndividualRetrieveManyParams.additionalQueryParams.toBuilder()
-                additionalBodyProperties =
-                    hrisIndividualRetrieveManyParams.additionalBodyProperties.toMutableMap()
             }
 
-        fun options(options: Options) = apply { this.options = options }
+        fun options(options: Options) = apply { body.options(options) }
 
-        fun requests(requests: List<Request>) = apply {
-            this.requests.clear()
-            this.requests.addAll(requests)
-        }
+        fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
-        fun addRequest(request: Request) = apply { this.requests.add(request) }
+        fun addRequest(request: Request) = apply { body.addRequest(request) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -264,43 +260,39 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisIndividualRetrieveManyParams =
             HrisIndividualRetrieveManyParams(
-                options,
-                requests.toImmutable().ifEmpty { null },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = Options.Builder::class)
     @NoAutoDetect
     class Options
+    @JsonCreator
     private constructor(
-        private val include: List<String>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("include") private val include: List<String>?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("include") fun include(): List<String>? = include
@@ -318,29 +310,37 @@ constructor(
 
         class Builder {
 
-            private var include: List<String>? = null
+            private var include: MutableList<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(options: Options) = apply {
-                this.include = options.include
-                additionalProperties(options.additionalProperties)
+                include = options.include?.toMutableList()
+                additionalProperties = options.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("include")
-            fun include(include: List<String>) = apply { this.include = include }
+            fun include(include: List<String>) = apply { this.include = include.toMutableList() }
+
+            fun addInclude(include: String) = apply {
+                this.include = (this.include ?: mutableListOf()).apply { add(include) }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Options =
@@ -365,12 +365,13 @@ constructor(
             "Options{include=$include, additionalProperties=$additionalProperties}"
     }
 
-    @JsonDeserialize(builder = Request.Builder::class)
     @NoAutoDetect
     class Request
+    @JsonCreator
     private constructor(
-        private val individualId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("individual_id") private val individualId: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("individual_id") fun individualId(): String? = individualId
@@ -392,25 +393,29 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(request: Request) = apply {
-                this.individualId = request.individualId
-                additionalProperties(request.additionalProperties)
+                individualId = request.individualId
+                additionalProperties = request.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("individual_id")
             fun individualId(individualId: String) = apply { this.individualId = individualId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Request = Request(individualId, additionalProperties.toImmutable())
@@ -439,11 +444,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && options == other.options && requests == other.requests && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisIndividualRetrieveManyParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(options, requests, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "HrisIndividualRetrieveManyParams{options=$options, requests=$requests, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisIndividualRetrieveManyParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

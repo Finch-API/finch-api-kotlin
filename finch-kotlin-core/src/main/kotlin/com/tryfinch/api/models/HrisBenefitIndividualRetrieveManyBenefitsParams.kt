@@ -17,6 +17,10 @@ constructor(
 
     fun benefitId(): String = benefitId
 
+    /**
+     * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
+     * individuals
+     */
     fun individualIds(): String? = individualIds
 
     fun _additionalHeaders(): Headers = additionalHeaders

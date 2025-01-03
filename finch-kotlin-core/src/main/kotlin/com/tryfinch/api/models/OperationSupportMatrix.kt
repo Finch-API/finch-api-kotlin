@@ -4,28 +4,35 @@ package com.tryfinch.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = OperationSupportMatrix.Builder::class)
 @NoAutoDetect
 class OperationSupportMatrix
+@JsonCreator
 private constructor(
-    private val create: JsonField<OperationSupport>,
-    private val update: JsonField<OperationSupport>,
-    private val delete: JsonField<OperationSupport>,
-    private val read: JsonField<OperationSupport>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("create")
+    @ExcludeMissing
+    private val create: JsonField<OperationSupport> = JsonMissing.of(),
+    @JsonProperty("update")
+    @ExcludeMissing
+    private val update: JsonField<OperationSupport> = JsonMissing.of(),
+    @JsonProperty("delete")
+    @ExcludeMissing
+    private val delete: JsonField<OperationSupport> = JsonMissing.of(),
+    @JsonProperty("read")
+    @ExcludeMissing
+    private val read: JsonField<OperationSupport> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -119,6 +126,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): OperationSupportMatrix = apply {
         if (!validated) {
             create()
@@ -145,11 +154,11 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(operationSupportMatrix: OperationSupportMatrix) = apply {
-            this.create = operationSupportMatrix.create
-            this.update = operationSupportMatrix.update
-            this.delete = operationSupportMatrix.delete
-            this.read = operationSupportMatrix.read
-            additionalProperties(operationSupportMatrix.additionalProperties)
+            create = operationSupportMatrix.create
+            update = operationSupportMatrix.update
+            delete = operationSupportMatrix.delete
+            read = operationSupportMatrix.read
+            additionalProperties = operationSupportMatrix.additionalProperties.toMutableMap()
         }
 
         /**
@@ -172,8 +181,6 @@ private constructor(
          * - `client_access_only`: This behavior is supported by the provider, but only available to
          *   the client and not to Finch
          */
-        @JsonProperty("create")
-        @ExcludeMissing
         fun create(create: JsonField<OperationSupport>) = apply { this.create = create }
 
         /**
@@ -196,8 +203,6 @@ private constructor(
          * - `client_access_only`: This behavior is supported by the provider, but only available to
          *   the client and not to Finch
          */
-        @JsonProperty("update")
-        @ExcludeMissing
         fun update(update: JsonField<OperationSupport>) = apply { this.update = update }
 
         /**
@@ -220,8 +225,6 @@ private constructor(
          * - `client_access_only`: This behavior is supported by the provider, but only available to
          *   the client and not to Finch
          */
-        @JsonProperty("delete")
-        @ExcludeMissing
         fun delete(delete: JsonField<OperationSupport>) = apply { this.delete = delete }
 
         /**
@@ -244,22 +247,25 @@ private constructor(
          * - `client_access_only`: This behavior is supported by the provider, but only available to
          *   the client and not to Finch
          */
-        @JsonProperty("read")
-        @ExcludeMissing
         fun read(read: JsonField<OperationSupport>) = apply { this.read = read }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): OperationSupportMatrix =

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
@@ -14,40 +13,31 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 class SandboxPaymentCreateParams
 constructor(
-    private val endDate: String?,
-    private val payStatements: List<PayStatement>?,
-    private val startDate: String?,
+    private val body: SandboxPaymentCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun endDate(): String? = endDate
+    fun endDate(): String? = body.endDate()
 
-    fun payStatements(): List<PayStatement>? = payStatements
+    fun payStatements(): List<PayStatement>? = body.payStatements()
 
-    fun startDate(): String? = startDate
+    fun startDate(): String? = body.startDate()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): SandboxPaymentCreateBody {
-        return SandboxPaymentCreateBody(
-            endDate,
-            payStatements,
-            startDate,
-            additionalBodyProperties,
-        )
-    }
+    internal fun getBody(): SandboxPaymentCreateBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
@@ -57,14 +47,15 @@ constructor(
      * Fields to configure the payment. Takes all fields from the `/payment` endpoint. All fields
      * are optional.
      */
-    @JsonDeserialize(builder = SandboxPaymentCreateBody.Builder::class)
     @NoAutoDetect
     class SandboxPaymentCreateBody
+    @JsonCreator
     internal constructor(
-        private val endDate: String?,
-        private val payStatements: List<PayStatement>?,
-        private val startDate: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("end_date") private val endDate: String?,
+        @JsonProperty("pay_statements") private val payStatements: List<PayStatement>?,
+        @JsonProperty("start_date") private val startDate: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonProperty("end_date") fun endDate(): String? = endDate
@@ -87,40 +78,46 @@ constructor(
         class Builder {
 
             private var endDate: String? = null
-            private var payStatements: List<PayStatement>? = null
+            private var payStatements: MutableList<PayStatement>? = null
             private var startDate: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxPaymentCreateBody: SandboxPaymentCreateBody) = apply {
-                this.endDate = sandboxPaymentCreateBody.endDate
-                this.payStatements = sandboxPaymentCreateBody.payStatements
-                this.startDate = sandboxPaymentCreateBody.startDate
-                additionalProperties(sandboxPaymentCreateBody.additionalProperties)
+                endDate = sandboxPaymentCreateBody.endDate
+                payStatements = sandboxPaymentCreateBody.payStatements?.toMutableList()
+                startDate = sandboxPaymentCreateBody.startDate
+                additionalProperties = sandboxPaymentCreateBody.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("end_date")
             fun endDate(endDate: String) = apply { this.endDate = endDate }
 
-            @JsonProperty("pay_statements")
             fun payStatements(payStatements: List<PayStatement>) = apply {
-                this.payStatements = payStatements
+                this.payStatements = payStatements.toMutableList()
             }
 
-            @JsonProperty("start_date")
+            fun addPayStatement(payStatement: PayStatement) = apply {
+                payStatements = (payStatements ?: mutableListOf()).apply { add(payStatement) }
+            }
+
             fun startDate(startDate: String) = apply { this.startDate = startDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): SandboxPaymentCreateBody =
@@ -160,36 +157,27 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var endDate: String? = null
-        private var payStatements: MutableList<PayStatement> = mutableListOf()
-        private var startDate: String? = null
+        private var body: SandboxPaymentCreateBody.Builder = SandboxPaymentCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxPaymentCreateParams: SandboxPaymentCreateParams) = apply {
-            endDate = sandboxPaymentCreateParams.endDate
-            payStatements =
-                sandboxPaymentCreateParams.payStatements?.toMutableList() ?: mutableListOf()
-            startDate = sandboxPaymentCreateParams.startDate
+            body = sandboxPaymentCreateParams.body.toBuilder()
             additionalHeaders = sandboxPaymentCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxPaymentCreateParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun endDate(endDate: String) = apply { this.endDate = endDate }
+        fun endDate(endDate: String) = apply { body.endDate(endDate) }
 
         fun payStatements(payStatements: List<PayStatement>) = apply {
-            this.payStatements.clear()
-            this.payStatements.addAll(payStatements)
+            body.payStatements(payStatements)
         }
 
         fun addPayStatement(payStatement: PayStatement) = apply {
-            this.payStatements.add(payStatement)
+            body.addPayStatement(payStatement)
         }
 
-        fun startDate(startDate: String) = apply { this.startDate = startDate }
+        fun startDate(startDate: String) = apply { body.startDate(startDate) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -290,53 +278,50 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
-                endDate,
-                payStatements.toImmutable().ifEmpty { null },
-                startDate,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = PayStatement.Builder::class)
     @NoAutoDetect
     class PayStatement
+    @JsonCreator
     private constructor(
-        private val individualId: String?,
-        private val type: Type?,
-        private val paymentMethod: PaymentMethod?,
-        private val totalHours: Double?,
-        private val grossPay: Money?,
-        private val netPay: Money?,
-        private val earnings: List<Earning?>?,
-        private val taxes: List<Tax?>?,
+        @JsonProperty("individual_id") private val individualId: String?,
+        @JsonProperty("type") private val type: Type?,
+        @JsonProperty("payment_method") private val paymentMethod: PaymentMethod?,
+        @JsonProperty("total_hours") private val totalHours: Double?,
+        @JsonProperty("gross_pay") private val grossPay: Money?,
+        @JsonProperty("net_pay") private val netPay: Money?,
+        @JsonProperty("earnings") private val earnings: List<Earning?>?,
+        @JsonProperty("taxes") private val taxes: List<Tax?>?,
+        @JsonProperty("employee_deductions")
         private val employeeDeductions: List<EmployeeDeduction?>?,
+        @JsonProperty("employer_contributions")
         private val employerContributions: List<EmployerContribution?>?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A stable Finch `id` (UUID v4) for an individual in the company */
@@ -387,78 +372,97 @@ constructor(
             private var totalHours: Double? = null
             private var grossPay: Money? = null
             private var netPay: Money? = null
-            private var earnings: List<Earning?>? = null
-            private var taxes: List<Tax?>? = null
-            private var employeeDeductions: List<EmployeeDeduction?>? = null
-            private var employerContributions: List<EmployerContribution?>? = null
+            private var earnings: MutableList<Earning?>? = null
+            private var taxes: MutableList<Tax?>? = null
+            private var employeeDeductions: MutableList<EmployeeDeduction?>? = null
+            private var employerContributions: MutableList<EmployerContribution?>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(payStatement: PayStatement) = apply {
-                this.individualId = payStatement.individualId
-                this.type = payStatement.type
-                this.paymentMethod = payStatement.paymentMethod
-                this.totalHours = payStatement.totalHours
-                this.grossPay = payStatement.grossPay
-                this.netPay = payStatement.netPay
-                this.earnings = payStatement.earnings
-                this.taxes = payStatement.taxes
-                this.employeeDeductions = payStatement.employeeDeductions
-                this.employerContributions = payStatement.employerContributions
-                additionalProperties(payStatement.additionalProperties)
+                individualId = payStatement.individualId
+                type = payStatement.type
+                paymentMethod = payStatement.paymentMethod
+                totalHours = payStatement.totalHours
+                grossPay = payStatement.grossPay
+                netPay = payStatement.netPay
+                earnings = payStatement.earnings?.toMutableList()
+                taxes = payStatement.taxes?.toMutableList()
+                employeeDeductions = payStatement.employeeDeductions?.toMutableList()
+                employerContributions = payStatement.employerContributions?.toMutableList()
+                additionalProperties = payStatement.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company */
-            @JsonProperty("individual_id")
             fun individualId(individualId: String) = apply { this.individualId = individualId }
 
             /** The type of the payment associated with the pay statement. */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** The payment method. */
-            @JsonProperty("payment_method")
             fun paymentMethod(paymentMethod: PaymentMethod) = apply {
                 this.paymentMethod = paymentMethod
             }
 
             /** The number of hours worked for this pay period */
-            @JsonProperty("total_hours")
             fun totalHours(totalHours: Double) = apply { this.totalHours = totalHours }
 
-            @JsonProperty("gross_pay")
             fun grossPay(grossPay: Money) = apply { this.grossPay = grossPay }
 
-            @JsonProperty("net_pay") fun netPay(netPay: Money) = apply { this.netPay = netPay }
+            fun netPay(netPay: Money) = apply { this.netPay = netPay }
 
             /** The array of earnings objects associated with this pay statement */
-            @JsonProperty("earnings")
-            fun earnings(earnings: List<Earning?>) = apply { this.earnings = earnings }
-
-            /** The array of taxes objects associated with this pay statement. */
-            @JsonProperty("taxes") fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes }
-
-            /** The array of deductions objects associated with this pay statement. */
-            @JsonProperty("employee_deductions")
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
-                this.employeeDeductions = employeeDeductions
+            fun earnings(earnings: List<Earning?>) = apply {
+                this.earnings = earnings.toMutableList()
             }
 
-            @JsonProperty("employer_contributions")
+            /** The array of earnings objects associated with this pay statement */
+            fun addEarning(earning: Earning) = apply {
+                earnings = (earnings ?: mutableListOf()).apply { add(earning) }
+            }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes.toMutableList() }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
+
+            /** The array of deductions objects associated with this pay statement. */
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
+                this.employeeDeductions = employeeDeductions.toMutableList()
+            }
+
+            /** The array of deductions objects associated with this pay statement. */
+            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
+                employeeDeductions =
+                    (employeeDeductions ?: mutableListOf()).apply { add(employeeDeduction) }
+            }
+
             fun employerContributions(employerContributions: List<EmployerContribution?>) = apply {
-                this.employerContributions = employerContributions
+                this.employerContributions = employerContributions.toMutableList()
+            }
+
+            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
+                employerContributions =
+                    (employerContributions ?: mutableListOf()).apply { add(employerContribution) }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): PayStatement =
@@ -477,16 +481,17 @@ constructor(
                 )
         }
 
-        @JsonDeserialize(builder = Earning.Builder::class)
         @NoAutoDetect
         class Earning
+        @JsonCreator
         private constructor(
-            private val type: Type?,
-            private val name: String?,
-            private val amount: Long?,
-            private val currency: String?,
-            private val hours: Double?,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("type") private val type: Type?,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("amount") private val amount: Long?,
+            @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("hours") private val hours: Double?,
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The type of earning. */
@@ -528,47 +533,53 @@ constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(earning: Earning) = apply {
-                    this.type = earning.type
-                    this.name = earning.name
-                    this.amount = earning.amount
-                    this.currency = earning.currency
-                    this.hours = earning.hours
-                    additionalProperties(earning.additionalProperties)
+                    type = earning.type
+                    name = earning.name
+                    amount = earning.amount
+                    currency = earning.currency
+                    hours = earning.hours
+                    additionalProperties = earning.additionalProperties.toMutableMap()
                 }
 
                 /** The type of earning. */
-                @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+                fun type(type: Type) = apply { this.type = type }
 
                 /** The exact name of the deduction from the pay statement. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 /** The earnings amount in cents. */
-                @JsonProperty("amount") fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The earnings currency code. */
-                @JsonProperty("currency")
                 fun currency(currency: String) = apply { this.currency = currency }
 
                 /**
                  * The number of hours associated with this earning. (For salaried employees, this
                  * could be hours per pay period, `0` or `null`, depending on the provider).
                  */
-                @JsonProperty("hours") fun hours(hours: Double) = apply { this.hours = hours }
+                fun hours(hours: Double) = apply { this.hours = hours }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Earning =
                     Earning(
@@ -722,16 +733,17 @@ constructor(
                 "Earning{type=$type, name=$name, amount=$amount, currency=$currency, hours=$hours, additionalProperties=$additionalProperties}"
         }
 
-        @JsonDeserialize(builder = EmployeeDeduction.Builder::class)
         @NoAutoDetect
         class EmployeeDeduction
+        @JsonCreator
         private constructor(
-            private val name: String?,
-            private val amount: Long?,
-            private val currency: String?,
-            private val preTax: Boolean?,
-            private val type: BenefitType?,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("amount") private val amount: Long?,
+            @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("pre_tax") private val preTax: Boolean?,
+            @JsonProperty("type") private val type: BenefitType?,
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The deduction name from the pay statement. */
@@ -770,45 +782,50 @@ constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(employeeDeduction: EmployeeDeduction) = apply {
-                    this.name = employeeDeduction.name
-                    this.amount = employeeDeduction.amount
-                    this.currency = employeeDeduction.currency
-                    this.preTax = employeeDeduction.preTax
-                    this.type = employeeDeduction.type
-                    additionalProperties(employeeDeduction.additionalProperties)
+                    name = employeeDeduction.name
+                    amount = employeeDeduction.amount
+                    currency = employeeDeduction.currency
+                    preTax = employeeDeduction.preTax
+                    type = employeeDeduction.type
+                    additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
                 }
 
                 /** The deduction name from the pay statement. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 /** The deduction amount in cents. */
-                @JsonProperty("amount") fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The deduction currency. */
-                @JsonProperty("currency")
                 fun currency(currency: String) = apply { this.currency = currency }
 
                 /** Boolean indicating if the deduction is pre-tax. */
-                @JsonProperty("pre_tax")
                 fun preTax(preTax: Boolean) = apply { this.preTax = preTax }
 
                 /** Type of benefit. */
-                @JsonProperty("type") fun type(type: BenefitType) = apply { this.type = type }
+                fun type(type: BenefitType) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): EmployeeDeduction =
                     EmployeeDeduction(
@@ -839,15 +856,16 @@ constructor(
                 "EmployeeDeduction{name=$name, amount=$amount, currency=$currency, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
         }
 
-        @JsonDeserialize(builder = EmployerContribution.Builder::class)
         @NoAutoDetect
         class EmployerContribution
+        @JsonCreator
         private constructor(
-            private val name: String?,
-            private val amount: Long?,
-            private val currency: String?,
-            private val type: BenefitType?,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("amount") private val amount: Long?,
+            @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("type") private val type: BenefitType?,
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The contribution name from the pay statement. */
@@ -882,40 +900,46 @@ constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(employerContribution: EmployerContribution) = apply {
-                    this.name = employerContribution.name
-                    this.amount = employerContribution.amount
-                    this.currency = employerContribution.currency
-                    this.type = employerContribution.type
-                    additionalProperties(employerContribution.additionalProperties)
+                    name = employerContribution.name
+                    amount = employerContribution.amount
+                    currency = employerContribution.currency
+                    type = employerContribution.type
+                    additionalProperties = employerContribution.additionalProperties.toMutableMap()
                 }
 
                 /** The contribution name from the pay statement. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 /** The contribution amount in cents. */
-                @JsonProperty("amount") fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The contribution currency. */
-                @JsonProperty("currency")
                 fun currency(currency: String) = apply { this.currency = currency }
 
                 /** Type of benefit. */
-                @JsonProperty("type") fun type(type: BenefitType) = apply { this.type = type }
+                fun type(type: BenefitType) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): EmployerContribution =
                     EmployerContribution(
@@ -1002,16 +1026,17 @@ constructor(
             override fun toString() = value.toString()
         }
 
-        @JsonDeserialize(builder = Tax.Builder::class)
         @NoAutoDetect
         class Tax
+        @JsonCreator
         private constructor(
-            private val type: Type?,
-            private val name: String?,
-            private val employer: Boolean?,
-            private val amount: Long?,
-            private val currency: String?,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("type") private val type: Type?,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("employer") private val employer: Boolean?,
+            @JsonProperty("amount") private val amount: Long?,
+            @JsonProperty("currency") private val currency: String?,
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The type of taxes. */
@@ -1050,45 +1075,50 @@ constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(tax: Tax) = apply {
-                    this.type = tax.type
-                    this.name = tax.name
-                    this.employer = tax.employer
-                    this.amount = tax.amount
-                    this.currency = tax.currency
-                    additionalProperties(tax.additionalProperties)
+                    type = tax.type
+                    name = tax.name
+                    employer = tax.employer
+                    amount = tax.amount
+                    currency = tax.currency
+                    additionalProperties = tax.additionalProperties.toMutableMap()
                 }
 
                 /** The type of taxes. */
-                @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+                fun type(type: Type) = apply { this.type = type }
 
                 /** The exact name of tax from the pay statement. */
-                @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+                fun name(name: String) = apply { this.name = name }
 
                 /** `true` if the amount is paid by the employers. */
-                @JsonProperty("employer")
                 fun employer(employer: Boolean) = apply { this.employer = employer }
 
                 /** The tax amount in cents. */
-                @JsonProperty("amount") fun amount(amount: Long) = apply { this.amount = amount }
+                fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The currency code. */
-                @JsonProperty("currency")
                 fun currency(currency: String) = apply { this.currency = currency }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
                 fun build(): Tax =
                     Tax(
@@ -1274,11 +1304,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxPaymentCreateParams && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, payStatements, startDate, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxPaymentCreateParams{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
