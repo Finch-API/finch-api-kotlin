@@ -15,8 +15,10 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /** Number of items to return */
     fun limit(): Long? = limit
 
+    /** Index to start from (defaults to 0) */
     fun offset(): Long? = offset
 
     fun _additionalHeaders(): Headers = additionalHeaders

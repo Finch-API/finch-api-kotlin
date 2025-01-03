@@ -21,96 +21,77 @@ import java.util.Objects
 class SandboxEmploymentUpdateParams
 constructor(
     private val individualId: String,
-    private val classCode: String?,
-    private val customFields: List<CustomField>?,
-    private val department: Department?,
-    private val employment: Employment?,
-    private val employmentStatus: EmploymentStatus?,
-    private val endDate: String?,
-    private val firstName: String?,
-    private val income: Income?,
-    private val incomeHistory: List<Income?>?,
-    private val isActive: Boolean?,
-    private val lastName: String?,
-    private val latestRehireDate: String?,
-    private val location: Location?,
-    private val manager: Manager?,
-    private val middleName: String?,
-    private val sourceId: String?,
-    private val startDate: String?,
-    private val title: String?,
+    private val body: SandboxEmploymentUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun individualId(): String = individualId
 
-    fun classCode(): String? = classCode
+    /** Worker's compensation classification code for this employee */
+    fun classCode(): String? = body.classCode()
 
-    fun customFields(): List<CustomField>? = customFields
+    /**
+     * Custom fields for the individual. These are fields which are defined by the employer in the
+     * system. Custom fields are not currently supported for assisted connections.
+     */
+    fun customFields(): List<CustomField>? = body.customFields()
 
-    fun department(): Department? = department
+    /** The department object. */
+    fun department(): Department? = body.department()
 
-    fun employment(): Employment? = employment
+    /** The employment object. */
+    fun employment(): Employment? = body.employment()
 
-    fun employmentStatus(): EmploymentStatus? = employmentStatus
+    /** The detailed employment status of the individual. */
+    fun employmentStatus(): EmploymentStatus? = body.employmentStatus()
 
-    fun endDate(): String? = endDate
+    fun endDate(): String? = body.endDate()
 
-    fun firstName(): String? = firstName
+    /** The legal first name of the individual. */
+    fun firstName(): String? = body.firstName()
 
-    fun income(): Income? = income
+    /**
+     * The employee's income as reported by the provider. This may not always be annualized income,
+     * but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
+     * provider returns.
+     */
+    fun income(): Income? = body.income()
 
-    fun incomeHistory(): List<Income?>? = incomeHistory
+    /** The array of income history. */
+    fun incomeHistory(): List<Income?>? = body.incomeHistory()
 
-    fun isActive(): Boolean? = isActive
+    /** `true` if the individual an an active employee or contractor at the company. */
+    fun isActive(): Boolean? = body.isActive()
 
-    fun lastName(): String? = lastName
+    /** The legal last name of the individual. */
+    fun lastName(): String? = body.lastName()
 
-    fun latestRehireDate(): String? = latestRehireDate
+    fun latestRehireDate(): String? = body.latestRehireDate()
 
-    fun location(): Location? = location
+    fun location(): Location? = body.location()
 
-    fun manager(): Manager? = manager
+    /** The manager object representing the manager of the individual within the org. */
+    fun manager(): Manager? = body.manager()
 
-    fun middleName(): String? = middleName
+    /** The legal middle name of the individual. */
+    fun middleName(): String? = body.middleName()
 
-    fun sourceId(): String? = sourceId
+    /** The source system's unique employment identifier for this individual */
+    fun sourceId(): String? = body.sourceId()
 
-    fun startDate(): String? = startDate
+    fun startDate(): String? = body.startDate()
 
-    fun title(): String? = title
+    /** The current title of the individual. */
+    fun title(): String? = body.title()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): SandboxEmploymentUpdateBody {
-        return SandboxEmploymentUpdateBody(
-            classCode,
-            customFields,
-            department,
-            employment,
-            employmentStatus,
-            endDate,
-            firstName,
-            income,
-            incomeHistory,
-            isActive,
-            lastName,
-            latestRehireDate,
-            location,
-            manager,
-            middleName,
-            sourceId,
-            startDate,
-            title,
-            additionalBodyProperties,
-        )
-    }
+    internal fun getBody(): SandboxEmploymentUpdateBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
@@ -221,14 +202,14 @@ constructor(
         class Builder {
 
             private var classCode: String? = null
-            private var customFields: List<CustomField>? = null
+            private var customFields: MutableList<CustomField>? = null
             private var department: Department? = null
             private var employment: Employment? = null
             private var employmentStatus: EmploymentStatus? = null
             private var endDate: String? = null
             private var firstName: String? = null
             private var income: Income? = null
-            private var incomeHistory: List<Income?>? = null
+            private var incomeHistory: MutableList<Income?>? = null
             private var isActive: Boolean? = null
             private var lastName: String? = null
             private var latestRehireDate: String? = null
@@ -264,69 +245,83 @@ constructor(
             }
 
             /** Worker's compensation classification code for this employee */
-            fun classCode(classCode: String?) = apply { this.classCode = classCode }
+            fun classCode(classCode: String) = apply { this.classCode = classCode }
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
              * in the system. Custom fields are not currently supported for assisted connections.
              */
-            fun customFields(customFields: List<CustomField>?) = apply {
-                this.customFields = customFields
+            fun customFields(customFields: List<CustomField>) = apply {
+                this.customFields = customFields.toMutableList()
+            }
+
+            /**
+             * Custom fields for the individual. These are fields which are defined by the employer
+             * in the system. Custom fields are not currently supported for assisted connections.
+             */
+            fun addCustomField(customField: CustomField) = apply {
+                customFields = (customFields ?: mutableListOf()).apply { add(customField) }
             }
 
             /** The department object. */
-            fun department(department: Department?) = apply { this.department = department }
+            fun department(department: Department) = apply { this.department = department }
 
             /** The employment object. */
-            fun employment(employment: Employment?) = apply { this.employment = employment }
+            fun employment(employment: Employment) = apply { this.employment = employment }
 
             /** The detailed employment status of the individual. */
-            fun employmentStatus(employmentStatus: EmploymentStatus?) = apply {
+            fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
                 this.employmentStatus = employmentStatus
             }
 
-            fun endDate(endDate: String?) = apply { this.endDate = endDate }
+            fun endDate(endDate: String) = apply { this.endDate = endDate }
 
             /** The legal first name of the individual. */
-            fun firstName(firstName: String?) = apply { this.firstName = firstName }
+            fun firstName(firstName: String) = apply { this.firstName = firstName }
 
             /**
              * The employee's income as reported by the provider. This may not always be annualized
              * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
              * information the provider returns.
              */
-            fun income(income: Income?) = apply { this.income = income }
+            fun income(income: Income) = apply { this.income = income }
 
             /** The array of income history. */
-            fun incomeHistory(incomeHistory: List<Income?>?) = apply {
-                this.incomeHistory = incomeHistory
+            fun incomeHistory(incomeHistory: List<Income?>) = apply {
+                this.incomeHistory = incomeHistory.toMutableList()
+            }
+
+            /** The array of income history. */
+            fun addIncomeHistory(incomeHistory: Income) = apply {
+                this.incomeHistory =
+                    (this.incomeHistory ?: mutableListOf()).apply { add(incomeHistory) }
             }
 
             /** `true` if the individual an an active employee or contractor at the company. */
-            fun isActive(isActive: Boolean?) = apply { this.isActive = isActive }
+            fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
 
             /** The legal last name of the individual. */
-            fun lastName(lastName: String?) = apply { this.lastName = lastName }
+            fun lastName(lastName: String) = apply { this.lastName = lastName }
 
-            fun latestRehireDate(latestRehireDate: String?) = apply {
+            fun latestRehireDate(latestRehireDate: String) = apply {
                 this.latestRehireDate = latestRehireDate
             }
 
-            fun location(location: Location?) = apply { this.location = location }
+            fun location(location: Location) = apply { this.location = location }
 
             /** The manager object representing the manager of the individual within the org. */
-            fun manager(manager: Manager?) = apply { this.manager = manager }
+            fun manager(manager: Manager) = apply { this.manager = manager }
 
             /** The legal middle name of the individual. */
-            fun middleName(middleName: String?) = apply { this.middleName = middleName }
+            fun middleName(middleName: String) = apply { this.middleName = middleName }
 
             /** The source system's unique employment identifier for this individual */
-            fun sourceId(sourceId: String?) = apply { this.sourceId = sourceId }
+            fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
 
-            fun startDate(startDate: String?) = apply { this.startDate = startDate }
+            fun startDate(startDate: String) = apply { this.startDate = startDate }
 
             /** The current title of the individual. */
-            fun title(title: String?) = apply { this.title = title }
+            fun title(title: String) = apply { this.title = title }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -400,135 +395,93 @@ constructor(
     class Builder {
 
         private var individualId: String? = null
-        private var classCode: String? = null
-        private var customFields: MutableList<CustomField> = mutableListOf()
-        private var department: Department? = null
-        private var employment: Employment? = null
-        private var employmentStatus: EmploymentStatus? = null
-        private var endDate: String? = null
-        private var firstName: String? = null
-        private var income: Income? = null
-        private var incomeHistory: MutableList<Income?> = mutableListOf()
-        private var isActive: Boolean? = null
-        private var lastName: String? = null
-        private var latestRehireDate: String? = null
-        private var location: Location? = null
-        private var manager: Manager? = null
-        private var middleName: String? = null
-        private var sourceId: String? = null
-        private var startDate: String? = null
-        private var title: String? = null
+        private var body: SandboxEmploymentUpdateBody.Builder =
+            SandboxEmploymentUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(sandboxEmploymentUpdateParams: SandboxEmploymentUpdateParams) = apply {
             individualId = sandboxEmploymentUpdateParams.individualId
-            classCode = sandboxEmploymentUpdateParams.classCode
-            customFields =
-                sandboxEmploymentUpdateParams.customFields?.toMutableList() ?: mutableListOf()
-            department = sandboxEmploymentUpdateParams.department
-            employment = sandboxEmploymentUpdateParams.employment
-            employmentStatus = sandboxEmploymentUpdateParams.employmentStatus
-            endDate = sandboxEmploymentUpdateParams.endDate
-            firstName = sandboxEmploymentUpdateParams.firstName
-            income = sandboxEmploymentUpdateParams.income
-            incomeHistory =
-                sandboxEmploymentUpdateParams.incomeHistory?.toMutableList() ?: mutableListOf()
-            isActive = sandboxEmploymentUpdateParams.isActive
-            lastName = sandboxEmploymentUpdateParams.lastName
-            latestRehireDate = sandboxEmploymentUpdateParams.latestRehireDate
-            location = sandboxEmploymentUpdateParams.location
-            manager = sandboxEmploymentUpdateParams.manager
-            middleName = sandboxEmploymentUpdateParams.middleName
-            sourceId = sandboxEmploymentUpdateParams.sourceId
-            startDate = sandboxEmploymentUpdateParams.startDate
-            title = sandboxEmploymentUpdateParams.title
+            body = sandboxEmploymentUpdateParams.body.toBuilder()
             additionalHeaders = sandboxEmploymentUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sandboxEmploymentUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                sandboxEmploymentUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
         /** Worker's compensation classification code for this employee */
-        fun classCode(classCode: String) = apply { this.classCode = classCode }
+        fun classCode(classCode: String) = apply { body.classCode(classCode) }
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
         fun customFields(customFields: List<CustomField>) = apply {
-            this.customFields.clear()
-            this.customFields.addAll(customFields)
+            body.customFields(customFields)
         }
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
-        fun addCustomField(customField: CustomField) = apply { this.customFields.add(customField) }
+        fun addCustomField(customField: CustomField) = apply { body.addCustomField(customField) }
 
         /** The department object. */
-        fun department(department: Department) = apply { this.department = department }
+        fun department(department: Department) = apply { body.department(department) }
 
         /** The employment object. */
-        fun employment(employment: Employment) = apply { this.employment = employment }
+        fun employment(employment: Employment) = apply { body.employment(employment) }
 
         /** The detailed employment status of the individual. */
         fun employmentStatus(employmentStatus: EmploymentStatus) = apply {
-            this.employmentStatus = employmentStatus
+            body.employmentStatus(employmentStatus)
         }
 
-        fun endDate(endDate: String) = apply { this.endDate = endDate }
+        fun endDate(endDate: String) = apply { body.endDate(endDate) }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = apply { this.firstName = firstName }
+        fun firstName(firstName: String) = apply { body.firstName(firstName) }
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
          */
-        fun income(income: Income) = apply { this.income = income }
+        fun income(income: Income) = apply { body.income(income) }
 
         /** The array of income history. */
         fun incomeHistory(incomeHistory: List<Income?>) = apply {
-            this.incomeHistory.clear()
-            this.incomeHistory.addAll(incomeHistory)
+            body.incomeHistory(incomeHistory)
         }
 
         /** The array of income history. */
-        fun addIncomeHistory(incomeHistory: Income) = apply {
-            this.incomeHistory.add(incomeHistory)
-        }
+        fun addIncomeHistory(incomeHistory: Income) = apply { body.addIncomeHistory(incomeHistory) }
 
         /** `true` if the individual an an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = apply { this.isActive = isActive }
+        fun isActive(isActive: Boolean) = apply { body.isActive(isActive) }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = apply { this.lastName = lastName }
+        fun lastName(lastName: String) = apply { body.lastName(lastName) }
 
         fun latestRehireDate(latestRehireDate: String) = apply {
-            this.latestRehireDate = latestRehireDate
+            body.latestRehireDate(latestRehireDate)
         }
 
-        fun location(location: Location) = apply { this.location = location }
+        fun location(location: Location) = apply { body.location(location) }
 
         /** The manager object representing the manager of the individual within the org. */
-        fun manager(manager: Manager) = apply { this.manager = manager }
+        fun manager(manager: Manager) = apply { body.manager(manager) }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = apply { this.middleName = middleName }
+        fun middleName(middleName: String) = apply { body.middleName(middleName) }
 
         /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: String) = apply { this.sourceId = sourceId }
+        fun sourceId(sourceId: String) = apply { body.sourceId(sourceId) }
 
-        fun startDate(startDate: String) = apply { this.startDate = startDate }
+        fun startDate(startDate: String) = apply { body.startDate(startDate) }
 
         /** The current title of the individual. */
-        fun title(title: String) = apply { this.title = title }
+        fun title(title: String) = apply { body.title(title) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -629,51 +582,30 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxEmploymentUpdateParams =
             SandboxEmploymentUpdateParams(
                 checkNotNull(individualId) { "`individualId` is required but was not set" },
-                classCode,
-                customFields.toImmutable().ifEmpty { null },
-                department,
-                employment,
-                employmentStatus,
-                endDate,
-                firstName,
-                income,
-                incomeHistory.toImmutable().ifEmpty { null },
-                isActive,
-                lastName,
-                latestRehireDate,
-                location,
-                manager,
-                middleName,
-                sourceId,
-                startDate,
-                title,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -714,9 +646,9 @@ constructor(
                 additionalProperties = customField.additionalProperties.toMutableMap()
             }
 
-            fun name(name: String?) = apply { this.name = name }
+            fun name(name: String) = apply { this.name = name }
 
-            fun value(value: JsonValue?) = apply { this.value = value }
+            fun value(value: JsonValue) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -798,7 +730,7 @@ constructor(
             }
 
             /** The name of the department associated with the individual. */
-            fun name(name: String?) = apply { this.name = name }
+            fun name(name: String) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -884,13 +816,13 @@ constructor(
             }
 
             /** The main employment type of the individual. */
-            fun type(type: Type?) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
+            fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1197,7 +1129,7 @@ constructor(
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
-            fun id(id: String?) = apply { this.id = id }
+            fun id(id: String) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1243,11 +1175,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SandboxEmploymentUpdateParams && individualId == other.individualId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, classCode, customFields, department, employment, employmentStatus, endDate, firstName, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SandboxEmploymentUpdateParams{individualId=$individualId, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SandboxEmploymentUpdateParams{individualId=$individualId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
