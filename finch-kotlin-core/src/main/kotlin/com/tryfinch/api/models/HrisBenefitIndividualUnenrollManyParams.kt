@@ -18,25 +18,23 @@ import java.util.Objects
 class HrisBenefitIndividualUnenrollManyParams
 constructor(
     private val benefitId: String,
-    private val individualIds: List<String>?,
+    private val body: HrisBenefitIndividualUnenrollManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun benefitId(): String = benefitId
 
-    fun individualIds(): List<String>? = individualIds
+    /** Array of individual_ids to unenroll. */
+    fun individualIds(): List<String>? = body.individualIds()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    internal fun getBody(): HrisBenefitIndividualUnenrollManyBody {
-        return HrisBenefitIndividualUnenrollManyBody(individualIds, additionalBodyProperties)
-    }
+    internal fun getBody(): HrisBenefitIndividualUnenrollManyBody = body
 
     internal fun getHeaders(): Headers = additionalHeaders
 
@@ -74,7 +72,7 @@ constructor(
 
         class Builder {
 
-            private var individualIds: List<String>? = null
+            private var individualIds: MutableList<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(
@@ -86,8 +84,13 @@ constructor(
             }
 
             /** Array of individual_ids to unenroll. */
-            fun individualIds(individualIds: List<String>?) = apply {
-                this.individualIds = individualIds
+            fun individualIds(individualIds: List<String>) = apply {
+                this.individualIds = individualIds.toMutableList()
+            }
+
+            /** Array of individual_ids to unenroll. */
+            fun addIndividualId(individualId: String) = apply {
+                individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -145,36 +148,29 @@ constructor(
     class Builder {
 
         private var benefitId: String? = null
-        private var individualIds: MutableList<String> = mutableListOf()
+        private var body: HrisBenefitIndividualUnenrollManyBody.Builder =
+            HrisBenefitIndividualUnenrollManyBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
             hrisBenefitIndividualUnenrollManyParams: HrisBenefitIndividualUnenrollManyParams
         ) = apply {
             benefitId = hrisBenefitIndividualUnenrollManyParams.benefitId
-            individualIds =
-                hrisBenefitIndividualUnenrollManyParams.individualIds?.toMutableList()
-                    ?: mutableListOf()
+            body = hrisBenefitIndividualUnenrollManyParams.body.toBuilder()
             additionalHeaders =
                 hrisBenefitIndividualUnenrollManyParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 hrisBenefitIndividualUnenrollManyParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                hrisBenefitIndividualUnenrollManyParams.additionalBodyProperties.toMutableMap()
         }
 
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Array of individual_ids to unenroll. */
-        fun individualIds(individualIds: List<String>) = apply {
-            this.individualIds.clear()
-            this.individualIds.addAll(individualIds)
-        }
+        fun individualIds(individualIds: List<String>) = apply { body.individualIds(individualIds) }
 
         /** Array of individual_ids to unenroll. */
-        fun addIndividualId(individualId: String) = apply { this.individualIds.add(individualId) }
+        fun addIndividualId(individualId: String) = apply { body.addIndividualId(individualId) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -275,34 +271,30 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitIndividualUnenrollManyParams =
             HrisBenefitIndividualUnenrollManyParams(
                 checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                individualIds.toImmutable().ifEmpty { null },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -311,11 +303,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitIndividualUnenrollManyParams && benefitId == other.benefitId && individualIds == other.individualIds && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is HrisBenefitIndividualUnenrollManyParams && benefitId == other.benefitId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
