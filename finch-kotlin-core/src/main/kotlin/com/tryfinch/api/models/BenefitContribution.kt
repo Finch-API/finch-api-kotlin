@@ -21,22 +21,22 @@ import java.util.Objects
 class BenefitContribution
 @JsonCreator
 private constructor(
-    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** Contribution type. */
-    fun type(): Type? = type.getNullable("type")
 
     /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
     fun amount(): Long? = amount.getNullable("amount")
 
     /** Contribution type. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    fun type(): Type? = type.getNullable("type")
 
     /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
     @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
+
+    /** Contribution type. */
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -46,8 +46,8 @@ private constructor(
 
     fun validate(): BenefitContribution = apply {
         if (!validated) {
-            type()
             amount()
+            type()
             validated = true
         }
     }
@@ -61,27 +61,27 @@ private constructor(
 
     class Builder {
 
-        private var type: JsonField<Type> = JsonMissing.of()
         private var amount: JsonField<Long> = JsonMissing.of()
+        private var type: JsonField<Type> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(benefitContribution: BenefitContribution) = apply {
-            type = benefitContribution.type
             amount = benefitContribution.amount
+            type = benefitContribution.type
             additionalProperties = benefitContribution.additionalProperties.toMutableMap()
         }
-
-        /** Contribution type. */
-        fun type(type: Type) = type(JsonField.of(type))
-
-        /** Contribution type. */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: Long) = amount(JsonField.of(amount))
 
         /** Contribution amount in cents (if `fixed`) or basis points (if `percent`). */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+        /** Contribution type. */
+        fun type(type: Type) = type(JsonField.of(type))
+
+        /** Contribution type. */
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -104,8 +104,8 @@ private constructor(
 
         fun build(): BenefitContribution =
             BenefitContribution(
-                type,
                 amount,
+                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -172,15 +172,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BenefitContribution && type == other.type && amount == other.amount && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is BenefitContribution && amount == other.amount && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(type, amount, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(amount, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "BenefitContribution{type=$type, amount=$amount, additionalProperties=$additionalProperties}"
+        "BenefitContribution{amount=$amount, type=$type, additionalProperties=$additionalProperties}"
 }

@@ -412,31 +412,31 @@ constructor(
     class Account
     @JsonCreator
     private constructor(
-        @JsonProperty("routing_number") private val routingNumber: String?,
         @JsonProperty("account_name") private val accountName: String?,
-        @JsonProperty("institution_name") private val institutionName: String?,
-        @JsonProperty("account_type") private val accountType: AccountType?,
         @JsonProperty("account_number") private val accountNumber: String?,
+        @JsonProperty("account_type") private val accountType: AccountType?,
+        @JsonProperty("institution_name") private val institutionName: String?,
+        @JsonProperty("routing_number") private val routingNumber: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
+
+        /** The name of the bank associated in the payroll/HRIS system. */
+        @JsonProperty("account_name") fun accountName(): String? = accountName
+
+        /** 10-12 digit number to specify the bank account */
+        @JsonProperty("account_number") fun accountNumber(): String? = accountNumber
+
+        /** The type of bank account. */
+        @JsonProperty("account_type") fun accountType(): AccountType? = accountType
+
+        /** Name of the banking institution. */
+        @JsonProperty("institution_name") fun institutionName(): String? = institutionName
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
          */
         @JsonProperty("routing_number") fun routingNumber(): String? = routingNumber
-
-        /** The name of the bank associated in the payroll/HRIS system. */
-        @JsonProperty("account_name") fun accountName(): String? = accountName
-
-        /** Name of the banking institution. */
-        @JsonProperty("institution_name") fun institutionName(): String? = institutionName
-
-        /** The type of bank account. */
-        @JsonProperty("account_type") fun accountType(): AccountType? = accountType
-
-        /** 10-12 digit number to specify the bank account */
-        @JsonProperty("account_number") fun accountNumber(): String? = accountNumber
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -451,20 +451,34 @@ constructor(
 
         class Builder {
 
-            private var routingNumber: String? = null
             private var accountName: String? = null
-            private var institutionName: String? = null
-            private var accountType: AccountType? = null
             private var accountNumber: String? = null
+            private var accountType: AccountType? = null
+            private var institutionName: String? = null
+            private var routingNumber: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(account: Account) = apply {
-                routingNumber = account.routingNumber
                 accountName = account.accountName
-                institutionName = account.institutionName
-                accountType = account.accountType
                 accountNumber = account.accountNumber
+                accountType = account.accountType
+                institutionName = account.institutionName
+                routingNumber = account.routingNumber
                 additionalProperties = account.additionalProperties.toMutableMap()
+            }
+
+            /** The name of the bank associated in the payroll/HRIS system. */
+            fun accountName(accountName: String) = apply { this.accountName = accountName }
+
+            /** 10-12 digit number to specify the bank account */
+            fun accountNumber(accountNumber: String) = apply { this.accountNumber = accountNumber }
+
+            /** The type of bank account. */
+            fun accountType(accountType: AccountType) = apply { this.accountType = accountType }
+
+            /** Name of the banking institution. */
+            fun institutionName(institutionName: String) = apply {
+                this.institutionName = institutionName
             }
 
             /**
@@ -472,20 +486,6 @@ constructor(
              * opened.
              */
             fun routingNumber(routingNumber: String) = apply { this.routingNumber = routingNumber }
-
-            /** The name of the bank associated in the payroll/HRIS system. */
-            fun accountName(accountName: String) = apply { this.accountName = accountName }
-
-            /** Name of the banking institution. */
-            fun institutionName(institutionName: String) = apply {
-                this.institutionName = institutionName
-            }
-
-            /** The type of bank account. */
-            fun accountType(accountType: AccountType) = apply { this.accountType = accountType }
-
-            /** 10-12 digit number to specify the bank account */
-            fun accountNumber(accountNumber: String) = apply { this.accountNumber = accountNumber }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -508,11 +508,11 @@ constructor(
 
             fun build(): Account =
                 Account(
-                    routingNumber,
                     accountName,
-                    institutionName,
-                    accountType,
                     accountNumber,
+                    accountType,
+                    institutionName,
+                    routingNumber,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -579,17 +579,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Account && routingNumber == other.routingNumber && accountName == other.accountName && institutionName == other.institutionName && accountType == other.accountType && accountNumber == other.accountNumber && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Account && accountName == other.accountName && accountNumber == other.accountNumber && accountType == other.accountType && institutionName == other.institutionName && routingNumber == other.routingNumber && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(routingNumber, accountName, institutionName, accountType, accountNumber, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(accountName, accountNumber, accountType, institutionName, routingNumber, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Account{routingNumber=$routingNumber, accountName=$accountName, institutionName=$institutionName, accountType=$accountType, accountNumber=$accountNumber, additionalProperties=$additionalProperties}"
+            "Account{accountName=$accountName, accountNumber=$accountNumber, accountType=$accountType, institutionName=$institutionName, routingNumber=$routingNumber, additionalProperties=$additionalProperties}"
     }
 
     @NoAutoDetect
@@ -767,17 +767,17 @@ constructor(
     class Entity
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type?,
         @JsonProperty("subtype") private val subtype: Subtype?,
+        @JsonProperty("type") private val type: Type?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The tax payer type of the company. */
-        @JsonProperty("type") fun type(): Type? = type
-
         /** The tax payer subtype of the company. */
         @JsonProperty("subtype") fun subtype(): Subtype? = subtype
+
+        /** The tax payer type of the company. */
+        @JsonProperty("type") fun type(): Type? = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -792,21 +792,21 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
             private var subtype: Subtype? = null
+            private var type: Type? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(entity: Entity) = apply {
-                type = entity.type
                 subtype = entity.subtype
+                type = entity.type
                 additionalProperties = entity.additionalProperties.toMutableMap()
             }
 
-            /** The tax payer type of the company. */
-            fun type(type: Type) = apply { this.type = type }
-
             /** The tax payer subtype of the company. */
             fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+
+            /** The tax payer type of the company. */
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -829,8 +829,8 @@ constructor(
 
             fun build(): Entity =
                 Entity(
-                    type,
                     subtype,
+                    type,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -990,17 +990,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Entity && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Entity && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Entity{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+            "Entity{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

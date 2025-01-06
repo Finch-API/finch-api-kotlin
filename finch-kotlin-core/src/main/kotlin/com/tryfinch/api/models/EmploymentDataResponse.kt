@@ -19,27 +19,27 @@ import java.util.Objects
 class EmploymentDataResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("body")
     @ExcludeMissing
     private val body: JsonField<EmploymentData> = JsonMissing.of(),
+    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Long> = JsonMissing.of(),
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    private val individualId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    fun individualId(): String? = individualId.getNullable("individual_id")
+    fun body(): EmploymentData? = body.getNullable("body")
 
     fun code(): Long? = code.getNullable("code")
 
-    fun body(): EmploymentData? = body.getNullable("body")
+    fun individualId(): String? = individualId.getNullable("individual_id")
 
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("body") @ExcludeMissing fun _body() = body
 
     @JsonProperty("code") @ExcludeMissing fun _code() = code
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -49,9 +49,9 @@ private constructor(
 
     fun validate(): EmploymentDataResponse = apply {
         if (!validated) {
-            individualId()
-            code()
             body()?.validate()
+            code()
+            individualId()
             validated = true
         }
     }
@@ -65,31 +65,31 @@ private constructor(
 
     class Builder {
 
-        private var individualId: JsonField<String> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
         private var body: JsonField<EmploymentData> = JsonMissing.of()
+        private var code: JsonField<Long> = JsonMissing.of()
+        private var individualId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(employmentDataResponse: EmploymentDataResponse) = apply {
-            individualId = employmentDataResponse.individualId
-            code = employmentDataResponse.code
             body = employmentDataResponse.body
+            code = employmentDataResponse.code
+            individualId = employmentDataResponse.individualId
             additionalProperties = employmentDataResponse.additionalProperties.toMutableMap()
         }
+
+        fun body(body: EmploymentData) = body(JsonField.of(body))
+
+        fun body(body: JsonField<EmploymentData>) = apply { this.body = body }
+
+        fun code(code: Long) = code(JsonField.of(code))
+
+        fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
-
-        fun code(code: Long) = code(JsonField.of(code))
-
-        fun code(code: JsonField<Long>) = apply { this.code = code }
-
-        fun body(body: EmploymentData) = body(JsonField.of(body))
-
-        fun body(body: JsonField<EmploymentData>) = apply { this.body = body }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -112,9 +112,9 @@ private constructor(
 
         fun build(): EmploymentDataResponse =
             EmploymentDataResponse(
-                individualId,
-                code,
                 body,
+                code,
+                individualId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -124,15 +124,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is EmploymentDataResponse && individualId == other.individualId && code == other.code && body == other.body && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is EmploymentDataResponse && body == other.body && code == other.code && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(individualId, code, body, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(body, code, individualId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "EmploymentDataResponse{individualId=$individualId, code=$code, body=$body, additionalProperties=$additionalProperties}"
+        "EmploymentDataResponse{body=$body, code=$code, individualId=$individualId, additionalProperties=$additionalProperties}"
 }
