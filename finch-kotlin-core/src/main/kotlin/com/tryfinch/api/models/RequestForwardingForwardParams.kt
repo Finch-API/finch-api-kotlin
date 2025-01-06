@@ -157,20 +157,20 @@ constructor(
              * The body for the forwarded request. This value must be specified as either a string
              * or a valid JSON object.
              */
-            fun data(data: String) = apply { this.data = data }
+            fun data(data: String?) = apply { this.data = data }
 
             /**
              * The HTTP headers to include on the forwarded request. This value must be specified as
              * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
              * "X-API-Version": "v1" }`
              */
-            fun headers(headers: JsonValue) = apply { this.headers = headers }
+            fun headers(headers: JsonValue?) = apply { this.headers = headers }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
-            fun params(params: JsonValue) = apply { this.params = params }
+            fun params(params: JsonValue?) = apply { this.params = params }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -257,20 +257,20 @@ constructor(
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        fun data(data: String) = apply { body.data(data) }
+        fun data(data: String?) = apply { body.data(data) }
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        fun headers(headers: JsonValue) = apply { body.headers(headers) }
+        fun headers(headers: JsonValue?) = apply { body.headers(headers) }
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        fun params(params: JsonValue) = apply { body.params(params) }
+        fun params(params: JsonValue?) = apply { body.params(params) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
