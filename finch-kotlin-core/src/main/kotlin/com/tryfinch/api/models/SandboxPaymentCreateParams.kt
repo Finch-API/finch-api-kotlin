@@ -308,43 +308,24 @@ constructor(
     class PayStatement
     @JsonCreator
     private constructor(
-        @JsonProperty("individual_id") private val individualId: String?,
-        @JsonProperty("type") private val type: Type?,
-        @JsonProperty("payment_method") private val paymentMethod: PaymentMethod?,
-        @JsonProperty("total_hours") private val totalHours: Double?,
-        @JsonProperty("gross_pay") private val grossPay: Money?,
-        @JsonProperty("net_pay") private val netPay: Money?,
         @JsonProperty("earnings") private val earnings: List<Earning?>?,
-        @JsonProperty("taxes") private val taxes: List<Tax?>?,
         @JsonProperty("employee_deductions")
         private val employeeDeductions: List<EmployeeDeduction?>?,
         @JsonProperty("employer_contributions")
         private val employerContributions: List<EmployerContribution?>?,
+        @JsonProperty("gross_pay") private val grossPay: Money?,
+        @JsonProperty("individual_id") private val individualId: String?,
+        @JsonProperty("net_pay") private val netPay: Money?,
+        @JsonProperty("payment_method") private val paymentMethod: PaymentMethod?,
+        @JsonProperty("taxes") private val taxes: List<Tax?>?,
+        @JsonProperty("total_hours") private val totalHours: Double?,
+        @JsonProperty("type") private val type: Type?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company */
-        @JsonProperty("individual_id") fun individualId(): String? = individualId
-
-        /** The type of the payment associated with the pay statement. */
-        @JsonProperty("type") fun type(): Type? = type
-
-        /** The payment method. */
-        @JsonProperty("payment_method") fun paymentMethod(): PaymentMethod? = paymentMethod
-
-        /** The number of hours worked for this pay period */
-        @JsonProperty("total_hours") fun totalHours(): Double? = totalHours
-
-        @JsonProperty("gross_pay") fun grossPay(): Money? = grossPay
-
-        @JsonProperty("net_pay") fun netPay(): Money? = netPay
-
         /** The array of earnings objects associated with this pay statement */
         @JsonProperty("earnings") fun earnings(): List<Earning?>? = earnings
-
-        /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes") fun taxes(): List<Tax?>? = taxes
 
         /** The array of deductions objects associated with this pay statement. */
         @JsonProperty("employee_deductions")
@@ -352,6 +333,25 @@ constructor(
 
         @JsonProperty("employer_contributions")
         fun employerContributions(): List<EmployerContribution?>? = employerContributions
+
+        @JsonProperty("gross_pay") fun grossPay(): Money? = grossPay
+
+        /** A stable Finch `id` (UUID v4) for an individual in the company */
+        @JsonProperty("individual_id") fun individualId(): String? = individualId
+
+        @JsonProperty("net_pay") fun netPay(): Money? = netPay
+
+        /** The payment method. */
+        @JsonProperty("payment_method") fun paymentMethod(): PaymentMethod? = paymentMethod
+
+        /** The array of taxes objects associated with this pay statement. */
+        @JsonProperty("taxes") fun taxes(): List<Tax?>? = taxes
+
+        /** The number of hours worked for this pay period */
+        @JsonProperty("total_hours") fun totalHours(): Double? = totalHours
+
+        /** The type of the payment associated with the pay statement. */
+        @JsonProperty("type") fun type(): Type? = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -366,49 +366,31 @@ constructor(
 
         class Builder {
 
-            private var individualId: String? = null
-            private var type: Type? = null
-            private var paymentMethod: PaymentMethod? = null
-            private var totalHours: Double? = null
-            private var grossPay: Money? = null
-            private var netPay: Money? = null
             private var earnings: MutableList<Earning?>? = null
-            private var taxes: MutableList<Tax?>? = null
             private var employeeDeductions: MutableList<EmployeeDeduction?>? = null
             private var employerContributions: MutableList<EmployerContribution?>? = null
+            private var grossPay: Money? = null
+            private var individualId: String? = null
+            private var netPay: Money? = null
+            private var paymentMethod: PaymentMethod? = null
+            private var taxes: MutableList<Tax?>? = null
+            private var totalHours: Double? = null
+            private var type: Type? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(payStatement: PayStatement) = apply {
-                individualId = payStatement.individualId
-                type = payStatement.type
-                paymentMethod = payStatement.paymentMethod
-                totalHours = payStatement.totalHours
-                grossPay = payStatement.grossPay
-                netPay = payStatement.netPay
                 earnings = payStatement.earnings?.toMutableList()
-                taxes = payStatement.taxes?.toMutableList()
                 employeeDeductions = payStatement.employeeDeductions?.toMutableList()
                 employerContributions = payStatement.employerContributions?.toMutableList()
+                grossPay = payStatement.grossPay
+                individualId = payStatement.individualId
+                netPay = payStatement.netPay
+                paymentMethod = payStatement.paymentMethod
+                taxes = payStatement.taxes?.toMutableList()
+                totalHours = payStatement.totalHours
+                type = payStatement.type
                 additionalProperties = payStatement.additionalProperties.toMutableMap()
             }
-
-            /** A stable Finch `id` (UUID v4) for an individual in the company */
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
-
-            /** The type of the payment associated with the pay statement. */
-            fun type(type: Type) = apply { this.type = type }
-
-            /** The payment method. */
-            fun paymentMethod(paymentMethod: PaymentMethod) = apply {
-                this.paymentMethod = paymentMethod
-            }
-
-            /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: Double) = apply { this.totalHours = totalHours }
-
-            fun grossPay(grossPay: Money) = apply { this.grossPay = grossPay }
-
-            fun netPay(netPay: Money) = apply { this.netPay = netPay }
 
             /** The array of earnings objects associated with this pay statement */
             fun earnings(earnings: List<Earning?>) = apply {
@@ -419,12 +401,6 @@ constructor(
             fun addEarning(earning: Earning) = apply {
                 earnings = (earnings ?: mutableListOf()).apply { add(earning) }
             }
-
-            /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes.toMutableList() }
-
-            /** The array of taxes objects associated with this pay statement. */
-            fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
 
             /** The array of deductions objects associated with this pay statement. */
             fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>) = apply {
@@ -445,6 +421,30 @@ constructor(
                 employerContributions =
                     (employerContributions ?: mutableListOf()).apply { add(employerContribution) }
             }
+
+            fun grossPay(grossPay: Money) = apply { this.grossPay = grossPay }
+
+            /** A stable Finch `id` (UUID v4) for an individual in the company */
+            fun individualId(individualId: String) = apply { this.individualId = individualId }
+
+            fun netPay(netPay: Money) = apply { this.netPay = netPay }
+
+            /** The payment method. */
+            fun paymentMethod(paymentMethod: PaymentMethod) = apply {
+                this.paymentMethod = paymentMethod
+            }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun taxes(taxes: List<Tax?>) = apply { this.taxes = taxes.toMutableList() }
+
+            /** The array of taxes objects associated with this pay statement. */
+            fun addTax(tax: Tax) = apply { taxes = (taxes ?: mutableListOf()).apply { add(tax) } }
+
+            /** The number of hours worked for this pay period */
+            fun totalHours(totalHours: Double) = apply { this.totalHours = totalHours }
+
+            /** The type of the payment associated with the pay statement. */
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -467,16 +467,16 @@ constructor(
 
             fun build(): PayStatement =
                 PayStatement(
-                    individualId,
-                    type,
-                    paymentMethod,
-                    totalHours,
-                    grossPay,
-                    netPay,
                     earnings?.toImmutable(),
-                    taxes?.toImmutable(),
                     employeeDeductions?.toImmutable(),
                     employerContributions?.toImmutable(),
+                    grossPay,
+                    individualId,
+                    netPay,
+                    paymentMethod,
+                    taxes?.toImmutable(),
+                    totalHours,
+                    type,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -485,20 +485,14 @@ constructor(
         class Earning
         @JsonCreator
         private constructor(
-            @JsonProperty("type") private val type: Type?,
-            @JsonProperty("name") private val name: String?,
             @JsonProperty("amount") private val amount: Long?,
             @JsonProperty("currency") private val currency: String?,
             @JsonProperty("hours") private val hours: Double?,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("type") private val type: Type?,
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            /** The type of earning. */
-            @JsonProperty("type") fun type(): Type? = type
-
-            /** The exact name of the deduction from the pay statement. */
-            @JsonProperty("name") fun name(): String? = name
 
             /** The earnings amount in cents. */
             @JsonProperty("amount") fun amount(): Long? = amount
@@ -511,6 +505,12 @@ constructor(
              * be hours per pay period, `0` or `null`, depending on the provider).
              */
             @JsonProperty("hours") fun hours(): Double? = hours
+
+            /** The exact name of the deduction from the pay statement. */
+            @JsonProperty("name") fun name(): String? = name
+
+            /** The type of earning. */
+            @JsonProperty("type") fun type(): Type? = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -525,27 +525,21 @@ constructor(
 
             class Builder {
 
-                private var type: Type? = null
-                private var name: String? = null
                 private var amount: Long? = null
                 private var currency: String? = null
                 private var hours: Double? = null
+                private var name: String? = null
+                private var type: Type? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(earning: Earning) = apply {
-                    type = earning.type
-                    name = earning.name
                     amount = earning.amount
                     currency = earning.currency
                     hours = earning.hours
+                    name = earning.name
+                    type = earning.type
                     additionalProperties = earning.additionalProperties.toMutableMap()
                 }
-
-                /** The type of earning. */
-                fun type(type: Type) = apply { this.type = type }
-
-                /** The exact name of the deduction from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
 
                 /** The earnings amount in cents. */
                 fun amount(amount: Long) = apply { this.amount = amount }
@@ -558,6 +552,12 @@ constructor(
                  * could be hours per pay period, `0` or `null`, depending on the provider).
                  */
                 fun hours(hours: Double) = apply { this.hours = hours }
+
+                /** The exact name of the deduction from the pay statement. */
+                fun name(name: String) = apply { this.name = name }
+
+                /** The type of earning. */
+                fun type(type: Type) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -583,11 +583,11 @@ constructor(
 
                 fun build(): Earning =
                     Earning(
-                        type,
-                        name,
                         amount,
                         currency,
                         hours,
+                        name,
+                        type,
                         additionalProperties.toImmutable(),
                     )
             }
@@ -720,40 +720,40 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Earning && type == other.type && name == other.name && amount == other.amount && currency == other.currency && hours == other.hours && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Earning && amount == other.amount && currency == other.currency && hours == other.hours && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(type, name, amount, currency, hours, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(amount, currency, hours, name, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Earning{type=$type, name=$name, amount=$amount, currency=$currency, hours=$hours, additionalProperties=$additionalProperties}"
+                "Earning{amount=$amount, currency=$currency, hours=$hours, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         @NoAutoDetect
         class EmployeeDeduction
         @JsonCreator
         private constructor(
-            @JsonProperty("name") private val name: String?,
             @JsonProperty("amount") private val amount: Long?,
             @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("name") private val name: String?,
             @JsonProperty("pre_tax") private val preTax: Boolean?,
             @JsonProperty("type") private val type: BenefitType?,
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** The deduction name from the pay statement. */
-            @JsonProperty("name") fun name(): String? = name
-
             /** The deduction amount in cents. */
             @JsonProperty("amount") fun amount(): Long? = amount
 
             /** The deduction currency. */
             @JsonProperty("currency") fun currency(): String? = currency
+
+            /** The deduction name from the pay statement. */
+            @JsonProperty("name") fun name(): String? = name
 
             /** Boolean indicating if the deduction is pre-tax. */
             @JsonProperty("pre_tax") fun preTax(): Boolean? = preTax
@@ -774,30 +774,30 @@ constructor(
 
             class Builder {
 
-                private var name: String? = null
                 private var amount: Long? = null
                 private var currency: String? = null
+                private var name: String? = null
                 private var preTax: Boolean? = null
                 private var type: BenefitType? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(employeeDeduction: EmployeeDeduction) = apply {
-                    name = employeeDeduction.name
                     amount = employeeDeduction.amount
                     currency = employeeDeduction.currency
+                    name = employeeDeduction.name
                     preTax = employeeDeduction.preTax
                     type = employeeDeduction.type
                     additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
                 }
-
-                /** The deduction name from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
 
                 /** The deduction amount in cents. */
                 fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The deduction currency. */
                 fun currency(currency: String) = apply { this.currency = currency }
+
+                /** The deduction name from the pay statement. */
+                fun name(name: String) = apply { this.name = name }
 
                 /** Boolean indicating if the deduction is pre-tax. */
                 fun preTax(preTax: Boolean) = apply { this.preTax = preTax }
@@ -829,9 +829,9 @@ constructor(
 
                 fun build(): EmployeeDeduction =
                     EmployeeDeduction(
-                        name,
                         amount,
                         currency,
+                        name,
                         preTax,
                         type,
                         additionalProperties.toImmutable(),
@@ -843,39 +843,39 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmployeeDeduction && name == other.name && amount == other.amount && currency == other.currency && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is EmployeeDeduction && amount == other.amount && currency == other.currency && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(name, amount, currency, preTax, type, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, preTax, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "EmployeeDeduction{name=$name, amount=$amount, currency=$currency, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
+                "EmployeeDeduction{amount=$amount, currency=$currency, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
         }
 
         @NoAutoDetect
         class EmployerContribution
         @JsonCreator
         private constructor(
-            @JsonProperty("name") private val name: String?,
             @JsonProperty("amount") private val amount: Long?,
             @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("name") private val name: String?,
             @JsonProperty("type") private val type: BenefitType?,
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            /** The contribution name from the pay statement. */
-            @JsonProperty("name") fun name(): String? = name
 
             /** The contribution amount in cents. */
             @JsonProperty("amount") fun amount(): Long? = amount
 
             /** The contribution currency. */
             @JsonProperty("currency") fun currency(): String? = currency
+
+            /** The contribution name from the pay statement. */
+            @JsonProperty("name") fun name(): String? = name
 
             /** Type of benefit. */
             @JsonProperty("type") fun type(): BenefitType? = type
@@ -893,28 +893,28 @@ constructor(
 
             class Builder {
 
-                private var name: String? = null
                 private var amount: Long? = null
                 private var currency: String? = null
+                private var name: String? = null
                 private var type: BenefitType? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(employerContribution: EmployerContribution) = apply {
-                    name = employerContribution.name
                     amount = employerContribution.amount
                     currency = employerContribution.currency
+                    name = employerContribution.name
                     type = employerContribution.type
                     additionalProperties = employerContribution.additionalProperties.toMutableMap()
                 }
-
-                /** The contribution name from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
 
                 /** The contribution amount in cents. */
                 fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The contribution currency. */
                 fun currency(currency: String) = apply { this.currency = currency }
+
+                /** The contribution name from the pay statement. */
+                fun name(name: String) = apply { this.name = name }
 
                 /** Type of benefit. */
                 fun type(type: BenefitType) = apply { this.type = type }
@@ -943,9 +943,9 @@ constructor(
 
                 fun build(): EmployerContribution =
                     EmployerContribution(
-                        name,
                         amount,
                         currency,
+                        name,
                         type,
                         additionalProperties.toImmutable(),
                     )
@@ -956,17 +956,17 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmployerContribution && name == other.name && amount == other.amount && currency == other.currency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is EmployerContribution && amount == other.amount && currency == other.currency && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(name, amount, currency, type, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "EmployerContribution{name=$name, amount=$amount, currency=$currency, type=$type, additionalProperties=$additionalProperties}"
+                "EmployerContribution{amount=$amount, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         class PaymentMethod
@@ -1030,29 +1030,29 @@ constructor(
         class Tax
         @JsonCreator
         private constructor(
-            @JsonProperty("type") private val type: Type?,
-            @JsonProperty("name") private val name: String?,
-            @JsonProperty("employer") private val employer: Boolean?,
             @JsonProperty("amount") private val amount: Long?,
             @JsonProperty("currency") private val currency: String?,
+            @JsonProperty("employer") private val employer: Boolean?,
+            @JsonProperty("name") private val name: String?,
+            @JsonProperty("type") private val type: Type?,
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            /** The type of taxes. */
-            @JsonProperty("type") fun type(): Type? = type
-
-            /** The exact name of tax from the pay statement. */
-            @JsonProperty("name") fun name(): String? = name
-
-            /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer") fun employer(): Boolean? = employer
 
             /** The tax amount in cents. */
             @JsonProperty("amount") fun amount(): Long? = amount
 
             /** The currency code. */
             @JsonProperty("currency") fun currency(): String? = currency
+
+            /** `true` if the amount is paid by the employers. */
+            @JsonProperty("employer") fun employer(): Boolean? = employer
+
+            /** The exact name of tax from the pay statement. */
+            @JsonProperty("name") fun name(): String? = name
+
+            /** The type of taxes. */
+            @JsonProperty("type") fun type(): Type? = type
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1067,36 +1067,36 @@ constructor(
 
             class Builder {
 
-                private var type: Type? = null
-                private var name: String? = null
-                private var employer: Boolean? = null
                 private var amount: Long? = null
                 private var currency: String? = null
+                private var employer: Boolean? = null
+                private var name: String? = null
+                private var type: Type? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(tax: Tax) = apply {
-                    type = tax.type
-                    name = tax.name
-                    employer = tax.employer
                     amount = tax.amount
                     currency = tax.currency
+                    employer = tax.employer
+                    name = tax.name
+                    type = tax.type
                     additionalProperties = tax.additionalProperties.toMutableMap()
                 }
-
-                /** The type of taxes. */
-                fun type(type: Type) = apply { this.type = type }
-
-                /** The exact name of tax from the pay statement. */
-                fun name(name: String) = apply { this.name = name }
-
-                /** `true` if the amount is paid by the employers. */
-                fun employer(employer: Boolean) = apply { this.employer = employer }
 
                 /** The tax amount in cents. */
                 fun amount(amount: Long) = apply { this.amount = amount }
 
                 /** The currency code. */
                 fun currency(currency: String) = apply { this.currency = currency }
+
+                /** `true` if the amount is paid by the employers. */
+                fun employer(employer: Boolean) = apply { this.employer = employer }
+
+                /** The exact name of tax from the pay statement. */
+                fun name(name: String) = apply { this.name = name }
+
+                /** The type of taxes. */
+                fun type(type: Type) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1122,11 +1122,11 @@ constructor(
 
                 fun build(): Tax =
                     Tax(
-                        type,
-                        name,
-                        employer,
                         amount,
                         currency,
+                        employer,
+                        name,
+                        type,
                         additionalProperties.toImmutable(),
                     )
             }
@@ -1205,17 +1205,17 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Tax && type == other.type && name == other.name && employer == other.employer && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Tax && amount == other.amount && currency == other.currency && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(type, name, employer, amount, currency, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(amount, currency, employer, name, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Tax{type=$type, name=$name, employer=$employer, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                "Tax{amount=$amount, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
         class Type
@@ -1286,17 +1286,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayStatement && individualId == other.individualId && type == other.type && paymentMethod == other.paymentMethod && totalHours == other.totalHours && grossPay == other.grossPay && netPay == other.netPay && earnings == other.earnings && taxes == other.taxes && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is PayStatement && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && individualId == other.individualId && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(individualId, type, paymentMethod, totalHours, grossPay, netPay, earnings, taxes, employeeDeductions, employerContributions, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(earnings, employeeDeductions, employerContributions, grossPay, individualId, netPay, paymentMethod, taxes, totalHours, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PayStatement{individualId=$individualId, type=$type, paymentMethod=$paymentMethod, totalHours=$totalHours, grossPay=$grossPay, netPay=$netPay, earnings=$earnings, taxes=$taxes, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, additionalProperties=$additionalProperties}"
+            "PayStatement{earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, individualId=$individualId, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
