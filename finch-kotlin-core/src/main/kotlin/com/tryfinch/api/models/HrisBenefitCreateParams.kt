@@ -97,12 +97,12 @@ constructor(
              * limiting this to <30 characters due to limitations in specific providers (e.g.
              * Justworks).
              */
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = apply { this.description = description }
 
-            fun frequency(frequency: BenefitFrequency) = apply { this.frequency = frequency }
+            fun frequency(frequency: BenefitFrequency?) = apply { this.frequency = frequency }
 
             /** Type of benefit. */
-            fun type(type: BenefitType) = apply { this.type = type }
+            fun type(type: BenefitType?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -174,12 +174,12 @@ constructor(
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        fun description(description: String) = apply { body.description(description) }
+        fun description(description: String?) = apply { body.description(description) }
 
-        fun frequency(frequency: BenefitFrequency) = apply { body.frequency(frequency) }
+        fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
         /** Type of benefit. */
-        fun type(type: BenefitType) = apply { body.type(type) }
+        fun type(type: BenefitType?) = apply { body.type(type) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

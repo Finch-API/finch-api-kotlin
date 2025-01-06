@@ -109,7 +109,7 @@ constructor(
             /** The provider associated with the connection */
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            fun authenticationType(authenticationType: AuthenticationType) = apply {
+            fun authenticationType(authenticationType: AuthenticationType?) = apply {
                 this.authenticationType = authenticationType
             }
 
@@ -118,10 +118,17 @@ constructor(
              * to 20. Note that if this is higher than 100, historical payroll data will not be
              * generated, and instead only one pay period will be created.
              */
-            fun employeeSize(employeeSize: Long) = apply { this.employeeSize = employeeSize }
+            fun employeeSize(employeeSize: Long?) = apply { this.employeeSize = employeeSize }
 
-            fun products(products: List<String>) = apply {
-                this.products = products.toMutableList()
+            /**
+             * Optional: the size of the employer to be created with this connection. Defaults
+             * to 20. Note that if this is higher than 100, historical payroll data will not be
+             * generated, and instead only one pay period will be created.
+             */
+            fun employeeSize(employeeSize: Long) = employeeSize(employeeSize as Long?)
+
+            fun products(products: List<String>?) = apply {
+                this.products = products?.toMutableList()
             }
 
             fun addProduct(product: String) = apply {
@@ -199,7 +206,7 @@ constructor(
         /** The provider associated with the connection */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        fun authenticationType(authenticationType: AuthenticationType) = apply {
+        fun authenticationType(authenticationType: AuthenticationType?) = apply {
             body.authenticationType(authenticationType)
         }
 
@@ -208,9 +215,16 @@ constructor(
          * Note that if this is higher than 100, historical payroll data will not be generated, and
          * instead only one pay period will be created.
          */
-        fun employeeSize(employeeSize: Long) = apply { body.employeeSize(employeeSize) }
+        fun employeeSize(employeeSize: Long?) = apply { body.employeeSize(employeeSize) }
 
-        fun products(products: List<String>) = apply { body.products(products) }
+        /**
+         * Optional: the size of the employer to be created with this connection. Defaults to 20.
+         * Note that if this is higher than 100, historical payroll data will not be generated, and
+         * instead only one pay period will be created.
+         */
+        fun employeeSize(employeeSize: Long) = employeeSize(employeeSize as Long?)
+
+        fun products(products: List<String>?) = apply { body.products(products) }
 
         fun addProduct(product: String) = apply { body.addProduct(product) }
 

@@ -191,9 +191,9 @@ constructor(
                     sandboxIndividualUpdateBody.additionalProperties.toMutableMap()
             }
 
-            fun dob(dob: String) = apply { this.dob = dob }
+            fun dob(dob: String?) = apply { this.dob = dob }
 
-            fun emails(emails: List<Email>) = apply { this.emails = emails.toMutableList() }
+            fun emails(emails: List<Email>?) = apply { this.emails = emails?.toMutableList() }
 
             fun addEmail(email: Email) = apply {
                 emails = (emails ?: mutableListOf()).apply { add(email) }
@@ -204,25 +204,25 @@ constructor(
              * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param
              * set in the body.
              */
-            fun encryptedSsn(encryptedSsn: String) = apply { this.encryptedSsn = encryptedSsn }
+            fun encryptedSsn(encryptedSsn: String?) = apply { this.encryptedSsn = encryptedSsn }
 
             /** The EEOC-defined ethnicity of the individual. */
-            fun ethnicity(ethnicity: Ethnicity) = apply { this.ethnicity = ethnicity }
+            fun ethnicity(ethnicity: Ethnicity?) = apply { this.ethnicity = ethnicity }
 
             /** The legal first name of the individual. */
-            fun firstName(firstName: String) = apply { this.firstName = firstName }
+            fun firstName(firstName: String?) = apply { this.firstName = firstName }
 
             /** The gender of the individual. */
-            fun gender(gender: Gender) = apply { this.gender = gender }
+            fun gender(gender: Gender?) = apply { this.gender = gender }
 
             /** The legal last name of the individual. */
-            fun lastName(lastName: String) = apply { this.lastName = lastName }
+            fun lastName(lastName: String?) = apply { this.lastName = lastName }
 
             /** The legal middle name of the individual. */
-            fun middleName(middleName: String) = apply { this.middleName = middleName }
+            fun middleName(middleName: String?) = apply { this.middleName = middleName }
 
-            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
-                this.phoneNumbers = phoneNumbers.toMutableList()
+            fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
+                this.phoneNumbers = phoneNumbers?.toMutableList()
             }
 
             fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
@@ -230,16 +230,16 @@ constructor(
             }
 
             /** The preferred name of the individual. */
-            fun preferredName(preferredName: String) = apply { this.preferredName = preferredName }
+            fun preferredName(preferredName: String?) = apply { this.preferredName = preferredName }
 
-            fun residence(residence: Location) = apply { this.residence = residence }
+            fun residence(residence: Location?) = apply { this.residence = residence }
 
             /**
              * Social Security Number of the individual. This field is only available with the `ssn`
              * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
              * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
              */
-            fun ssn(ssn: String) = apply { this.ssn = ssn }
+            fun ssn(ssn: String?) = apply { this.ssn = ssn }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -321,9 +321,9 @@ constructor(
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
-        fun dob(dob: String) = apply { body.dob(dob) }
+        fun dob(dob: String?) = apply { body.dob(dob) }
 
-        fun emails(emails: List<Email>) = apply { body.emails(emails) }
+        fun emails(emails: List<Email>?) = apply { body.emails(emails) }
 
         fun addEmail(email: Email) = apply { body.addEmail(email) }
 
@@ -332,40 +332,40 @@ constructor(
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        fun encryptedSsn(encryptedSsn: String) = apply { body.encryptedSsn(encryptedSsn) }
+        fun encryptedSsn(encryptedSsn: String?) = apply { body.encryptedSsn(encryptedSsn) }
 
         /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Ethnicity) = apply { body.ethnicity(ethnicity) }
+        fun ethnicity(ethnicity: Ethnicity?) = apply { body.ethnicity(ethnicity) }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = apply { body.firstName(firstName) }
+        fun firstName(firstName: String?) = apply { body.firstName(firstName) }
 
         /** The gender of the individual. */
-        fun gender(gender: Gender) = apply { body.gender(gender) }
+        fun gender(gender: Gender?) = apply { body.gender(gender) }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = apply { body.lastName(lastName) }
+        fun lastName(lastName: String?) = apply { body.lastName(lastName) }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = apply { body.middleName(middleName) }
+        fun middleName(middleName: String?) = apply { body.middleName(middleName) }
 
-        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) = apply {
+        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
             body.phoneNumbers(phoneNumbers)
         }
 
         fun addPhoneNumber(phoneNumber: PhoneNumber) = apply { body.addPhoneNumber(phoneNumber) }
 
         /** The preferred name of the individual. */
-        fun preferredName(preferredName: String) = apply { body.preferredName(preferredName) }
+        fun preferredName(preferredName: String?) = apply { body.preferredName(preferredName) }
 
-        fun residence(residence: Location) = apply { body.residence(residence) }
+        fun residence(residence: Location?) = apply { body.residence(residence) }
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        fun ssn(ssn: String) = apply { body.ssn(ssn) }
+        fun ssn(ssn: String?) = apply { body.ssn(ssn) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -530,9 +530,9 @@ constructor(
                 additionalProperties = email.additionalProperties.toMutableMap()
             }
 
-            fun data(data: String) = apply { this.data = data }
+            fun data(data: String?) = apply { this.data = data }
 
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -835,9 +835,9 @@ constructor(
                 additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
-            fun data(data: String) = apply { this.data = data }
+            fun data(data: String?) = apply { this.data = data }
 
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
