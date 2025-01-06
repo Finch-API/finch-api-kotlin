@@ -135,8 +135,8 @@ constructor(
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
-            fun accounts(accounts: List<Account>) = apply {
-                this.accounts = accounts.toMutableList()
+            fun accounts(accounts: List<Account>?) = apply {
+                this.accounts = accounts?.toMutableList()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -145,8 +145,8 @@ constructor(
             }
 
             /** The array of company departments. */
-            fun departments(departments: List<Department?>) = apply {
-                this.departments = departments.toMutableList()
+            fun departments(departments: List<Department?>?) = apply {
+                this.departments = departments?.toMutableList()
             }
 
             /** The array of company departments. */
@@ -155,16 +155,16 @@ constructor(
             }
 
             /** The employer identification number. */
-            fun ein(ein: String) = apply { this.ein = ein }
+            fun ein(ein: String?) = apply { this.ein = ein }
 
             /** The entity type object. */
-            fun entity(entity: Entity) = apply { this.entity = entity }
+            fun entity(entity: Entity?) = apply { this.entity = entity }
 
             /** The legal name of the company. */
-            fun legalName(legalName: String) = apply { this.legalName = legalName }
+            fun legalName(legalName: String?) = apply { this.legalName = legalName }
 
-            fun locations(locations: List<Location?>) = apply {
-                this.locations = locations.toMutableList()
+            fun locations(locations: List<Location?>?) = apply {
+                this.locations = locations?.toMutableList()
             }
 
             fun addLocation(location: Location) = apply {
@@ -172,10 +172,10 @@ constructor(
             }
 
             /** The email of the main administrator on the account. */
-            fun primaryEmail(primaryEmail: String) = apply { this.primaryEmail = primaryEmail }
+            fun primaryEmail(primaryEmail: String?) = apply { this.primaryEmail = primaryEmail }
 
             /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-            fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
+            fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
                 this.primaryPhoneNumber = primaryPhoneNumber
             }
 
@@ -251,35 +251,35 @@ constructor(
         }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: List<Account>) = apply { body.accounts(accounts) }
+        fun accounts(accounts: List<Account>?) = apply { body.accounts(accounts) }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun addAccount(account: Account) = apply { body.addAccount(account) }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department?>) = apply { body.departments(departments) }
+        fun departments(departments: List<Department?>?) = apply { body.departments(departments) }
 
         /** The array of company departments. */
         fun addDepartment(department: Department) = apply { body.addDepartment(department) }
 
         /** The employer identification number. */
-        fun ein(ein: String) = apply { body.ein(ein) }
+        fun ein(ein: String?) = apply { body.ein(ein) }
 
         /** The entity type object. */
-        fun entity(entity: Entity) = apply { body.entity(entity) }
+        fun entity(entity: Entity?) = apply { body.entity(entity) }
 
         /** The legal name of the company. */
-        fun legalName(legalName: String) = apply { body.legalName(legalName) }
+        fun legalName(legalName: String?) = apply { body.legalName(legalName) }
 
-        fun locations(locations: List<Location?>) = apply { body.locations(locations) }
+        fun locations(locations: List<Location?>?) = apply { body.locations(locations) }
 
         fun addLocation(location: Location) = apply { body.addLocation(location) }
 
         /** The email of the main administrator on the account. */
-        fun primaryEmail(primaryEmail: String) = apply { body.primaryEmail(primaryEmail) }
+        fun primaryEmail(primaryEmail: String?) = apply { body.primaryEmail(primaryEmail) }
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        fun primaryPhoneNumber(primaryPhoneNumber: String) = apply {
+        fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
             body.primaryPhoneNumber(primaryPhoneNumber)
         }
 
@@ -468,16 +468,16 @@ constructor(
             }
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            fun accountName(accountName: String) = apply { this.accountName = accountName }
+            fun accountName(accountName: String?) = apply { this.accountName = accountName }
 
             /** 10-12 digit number to specify the bank account */
-            fun accountNumber(accountNumber: String) = apply { this.accountNumber = accountNumber }
+            fun accountNumber(accountNumber: String?) = apply { this.accountNumber = accountNumber }
 
             /** The type of bank account. */
-            fun accountType(accountType: AccountType) = apply { this.accountType = accountType }
+            fun accountType(accountType: AccountType?) = apply { this.accountType = accountType }
 
             /** Name of the banking institution. */
-            fun institutionName(institutionName: String) = apply {
+            fun institutionName(institutionName: String?) = apply {
                 this.institutionName = institutionName
             }
 
@@ -485,7 +485,7 @@ constructor(
              * A nine-digit code that's based on the U.S. Bank location where your account was
              * opened.
              */
-            fun routingNumber(routingNumber: String) = apply { this.routingNumber = routingNumber }
+            fun routingNumber(routingNumber: String?) = apply { this.routingNumber = routingNumber }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -632,10 +632,10 @@ constructor(
             }
 
             /** The department name. */
-            fun name(name: String) = apply { this.name = name }
+            fun name(name: String?) = apply { this.name = name }
 
             /** The parent department, if present. */
-            fun parent(parent: Parent) = apply { this.parent = parent }
+            fun parent(parent: Parent?) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -699,7 +699,7 @@ constructor(
                 }
 
                 /** The parent department's name. */
-                fun name(name: String) = apply { this.name = name }
+                fun name(name: String?) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -803,10 +803,10 @@ constructor(
             }
 
             /** The tax payer subtype of the company. */
-            fun subtype(subtype: Subtype) = apply { this.subtype = subtype }
+            fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
 
             /** The tax payer type of the company. */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type?) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

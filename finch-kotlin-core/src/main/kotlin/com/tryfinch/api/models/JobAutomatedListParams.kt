@@ -58,10 +58,16 @@ constructor(
         }
 
         /** Number of items to return */
-        fun limit(limit: Long) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply { this.limit = limit }
+
+        /** Number of items to return */
+        fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long) = apply { this.offset = offset }
+        fun offset(offset: Long?) = apply { this.offset = offset }
+
+        /** Index to start from (defaults to 0) */
+        fun offset(offset: Long) = offset(offset as Long?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

@@ -111,7 +111,7 @@ constructor(
             /** The provider associated with the `access_token` */
             fun providerId(providerId: String) = apply { this.providerId = providerId }
 
-            fun authenticationType(authenticationType: AuthenticationType) = apply {
+            fun authenticationType(authenticationType: AuthenticationType?) = apply {
                 this.authenticationType = authenticationType
             }
 
@@ -119,8 +119,8 @@ constructor(
              * Optional, defaults to Organization products (`company`, `directory`, `employment`,
              * `individual`)
              */
-            fun products(products: List<String>) = apply {
-                this.products = products.toMutableList()
+            fun products(products: List<String>?) = apply {
+                this.products = products?.toMutableList()
             }
 
             /**
@@ -207,7 +207,7 @@ constructor(
         /** The provider associated with the `access_token` */
         fun providerId(providerId: String) = apply { body.providerId(providerId) }
 
-        fun authenticationType(authenticationType: AuthenticationType) = apply {
+        fun authenticationType(authenticationType: AuthenticationType?) = apply {
             body.authenticationType(authenticationType)
         }
 
@@ -215,7 +215,7 @@ constructor(
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: List<String>) = apply { body.products(products) }
+        fun products(products: List<String>?) = apply { body.products(products) }
 
         /**
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
