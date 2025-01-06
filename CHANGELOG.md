@@ -1,5 +1,35 @@
 # Changelog
 
+## 3.0.0 (2025-01-06)
+
+Full Changelog: [v2.0.0...v3.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v2.0.0...v3.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** switch query params objects to use `QueryParams` ([#302](https://github.com/Finch-API/finch-api-kotlin/issues/302))
+
+### Bug Fixes
+
+* **client:** allow passing null for nullable fields where missing ([#310](https://github.com/Finch-API/finch-api-kotlin/issues/310)) ([91b2080](https://github.com/Finch-API/finch-api-kotlin/commit/91b2080787df3b1a8878aca3109880d39bba8a2b))
+
+
+### Chores
+
+* **docs:** fix unused import ([#300](https://github.com/Finch-API/finch-api-kotlin/issues/300)) ([3f95d20](https://github.com/Finch-API/finch-api-kotlin/commit/3f95d201ed7277a510fb0c0e38d20069ddf9103b))
+* **internal:** codegen related update ([#307](https://github.com/Finch-API/finch-api-kotlin/issues/307)) ([2eab057](https://github.com/Finch-API/finch-api-kotlin/commit/2eab057b855037bceeead1eeefee250654462084))
+* **internal:** codegen related update ([#308](https://github.com/Finch-API/finch-api-kotlin/issues/308)) ([b09374c](https://github.com/Finch-API/finch-api-kotlin/commit/b09374c46221ab6cfb331416bc7b07ef760ad424))
+
+
+### Styles
+
+* **internal:** sort fields ([#309](https://github.com/Finch-API/finch-api-kotlin/issues/309)) ([e3069bf](https://github.com/Finch-API/finch-api-kotlin/commit/e3069bf0cde899197a8367497c9a0a09384478e2))
+
+
+### Refactors
+
+* **client:** switch query params objects to use `QueryParams` ([#302](https://github.com/Finch-API/finch-api-kotlin/issues/302)) ([511df62](https://github.com/Finch-API/finch-api-kotlin/commit/511df62ceb53fca07d94be24bbd86372b5265a0b))
+* **internal:** use constructor to deserialize json ([#303](https://github.com/Finch-API/finch-api-kotlin/issues/303)) ([040c55b](https://github.com/Finch-API/finch-api-kotlin/commit/040c55b45a79d1e327d4bb0785c1b64d4150994d))
+
 ## 2.0.0 (2024-12-19)
 
 Full Changelog: [v1.13.0...v2.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v1.13.0...v2.0.0)
