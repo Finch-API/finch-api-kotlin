@@ -143,23 +143,32 @@ constructor(
                 products = (products ?: mutableListOf()).apply { add(product) }
             }
 
-            fun customerEmail(customerEmail: String) = apply { this.customerEmail = customerEmail }
+            fun customerEmail(customerEmail: String?) = apply { this.customerEmail = customerEmail }
 
-            fun integration(integration: Integration) = apply { this.integration = integration }
+            fun integration(integration: Integration?) = apply { this.integration = integration }
 
-            fun manual(manual: Boolean) = apply { this.manual = manual }
+            fun manual(manual: Boolean?) = apply { this.manual = manual }
+
+            fun manual(manual: Boolean) = manual(manual as Boolean?)
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Double) = apply {
+            fun minutesToExpire(minutesToExpire: Double?) = apply {
                 this.minutesToExpire = minutesToExpire
             }
 
-            fun redirectUri(redirectUri: String) = apply { this.redirectUri = redirectUri }
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: Double) =
+                minutesToExpire(minutesToExpire as Double?)
 
-            fun sandbox(sandbox: Sandbox) = apply { this.sandbox = sandbox }
+            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+
+            fun sandbox(sandbox: Sandbox?) = apply { this.sandbox = sandbox }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -242,22 +251,29 @@ constructor(
 
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
-        fun customerEmail(customerEmail: String) = apply { body.customerEmail(customerEmail) }
+        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
-        fun integration(integration: Integration) = apply { body.integration(integration) }
+        fun integration(integration: Integration?) = apply { body.integration(integration) }
 
-        fun manual(manual: Boolean) = apply { body.manual(manual) }
+        fun manual(manual: Boolean?) = apply { body.manual(manual) }
+
+        fun manual(manual: Boolean) = manual(manual as Boolean?)
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        fun minutesToExpire(minutesToExpire: Double) = apply {
+        fun minutesToExpire(minutesToExpire: Double?) = apply {
             body.minutesToExpire(minutesToExpire)
         }
 
-        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
-        fun sandbox(sandbox: Sandbox) = apply { body.sandbox(sandbox) }
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+
+        fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -514,9 +530,9 @@ constructor(
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
-            fun authMethod(authMethod: AuthMethod) = apply { this.authMethod = authMethod }
+            fun authMethod(authMethod: AuthMethod?) = apply { this.authMethod = authMethod }
 
-            fun provider(provider: String) = apply { this.provider = provider }
+            fun provider(provider: String?) = apply { this.provider = provider }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

@@ -72,7 +72,7 @@ constructor(
                     sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
             }
 
-            fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
+            fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
                 this.connectionStatus = connectionStatus
             }
 
@@ -144,7 +144,7 @@ constructor(
                 sandboxConnectionAccountUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
+        fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
             body.connectionStatus(connectionStatus)
         }
 

@@ -330,10 +330,16 @@ constructor(
             fun paymentId(paymentId: String) = apply { this.paymentId = paymentId }
 
             /** Number of pay statements to return (defaults to all). */
-            fun limit(limit: Long) = apply { this.limit = limit }
+            fun limit(limit: Long?) = apply { this.limit = limit }
+
+            /** Number of pay statements to return (defaults to all). */
+            fun limit(limit: Long) = limit(limit as Long?)
 
             /** Index to start from. */
-            fun offset(offset: Long) = apply { this.offset = offset }
+            fun offset(offset: Long?) = apply { this.offset = offset }
+
+            /** Index to start from. */
+            fun offset(offset: Long) = offset(offset as Long?)
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

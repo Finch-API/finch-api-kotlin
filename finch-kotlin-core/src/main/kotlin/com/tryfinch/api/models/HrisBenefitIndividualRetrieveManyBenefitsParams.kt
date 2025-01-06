@@ -76,7 +76,7 @@ constructor(
          * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
          * individuals
          */
-        fun individualIds(individualIds: String) = apply { this.individualIds = individualIds }
+        fun individualIds(individualIds: String?) = apply { this.individualIds = individualIds }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
