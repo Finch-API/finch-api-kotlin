@@ -481,15 +481,15 @@ constructor(
     class Integration
     @JsonCreator
     private constructor(
-        @JsonProperty("provider") private val provider: String?,
         @JsonProperty("auth_method") private val authMethod: AuthMethod?,
+        @JsonProperty("provider") private val provider: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("provider") fun provider(): String? = provider
-
         @JsonProperty("auth_method") fun authMethod(): AuthMethod? = authMethod
+
+        @JsonProperty("provider") fun provider(): String? = provider
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -504,19 +504,19 @@ constructor(
 
         class Builder {
 
-            private var provider: String? = null
             private var authMethod: AuthMethod? = null
+            private var provider: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(integration: Integration) = apply {
-                provider = integration.provider
                 authMethod = integration.authMethod
+                provider = integration.provider
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
-            fun provider(provider: String) = apply { this.provider = provider }
-
             fun authMethod(authMethod: AuthMethod) = apply { this.authMethod = authMethod }
+
+            fun provider(provider: String) = apply { this.provider = provider }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -539,8 +539,8 @@ constructor(
 
             fun build(): Integration =
                 Integration(
-                    provider,
                     authMethod,
+                    provider,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -619,17 +619,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Integration && provider == other.provider && authMethod == other.authMethod && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Integration && authMethod == other.authMethod && provider == other.provider && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(provider, authMethod, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(authMethod, provider, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
+            "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
     }
 
     class Sandbox

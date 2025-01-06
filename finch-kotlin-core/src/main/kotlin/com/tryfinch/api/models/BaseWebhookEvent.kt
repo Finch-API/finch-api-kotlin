@@ -19,26 +19,17 @@ import java.util.Objects
 class BaseWebhookEvent
 @JsonCreator
 private constructor(
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("account_id")
     @ExcludeMissing
     private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** Unique Finch ID of the connection associated with the webhook event. */
-    fun connectionId(): String? = connectionId.getNullable("connection_id")
-
-    /**
-     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-     * `connection_id` instead to identify the connection associated with this event.
-     */
-    fun companyId(): String = companyId.getRequired("company_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -46,8 +37,20 @@ private constructor(
      */
     fun accountId(): String = accountId.getRequired("account_id")
 
+    /**
+     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
+    fun companyId(): String = companyId.getRequired("company_id")
+
     /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
+    fun connectionId(): String? = connectionId.getNullable("connection_id")
+
+    /**
+     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
@@ -55,11 +58,8 @@ private constructor(
      */
     @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
 
-    /**
-     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-     * `connection_id` instead to identify the connection associated with this event.
-     */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
+    /** Unique Finch ID of the connection associated with the webhook event. */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -69,9 +69,9 @@ private constructor(
 
     fun validate(): BaseWebhookEvent = apply {
         if (!validated) {
-            connectionId()
-            companyId()
             accountId()
+            companyId()
+            connectionId()
             validated = true
         }
     }
@@ -85,25 +85,29 @@ private constructor(
 
     class Builder {
 
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
+        private var companyId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(baseWebhookEvent: BaseWebhookEvent) = apply {
-            connectionId = baseWebhookEvent.connectionId
-            companyId = baseWebhookEvent.companyId
             accountId = baseWebhookEvent.accountId
+            companyId = baseWebhookEvent.companyId
+            connectionId = baseWebhookEvent.connectionId
             additionalProperties = baseWebhookEvent.additionalProperties.toMutableMap()
         }
 
-        /** Unique Finch ID of the connection associated with the webhook event. */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+        /**
+         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
+        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
-        /** Unique Finch ID of the connection associated with the webhook event. */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
-        }
+        /**
+         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
@@ -117,17 +121,13 @@ private constructor(
          */
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
-        /**
-         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-         * `connection_id` instead to identify the connection associated with this event.
-         */
-        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /**
-         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-         * `connection_id` instead to identify the connection associated with this event.
-         */
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -150,9 +150,9 @@ private constructor(
 
         fun build(): BaseWebhookEvent =
             BaseWebhookEvent(
-                connectionId,
-                companyId,
                 accountId,
+                companyId,
+                connectionId,
                 additionalProperties.toImmutable(),
             )
     }
@@ -162,15 +162,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is BaseWebhookEvent && connectionId == other.connectionId && companyId == other.companyId && accountId == other.accountId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is BaseWebhookEvent && accountId == other.accountId && companyId == other.companyId && connectionId == other.connectionId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, accountId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accountId, companyId, connectionId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "BaseWebhookEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, additionalProperties=$additionalProperties}"
+        "BaseWebhookEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, additionalProperties=$additionalProperties}"
 }

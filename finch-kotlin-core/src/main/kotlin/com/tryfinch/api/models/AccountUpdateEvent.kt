@@ -21,30 +21,21 @@ import java.util.Objects
 class AccountUpdateEvent
 @JsonCreator
 private constructor(
-    @JsonProperty("connection_id")
-    @ExcludeMissing
-    private val connectionId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("company_id")
-    @ExcludeMissing
-    private val companyId: JsonField<String> = JsonMissing.of(),
     @JsonProperty("account_id")
     @ExcludeMissing
     private val accountId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    private val companyId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("connection_id")
+    @ExcludeMissing
+    private val connectionId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
     @JsonProperty("event_type")
     @ExcludeMissing
     private val eventType: JsonField<EventType> = JsonMissing.of(),
-    @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** Unique Finch ID of the connection associated with the webhook event. */
-    fun connectionId(): String? = connectionId.getNullable("connection_id")
-
-    /**
-     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-     * `connection_id` instead to identify the connection associated with this event.
-     */
-    fun companyId(): String = companyId.getRequired("company_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -52,18 +43,18 @@ private constructor(
      */
     fun accountId(): String = accountId.getRequired("account_id")
 
-    fun eventType(): EventType? = eventType.getNullable("event_type")
-
-    fun data(): Data? = data.getNullable("data")
-
-    /** Unique Finch ID of the connection associated with the webhook event. */
-    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
-
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+    fun companyId(): String = companyId.getRequired("company_id")
+
+    /** Unique Finch ID of the connection associated with the webhook event. */
+    fun connectionId(): String? = connectionId.getNullable("connection_id")
+
+    fun data(): Data? = data.getNullable("data")
+
+    fun eventType(): EventType? = eventType.getNullable("event_type")
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -71,9 +62,18 @@ private constructor(
      */
     @JsonProperty("account_id") @ExcludeMissing fun _accountId() = accountId
 
-    @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
+    /**
+     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+     * `connection_id` instead to identify the connection associated with this event.
+     */
+    @JsonProperty("company_id") @ExcludeMissing fun _companyId() = companyId
+
+    /** Unique Finch ID of the connection associated with the webhook event. */
+    @JsonProperty("connection_id") @ExcludeMissing fun _connectionId() = connectionId
 
     @JsonProperty("data") @ExcludeMissing fun _data() = data
+
+    @JsonProperty("event_type") @ExcludeMissing fun _eventType() = eventType
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -81,20 +81,20 @@ private constructor(
 
     fun toBaseWebhookEvent(): BaseWebhookEvent =
         BaseWebhookEvent.builder()
-            .connectionId(connectionId)
-            .companyId(companyId)
             .accountId(accountId)
+            .companyId(companyId)
+            .connectionId(connectionId)
             .build()
 
     private var validated: Boolean = false
 
     fun validate(): AccountUpdateEvent = apply {
         if (!validated) {
-            connectionId()
-            companyId()
             accountId()
-            eventType()
+            companyId()
+            connectionId()
             data()?.validate()
+            eventType()
             validated = true
         }
     }
@@ -108,41 +108,21 @@ private constructor(
 
     class Builder {
 
-        private var connectionId: JsonField<String> = JsonMissing.of()
-        private var companyId: JsonField<String> = JsonMissing.of()
         private var accountId: JsonField<String> = JsonMissing.of()
-        private var eventType: JsonField<EventType> = JsonMissing.of()
+        private var companyId: JsonField<String> = JsonMissing.of()
+        private var connectionId: JsonField<String> = JsonMissing.of()
         private var data: JsonField<Data> = JsonMissing.of()
+        private var eventType: JsonField<EventType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(accountUpdateEvent: AccountUpdateEvent) = apply {
-            connectionId = accountUpdateEvent.connectionId
-            companyId = accountUpdateEvent.companyId
             accountId = accountUpdateEvent.accountId
-            eventType = accountUpdateEvent.eventType
+            companyId = accountUpdateEvent.companyId
+            connectionId = accountUpdateEvent.connectionId
             data = accountUpdateEvent.data
+            eventType = accountUpdateEvent.eventType
             additionalProperties = accountUpdateEvent.additionalProperties.toMutableMap()
         }
-
-        /** Unique Finch ID of the connection associated with the webhook event. */
-        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
-
-        /** Unique Finch ID of the connection associated with the webhook event. */
-        fun connectionId(connectionId: JsonField<String>) = apply {
-            this.connectionId = connectionId
-        }
-
-        /**
-         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-         * `connection_id` instead to identify the connection associated with this event.
-         */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
-
-        /**
-         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-         * `connection_id` instead to identify the connection associated with this event.
-         */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /**
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -156,13 +136,33 @@ private constructor(
          */
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
-        fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
+        /**
+         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
+        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
-        fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
+        /**
+         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
+         * `connection_id` instead to identify the connection associated with this event.
+         */
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
+
+        /** Unique Finch ID of the connection associated with the webhook event. */
+        fun connectionId(connectionId: JsonField<String>) = apply {
+            this.connectionId = connectionId
+        }
 
         fun data(data: Data) = data(JsonField.of(data))
 
         fun data(data: JsonField<Data>) = apply { this.data = data }
+
+        fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
+
+        fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -185,11 +185,11 @@ private constructor(
 
         fun build(): AccountUpdateEvent =
             AccountUpdateEvent(
-                connectionId,
-                companyId,
                 accountId,
-                eventType,
+                companyId,
+                connectionId,
                 data,
+                eventType,
                 additionalProperties.toImmutable(),
             )
     }
@@ -198,26 +198,26 @@ private constructor(
     class Data
     @JsonCreator
     private constructor(
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
         @JsonProperty("authentication_method")
         @ExcludeMissing
         private val authenticationMethod: JsonField<AuthenticationMethod> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<ConnectionStatusType> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        fun status(): ConnectionStatusType = status.getRequired("status")
-
         fun authenticationMethod(): AuthenticationMethod =
             authenticationMethod.getRequired("authentication_method")
 
-        @JsonProperty("status") @ExcludeMissing fun _status() = status
+        fun status(): ConnectionStatusType = status.getRequired("status")
 
         @JsonProperty("authentication_method")
         @ExcludeMissing
         fun _authenticationMethod() = authenticationMethod
+
+        @JsonProperty("status") @ExcludeMissing fun _status() = status
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -227,8 +227,8 @@ private constructor(
 
         fun validate(): Data = apply {
             if (!validated) {
-                status()
                 authenticationMethod().validate()
+                status()
                 validated = true
             }
         }
@@ -242,19 +242,15 @@ private constructor(
 
         class Builder {
 
-            private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var authenticationMethod: JsonField<AuthenticationMethod> = JsonMissing.of()
+            private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(data: Data) = apply {
-                status = data.status
                 authenticationMethod = data.authenticationMethod
+                status = data.status
                 additionalProperties = data.additionalProperties.toMutableMap()
             }
-
-            fun status(status: ConnectionStatusType) = status(JsonField.of(status))
-
-            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun authenticationMethod(authenticationMethod: AuthenticationMethod) =
                 authenticationMethod(JsonField.of(authenticationMethod))
@@ -263,6 +259,10 @@ private constructor(
                 apply {
                     this.authenticationMethod = authenticationMethod
                 }
+
+            fun status(status: ConnectionStatusType) = status(JsonField.of(status))
+
+            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -285,8 +285,8 @@ private constructor(
 
             fun build(): Data =
                 Data(
-                    status,
                     authenticationMethod,
+                    status,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -295,21 +295,18 @@ private constructor(
         class AuthenticationMethod
         @JsonCreator
         private constructor(
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
             @JsonProperty("benefits_support")
             @ExcludeMissing
             private val benefitsSupport: JsonField<BenefitsSupport> = JsonMissing.of(),
             @JsonProperty("supported_fields")
             @ExcludeMissing
             private val supportedFields: JsonField<SupportedFields> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<Type> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            /** The type of authentication method. */
-            fun type(): Type? = type.getNullable("type")
 
             /**
              * Each benefit type and their supported features. If the benefit type is not supported,
@@ -323,7 +320,7 @@ private constructor(
                 supportedFields.getNullable("supported_fields")
 
             /** The type of authentication method. */
-            @JsonProperty("type") @ExcludeMissing fun _type() = type
+            fun type(): Type? = type.getNullable("type")
 
             /**
              * Each benefit type and their supported features. If the benefit type is not supported,
@@ -338,6 +335,9 @@ private constructor(
             @ExcludeMissing
             fun _supportedFields() = supportedFields
 
+            /** The type of authentication method. */
+            @JsonProperty("type") @ExcludeMissing fun _type() = type
+
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -346,9 +346,9 @@ private constructor(
 
             fun validate(): AuthenticationMethod = apply {
                 if (!validated) {
-                    type()
                     benefitsSupport()?.validate()
                     supportedFields()?.validate()
+                    type()
                     validated = true
                 }
             }
@@ -362,23 +362,17 @@ private constructor(
 
             class Builder {
 
-                private var type: JsonField<Type> = JsonMissing.of()
                 private var benefitsSupport: JsonField<BenefitsSupport> = JsonMissing.of()
                 private var supportedFields: JsonField<SupportedFields> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(authenticationMethod: AuthenticationMethod) = apply {
-                    type = authenticationMethod.type
                     benefitsSupport = authenticationMethod.benefitsSupport
                     supportedFields = authenticationMethod.supportedFields
+                    type = authenticationMethod.type
                     additionalProperties = authenticationMethod.additionalProperties.toMutableMap()
                 }
-
-                /** The type of authentication method. */
-                fun type(type: Type) = type(JsonField.of(type))
-
-                /** The type of authentication method. */
-                fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 /**
                  * Each benefit type and their supported features. If the benefit type is not
@@ -404,6 +398,12 @@ private constructor(
                     this.supportedFields = supportedFields
                 }
 
+                /** The type of authentication method. */
+                fun type(type: Type) = type(JsonField.of(type))
+
+                /** The type of authentication method. */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
+
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
                     putAllAdditionalProperties(additionalProperties)
@@ -428,9 +428,9 @@ private constructor(
 
                 fun build(): AuthenticationMethod =
                     AuthenticationMethod(
-                        type,
                         benefitsSupport,
                         supportedFields,
+                        type,
                         additionalProperties.toImmutable(),
                     )
             }
@@ -446,21 +446,21 @@ private constructor(
                 @JsonProperty("directory")
                 @ExcludeMissing
                 private val directory: JsonField<SupportedDirectoryFields> = JsonMissing.of(),
-                @JsonProperty("individual")
-                @ExcludeMissing
-                private val individual: JsonField<SupportedIndividualFields> = JsonMissing.of(),
                 @JsonProperty("employment")
                 @ExcludeMissing
                 private val employment: JsonField<SupportedEmploymentFields> = JsonMissing.of(),
-                @JsonProperty("payment")
+                @JsonProperty("individual")
                 @ExcludeMissing
-                private val payment: JsonField<SupportedPaymentFields> = JsonMissing.of(),
-                @JsonProperty("pay_statement")
-                @ExcludeMissing
-                private val payStatement: JsonField<SupportedPayStatementFields> = JsonMissing.of(),
+                private val individual: JsonField<SupportedIndividualFields> = JsonMissing.of(),
                 @JsonProperty("pay_group")
                 @ExcludeMissing
                 private val payGroup: JsonField<SupportedPayGroupFields> = JsonMissing.of(),
+                @JsonProperty("pay_statement")
+                @ExcludeMissing
+                private val payStatement: JsonField<SupportedPayStatementFields> = JsonMissing.of(),
+                @JsonProperty("payment")
+                @ExcludeMissing
+                private val payment: JsonField<SupportedPaymentFields> = JsonMissing.of(),
                 @JsonAnySetter
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
@@ -469,30 +469,30 @@ private constructor(
 
                 fun directory(): SupportedDirectoryFields? = directory.getNullable("directory")
 
-                fun individual(): SupportedIndividualFields? = individual.getNullable("individual")
-
                 fun employment(): SupportedEmploymentFields? = employment.getNullable("employment")
 
-                fun payment(): SupportedPaymentFields? = payment.getNullable("payment")
+                fun individual(): SupportedIndividualFields? = individual.getNullable("individual")
+
+                fun payGroup(): SupportedPayGroupFields? = payGroup.getNullable("pay_group")
 
                 fun payStatement(): SupportedPayStatementFields? =
                     payStatement.getNullable("pay_statement")
 
-                fun payGroup(): SupportedPayGroupFields? = payGroup.getNullable("pay_group")
+                fun payment(): SupportedPaymentFields? = payment.getNullable("payment")
 
                 @JsonProperty("company") @ExcludeMissing fun _company() = company
 
                 @JsonProperty("directory") @ExcludeMissing fun _directory() = directory
 
-                @JsonProperty("individual") @ExcludeMissing fun _individual() = individual
-
                 @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
 
-                @JsonProperty("payment") @ExcludeMissing fun _payment() = payment
+                @JsonProperty("individual") @ExcludeMissing fun _individual() = individual
+
+                @JsonProperty("pay_group") @ExcludeMissing fun _payGroup() = payGroup
 
                 @JsonProperty("pay_statement") @ExcludeMissing fun _payStatement() = payStatement
 
-                @JsonProperty("pay_group") @ExcludeMissing fun _payGroup() = payGroup
+                @JsonProperty("payment") @ExcludeMissing fun _payment() = payment
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -504,11 +504,11 @@ private constructor(
                     if (!validated) {
                         company()?.validate()
                         directory()?.validate()
-                        individual()?.validate()
                         employment()?.validate()
-                        payment()?.validate()
-                        payStatement()?.validate()
+                        individual()?.validate()
                         payGroup()?.validate()
+                        payStatement()?.validate()
+                        payment()?.validate()
                         validated = true
                     }
                 }
@@ -524,22 +524,22 @@ private constructor(
 
                     private var company: JsonField<SupportedCompanyFields> = JsonMissing.of()
                     private var directory: JsonField<SupportedDirectoryFields> = JsonMissing.of()
-                    private var individual: JsonField<SupportedIndividualFields> = JsonMissing.of()
                     private var employment: JsonField<SupportedEmploymentFields> = JsonMissing.of()
-                    private var payment: JsonField<SupportedPaymentFields> = JsonMissing.of()
+                    private var individual: JsonField<SupportedIndividualFields> = JsonMissing.of()
+                    private var payGroup: JsonField<SupportedPayGroupFields> = JsonMissing.of()
                     private var payStatement: JsonField<SupportedPayStatementFields> =
                         JsonMissing.of()
-                    private var payGroup: JsonField<SupportedPayGroupFields> = JsonMissing.of()
+                    private var payment: JsonField<SupportedPaymentFields> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     internal fun from(supportedFields: SupportedFields) = apply {
                         company = supportedFields.company
                         directory = supportedFields.directory
-                        individual = supportedFields.individual
                         employment = supportedFields.employment
-                        payment = supportedFields.payment
-                        payStatement = supportedFields.payStatement
+                        individual = supportedFields.individual
                         payGroup = supportedFields.payGroup
+                        payStatement = supportedFields.payStatement
+                        payment = supportedFields.payment
                         additionalProperties = supportedFields.additionalProperties.toMutableMap()
                     }
 
@@ -556,13 +556,6 @@ private constructor(
                         this.directory = directory
                     }
 
-                    fun individual(individual: SupportedIndividualFields) =
-                        individual(JsonField.of(individual))
-
-                    fun individual(individual: JsonField<SupportedIndividualFields>) = apply {
-                        this.individual = individual
-                    }
-
                     fun employment(employment: SupportedEmploymentFields) =
                         employment(JsonField.of(employment))
 
@@ -570,10 +563,18 @@ private constructor(
                         this.employment = employment
                     }
 
-                    fun payment(payment: SupportedPaymentFields) = payment(JsonField.of(payment))
+                    fun individual(individual: SupportedIndividualFields) =
+                        individual(JsonField.of(individual))
 
-                    fun payment(payment: JsonField<SupportedPaymentFields>) = apply {
-                        this.payment = payment
+                    fun individual(individual: JsonField<SupportedIndividualFields>) = apply {
+                        this.individual = individual
+                    }
+
+                    fun payGroup(payGroup: SupportedPayGroupFields) =
+                        payGroup(JsonField.of(payGroup))
+
+                    fun payGroup(payGroup: JsonField<SupportedPayGroupFields>) = apply {
+                        this.payGroup = payGroup
                     }
 
                     fun payStatement(payStatement: SupportedPayStatementFields) =
@@ -583,11 +584,10 @@ private constructor(
                         this.payStatement = payStatement
                     }
 
-                    fun payGroup(payGroup: SupportedPayGroupFields) =
-                        payGroup(JsonField.of(payGroup))
+                    fun payment(payment: SupportedPaymentFields) = payment(JsonField.of(payment))
 
-                    fun payGroup(payGroup: JsonField<SupportedPayGroupFields>) = apply {
-                        this.payGroup = payGroup
+                    fun payment(payment: JsonField<SupportedPaymentFields>) = apply {
+                        this.payment = payment
                     }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -616,11 +616,11 @@ private constructor(
                         SupportedFields(
                             company,
                             directory,
-                            individual,
                             employment,
-                            payment,
-                            payStatement,
+                            individual,
                             payGroup,
+                            payStatement,
+                            payment,
                             additionalProperties.toImmutable(),
                         )
                 }
@@ -632,58 +632,66 @@ private constructor(
                     @JsonProperty("id")
                     @ExcludeMissing
                     private val id: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("legal_name")
-                    @ExcludeMissing
-                    private val legalName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("entity")
-                    @ExcludeMissing
-                    private val entity: JsonField<Entity> = JsonMissing.of(),
-                    @JsonProperty("primary_email")
-                    @ExcludeMissing
-                    private val primaryEmail: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("primary_phone_number")
-                    @ExcludeMissing
-                    private val primaryPhoneNumber: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("ein")
-                    @ExcludeMissing
-                    private val ein: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("accounts")
                     @ExcludeMissing
                     private val accounts: JsonField<Accounts> = JsonMissing.of(),
                     @JsonProperty("departments")
                     @ExcludeMissing
                     private val departments: JsonField<Departments> = JsonMissing.of(),
+                    @JsonProperty("ein")
+                    @ExcludeMissing
+                    private val ein: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("entity")
+                    @ExcludeMissing
+                    private val entity: JsonField<Entity> = JsonMissing.of(),
+                    @JsonProperty("legal_name")
+                    @ExcludeMissing
+                    private val legalName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("locations")
                     @ExcludeMissing
                     private val locations: JsonField<Locations> = JsonMissing.of(),
+                    @JsonProperty("primary_email")
+                    @ExcludeMissing
+                    private val primaryEmail: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("primary_phone_number")
+                    @ExcludeMissing
+                    private val primaryPhoneNumber: JsonField<Boolean> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     fun id(): Boolean? = id.getNullable("id")
 
-                    fun legalName(): Boolean? = legalName.getNullable("legal_name")
+                    fun accounts(): Accounts? = accounts.getNullable("accounts")
+
+                    fun departments(): Departments? = departments.getNullable("departments")
+
+                    fun ein(): Boolean? = ein.getNullable("ein")
 
                     fun entity(): Entity? = entity.getNullable("entity")
+
+                    fun legalName(): Boolean? = legalName.getNullable("legal_name")
+
+                    fun locations(): Locations? = locations.getNullable("locations")
 
                     fun primaryEmail(): Boolean? = primaryEmail.getNullable("primary_email")
 
                     fun primaryPhoneNumber(): Boolean? =
                         primaryPhoneNumber.getNullable("primary_phone_number")
 
-                    fun ein(): Boolean? = ein.getNullable("ein")
-
-                    fun accounts(): Accounts? = accounts.getNullable("accounts")
-
-                    fun departments(): Departments? = departments.getNullable("departments")
-
-                    fun locations(): Locations? = locations.getNullable("locations")
-
                     @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+                    @JsonProperty("accounts") @ExcludeMissing fun _accounts() = accounts
+
+                    @JsonProperty("departments") @ExcludeMissing fun _departments() = departments
+
+                    @JsonProperty("ein") @ExcludeMissing fun _ein() = ein
+
+                    @JsonProperty("entity") @ExcludeMissing fun _entity() = entity
 
                     @JsonProperty("legal_name") @ExcludeMissing fun _legalName() = legalName
 
-                    @JsonProperty("entity") @ExcludeMissing fun _entity() = entity
+                    @JsonProperty("locations") @ExcludeMissing fun _locations() = locations
 
                     @JsonProperty("primary_email")
                     @ExcludeMissing
@@ -692,14 +700,6 @@ private constructor(
                     @JsonProperty("primary_phone_number")
                     @ExcludeMissing
                     fun _primaryPhoneNumber() = primaryPhoneNumber
-
-                    @JsonProperty("ein") @ExcludeMissing fun _ein() = ein
-
-                    @JsonProperty("accounts") @ExcludeMissing fun _accounts() = accounts
-
-                    @JsonProperty("departments") @ExcludeMissing fun _departments() = departments
-
-                    @JsonProperty("locations") @ExcludeMissing fun _locations() = locations
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -710,14 +710,14 @@ private constructor(
                     fun validate(): SupportedCompanyFields = apply {
                         if (!validated) {
                             id()
-                            legalName()
-                            entity()?.validate()
-                            primaryEmail()
-                            primaryPhoneNumber()
-                            ein()
                             accounts()?.validate()
                             departments()?.validate()
+                            ein()
+                            entity()?.validate()
+                            legalName()
                             locations()?.validate()
+                            primaryEmail()
+                            primaryPhoneNumber()
                             validated = true
                         }
                     }
@@ -732,27 +732,27 @@ private constructor(
                     class Builder {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
-                        private var legalName: JsonField<Boolean> = JsonMissing.of()
-                        private var entity: JsonField<Entity> = JsonMissing.of()
-                        private var primaryEmail: JsonField<Boolean> = JsonMissing.of()
-                        private var primaryPhoneNumber: JsonField<Boolean> = JsonMissing.of()
-                        private var ein: JsonField<Boolean> = JsonMissing.of()
                         private var accounts: JsonField<Accounts> = JsonMissing.of()
                         private var departments: JsonField<Departments> = JsonMissing.of()
+                        private var ein: JsonField<Boolean> = JsonMissing.of()
+                        private var entity: JsonField<Entity> = JsonMissing.of()
+                        private var legalName: JsonField<Boolean> = JsonMissing.of()
                         private var locations: JsonField<Locations> = JsonMissing.of()
+                        private var primaryEmail: JsonField<Boolean> = JsonMissing.of()
+                        private var primaryPhoneNumber: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedCompanyFields: SupportedCompanyFields) = apply {
                             id = supportedCompanyFields.id
-                            legalName = supportedCompanyFields.legalName
-                            entity = supportedCompanyFields.entity
-                            primaryEmail = supportedCompanyFields.primaryEmail
-                            primaryPhoneNumber = supportedCompanyFields.primaryPhoneNumber
-                            ein = supportedCompanyFields.ein
                             accounts = supportedCompanyFields.accounts
                             departments = supportedCompanyFields.departments
+                            ein = supportedCompanyFields.ein
+                            entity = supportedCompanyFields.entity
+                            legalName = supportedCompanyFields.legalName
                             locations = supportedCompanyFields.locations
+                            primaryEmail = supportedCompanyFields.primaryEmail
+                            primaryPhoneNumber = supportedCompanyFields.primaryPhoneNumber
                             additionalProperties =
                                 supportedCompanyFields.additionalProperties.toMutableMap()
                         }
@@ -760,34 +760,6 @@ private constructor(
                         fun id(id: Boolean) = id(JsonField.of(id))
 
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
-
-                        fun legalName(legalName: Boolean) = legalName(JsonField.of(legalName))
-
-                        fun legalName(legalName: JsonField<Boolean>) = apply {
-                            this.legalName = legalName
-                        }
-
-                        fun entity(entity: Entity) = entity(JsonField.of(entity))
-
-                        fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
-
-                        fun primaryEmail(primaryEmail: Boolean) =
-                            primaryEmail(JsonField.of(primaryEmail))
-
-                        fun primaryEmail(primaryEmail: JsonField<Boolean>) = apply {
-                            this.primaryEmail = primaryEmail
-                        }
-
-                        fun primaryPhoneNumber(primaryPhoneNumber: Boolean) =
-                            primaryPhoneNumber(JsonField.of(primaryPhoneNumber))
-
-                        fun primaryPhoneNumber(primaryPhoneNumber: JsonField<Boolean>) = apply {
-                            this.primaryPhoneNumber = primaryPhoneNumber
-                        }
-
-                        fun ein(ein: Boolean) = ein(JsonField.of(ein))
-
-                        fun ein(ein: JsonField<Boolean>) = apply { this.ein = ein }
 
                         fun accounts(accounts: Accounts) = accounts(JsonField.of(accounts))
 
@@ -802,10 +774,38 @@ private constructor(
                             this.departments = departments
                         }
 
+                        fun ein(ein: Boolean) = ein(JsonField.of(ein))
+
+                        fun ein(ein: JsonField<Boolean>) = apply { this.ein = ein }
+
+                        fun entity(entity: Entity) = entity(JsonField.of(entity))
+
+                        fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
+
+                        fun legalName(legalName: Boolean) = legalName(JsonField.of(legalName))
+
+                        fun legalName(legalName: JsonField<Boolean>) = apply {
+                            this.legalName = legalName
+                        }
+
                         fun locations(locations: Locations) = locations(JsonField.of(locations))
 
                         fun locations(locations: JsonField<Locations>) = apply {
                             this.locations = locations
+                        }
+
+                        fun primaryEmail(primaryEmail: Boolean) =
+                            primaryEmail(JsonField.of(primaryEmail))
+
+                        fun primaryEmail(primaryEmail: JsonField<Boolean>) = apply {
+                            this.primaryEmail = primaryEmail
+                        }
+
+                        fun primaryPhoneNumber(primaryPhoneNumber: Boolean) =
+                            primaryPhoneNumber(JsonField.of(primaryPhoneNumber))
+
+                        fun primaryPhoneNumber(primaryPhoneNumber: JsonField<Boolean>) = apply {
+                            this.primaryPhoneNumber = primaryPhoneNumber
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -833,14 +833,14 @@ private constructor(
                         fun build(): SupportedCompanyFields =
                             SupportedCompanyFields(
                                 id,
-                                legalName,
-                                entity,
-                                primaryEmail,
-                                primaryPhoneNumber,
-                                ein,
                                 accounts,
                                 departments,
+                                ein,
+                                entity,
+                                legalName,
                                 locations,
+                                primaryEmail,
+                                primaryPhoneNumber,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -849,56 +849,56 @@ private constructor(
                     class Accounts
                     @JsonCreator
                     private constructor(
-                        @JsonProperty("routing_number")
-                        @ExcludeMissing
-                        private val routingNumber: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("account_name")
                         @ExcludeMissing
                         private val accountName: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("institution_name")
-                        @ExcludeMissing
-                        private val institutionName: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("account_type")
-                        @ExcludeMissing
-                        private val accountType: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("account_number")
                         @ExcludeMissing
                         private val accountNumber: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("account_type")
+                        @ExcludeMissing
+                        private val accountType: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("institution_name")
+                        @ExcludeMissing
+                        private val institutionName: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("routing_number")
+                        @ExcludeMissing
+                        private val routingNumber: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
-                        fun routingNumber(): Boolean? = routingNumber.getNullable("routing_number")
-
                         fun accountName(): Boolean? = accountName.getNullable("account_name")
+
+                        fun accountNumber(): Boolean? = accountNumber.getNullable("account_number")
+
+                        fun accountType(): Boolean? = accountType.getNullable("account_type")
 
                         fun institutionName(): Boolean? =
                             institutionName.getNullable("institution_name")
 
-                        fun accountType(): Boolean? = accountType.getNullable("account_type")
-
-                        fun accountNumber(): Boolean? = accountNumber.getNullable("account_number")
-
-                        @JsonProperty("routing_number")
-                        @ExcludeMissing
-                        fun _routingNumber() = routingNumber
+                        fun routingNumber(): Boolean? = routingNumber.getNullable("routing_number")
 
                         @JsonProperty("account_name")
                         @ExcludeMissing
                         fun _accountName() = accountName
 
-                        @JsonProperty("institution_name")
+                        @JsonProperty("account_number")
                         @ExcludeMissing
-                        fun _institutionName() = institutionName
+                        fun _accountNumber() = accountNumber
 
                         @JsonProperty("account_type")
                         @ExcludeMissing
                         fun _accountType() = accountType
 
-                        @JsonProperty("account_number")
+                        @JsonProperty("institution_name")
                         @ExcludeMissing
-                        fun _accountNumber() = accountNumber
+                        fun _institutionName() = institutionName
+
+                        @JsonProperty("routing_number")
+                        @ExcludeMissing
+                        fun _routingNumber() = routingNumber
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -908,11 +908,11 @@ private constructor(
 
                         fun validate(): Accounts = apply {
                             if (!validated) {
-                                routingNumber()
                                 accountName()
-                                institutionName()
-                                accountType()
                                 accountNumber()
+                                accountType()
+                                institutionName()
+                                routingNumber()
                                 validated = true
                             }
                         }
@@ -926,28 +926,21 @@ private constructor(
 
                         class Builder {
 
-                            private var routingNumber: JsonField<Boolean> = JsonMissing.of()
                             private var accountName: JsonField<Boolean> = JsonMissing.of()
-                            private var institutionName: JsonField<Boolean> = JsonMissing.of()
-                            private var accountType: JsonField<Boolean> = JsonMissing.of()
                             private var accountNumber: JsonField<Boolean> = JsonMissing.of()
+                            private var accountType: JsonField<Boolean> = JsonMissing.of()
+                            private var institutionName: JsonField<Boolean> = JsonMissing.of()
+                            private var routingNumber: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(accounts: Accounts) = apply {
-                                routingNumber = accounts.routingNumber
                                 accountName = accounts.accountName
-                                institutionName = accounts.institutionName
-                                accountType = accounts.accountType
                                 accountNumber = accounts.accountNumber
+                                accountType = accounts.accountType
+                                institutionName = accounts.institutionName
+                                routingNumber = accounts.routingNumber
                                 additionalProperties = accounts.additionalProperties.toMutableMap()
-                            }
-
-                            fun routingNumber(routingNumber: Boolean) =
-                                routingNumber(JsonField.of(routingNumber))
-
-                            fun routingNumber(routingNumber: JsonField<Boolean>) = apply {
-                                this.routingNumber = routingNumber
                             }
 
                             fun accountName(accountName: Boolean) =
@@ -957,11 +950,11 @@ private constructor(
                                 this.accountName = accountName
                             }
 
-                            fun institutionName(institutionName: Boolean) =
-                                institutionName(JsonField.of(institutionName))
+                            fun accountNumber(accountNumber: Boolean) =
+                                accountNumber(JsonField.of(accountNumber))
 
-                            fun institutionName(institutionName: JsonField<Boolean>) = apply {
-                                this.institutionName = institutionName
+                            fun accountNumber(accountNumber: JsonField<Boolean>) = apply {
+                                this.accountNumber = accountNumber
                             }
 
                             fun accountType(accountType: Boolean) =
@@ -971,11 +964,18 @@ private constructor(
                                 this.accountType = accountType
                             }
 
-                            fun accountNumber(accountNumber: Boolean) =
-                                accountNumber(JsonField.of(accountNumber))
+                            fun institutionName(institutionName: Boolean) =
+                                institutionName(JsonField.of(institutionName))
 
-                            fun accountNumber(accountNumber: JsonField<Boolean>) = apply {
-                                this.accountNumber = accountNumber
+                            fun institutionName(institutionName: JsonField<Boolean>) = apply {
+                                this.institutionName = institutionName
+                            }
+
+                            fun routingNumber(routingNumber: Boolean) =
+                                routingNumber(JsonField.of(routingNumber))
+
+                            fun routingNumber(routingNumber: JsonField<Boolean>) = apply {
+                                this.routingNumber = routingNumber
                             }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1002,11 +1002,11 @@ private constructor(
 
                             fun build(): Accounts =
                                 Accounts(
-                                    routingNumber,
                                     accountName,
-                                    institutionName,
-                                    accountType,
                                     accountNumber,
+                                    accountType,
+                                    institutionName,
+                                    routingNumber,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -1016,17 +1016,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Accounts && routingNumber == other.routingNumber && accountName == other.accountName && institutionName == other.institutionName && accountType == other.accountType && accountNumber == other.accountNumber && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Accounts && accountName == other.accountName && accountNumber == other.accountNumber && accountType == other.accountType && institutionName == other.institutionName && routingNumber == other.routingNumber && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(routingNumber, accountName, institutionName, accountType, accountNumber, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(accountName, accountNumber, accountType, institutionName, routingNumber, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Accounts{routingNumber=$routingNumber, accountName=$accountName, institutionName=$institutionName, accountType=$accountType, accountNumber=$accountNumber, additionalProperties=$additionalProperties}"
+                            "Accounts{accountName=$accountName, accountNumber=$accountNumber, accountType=$accountType, institutionName=$institutionName, routingNumber=$routingNumber, additionalProperties=$additionalProperties}"
                     }
 
                     @NoAutoDetect
@@ -1245,24 +1245,24 @@ private constructor(
                     class Entity
                     @JsonCreator
                     private constructor(
-                        @JsonProperty("type")
-                        @ExcludeMissing
-                        private val type: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("subtype")
                         @ExcludeMissing
                         private val subtype: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        private val type: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
-                        fun type(): Boolean? = type.getNullable("type")
-
                         fun subtype(): Boolean? = subtype.getNullable("subtype")
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        fun type(): Boolean? = type.getNullable("type")
 
                         @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+
+                        @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1272,8 +1272,8 @@ private constructor(
 
                         fun validate(): Entity = apply {
                             if (!validated) {
-                                type()
                                 subtype()
+                                type()
                                 validated = true
                             }
                         }
@@ -1287,26 +1287,26 @@ private constructor(
 
                         class Builder {
 
-                            private var type: JsonField<Boolean> = JsonMissing.of()
                             private var subtype: JsonField<Boolean> = JsonMissing.of()
+                            private var type: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(entity: Entity) = apply {
-                                type = entity.type
                                 subtype = entity.subtype
+                                type = entity.type
                                 additionalProperties = entity.additionalProperties.toMutableMap()
                             }
-
-                            fun type(type: Boolean) = type(JsonField.of(type))
-
-                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun subtype(subtype: Boolean) = subtype(JsonField.of(subtype))
 
                             fun subtype(subtype: JsonField<Boolean>) = apply {
                                 this.subtype = subtype
                             }
+
+                            fun type(type: Boolean) = type(JsonField.of(type))
+
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -1332,8 +1332,8 @@ private constructor(
 
                             fun build(): Entity =
                                 Entity(
-                                    type,
                                     subtype,
+                                    type,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -1343,69 +1343,69 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Entity && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Entity && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Entity{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+                            "Entity{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
                     }
 
                     @NoAutoDetect
                     class Locations
                     @JsonCreator
                     private constructor(
+                        @JsonProperty("city")
+                        @ExcludeMissing
+                        private val city: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("country")
+                        @ExcludeMissing
+                        private val country: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("line1")
                         @ExcludeMissing
                         private val line1: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("line2")
                         @ExcludeMissing
                         private val line2: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("city")
-                        @ExcludeMissing
-                        private val city: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("state")
-                        @ExcludeMissing
-                        private val state: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("postal_code")
                         @ExcludeMissing
                         private val postalCode: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("country")
+                        @JsonProperty("state")
                         @ExcludeMissing
-                        private val country: JsonField<Boolean> = JsonMissing.of(),
+                        private val state: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
+                        fun city(): Boolean? = city.getNullable("city")
+
+                        fun country(): Boolean? = country.getNullable("country")
+
                         fun line1(): Boolean? = line1.getNullable("line1")
 
                         fun line2(): Boolean? = line2.getNullable("line2")
 
-                        fun city(): Boolean? = city.getNullable("city")
+                        fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
 
                         fun state(): Boolean? = state.getNullable("state")
 
-                        fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
+                        @JsonProperty("city") @ExcludeMissing fun _city() = city
 
-                        fun country(): Boolean? = country.getNullable("country")
+                        @JsonProperty("country") @ExcludeMissing fun _country() = country
 
                         @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
 
                         @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
 
-                        @JsonProperty("city") @ExcludeMissing fun _city() = city
-
-                        @JsonProperty("state") @ExcludeMissing fun _state() = state
-
                         @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
 
-                        @JsonProperty("country") @ExcludeMissing fun _country() = country
+                        @JsonProperty("state") @ExcludeMissing fun _state() = state
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1415,12 +1415,12 @@ private constructor(
 
                         fun validate(): Locations = apply {
                             if (!validated) {
+                                city()
+                                country()
                                 line1()
                                 line2()
-                                city()
-                                state()
                                 postalCode()
-                                country()
+                                state()
                                 validated = true
                             }
                         }
@@ -1434,23 +1434,33 @@ private constructor(
 
                         class Builder {
 
+                            private var city: JsonField<Boolean> = JsonMissing.of()
+                            private var country: JsonField<Boolean> = JsonMissing.of()
                             private var line1: JsonField<Boolean> = JsonMissing.of()
                             private var line2: JsonField<Boolean> = JsonMissing.of()
-                            private var city: JsonField<Boolean> = JsonMissing.of()
-                            private var state: JsonField<Boolean> = JsonMissing.of()
                             private var postalCode: JsonField<Boolean> = JsonMissing.of()
-                            private var country: JsonField<Boolean> = JsonMissing.of()
+                            private var state: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(locations: Locations) = apply {
+                                city = locations.city
+                                country = locations.country
                                 line1 = locations.line1
                                 line2 = locations.line2
-                                city = locations.city
-                                state = locations.state
                                 postalCode = locations.postalCode
-                                country = locations.country
+                                state = locations.state
                                 additionalProperties = locations.additionalProperties.toMutableMap()
+                            }
+
+                            fun city(city: Boolean) = city(JsonField.of(city))
+
+                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
+
+                            fun country(country: Boolean) = country(JsonField.of(country))
+
+                            fun country(country: JsonField<Boolean>) = apply {
+                                this.country = country
                             }
 
                             fun line1(line1: Boolean) = line1(JsonField.of(line1))
@@ -1461,14 +1471,6 @@ private constructor(
 
                             fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
-                            fun city(city: Boolean) = city(JsonField.of(city))
-
-                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
-
-                            fun state(state: Boolean) = state(JsonField.of(state))
-
-                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
-
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
 
@@ -1476,11 +1478,9 @@ private constructor(
                                 this.postalCode = postalCode
                             }
 
-                            fun country(country: Boolean) = country(JsonField.of(country))
+                            fun state(state: Boolean) = state(JsonField.of(state))
 
-                            fun country(country: JsonField<Boolean>) = apply {
-                                this.country = country
-                            }
+                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -1506,12 +1506,12 @@ private constructor(
 
                             fun build(): Locations =
                                 Locations(
+                                    city,
+                                    country,
                                     line1,
                                     line2,
-                                    city,
-                                    state,
                                     postalCode,
-                                    country,
+                                    state,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -1521,17 +1521,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Locations && line1 == other.line1 && line2 == other.line2 && city == other.city && state == other.state && postalCode == other.postalCode && country == other.country && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Locations && city == other.city && country == other.country && line1 == other.line1 && line2 == other.line2 && postalCode == other.postalCode && state == other.state && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(line1, line2, city, state, postalCode, country, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(city, country, line1, line2, postalCode, state, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Locations{line1=$line1, line2=$line2, city=$city, state=$state, postalCode=$postalCode, country=$country, additionalProperties=$additionalProperties}"
+                            "Locations{city=$city, country=$country, line1=$line1, line2=$line2, postalCode=$postalCode, state=$state, additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -1539,40 +1539,40 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedCompanyFields && id == other.id && legalName == other.legalName && entity == other.entity && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && ein == other.ein && accounts == other.accounts && departments == other.departments && locations == other.locations && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedCompanyFields && id == other.id && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, legalName, entity, primaryEmail, primaryPhoneNumber, ein, accounts, departments, locations, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, accounts, departments, ein, entity, legalName, locations, primaryEmail, primaryPhoneNumber, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedCompanyFields{id=$id, legalName=$legalName, entity=$entity, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, ein=$ein, accounts=$accounts, departments=$departments, locations=$locations, additionalProperties=$additionalProperties}"
+                        "SupportedCompanyFields{id=$id, accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
                 }
 
                 @NoAutoDetect
                 class SupportedDirectoryFields
                 @JsonCreator
                 private constructor(
-                    @JsonProperty("paging")
-                    @ExcludeMissing
-                    private val paging: JsonField<Paging> = JsonMissing.of(),
                     @JsonProperty("individuals")
                     @ExcludeMissing
                     private val individuals: JsonField<Individuals> = JsonMissing.of(),
+                    @JsonProperty("paging")
+                    @ExcludeMissing
+                    private val paging: JsonField<Paging> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
-                    fun paging(): Paging? = paging.getNullable("paging")
-
                     fun individuals(): Individuals? = individuals.getNullable("individuals")
 
-                    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
+                    fun paging(): Paging? = paging.getNullable("paging")
 
                     @JsonProperty("individuals") @ExcludeMissing fun _individuals() = individuals
+
+                    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -1582,8 +1582,8 @@ private constructor(
 
                     fun validate(): SupportedDirectoryFields = apply {
                         if (!validated) {
-                            paging()?.validate()
                             individuals()?.validate()
+                            paging()?.validate()
                             validated = true
                         }
                     }
@@ -1597,22 +1597,18 @@ private constructor(
 
                     class Builder {
 
-                        private var paging: JsonField<Paging> = JsonMissing.of()
                         private var individuals: JsonField<Individuals> = JsonMissing.of()
+                        private var paging: JsonField<Paging> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedDirectoryFields: SupportedDirectoryFields) =
                             apply {
-                                paging = supportedDirectoryFields.paging
                                 individuals = supportedDirectoryFields.individuals
+                                paging = supportedDirectoryFields.paging
                                 additionalProperties =
                                     supportedDirectoryFields.additionalProperties.toMutableMap()
                             }
-
-                        fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-                        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun individuals(individuals: Individuals) =
                             individuals(JsonField.of(individuals))
@@ -1620,6 +1616,10 @@ private constructor(
                         fun individuals(individuals: JsonField<Individuals>) = apply {
                             this.individuals = individuals
                         }
+
+                        fun paging(paging: Paging) = paging(JsonField.of(paging))
+
+                        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1645,8 +1645,8 @@ private constructor(
 
                         fun build(): SupportedDirectoryFields =
                             SupportedDirectoryFields(
-                                paging,
                                 individuals,
+                                paging,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -1658,24 +1658,24 @@ private constructor(
                         @JsonProperty("id")
                         @ExcludeMissing
                         private val id: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("first_name")
-                        @ExcludeMissing
-                        private val firstName: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("middle_name")
-                        @ExcludeMissing
-                        private val middleName: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("last_name")
-                        @ExcludeMissing
-                        private val lastName: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("is_active")
-                        @ExcludeMissing
-                        private val isActive: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("department")
                         @ExcludeMissing
                         private val department: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("first_name")
+                        @ExcludeMissing
+                        private val firstName: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("is_active")
+                        @ExcludeMissing
+                        private val isActive: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("last_name")
+                        @ExcludeMissing
+                        private val lastName: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("manager")
                         @ExcludeMissing
                         private val manager: JsonField<Manager> = JsonMissing.of(),
+                        @JsonProperty("middle_name")
+                        @ExcludeMissing
+                        private val middleName: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
@@ -1683,31 +1683,31 @@ private constructor(
 
                         fun id(): Boolean? = id.getNullable("id")
 
+                        fun department(): Boolean? = department.getNullable("department")
+
                         fun firstName(): Boolean? = firstName.getNullable("first_name")
-
-                        fun middleName(): Boolean? = middleName.getNullable("middle_name")
-
-                        fun lastName(): Boolean? = lastName.getNullable("last_name")
 
                         fun isActive(): Boolean? = isActive.getNullable("is_active")
 
-                        fun department(): Boolean? = department.getNullable("department")
+                        fun lastName(): Boolean? = lastName.getNullable("last_name")
 
                         fun manager(): Manager? = manager.getNullable("manager")
 
+                        fun middleName(): Boolean? = middleName.getNullable("middle_name")
+
                         @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-                        @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
-
-                        @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
-
-                        @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
-
-                        @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
 
                         @JsonProperty("department") @ExcludeMissing fun _department() = department
 
+                        @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+
+                        @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+
+                        @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+
                         @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+
+                        @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -1718,12 +1718,12 @@ private constructor(
                         fun validate(): Individuals = apply {
                             if (!validated) {
                                 id()
-                                firstName()
-                                middleName()
-                                lastName()
-                                isActive()
                                 department()
+                                firstName()
+                                isActive()
+                                lastName()
                                 manager()?.validate()
+                                middleName()
                                 validated = true
                             }
                         }
@@ -1738,23 +1738,23 @@ private constructor(
                         class Builder {
 
                             private var id: JsonField<Boolean> = JsonMissing.of()
-                            private var firstName: JsonField<Boolean> = JsonMissing.of()
-                            private var middleName: JsonField<Boolean> = JsonMissing.of()
-                            private var lastName: JsonField<Boolean> = JsonMissing.of()
-                            private var isActive: JsonField<Boolean> = JsonMissing.of()
                             private var department: JsonField<Boolean> = JsonMissing.of()
+                            private var firstName: JsonField<Boolean> = JsonMissing.of()
+                            private var isActive: JsonField<Boolean> = JsonMissing.of()
+                            private var lastName: JsonField<Boolean> = JsonMissing.of()
                             private var manager: JsonField<Manager> = JsonMissing.of()
+                            private var middleName: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(individuals: Individuals) = apply {
                                 id = individuals.id
-                                firstName = individuals.firstName
-                                middleName = individuals.middleName
-                                lastName = individuals.lastName
-                                isActive = individuals.isActive
                                 department = individuals.department
+                                firstName = individuals.firstName
+                                isActive = individuals.isActive
+                                lastName = individuals.lastName
                                 manager = individuals.manager
+                                middleName = individuals.middleName
                                 additionalProperties =
                                     individuals.additionalProperties.toMutableMap()
                             }
@@ -1763,23 +1763,17 @@ private constructor(
 
                             fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
+                            fun department(department: Boolean) =
+                                department(JsonField.of(department))
+
+                            fun department(department: JsonField<Boolean>) = apply {
+                                this.department = department
+                            }
+
                             fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
                             fun firstName(firstName: JsonField<Boolean>) = apply {
                                 this.firstName = firstName
-                            }
-
-                            fun middleName(middleName: Boolean) =
-                                middleName(JsonField.of(middleName))
-
-                            fun middleName(middleName: JsonField<Boolean>) = apply {
-                                this.middleName = middleName
-                            }
-
-                            fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
-
-                            fun lastName(lastName: JsonField<Boolean>) = apply {
-                                this.lastName = lastName
                             }
 
                             fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
@@ -1788,17 +1782,23 @@ private constructor(
                                 this.isActive = isActive
                             }
 
-                            fun department(department: Boolean) =
-                                department(JsonField.of(department))
+                            fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
 
-                            fun department(department: JsonField<Boolean>) = apply {
-                                this.department = department
+                            fun lastName(lastName: JsonField<Boolean>) = apply {
+                                this.lastName = lastName
                             }
 
                             fun manager(manager: Manager) = manager(JsonField.of(manager))
 
                             fun manager(manager: JsonField<Manager>) = apply {
                                 this.manager = manager
+                            }
+
+                            fun middleName(middleName: Boolean) =
+                                middleName(JsonField.of(middleName))
+
+                            fun middleName(middleName: JsonField<Boolean>) = apply {
+                                this.middleName = middleName
                             }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1826,12 +1826,12 @@ private constructor(
                             fun build(): Individuals =
                                 Individuals(
                                     id,
-                                    firstName,
-                                    middleName,
-                                    lastName,
-                                    isActive,
                                     department,
+                                    firstName,
+                                    isActive,
+                                    lastName,
                                     manager,
+                                    middleName,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -1939,17 +1939,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Individuals && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && isActive == other.isActive && department == other.department && manager == other.manager && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Individuals && id == other.id && department == other.department && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && manager == other.manager && middleName == other.middleName && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, isActive, department, manager, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(id, department, firstName, isActive, lastName, manager, middleName, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Individuals{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, isActive=$isActive, department=$department, manager=$manager, additionalProperties=$additionalProperties}"
+                            "Individuals{id=$id, department=$department, firstName=$firstName, isActive=$isActive, lastName=$lastName, manager=$manager, middleName=$middleName, additionalProperties=$additionalProperties}"
                     }
 
                     @NoAutoDetect
@@ -2070,17 +2070,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedDirectoryFields && paging == other.paging && individuals == other.individuals && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedDirectoryFields && individuals == other.individuals && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(paging, individuals, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(individuals, paging, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedDirectoryFields{paging=$paging, individuals=$individuals, additionalProperties=$additionalProperties}"
+                        "SupportedDirectoryFields{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
                 }
 
                 @NoAutoDetect
@@ -2090,33 +2090,6 @@ private constructor(
                     @JsonProperty("id")
                     @ExcludeMissing
                     private val id: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("first_name")
-                    @ExcludeMissing
-                    private val firstName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("middle_name")
-                    @ExcludeMissing
-                    private val middleName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("last_name")
-                    @ExcludeMissing
-                    private val lastName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("title")
-                    @ExcludeMissing
-                    private val title: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("start_date")
-                    @ExcludeMissing
-                    private val startDate: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("end_date")
-                    @ExcludeMissing
-                    private val endDate: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("is_active")
-                    @ExcludeMissing
-                    private val isActive: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("employment_status")
-                    @ExcludeMissing
-                    private val employmentStatus: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("income_history")
-                    @ExcludeMissing
-                    private val incomeHistory: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("class_code")
                     @ExcludeMissing
                     private val classCode: JsonField<Boolean> = JsonMissing.of(),
@@ -2129,39 +2102,47 @@ private constructor(
                     @JsonProperty("employment")
                     @ExcludeMissing
                     private val employment: JsonField<Employment> = JsonMissing.of(),
+                    @JsonProperty("employment_status")
+                    @ExcludeMissing
+                    private val employmentStatus: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("end_date")
+                    @ExcludeMissing
+                    private val endDate: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("first_name")
+                    @ExcludeMissing
+                    private val firstName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("income")
                     @ExcludeMissing
                     private val income: JsonField<Income> = JsonMissing.of(),
+                    @JsonProperty("income_history")
+                    @ExcludeMissing
+                    private val incomeHistory: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("is_active")
+                    @ExcludeMissing
+                    private val isActive: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("last_name")
+                    @ExcludeMissing
+                    private val lastName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("location")
                     @ExcludeMissing
                     private val location: JsonField<Location> = JsonMissing.of(),
                     @JsonProperty("manager")
                     @ExcludeMissing
                     private val manager: JsonField<Manager> = JsonMissing.of(),
+                    @JsonProperty("middle_name")
+                    @ExcludeMissing
+                    private val middleName: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("start_date")
+                    @ExcludeMissing
+                    private val startDate: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("title")
+                    @ExcludeMissing
+                    private val title: JsonField<Boolean> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     fun id(): Boolean? = id.getNullable("id")
-
-                    fun firstName(): Boolean? = firstName.getNullable("first_name")
-
-                    fun middleName(): Boolean? = middleName.getNullable("middle_name")
-
-                    fun lastName(): Boolean? = lastName.getNullable("last_name")
-
-                    fun title(): Boolean? = title.getNullable("title")
-
-                    fun startDate(): Boolean? = startDate.getNullable("start_date")
-
-                    fun endDate(): Boolean? = endDate.getNullable("end_date")
-
-                    fun isActive(): Boolean? = isActive.getNullable("is_active")
-
-                    fun employmentStatus(): Boolean? =
-                        employmentStatus.getNullable("employment_status")
-
-                    fun incomeHistory(): Boolean? = incomeHistory.getNullable("income_history")
 
                     fun classCode(): Boolean? = classCode.getNullable("class_code")
 
@@ -2171,35 +2152,32 @@ private constructor(
 
                     fun employment(): Employment? = employment.getNullable("employment")
 
+                    fun employmentStatus(): Boolean? =
+                        employmentStatus.getNullable("employment_status")
+
+                    fun endDate(): Boolean? = endDate.getNullable("end_date")
+
+                    fun firstName(): Boolean? = firstName.getNullable("first_name")
+
                     fun income(): Income? = income.getNullable("income")
+
+                    fun incomeHistory(): Boolean? = incomeHistory.getNullable("income_history")
+
+                    fun isActive(): Boolean? = isActive.getNullable("is_active")
+
+                    fun lastName(): Boolean? = lastName.getNullable("last_name")
 
                     fun location(): Location? = location.getNullable("location")
 
                     fun manager(): Manager? = manager.getNullable("manager")
 
+                    fun middleName(): Boolean? = middleName.getNullable("middle_name")
+
+                    fun startDate(): Boolean? = startDate.getNullable("start_date")
+
+                    fun title(): Boolean? = title.getNullable("title")
+
                     @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
-
-                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
-
-                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
-
-                    @JsonProperty("title") @ExcludeMissing fun _title() = title
-
-                    @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
-
-                    @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
-
-                    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
-
-                    @JsonProperty("employment_status")
-                    @ExcludeMissing
-                    fun _employmentStatus() = employmentStatus
-
-                    @JsonProperty("income_history")
-                    @ExcludeMissing
-                    fun _incomeHistory() = incomeHistory
 
                     @JsonProperty("class_code") @ExcludeMissing fun _classCode() = classCode
 
@@ -2211,11 +2189,33 @@ private constructor(
 
                     @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
 
+                    @JsonProperty("employment_status")
+                    @ExcludeMissing
+                    fun _employmentStatus() = employmentStatus
+
+                    @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+
+                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+
                     @JsonProperty("income") @ExcludeMissing fun _income() = income
+
+                    @JsonProperty("income_history")
+                    @ExcludeMissing
+                    fun _incomeHistory() = incomeHistory
+
+                    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+
+                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
 
                     @JsonProperty("location") @ExcludeMissing fun _location() = location
 
                     @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+
+                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+
+                    @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+
+                    @JsonProperty("title") @ExcludeMissing fun _title() = title
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -2226,22 +2226,22 @@ private constructor(
                     fun validate(): SupportedEmploymentFields = apply {
                         if (!validated) {
                             id()
-                            firstName()
-                            middleName()
-                            lastName()
-                            title()
-                            startDate()
-                            endDate()
-                            isActive()
-                            employmentStatus()
-                            incomeHistory()
                             classCode()
                             customFields()
                             department()?.validate()
                             employment()?.validate()
+                            employmentStatus()
+                            endDate()
+                            firstName()
                             income()?.validate()
+                            incomeHistory()
+                            isActive()
+                            lastName()
                             location()?.validate()
                             manager()?.validate()
+                            middleName()
+                            startDate()
+                            title()
                             validated = true
                         }
                     }
@@ -2256,44 +2256,44 @@ private constructor(
                     class Builder {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
-                        private var firstName: JsonField<Boolean> = JsonMissing.of()
-                        private var middleName: JsonField<Boolean> = JsonMissing.of()
-                        private var lastName: JsonField<Boolean> = JsonMissing.of()
-                        private var title: JsonField<Boolean> = JsonMissing.of()
-                        private var startDate: JsonField<Boolean> = JsonMissing.of()
-                        private var endDate: JsonField<Boolean> = JsonMissing.of()
-                        private var isActive: JsonField<Boolean> = JsonMissing.of()
-                        private var employmentStatus: JsonField<Boolean> = JsonMissing.of()
-                        private var incomeHistory: JsonField<Boolean> = JsonMissing.of()
                         private var classCode: JsonField<Boolean> = JsonMissing.of()
                         private var customFields: JsonField<Boolean> = JsonMissing.of()
                         private var department: JsonField<Department> = JsonMissing.of()
                         private var employment: JsonField<Employment> = JsonMissing.of()
+                        private var employmentStatus: JsonField<Boolean> = JsonMissing.of()
+                        private var endDate: JsonField<Boolean> = JsonMissing.of()
+                        private var firstName: JsonField<Boolean> = JsonMissing.of()
                         private var income: JsonField<Income> = JsonMissing.of()
+                        private var incomeHistory: JsonField<Boolean> = JsonMissing.of()
+                        private var isActive: JsonField<Boolean> = JsonMissing.of()
+                        private var lastName: JsonField<Boolean> = JsonMissing.of()
                         private var location: JsonField<Location> = JsonMissing.of()
                         private var manager: JsonField<Manager> = JsonMissing.of()
+                        private var middleName: JsonField<Boolean> = JsonMissing.of()
+                        private var startDate: JsonField<Boolean> = JsonMissing.of()
+                        private var title: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedEmploymentFields: SupportedEmploymentFields) =
                             apply {
                                 id = supportedEmploymentFields.id
-                                firstName = supportedEmploymentFields.firstName
-                                middleName = supportedEmploymentFields.middleName
-                                lastName = supportedEmploymentFields.lastName
-                                title = supportedEmploymentFields.title
-                                startDate = supportedEmploymentFields.startDate
-                                endDate = supportedEmploymentFields.endDate
-                                isActive = supportedEmploymentFields.isActive
-                                employmentStatus = supportedEmploymentFields.employmentStatus
-                                incomeHistory = supportedEmploymentFields.incomeHistory
                                 classCode = supportedEmploymentFields.classCode
                                 customFields = supportedEmploymentFields.customFields
                                 department = supportedEmploymentFields.department
                                 employment = supportedEmploymentFields.employment
+                                employmentStatus = supportedEmploymentFields.employmentStatus
+                                endDate = supportedEmploymentFields.endDate
+                                firstName = supportedEmploymentFields.firstName
                                 income = supportedEmploymentFields.income
+                                incomeHistory = supportedEmploymentFields.incomeHistory
+                                isActive = supportedEmploymentFields.isActive
+                                lastName = supportedEmploymentFields.lastName
                                 location = supportedEmploymentFields.location
                                 manager = supportedEmploymentFields.manager
+                                middleName = supportedEmploymentFields.middleName
+                                startDate = supportedEmploymentFields.startDate
+                                title = supportedEmploymentFields.title
                                 additionalProperties =
                                     supportedEmploymentFields.additionalProperties.toMutableMap()
                             }
@@ -2301,58 +2301,6 @@ private constructor(
                         fun id(id: Boolean) = id(JsonField.of(id))
 
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
-
-                        fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
-
-                        fun firstName(firstName: JsonField<Boolean>) = apply {
-                            this.firstName = firstName
-                        }
-
-                        fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
-
-                        fun middleName(middleName: JsonField<Boolean>) = apply {
-                            this.middleName = middleName
-                        }
-
-                        fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
-
-                        fun lastName(lastName: JsonField<Boolean>) = apply {
-                            this.lastName = lastName
-                        }
-
-                        fun title(title: Boolean) = title(JsonField.of(title))
-
-                        fun title(title: JsonField<Boolean>) = apply { this.title = title }
-
-                        fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
-
-                        fun startDate(startDate: JsonField<Boolean>) = apply {
-                            this.startDate = startDate
-                        }
-
-                        fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
-
-                        fun endDate(endDate: JsonField<Boolean>) = apply { this.endDate = endDate }
-
-                        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
-
-                        fun isActive(isActive: JsonField<Boolean>) = apply {
-                            this.isActive = isActive
-                        }
-
-                        fun employmentStatus(employmentStatus: Boolean) =
-                            employmentStatus(JsonField.of(employmentStatus))
-
-                        fun employmentStatus(employmentStatus: JsonField<Boolean>) = apply {
-                            this.employmentStatus = employmentStatus
-                        }
-
-                        fun incomeHistory(incomeHistory: Boolean) =
-                            incomeHistory(JsonField.of(incomeHistory))
-
-                        fun incomeHistory(incomeHistory: JsonField<Boolean>) = apply {
-                            this.incomeHistory = incomeHistory
-                        }
 
                         fun classCode(classCode: Boolean) = classCode(JsonField.of(classCode))
 
@@ -2381,9 +2329,45 @@ private constructor(
                             this.employment = employment
                         }
 
+                        fun employmentStatus(employmentStatus: Boolean) =
+                            employmentStatus(JsonField.of(employmentStatus))
+
+                        fun employmentStatus(employmentStatus: JsonField<Boolean>) = apply {
+                            this.employmentStatus = employmentStatus
+                        }
+
+                        fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
+
+                        fun endDate(endDate: JsonField<Boolean>) = apply { this.endDate = endDate }
+
+                        fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
+
+                        fun firstName(firstName: JsonField<Boolean>) = apply {
+                            this.firstName = firstName
+                        }
+
                         fun income(income: Income) = income(JsonField.of(income))
 
                         fun income(income: JsonField<Income>) = apply { this.income = income }
+
+                        fun incomeHistory(incomeHistory: Boolean) =
+                            incomeHistory(JsonField.of(incomeHistory))
+
+                        fun incomeHistory(incomeHistory: JsonField<Boolean>) = apply {
+                            this.incomeHistory = incomeHistory
+                        }
+
+                        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
+
+                        fun isActive(isActive: JsonField<Boolean>) = apply {
+                            this.isActive = isActive
+                        }
+
+                        fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
+
+                        fun lastName(lastName: JsonField<Boolean>) = apply {
+                            this.lastName = lastName
+                        }
 
                         fun location(location: Location) = location(JsonField.of(location))
 
@@ -2394,6 +2378,22 @@ private constructor(
                         fun manager(manager: Manager) = manager(JsonField.of(manager))
 
                         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
+
+                        fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
+
+                        fun middleName(middleName: JsonField<Boolean>) = apply {
+                            this.middleName = middleName
+                        }
+
+                        fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
+
+                        fun startDate(startDate: JsonField<Boolean>) = apply {
+                            this.startDate = startDate
+                        }
+
+                        fun title(title: Boolean) = title(JsonField.of(title))
+
+                        fun title(title: JsonField<Boolean>) = apply { this.title = title }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -2420,22 +2420,22 @@ private constructor(
                         fun build(): SupportedEmploymentFields =
                             SupportedEmploymentFields(
                                 id,
-                                firstName,
-                                middleName,
-                                lastName,
-                                title,
-                                startDate,
-                                endDate,
-                                isActive,
-                                employmentStatus,
-                                incomeHistory,
                                 classCode,
                                 customFields,
                                 department,
                                 employment,
+                                employmentStatus,
+                                endDate,
+                                firstName,
                                 income,
+                                incomeHistory,
+                                isActive,
+                                lastName,
                                 location,
                                 manager,
+                                middleName,
+                                startDate,
+                                title,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -2540,24 +2540,24 @@ private constructor(
                     class Employment
                     @JsonCreator
                     private constructor(
-                        @JsonProperty("type")
-                        @ExcludeMissing
-                        private val type: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("subtype")
                         @ExcludeMissing
                         private val subtype: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        private val type: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
-                        fun type(): Boolean? = type.getNullable("type")
-
                         fun subtype(): Boolean? = subtype.getNullable("subtype")
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
+                        fun type(): Boolean? = type.getNullable("type")
 
                         @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+
+                        @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2567,8 +2567,8 @@ private constructor(
 
                         fun validate(): Employment = apply {
                             if (!validated) {
-                                type()
                                 subtype()
+                                type()
                                 validated = true
                             }
                         }
@@ -2582,27 +2582,27 @@ private constructor(
 
                         class Builder {
 
-                            private var type: JsonField<Boolean> = JsonMissing.of()
                             private var subtype: JsonField<Boolean> = JsonMissing.of()
+                            private var type: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(employment: Employment) = apply {
-                                type = employment.type
                                 subtype = employment.subtype
+                                type = employment.type
                                 additionalProperties =
                                     employment.additionalProperties.toMutableMap()
                             }
-
-                            fun type(type: Boolean) = type(JsonField.of(type))
-
-                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun subtype(subtype: Boolean) = subtype(JsonField.of(subtype))
 
                             fun subtype(subtype: JsonField<Boolean>) = apply {
                                 this.subtype = subtype
                             }
+
+                            fun type(type: Boolean) = type(JsonField.of(type))
+
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2628,8 +2628,8 @@ private constructor(
 
                             fun build(): Employment =
                                 Employment(
-                                    type,
                                     subtype,
+                                    type,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -2639,17 +2639,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Employment && type == other.type && subtype == other.subtype && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Employment && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(type, subtype, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Employment{type=$type, subtype=$subtype, additionalProperties=$additionalProperties}"
+                            "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
                     }
 
                     @NoAutoDetect
@@ -2786,52 +2786,52 @@ private constructor(
                     class Location
                     @JsonCreator
                     private constructor(
+                        @JsonProperty("city")
+                        @ExcludeMissing
+                        private val city: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("country")
+                        @ExcludeMissing
+                        private val country: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("line1")
                         @ExcludeMissing
                         private val line1: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("line2")
                         @ExcludeMissing
                         private val line2: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("city")
-                        @ExcludeMissing
-                        private val city: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("state")
-                        @ExcludeMissing
-                        private val state: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("postal_code")
                         @ExcludeMissing
                         private val postalCode: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("country")
+                        @JsonProperty("state")
                         @ExcludeMissing
-                        private val country: JsonField<Boolean> = JsonMissing.of(),
+                        private val state: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
+                        fun city(): Boolean? = city.getNullable("city")
+
+                        fun country(): Boolean? = country.getNullable("country")
+
                         fun line1(): Boolean? = line1.getNullable("line1")
 
                         fun line2(): Boolean? = line2.getNullable("line2")
 
-                        fun city(): Boolean? = city.getNullable("city")
+                        fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
 
                         fun state(): Boolean? = state.getNullable("state")
 
-                        fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
+                        @JsonProperty("city") @ExcludeMissing fun _city() = city
 
-                        fun country(): Boolean? = country.getNullable("country")
+                        @JsonProperty("country") @ExcludeMissing fun _country() = country
 
                         @JsonProperty("line1") @ExcludeMissing fun _line1() = line1
 
                         @JsonProperty("line2") @ExcludeMissing fun _line2() = line2
 
-                        @JsonProperty("city") @ExcludeMissing fun _city() = city
-
-                        @JsonProperty("state") @ExcludeMissing fun _state() = state
-
                         @JsonProperty("postal_code") @ExcludeMissing fun _postalCode() = postalCode
 
-                        @JsonProperty("country") @ExcludeMissing fun _country() = country
+                        @JsonProperty("state") @ExcludeMissing fun _state() = state
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -2841,12 +2841,12 @@ private constructor(
 
                         fun validate(): Location = apply {
                             if (!validated) {
+                                city()
+                                country()
                                 line1()
                                 line2()
-                                city()
-                                state()
                                 postalCode()
-                                country()
+                                state()
                                 validated = true
                             }
                         }
@@ -2860,23 +2860,33 @@ private constructor(
 
                         class Builder {
 
+                            private var city: JsonField<Boolean> = JsonMissing.of()
+                            private var country: JsonField<Boolean> = JsonMissing.of()
                             private var line1: JsonField<Boolean> = JsonMissing.of()
                             private var line2: JsonField<Boolean> = JsonMissing.of()
-                            private var city: JsonField<Boolean> = JsonMissing.of()
-                            private var state: JsonField<Boolean> = JsonMissing.of()
                             private var postalCode: JsonField<Boolean> = JsonMissing.of()
-                            private var country: JsonField<Boolean> = JsonMissing.of()
+                            private var state: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(location: Location) = apply {
+                                city = location.city
+                                country = location.country
                                 line1 = location.line1
                                 line2 = location.line2
-                                city = location.city
-                                state = location.state
                                 postalCode = location.postalCode
-                                country = location.country
+                                state = location.state
                                 additionalProperties = location.additionalProperties.toMutableMap()
+                            }
+
+                            fun city(city: Boolean) = city(JsonField.of(city))
+
+                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
+
+                            fun country(country: Boolean) = country(JsonField.of(country))
+
+                            fun country(country: JsonField<Boolean>) = apply {
+                                this.country = country
                             }
 
                             fun line1(line1: Boolean) = line1(JsonField.of(line1))
@@ -2887,14 +2897,6 @@ private constructor(
 
                             fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
-                            fun city(city: Boolean) = city(JsonField.of(city))
-
-                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
-
-                            fun state(state: Boolean) = state(JsonField.of(state))
-
-                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
-
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
 
@@ -2902,11 +2904,9 @@ private constructor(
                                 this.postalCode = postalCode
                             }
 
-                            fun country(country: Boolean) = country(JsonField.of(country))
+                            fun state(state: Boolean) = state(JsonField.of(state))
 
-                            fun country(country: JsonField<Boolean>) = apply {
-                                this.country = country
-                            }
+                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2932,12 +2932,12 @@ private constructor(
 
                             fun build(): Location =
                                 Location(
+                                    city,
+                                    country,
                                     line1,
                                     line2,
-                                    city,
-                                    state,
                                     postalCode,
-                                    country,
+                                    state,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -2947,17 +2947,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is Location && line1 == other.line1 && line2 == other.line2 && city == other.city && state == other.state && postalCode == other.postalCode && country == other.country && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is Location && city == other.city && country == other.country && line1 == other.line1 && line2 == other.line2 && postalCode == other.postalCode && state == other.state && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(line1, line2, city, state, postalCode, country, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(city, country, line1, line2, postalCode, state, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "Location{line1=$line1, line2=$line2, city=$city, state=$state, postalCode=$postalCode, country=$country, additionalProperties=$additionalProperties}"
+                            "Location{city=$city, country=$country, line1=$line1, line2=$line2, postalCode=$postalCode, state=$state, additionalProperties=$additionalProperties}"
                     }
 
                     @NoAutoDetect
@@ -3059,17 +3059,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedEmploymentFields && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && title == other.title && startDate == other.startDate && endDate == other.endDate && isActive == other.isActive && employmentStatus == other.employmentStatus && incomeHistory == other.incomeHistory && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && income == other.income && location == other.location && manager == other.manager && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedEmploymentFields && id == other.id && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && location == other.location && manager == other.manager && middleName == other.middleName && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, title, startDate, endDate, isActive, employmentStatus, incomeHistory, classCode, customFields, department, employment, income, location, manager, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, classCode, customFields, department, employment, employmentStatus, endDate, firstName, income, incomeHistory, isActive, lastName, location, manager, middleName, startDate, title, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedEmploymentFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, title=$title, startDate=$startDate, endDate=$endDate, isActive=$isActive, employmentStatus=$employmentStatus, incomeHistory=$incomeHistory, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, income=$income, location=$location, manager=$manager, additionalProperties=$additionalProperties}"
+                        "SupportedEmploymentFields{id=$id, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
                 }
 
                 @NoAutoDetect
@@ -3079,103 +3079,103 @@ private constructor(
                     @JsonProperty("id")
                     @ExcludeMissing
                     private val id: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("first_name")
-                    @ExcludeMissing
-                    private val firstName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("middle_name")
-                    @ExcludeMissing
-                    private val middleName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("last_name")
-                    @ExcludeMissing
-                    private val lastName: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("preferred_name")
-                    @ExcludeMissing
-                    private val preferredName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("dob")
                     @ExcludeMissing
                     private val dob: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("gender")
-                    @ExcludeMissing
-                    private val gender: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("ethnicity")
-                    @ExcludeMissing
-                    private val ethnicity: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("ssn")
-                    @ExcludeMissing
-                    private val ssn: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("encrypted_ssn")
-                    @ExcludeMissing
-                    private val encryptedSsn: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("emails")
                     @ExcludeMissing
                     private val emails: JsonField<Emails> = JsonMissing.of(),
+                    @JsonProperty("encrypted_ssn")
+                    @ExcludeMissing
+                    private val encryptedSsn: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("ethnicity")
+                    @ExcludeMissing
+                    private val ethnicity: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("first_name")
+                    @ExcludeMissing
+                    private val firstName: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("gender")
+                    @ExcludeMissing
+                    private val gender: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("last_name")
+                    @ExcludeMissing
+                    private val lastName: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("middle_name")
+                    @ExcludeMissing
+                    private val middleName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("phone_numbers")
                     @ExcludeMissing
                     private val phoneNumbers: JsonField<PhoneNumbers> = JsonMissing.of(),
+                    @JsonProperty("preferred_name")
+                    @ExcludeMissing
+                    private val preferredName: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("residence")
                     @ExcludeMissing
                     private val residence: JsonField<Residence> = JsonMissing.of(),
+                    @JsonProperty("ssn")
+                    @ExcludeMissing
+                    private val ssn: JsonField<Boolean> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     fun id(): Boolean? = id.getNullable("id")
 
-                    fun firstName(): Boolean? = firstName.getNullable("first_name")
-
-                    fun middleName(): Boolean? = middleName.getNullable("middle_name")
-
-                    fun lastName(): Boolean? = lastName.getNullable("last_name")
-
-                    fun preferredName(): Boolean? = preferredName.getNullable("preferred_name")
-
                     fun dob(): Boolean? = dob.getNullable("dob")
-
-                    fun gender(): Boolean? = gender.getNullable("gender")
-
-                    fun ethnicity(): Boolean? = ethnicity.getNullable("ethnicity")
-
-                    fun ssn(): Boolean? = ssn.getNullable("ssn")
-
-                    fun encryptedSsn(): Boolean? = encryptedSsn.getNullable("encrypted_ssn")
 
                     fun emails(): Emails? = emails.getNullable("emails")
 
+                    fun encryptedSsn(): Boolean? = encryptedSsn.getNullable("encrypted_ssn")
+
+                    fun ethnicity(): Boolean? = ethnicity.getNullable("ethnicity")
+
+                    fun firstName(): Boolean? = firstName.getNullable("first_name")
+
+                    fun gender(): Boolean? = gender.getNullable("gender")
+
+                    fun lastName(): Boolean? = lastName.getNullable("last_name")
+
+                    fun middleName(): Boolean? = middleName.getNullable("middle_name")
+
                     fun phoneNumbers(): PhoneNumbers? = phoneNumbers.getNullable("phone_numbers")
+
+                    fun preferredName(): Boolean? = preferredName.getNullable("preferred_name")
 
                     fun residence(): Residence? = residence.getNullable("residence")
 
+                    fun ssn(): Boolean? = ssn.getNullable("ssn")
+
                     @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
-
-                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
-
-                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
-
-                    @JsonProperty("preferred_name")
-                    @ExcludeMissing
-                    fun _preferredName() = preferredName
 
                     @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
 
-                    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
-
-                    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
-
-                    @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
+                    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
 
                     @JsonProperty("encrypted_ssn")
                     @ExcludeMissing
                     fun _encryptedSsn() = encryptedSsn
 
-                    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
+                    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
+
+                    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+
+                    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
+
+                    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+
+                    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
 
                     @JsonProperty("phone_numbers")
                     @ExcludeMissing
                     fun _phoneNumbers() = phoneNumbers
 
+                    @JsonProperty("preferred_name")
+                    @ExcludeMissing
+                    fun _preferredName() = preferredName
+
                     @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
+
+                    @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -3186,18 +3186,18 @@ private constructor(
                     fun validate(): SupportedIndividualFields = apply {
                         if (!validated) {
                             id()
-                            firstName()
-                            middleName()
-                            lastName()
-                            preferredName()
                             dob()
-                            gender()
-                            ethnicity()
-                            ssn()
-                            encryptedSsn()
                             emails()?.validate()
+                            encryptedSsn()
+                            ethnicity()
+                            firstName()
+                            gender()
+                            lastName()
+                            middleName()
                             phoneNumbers()?.validate()
+                            preferredName()
                             residence()?.validate()
+                            ssn()
                             validated = true
                         }
                     }
@@ -3212,36 +3212,36 @@ private constructor(
                     class Builder {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
-                        private var firstName: JsonField<Boolean> = JsonMissing.of()
-                        private var middleName: JsonField<Boolean> = JsonMissing.of()
-                        private var lastName: JsonField<Boolean> = JsonMissing.of()
-                        private var preferredName: JsonField<Boolean> = JsonMissing.of()
                         private var dob: JsonField<Boolean> = JsonMissing.of()
-                        private var gender: JsonField<Boolean> = JsonMissing.of()
-                        private var ethnicity: JsonField<Boolean> = JsonMissing.of()
-                        private var ssn: JsonField<Boolean> = JsonMissing.of()
-                        private var encryptedSsn: JsonField<Boolean> = JsonMissing.of()
                         private var emails: JsonField<Emails> = JsonMissing.of()
+                        private var encryptedSsn: JsonField<Boolean> = JsonMissing.of()
+                        private var ethnicity: JsonField<Boolean> = JsonMissing.of()
+                        private var firstName: JsonField<Boolean> = JsonMissing.of()
+                        private var gender: JsonField<Boolean> = JsonMissing.of()
+                        private var lastName: JsonField<Boolean> = JsonMissing.of()
+                        private var middleName: JsonField<Boolean> = JsonMissing.of()
                         private var phoneNumbers: JsonField<PhoneNumbers> = JsonMissing.of()
+                        private var preferredName: JsonField<Boolean> = JsonMissing.of()
                         private var residence: JsonField<Residence> = JsonMissing.of()
+                        private var ssn: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedIndividualFields: SupportedIndividualFields) =
                             apply {
                                 id = supportedIndividualFields.id
-                                firstName = supportedIndividualFields.firstName
-                                middleName = supportedIndividualFields.middleName
-                                lastName = supportedIndividualFields.lastName
-                                preferredName = supportedIndividualFields.preferredName
                                 dob = supportedIndividualFields.dob
-                                gender = supportedIndividualFields.gender
-                                ethnicity = supportedIndividualFields.ethnicity
-                                ssn = supportedIndividualFields.ssn
-                                encryptedSsn = supportedIndividualFields.encryptedSsn
                                 emails = supportedIndividualFields.emails
+                                encryptedSsn = supportedIndividualFields.encryptedSsn
+                                ethnicity = supportedIndividualFields.ethnicity
+                                firstName = supportedIndividualFields.firstName
+                                gender = supportedIndividualFields.gender
+                                lastName = supportedIndividualFields.lastName
+                                middleName = supportedIndividualFields.middleName
                                 phoneNumbers = supportedIndividualFields.phoneNumbers
+                                preferredName = supportedIndividualFields.preferredName
                                 residence = supportedIndividualFields.residence
+                                ssn = supportedIndividualFields.ssn
                                 additionalProperties =
                                     supportedIndividualFields.additionalProperties.toMutableMap()
                             }
@@ -3250,10 +3250,41 @@ private constructor(
 
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
+                        fun dob(dob: Boolean) = dob(JsonField.of(dob))
+
+                        fun dob(dob: JsonField<Boolean>) = apply { this.dob = dob }
+
+                        fun emails(emails: Emails) = emails(JsonField.of(emails))
+
+                        fun emails(emails: JsonField<Emails>) = apply { this.emails = emails }
+
+                        fun encryptedSsn(encryptedSsn: Boolean) =
+                            encryptedSsn(JsonField.of(encryptedSsn))
+
+                        fun encryptedSsn(encryptedSsn: JsonField<Boolean>) = apply {
+                            this.encryptedSsn = encryptedSsn
+                        }
+
+                        fun ethnicity(ethnicity: Boolean) = ethnicity(JsonField.of(ethnicity))
+
+                        fun ethnicity(ethnicity: JsonField<Boolean>) = apply {
+                            this.ethnicity = ethnicity
+                        }
+
                         fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
                         fun firstName(firstName: JsonField<Boolean>) = apply {
                             this.firstName = firstName
+                        }
+
+                        fun gender(gender: Boolean) = gender(JsonField.of(gender))
+
+                        fun gender(gender: JsonField<Boolean>) = apply { this.gender = gender }
+
+                        fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
+
+                        fun lastName(lastName: JsonField<Boolean>) = apply {
+                            this.lastName = lastName
                         }
 
                         fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
@@ -3262,10 +3293,11 @@ private constructor(
                             this.middleName = middleName
                         }
 
-                        fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
+                        fun phoneNumbers(phoneNumbers: PhoneNumbers) =
+                            phoneNumbers(JsonField.of(phoneNumbers))
 
-                        fun lastName(lastName: JsonField<Boolean>) = apply {
-                            this.lastName = lastName
+                        fun phoneNumbers(phoneNumbers: JsonField<PhoneNumbers>) = apply {
+                            this.phoneNumbers = phoneNumbers
                         }
 
                         fun preferredName(preferredName: Boolean) =
@@ -3275,47 +3307,15 @@ private constructor(
                             this.preferredName = preferredName
                         }
 
-                        fun dob(dob: Boolean) = dob(JsonField.of(dob))
-
-                        fun dob(dob: JsonField<Boolean>) = apply { this.dob = dob }
-
-                        fun gender(gender: Boolean) = gender(JsonField.of(gender))
-
-                        fun gender(gender: JsonField<Boolean>) = apply { this.gender = gender }
-
-                        fun ethnicity(ethnicity: Boolean) = ethnicity(JsonField.of(ethnicity))
-
-                        fun ethnicity(ethnicity: JsonField<Boolean>) = apply {
-                            this.ethnicity = ethnicity
-                        }
-
-                        fun ssn(ssn: Boolean) = ssn(JsonField.of(ssn))
-
-                        fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
-
-                        fun encryptedSsn(encryptedSsn: Boolean) =
-                            encryptedSsn(JsonField.of(encryptedSsn))
-
-                        fun encryptedSsn(encryptedSsn: JsonField<Boolean>) = apply {
-                            this.encryptedSsn = encryptedSsn
-                        }
-
-                        fun emails(emails: Emails) = emails(JsonField.of(emails))
-
-                        fun emails(emails: JsonField<Emails>) = apply { this.emails = emails }
-
-                        fun phoneNumbers(phoneNumbers: PhoneNumbers) =
-                            phoneNumbers(JsonField.of(phoneNumbers))
-
-                        fun phoneNumbers(phoneNumbers: JsonField<PhoneNumbers>) = apply {
-                            this.phoneNumbers = phoneNumbers
-                        }
-
                         fun residence(residence: Residence) = residence(JsonField.of(residence))
 
                         fun residence(residence: JsonField<Residence>) = apply {
                             this.residence = residence
                         }
+
+                        fun ssn(ssn: Boolean) = ssn(JsonField.of(ssn))
+
+                        fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -3342,18 +3342,18 @@ private constructor(
                         fun build(): SupportedIndividualFields =
                             SupportedIndividualFields(
                                 id,
-                                firstName,
-                                middleName,
-                                lastName,
-                                preferredName,
                                 dob,
-                                gender,
-                                ethnicity,
-                                ssn,
-                                encryptedSsn,
                                 emails,
+                                encryptedSsn,
+                                ethnicity,
+                                firstName,
+                                gender,
+                                lastName,
+                                middleName,
                                 phoneNumbers,
+                                preferredName,
                                 residence,
+                                ssn,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -3768,17 +3768,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedIndividualFields && id == other.id && firstName == other.firstName && middleName == other.middleName && lastName == other.lastName && preferredName == other.preferredName && dob == other.dob && gender == other.gender && ethnicity == other.ethnicity && ssn == other.ssn && encryptedSsn == other.encryptedSsn && emails == other.emails && phoneNumbers == other.phoneNumbers && residence == other.residence && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedIndividualFields && id == other.id && dob == other.dob && emails == other.emails && encryptedSsn == other.encryptedSsn && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && lastName == other.lastName && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && ssn == other.ssn && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, firstName, middleName, lastName, preferredName, dob, gender, ethnicity, ssn, encryptedSsn, emails, phoneNumbers, residence, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, dob, emails, encryptedSsn, ethnicity, firstName, gender, lastName, middleName, phoneNumbers, preferredName, residence, ssn, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedIndividualFields{id=$id, firstName=$firstName, middleName=$middleName, lastName=$lastName, preferredName=$preferredName, dob=$dob, gender=$gender, ethnicity=$ethnicity, ssn=$ssn, encryptedSsn=$encryptedSsn, emails=$emails, phoneNumbers=$phoneNumbers, residence=$residence, additionalProperties=$additionalProperties}"
+                        "SupportedIndividualFields{id=$id, dob=$dob, emails=$emails, encryptedSsn=$encryptedSsn, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, ssn=$ssn, additionalProperties=$additionalProperties}"
                 }
 
                 @NoAutoDetect
@@ -3788,38 +3788,38 @@ private constructor(
                     @JsonProperty("id")
                     @ExcludeMissing
                     private val id: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("individual_ids")
+                    @ExcludeMissing
+                    private val individualIds: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("name")
                     @ExcludeMissing
                     private val name: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     private val payFrequencies: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("individual_ids")
-                    @ExcludeMissing
-                    private val individualIds: JsonField<Boolean> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     fun id(): Boolean? = id.getNullable("id")
 
+                    fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
+
                     fun name(): Boolean? = name.getNullable("name")
 
                     fun payFrequencies(): Boolean? = payFrequencies.getNullable("pay_frequencies")
 
-                    fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
-
                     @JsonProperty("id") @ExcludeMissing fun _id() = id
+
+                    @JsonProperty("individual_ids")
+                    @ExcludeMissing
+                    fun _individualIds() = individualIds
 
                     @JsonProperty("name") @ExcludeMissing fun _name() = name
 
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     fun _payFrequencies() = payFrequencies
-
-                    @JsonProperty("individual_ids")
-                    @ExcludeMissing
-                    fun _individualIds() = individualIds
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -3830,9 +3830,9 @@ private constructor(
                     fun validate(): SupportedPayGroupFields = apply {
                         if (!validated) {
                             id()
+                            individualIds()
                             name()
                             payFrequencies()
-                            individualIds()
                             validated = true
                         }
                     }
@@ -3847,18 +3847,18 @@ private constructor(
                     class Builder {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
+                        private var individualIds: JsonField<Boolean> = JsonMissing.of()
                         private var name: JsonField<Boolean> = JsonMissing.of()
                         private var payFrequencies: JsonField<Boolean> = JsonMissing.of()
-                        private var individualIds: JsonField<Boolean> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedPayGroupFields: SupportedPayGroupFields) =
                             apply {
                                 id = supportedPayGroupFields.id
+                                individualIds = supportedPayGroupFields.individualIds
                                 name = supportedPayGroupFields.name
                                 payFrequencies = supportedPayGroupFields.payFrequencies
-                                individualIds = supportedPayGroupFields.individualIds
                                 additionalProperties =
                                     supportedPayGroupFields.additionalProperties.toMutableMap()
                             }
@@ -3866,6 +3866,13 @@ private constructor(
                         fun id(id: Boolean) = id(JsonField.of(id))
 
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
+
+                        fun individualIds(individualIds: Boolean) =
+                            individualIds(JsonField.of(individualIds))
+
+                        fun individualIds(individualIds: JsonField<Boolean>) = apply {
+                            this.individualIds = individualIds
+                        }
 
                         fun name(name: Boolean) = name(JsonField.of(name))
 
@@ -3876,13 +3883,6 @@ private constructor(
 
                         fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
                             this.payFrequencies = payFrequencies
-                        }
-
-                        fun individualIds(individualIds: Boolean) =
-                            individualIds(JsonField.of(individualIds))
-
-                        fun individualIds(individualIds: JsonField<Boolean>) = apply {
-                            this.individualIds = individualIds
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3910,9 +3910,9 @@ private constructor(
                         fun build(): SupportedPayGroupFields =
                             SupportedPayGroupFields(
                                 id,
+                                individualIds,
                                 name,
                                 payFrequencies,
-                                individualIds,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -3922,17 +3922,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedPayGroupFields && id == other.id && name == other.name && payFrequencies == other.payFrequencies && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedPayGroupFields && id == other.id && individualIds == other.individualIds && name == other.name && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, name, payFrequencies, individualIds, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, individualIds, name, payFrequencies, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedPayGroupFields{id=$id, name=$name, payFrequencies=$payFrequencies, individualIds=$individualIds, additionalProperties=$additionalProperties}"
+                        "SupportedPayGroupFields{id=$id, individualIds=$individualIds, name=$name, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
                 }
 
                 @NoAutoDetect
@@ -4155,24 +4155,6 @@ private constructor(
                     class PayStatements
                     @JsonCreator
                     private constructor(
-                        @JsonProperty("individual_id")
-                        @ExcludeMissing
-                        private val individualId: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("type")
-                        @ExcludeMissing
-                        private val type: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("payment_method")
-                        @ExcludeMissing
-                        private val paymentMethod: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("total_hours")
-                        @ExcludeMissing
-                        private val totalHours: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("gross_pay")
-                        @ExcludeMissing
-                        private val grossPay: JsonField<Boolean> = JsonMissing.of(),
-                        @JsonProperty("net_pay")
-                        @ExcludeMissing
-                        private val netPay: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("earnings")
                         @ExcludeMissing
                         private val earnings: JsonField<Earnings> = JsonMissing.of(),
@@ -4184,25 +4166,31 @@ private constructor(
                         @ExcludeMissing
                         private val employerContributions: JsonField<EmployerContributions> =
                             JsonMissing.of(),
+                        @JsonProperty("gross_pay")
+                        @ExcludeMissing
+                        private val grossPay: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("individual_id")
+                        @ExcludeMissing
+                        private val individualId: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("net_pay")
+                        @ExcludeMissing
+                        private val netPay: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("payment_method")
+                        @ExcludeMissing
+                        private val paymentMethod: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("taxes")
                         @ExcludeMissing
                         private val taxes: JsonField<Taxes> = JsonMissing.of(),
+                        @JsonProperty("total_hours")
+                        @ExcludeMissing
+                        private val totalHours: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("type")
+                        @ExcludeMissing
+                        private val type: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
-
-                        fun individualId(): Boolean? = individualId.getNullable("individual_id")
-
-                        fun type(): Boolean? = type.getNullable("type")
-
-                        fun paymentMethod(): Boolean? = paymentMethod.getNullable("payment_method")
-
-                        fun totalHours(): Boolean? = totalHours.getNullable("total_hours")
-
-                        fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
-
-                        fun netPay(): Boolean? = netPay.getNullable("net_pay")
 
                         fun earnings(): Earnings? = earnings.getNullable("earnings")
 
@@ -4212,23 +4200,19 @@ private constructor(
                         fun employerContributions(): EmployerContributions? =
                             employerContributions.getNullable("employer_contributions")
 
+                        fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
+
+                        fun individualId(): Boolean? = individualId.getNullable("individual_id")
+
+                        fun netPay(): Boolean? = netPay.getNullable("net_pay")
+
+                        fun paymentMethod(): Boolean? = paymentMethod.getNullable("payment_method")
+
                         fun taxes(): Taxes? = taxes.getNullable("taxes")
 
-                        @JsonProperty("individual_id")
-                        @ExcludeMissing
-                        fun _individualId() = individualId
+                        fun totalHours(): Boolean? = totalHours.getNullable("total_hours")
 
-                        @JsonProperty("type") @ExcludeMissing fun _type() = type
-
-                        @JsonProperty("payment_method")
-                        @ExcludeMissing
-                        fun _paymentMethod() = paymentMethod
-
-                        @JsonProperty("total_hours") @ExcludeMissing fun _totalHours() = totalHours
-
-                        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
-
-                        @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+                        fun type(): Boolean? = type.getNullable("type")
 
                         @JsonProperty("earnings") @ExcludeMissing fun _earnings() = earnings
 
@@ -4240,7 +4224,23 @@ private constructor(
                         @ExcludeMissing
                         fun _employerContributions() = employerContributions
 
+                        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
+
+                        @JsonProperty("individual_id")
+                        @ExcludeMissing
+                        fun _individualId() = individualId
+
+                        @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
+
+                        @JsonProperty("payment_method")
+                        @ExcludeMissing
+                        fun _paymentMethod() = paymentMethod
+
                         @JsonProperty("taxes") @ExcludeMissing fun _taxes() = taxes
+
+                        @JsonProperty("total_hours") @ExcludeMissing fun _totalHours() = totalHours
+
+                        @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -4250,16 +4250,16 @@ private constructor(
 
                         fun validate(): PayStatements = apply {
                             if (!validated) {
-                                individualId()
-                                type()
-                                paymentMethod()
-                                totalHours()
-                                grossPay()
-                                netPay()
                                 earnings()?.validate()
                                 employeeDeductions()?.validate()
                                 employerContributions()?.validate()
+                                grossPay()
+                                individualId()
+                                netPay()
+                                paymentMethod()
                                 taxes()?.validate()
+                                totalHours()
+                                type()
                                 validated = true
                             }
                         }
@@ -4273,70 +4273,35 @@ private constructor(
 
                         class Builder {
 
-                            private var individualId: JsonField<Boolean> = JsonMissing.of()
-                            private var type: JsonField<Boolean> = JsonMissing.of()
-                            private var paymentMethod: JsonField<Boolean> = JsonMissing.of()
-                            private var totalHours: JsonField<Boolean> = JsonMissing.of()
-                            private var grossPay: JsonField<Boolean> = JsonMissing.of()
-                            private var netPay: JsonField<Boolean> = JsonMissing.of()
                             private var earnings: JsonField<Earnings> = JsonMissing.of()
                             private var employeeDeductions: JsonField<EmployeeDeductions> =
                                 JsonMissing.of()
                             private var employerContributions: JsonField<EmployerContributions> =
                                 JsonMissing.of()
+                            private var grossPay: JsonField<Boolean> = JsonMissing.of()
+                            private var individualId: JsonField<Boolean> = JsonMissing.of()
+                            private var netPay: JsonField<Boolean> = JsonMissing.of()
+                            private var paymentMethod: JsonField<Boolean> = JsonMissing.of()
                             private var taxes: JsonField<Taxes> = JsonMissing.of()
+                            private var totalHours: JsonField<Boolean> = JsonMissing.of()
+                            private var type: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(payStatements: PayStatements) = apply {
-                                individualId = payStatements.individualId
-                                type = payStatements.type
-                                paymentMethod = payStatements.paymentMethod
-                                totalHours = payStatements.totalHours
-                                grossPay = payStatements.grossPay
-                                netPay = payStatements.netPay
                                 earnings = payStatements.earnings
                                 employeeDeductions = payStatements.employeeDeductions
                                 employerContributions = payStatements.employerContributions
+                                grossPay = payStatements.grossPay
+                                individualId = payStatements.individualId
+                                netPay = payStatements.netPay
+                                paymentMethod = payStatements.paymentMethod
                                 taxes = payStatements.taxes
+                                totalHours = payStatements.totalHours
+                                type = payStatements.type
                                 additionalProperties =
                                     payStatements.additionalProperties.toMutableMap()
                             }
-
-                            fun individualId(individualId: Boolean) =
-                                individualId(JsonField.of(individualId))
-
-                            fun individualId(individualId: JsonField<Boolean>) = apply {
-                                this.individualId = individualId
-                            }
-
-                            fun type(type: Boolean) = type(JsonField.of(type))
-
-                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
-
-                            fun paymentMethod(paymentMethod: Boolean) =
-                                paymentMethod(JsonField.of(paymentMethod))
-
-                            fun paymentMethod(paymentMethod: JsonField<Boolean>) = apply {
-                                this.paymentMethod = paymentMethod
-                            }
-
-                            fun totalHours(totalHours: Boolean) =
-                                totalHours(JsonField.of(totalHours))
-
-                            fun totalHours(totalHours: JsonField<Boolean>) = apply {
-                                this.totalHours = totalHours
-                            }
-
-                            fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
-
-                            fun grossPay(grossPay: JsonField<Boolean>) = apply {
-                                this.grossPay = grossPay
-                            }
-
-                            fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
-
-                            fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
 
                             fun earnings(earnings: Earnings) = earnings(JsonField.of(earnings))
 
@@ -4359,9 +4324,44 @@ private constructor(
                                 employerContributions: JsonField<EmployerContributions>
                             ) = apply { this.employerContributions = employerContributions }
 
+                            fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
+
+                            fun grossPay(grossPay: JsonField<Boolean>) = apply {
+                                this.grossPay = grossPay
+                            }
+
+                            fun individualId(individualId: Boolean) =
+                                individualId(JsonField.of(individualId))
+
+                            fun individualId(individualId: JsonField<Boolean>) = apply {
+                                this.individualId = individualId
+                            }
+
+                            fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
+
+                            fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
+
+                            fun paymentMethod(paymentMethod: Boolean) =
+                                paymentMethod(JsonField.of(paymentMethod))
+
+                            fun paymentMethod(paymentMethod: JsonField<Boolean>) = apply {
+                                this.paymentMethod = paymentMethod
+                            }
+
                             fun taxes(taxes: Taxes) = taxes(JsonField.of(taxes))
 
                             fun taxes(taxes: JsonField<Taxes>) = apply { this.taxes = taxes }
+
+                            fun totalHours(totalHours: Boolean) =
+                                totalHours(JsonField.of(totalHours))
+
+                            fun totalHours(totalHours: JsonField<Boolean>) = apply {
+                                this.totalHours = totalHours
+                            }
+
+                            fun type(type: Boolean) = type(JsonField.of(type))
+
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -4387,16 +4387,16 @@ private constructor(
 
                             fun build(): PayStatements =
                                 PayStatements(
-                                    individualId,
-                                    type,
-                                    paymentMethod,
-                                    totalHours,
-                                    grossPay,
-                                    netPay,
                                     earnings,
                                     employeeDeductions,
                                     employerContributions,
+                                    grossPay,
+                                    individualId,
+                                    netPay,
+                                    paymentMethod,
                                     taxes,
+                                    totalHours,
+                                    type,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -4405,38 +4405,38 @@ private constructor(
                         class Earnings
                         @JsonCreator
                         private constructor(
-                            @JsonProperty("type")
-                            @ExcludeMissing
-                            private val type: JsonField<Boolean> = JsonMissing.of(),
-                            @JsonProperty("name")
-                            @ExcludeMissing
-                            private val name: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("amount")
                             @ExcludeMissing
                             private val amount: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("currency")
                             @ExcludeMissing
                             private val currency: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            private val name: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            private val type: JsonField<Boolean> = JsonMissing.of(),
                             @JsonAnySetter
                             private val additionalProperties: Map<String, JsonValue> =
                                 immutableEmptyMap(),
                         ) {
 
-                            fun type(): Boolean? = type.getNullable("type")
-
-                            fun name(): Boolean? = name.getNullable("name")
-
                             fun amount(): Boolean? = amount.getNullable("amount")
 
                             fun currency(): Boolean? = currency.getNullable("currency")
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            fun name(): Boolean? = name.getNullable("name")
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            fun type(): Boolean? = type.getNullable("type")
 
                             @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
 
                             @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+                            @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4447,10 +4447,10 @@ private constructor(
 
                             fun validate(): Earnings = apply {
                                 if (!validated) {
-                                    type()
-                                    name()
                                     amount()
                                     currency()
+                                    name()
+                                    type()
                                     validated = true
                                 }
                             }
@@ -4464,29 +4464,21 @@ private constructor(
 
                             class Builder {
 
-                                private var type: JsonField<Boolean> = JsonMissing.of()
-                                private var name: JsonField<Boolean> = JsonMissing.of()
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
                                 private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var name: JsonField<Boolean> = JsonMissing.of()
+                                private var type: JsonField<Boolean> = JsonMissing.of()
                                 private var additionalProperties: MutableMap<String, JsonValue> =
                                     mutableMapOf()
 
                                 internal fun from(earnings: Earnings) = apply {
-                                    type = earnings.type
-                                    name = earnings.name
                                     amount = earnings.amount
                                     currency = earnings.currency
+                                    name = earnings.name
+                                    type = earnings.type
                                     additionalProperties =
                                         earnings.additionalProperties.toMutableMap()
                                 }
-
-                                fun type(type: Boolean) = type(JsonField.of(type))
-
-                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
-
-                                fun name(name: Boolean) = name(JsonField.of(name))
-
-                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
@@ -4499,6 +4491,14 @@ private constructor(
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
+
+                                fun name(name: Boolean) = name(JsonField.of(name))
+
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                                fun type(type: Boolean) = type(JsonField.of(type))
+
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -4525,10 +4525,10 @@ private constructor(
 
                                 fun build(): Earnings =
                                     Earnings(
-                                        type,
-                                        name,
                                         amount,
                                         currency,
+                                        name,
+                                        type,
                                         additionalProperties.toImmutable(),
                                     )
                             }
@@ -4538,62 +4538,62 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is Earnings && type == other.type && name == other.name && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+                                return /* spotless:off */ other is Earnings && amount == other.amount && currency == other.currency && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                             }
 
                             /* spotless:off */
-                            private val hashCode: Int by lazy { Objects.hash(type, name, amount, currency, additionalProperties) }
+                            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, type, additionalProperties) }
                             /* spotless:on */
 
                             override fun hashCode(): Int = hashCode
 
                             override fun toString() =
-                                "Earnings{type=$type, name=$name, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                                "Earnings{amount=$amount, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
                         }
 
                         @NoAutoDetect
                         class EmployeeDeductions
                         @JsonCreator
                         private constructor(
-                            @JsonProperty("name")
-                            @ExcludeMissing
-                            private val name: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("amount")
                             @ExcludeMissing
                             private val amount: JsonField<Boolean> = JsonMissing.of(),
-                            @JsonProperty("type")
-                            @ExcludeMissing
-                            private val type: JsonField<Boolean> = JsonMissing.of(),
-                            @JsonProperty("pre_tax")
-                            @ExcludeMissing
-                            private val preTax: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("currency")
                             @ExcludeMissing
                             private val currency: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            private val name: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("pre_tax")
+                            @ExcludeMissing
+                            private val preTax: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            private val type: JsonField<Boolean> = JsonMissing.of(),
                             @JsonAnySetter
                             private val additionalProperties: Map<String, JsonValue> =
                                 immutableEmptyMap(),
                         ) {
 
-                            fun name(): Boolean? = name.getNullable("name")
-
                             fun amount(): Boolean? = amount.getNullable("amount")
-
-                            fun type(): Boolean? = type.getNullable("type")
-
-                            fun preTax(): Boolean? = preTax.getNullable("pre_tax")
 
                             fun currency(): Boolean? = currency.getNullable("currency")
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            fun name(): Boolean? = name.getNullable("name")
+
+                            fun preTax(): Boolean? = preTax.getNullable("pre_tax")
+
+                            fun type(): Boolean? = type.getNullable("type")
 
                             @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+                            @JsonProperty("name") @ExcludeMissing fun _name() = name
 
                             @JsonProperty("pre_tax") @ExcludeMissing fun _preTax() = preTax
 
-                            @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+                            @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4604,11 +4604,11 @@ private constructor(
 
                             fun validate(): EmployeeDeductions = apply {
                                 if (!validated) {
-                                    name()
                                     amount()
-                                    type()
-                                    preTax()
                                     currency()
+                                    name()
+                                    preTax()
+                                    type()
                                     validated = true
                                 }
                             }
@@ -4622,27 +4622,23 @@ private constructor(
 
                             class Builder {
 
-                                private var name: JsonField<Boolean> = JsonMissing.of()
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
-                                private var type: JsonField<Boolean> = JsonMissing.of()
-                                private var preTax: JsonField<Boolean> = JsonMissing.of()
                                 private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var name: JsonField<Boolean> = JsonMissing.of()
+                                private var preTax: JsonField<Boolean> = JsonMissing.of()
+                                private var type: JsonField<Boolean> = JsonMissing.of()
                                 private var additionalProperties: MutableMap<String, JsonValue> =
                                     mutableMapOf()
 
                                 internal fun from(employeeDeductions: EmployeeDeductions) = apply {
-                                    name = employeeDeductions.name
                                     amount = employeeDeductions.amount
-                                    type = employeeDeductions.type
-                                    preTax = employeeDeductions.preTax
                                     currency = employeeDeductions.currency
+                                    name = employeeDeductions.name
+                                    preTax = employeeDeductions.preTax
+                                    type = employeeDeductions.type
                                     additionalProperties =
                                         employeeDeductions.additionalProperties.toMutableMap()
                                 }
-
-                                fun name(name: Boolean) = name(JsonField.of(name))
-
-                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
@@ -4650,9 +4646,15 @@ private constructor(
                                     this.amount = amount
                                 }
 
-                                fun type(type: Boolean) = type(JsonField.of(type))
+                                fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
-                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
+                                fun currency(currency: JsonField<Boolean>) = apply {
+                                    this.currency = currency
+                                }
+
+                                fun name(name: Boolean) = name(JsonField.of(name))
+
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun preTax(preTax: Boolean) = preTax(JsonField.of(preTax))
 
@@ -4660,11 +4662,9 @@ private constructor(
                                     this.preTax = preTax
                                 }
 
-                                fun currency(currency: Boolean) = currency(JsonField.of(currency))
+                                fun type(type: Boolean) = type(JsonField.of(type))
 
-                                fun currency(currency: JsonField<Boolean>) = apply {
-                                    this.currency = currency
-                                }
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -4691,11 +4691,11 @@ private constructor(
 
                                 fun build(): EmployeeDeductions =
                                     EmployeeDeductions(
-                                        name,
                                         amount,
-                                        type,
-                                        preTax,
                                         currency,
+                                        name,
+                                        preTax,
+                                        type,
                                         additionalProperties.toImmutable(),
                                     )
                             }
@@ -4705,48 +4705,48 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is EmployeeDeductions && name == other.name && amount == other.amount && type == other.type && preTax == other.preTax && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+                                return /* spotless:off */ other is EmployeeDeductions && amount == other.amount && currency == other.currency && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                             }
 
                             /* spotless:off */
-                            private val hashCode: Int by lazy { Objects.hash(name, amount, type, preTax, currency, additionalProperties) }
+                            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, preTax, type, additionalProperties) }
                             /* spotless:on */
 
                             override fun hashCode(): Int = hashCode
 
                             override fun toString() =
-                                "EmployeeDeductions{name=$name, amount=$amount, type=$type, preTax=$preTax, currency=$currency, additionalProperties=$additionalProperties}"
+                                "EmployeeDeductions{amount=$amount, currency=$currency, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
                         }
 
                         @NoAutoDetect
                         class EmployerContributions
                         @JsonCreator
                         private constructor(
-                            @JsonProperty("name")
-                            @ExcludeMissing
-                            private val name: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("amount")
                             @ExcludeMissing
                             private val amount: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("currency")
                             @ExcludeMissing
                             private val currency: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            private val name: JsonField<Boolean> = JsonMissing.of(),
                             @JsonAnySetter
                             private val additionalProperties: Map<String, JsonValue> =
                                 immutableEmptyMap(),
                         ) {
 
-                            fun name(): Boolean? = name.getNullable("name")
-
                             fun amount(): Boolean? = amount.getNullable("amount")
 
                             fun currency(): Boolean? = currency.getNullable("currency")
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            fun name(): Boolean? = name.getNullable("name")
 
                             @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
 
                             @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+                            @JsonProperty("name") @ExcludeMissing fun _name() = name
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4757,9 +4757,9 @@ private constructor(
 
                             fun validate(): EmployerContributions = apply {
                                 if (!validated) {
-                                    name()
                                     amount()
                                     currency()
+                                    name()
                                     validated = true
                                 }
                             }
@@ -4773,25 +4773,21 @@ private constructor(
 
                             class Builder {
 
-                                private var name: JsonField<Boolean> = JsonMissing.of()
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
                                 private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var name: JsonField<Boolean> = JsonMissing.of()
                                 private var additionalProperties: MutableMap<String, JsonValue> =
                                     mutableMapOf()
 
                                 internal fun from(employerContributions: EmployerContributions) =
                                     apply {
-                                        name = employerContributions.name
                                         amount = employerContributions.amount
                                         currency = employerContributions.currency
+                                        name = employerContributions.name
                                         additionalProperties =
                                             employerContributions.additionalProperties
                                                 .toMutableMap()
                                     }
-
-                                fun name(name: Boolean) = name(JsonField.of(name))
-
-                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
@@ -4804,6 +4800,10 @@ private constructor(
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
+
+                                fun name(name: Boolean) = name(JsonField.of(name))
+
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -4830,9 +4830,9 @@ private constructor(
 
                                 fun build(): EmployerContributions =
                                     EmployerContributions(
-                                        name,
                                         amount,
                                         currency,
+                                        name,
                                         additionalProperties.toImmutable(),
                                     )
                             }
@@ -4842,62 +4842,62 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is EmployerContributions && name == other.name && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+                                return /* spotless:off */ other is EmployerContributions && amount == other.amount && currency == other.currency && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
                             }
 
                             /* spotless:off */
-                            private val hashCode: Int by lazy { Objects.hash(name, amount, currency, additionalProperties) }
+                            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, additionalProperties) }
                             /* spotless:on */
 
                             override fun hashCode(): Int = hashCode
 
                             override fun toString() =
-                                "EmployerContributions{name=$name, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                                "EmployerContributions{amount=$amount, currency=$currency, name=$name, additionalProperties=$additionalProperties}"
                         }
 
                         @NoAutoDetect
                         class Taxes
                         @JsonCreator
                         private constructor(
-                            @JsonProperty("type")
-                            @ExcludeMissing
-                            private val type: JsonField<Boolean> = JsonMissing.of(),
-                            @JsonProperty("name")
-                            @ExcludeMissing
-                            private val name: JsonField<Boolean> = JsonMissing.of(),
-                            @JsonProperty("employer")
-                            @ExcludeMissing
-                            private val employer: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("amount")
                             @ExcludeMissing
                             private val amount: JsonField<Boolean> = JsonMissing.of(),
                             @JsonProperty("currency")
                             @ExcludeMissing
                             private val currency: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("employer")
+                            @ExcludeMissing
+                            private val employer: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            private val name: JsonField<Boolean> = JsonMissing.of(),
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            private val type: JsonField<Boolean> = JsonMissing.of(),
                             @JsonAnySetter
                             private val additionalProperties: Map<String, JsonValue> =
                                 immutableEmptyMap(),
                         ) {
 
-                            fun type(): Boolean? = type.getNullable("type")
-
-                            fun name(): Boolean? = name.getNullable("name")
-
-                            fun employer(): Boolean? = employer.getNullable("employer")
-
                             fun amount(): Boolean? = amount.getNullable("amount")
 
                             fun currency(): Boolean? = currency.getNullable("currency")
 
-                            @JsonProperty("type") @ExcludeMissing fun _type() = type
+                            fun employer(): Boolean? = employer.getNullable("employer")
 
-                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+                            fun name(): Boolean? = name.getNullable("name")
 
-                            @JsonProperty("employer") @ExcludeMissing fun _employer() = employer
+                            fun type(): Boolean? = type.getNullable("type")
 
                             @JsonProperty("amount") @ExcludeMissing fun _amount() = amount
 
                             @JsonProperty("currency") @ExcludeMissing fun _currency() = currency
+
+                            @JsonProperty("employer") @ExcludeMissing fun _employer() = employer
+
+                            @JsonProperty("name") @ExcludeMissing fun _name() = name
+
+                            @JsonProperty("type") @ExcludeMissing fun _type() = type
 
                             @JsonAnyGetter
                             @ExcludeMissing
@@ -4908,11 +4908,11 @@ private constructor(
 
                             fun validate(): Taxes = apply {
                                 if (!validated) {
-                                    type()
-                                    name()
-                                    employer()
                                     amount()
                                     currency()
+                                    employer()
+                                    name()
+                                    type()
                                     validated = true
                                 }
                             }
@@ -4926,35 +4926,21 @@ private constructor(
 
                             class Builder {
 
-                                private var type: JsonField<Boolean> = JsonMissing.of()
-                                private var name: JsonField<Boolean> = JsonMissing.of()
-                                private var employer: JsonField<Boolean> = JsonMissing.of()
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
                                 private var currency: JsonField<Boolean> = JsonMissing.of()
+                                private var employer: JsonField<Boolean> = JsonMissing.of()
+                                private var name: JsonField<Boolean> = JsonMissing.of()
+                                private var type: JsonField<Boolean> = JsonMissing.of()
                                 private var additionalProperties: MutableMap<String, JsonValue> =
                                     mutableMapOf()
 
                                 internal fun from(taxes: Taxes) = apply {
-                                    type = taxes.type
-                                    name = taxes.name
-                                    employer = taxes.employer
                                     amount = taxes.amount
                                     currency = taxes.currency
+                                    employer = taxes.employer
+                                    name = taxes.name
+                                    type = taxes.type
                                     additionalProperties = taxes.additionalProperties.toMutableMap()
-                                }
-
-                                fun type(type: Boolean) = type(JsonField.of(type))
-
-                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
-
-                                fun name(name: Boolean) = name(JsonField.of(name))
-
-                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
-
-                                fun employer(employer: Boolean) = employer(JsonField.of(employer))
-
-                                fun employer(employer: JsonField<Boolean>) = apply {
-                                    this.employer = employer
                                 }
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
@@ -4968,6 +4954,20 @@ private constructor(
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
+
+                                fun employer(employer: Boolean) = employer(JsonField.of(employer))
+
+                                fun employer(employer: JsonField<Boolean>) = apply {
+                                    this.employer = employer
+                                }
+
+                                fun name(name: Boolean) = name(JsonField.of(name))
+
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
+
+                                fun type(type: Boolean) = type(JsonField.of(type))
+
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -4994,11 +4994,11 @@ private constructor(
 
                                 fun build(): Taxes =
                                     Taxes(
-                                        type,
-                                        name,
-                                        employer,
                                         amount,
                                         currency,
+                                        employer,
+                                        name,
+                                        type,
                                         additionalProperties.toImmutable(),
                                     )
                             }
@@ -5008,17 +5008,17 @@ private constructor(
                                     return true
                                 }
 
-                                return /* spotless:off */ other is Taxes && type == other.type && name == other.name && employer == other.employer && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+                                return /* spotless:off */ other is Taxes && amount == other.amount && currency == other.currency && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                             }
 
                             /* spotless:off */
-                            private val hashCode: Int by lazy { Objects.hash(type, name, employer, amount, currency, additionalProperties) }
+                            private val hashCode: Int by lazy { Objects.hash(amount, currency, employer, name, type, additionalProperties) }
                             /* spotless:on */
 
                             override fun hashCode(): Int = hashCode
 
                             override fun toString() =
-                                "Taxes{type=$type, name=$name, employer=$employer, amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+                                "Taxes{amount=$amount, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -5026,17 +5026,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is PayStatements && individualId == other.individualId && type == other.type && paymentMethod == other.paymentMethod && totalHours == other.totalHours && grossPay == other.grossPay && netPay == other.netPay && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && taxes == other.taxes && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is PayStatements && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && individualId == other.individualId && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(individualId, type, paymentMethod, totalHours, grossPay, netPay, earnings, employeeDeductions, employerContributions, taxes, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(earnings, employeeDeductions, employerContributions, grossPay, individualId, netPay, paymentMethod, taxes, totalHours, type, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "PayStatements{individualId=$individualId, type=$type, paymentMethod=$paymentMethod, totalHours=$totalHours, grossPay=$grossPay, netPay=$netPay, earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, taxes=$taxes, additionalProperties=$additionalProperties}"
+                            "PayStatements{earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, individualId=$individualId, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -5064,100 +5064,100 @@ private constructor(
                     @JsonProperty("id")
                     @ExcludeMissing
                     private val id: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("pay_date")
-                    @ExcludeMissing
-                    private val payDate: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("debit_date")
-                    @ExcludeMissing
-                    private val debitDate: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("company_debit")
                     @ExcludeMissing
                     private val companyDebit: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("gross_pay")
+                    @JsonProperty("debit_date")
                     @ExcludeMissing
-                    private val grossPay: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("net_pay")
-                    @ExcludeMissing
-                    private val netPay: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("employer_taxes")
-                    @ExcludeMissing
-                    private val employerTaxes: JsonField<Boolean> = JsonMissing.of(),
+                    private val debitDate: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("employee_taxes")
                     @ExcludeMissing
                     private val employeeTaxes: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("employer_taxes")
+                    @ExcludeMissing
+                    private val employerTaxes: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("gross_pay")
+                    @ExcludeMissing
+                    private val grossPay: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
                     private val individualIds: JsonField<Boolean> = JsonMissing.of(),
-                    @JsonProperty("pay_period")
+                    @JsonProperty("net_pay")
                     @ExcludeMissing
-                    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
-                    @JsonProperty("pay_group_ids")
+                    private val netPay: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("pay_date")
                     @ExcludeMissing
-                    private val payGroupIds: JsonField<Boolean> = JsonMissing.of(),
+                    private val payDate: JsonField<Boolean> = JsonMissing.of(),
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     private val payFrequencies: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("pay_group_ids")
+                    @ExcludeMissing
+                    private val payGroupIds: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("pay_period")
+                    @ExcludeMissing
+                    private val payPeriod: JsonField<PayPeriod> = JsonMissing.of(),
                     @JsonAnySetter
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
                     fun id(): Boolean? = id.getNullable("id")
 
-                    fun payDate(): Boolean? = payDate.getNullable("pay_date")
+                    fun companyDebit(): Boolean? = companyDebit.getNullable("company_debit")
 
                     fun debitDate(): Boolean? = debitDate.getNullable("debit_date")
 
-                    fun companyDebit(): Boolean? = companyDebit.getNullable("company_debit")
-
-                    fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
-
-                    fun netPay(): Boolean? = netPay.getNullable("net_pay")
+                    fun employeeTaxes(): Boolean? = employeeTaxes.getNullable("employee_taxes")
 
                     fun employerTaxes(): Boolean? = employerTaxes.getNullable("employer_taxes")
 
-                    fun employeeTaxes(): Boolean? = employeeTaxes.getNullable("employee_taxes")
+                    fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
 
                     fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
 
-                    fun payPeriod(): PayPeriod? = payPeriod.getNullable("pay_period")
+                    fun netPay(): Boolean? = netPay.getNullable("net_pay")
 
-                    fun payGroupIds(): Boolean? = payGroupIds.getNullable("pay_group_ids")
+                    fun payDate(): Boolean? = payDate.getNullable("pay_date")
 
                     fun payFrequencies(): Boolean? = payFrequencies.getNullable("pay_frequencies")
 
+                    fun payGroupIds(): Boolean? = payGroupIds.getNullable("pay_group_ids")
+
+                    fun payPeriod(): PayPeriod? = payPeriod.getNullable("pay_period")
+
                     @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-                    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
-
-                    @JsonProperty("debit_date") @ExcludeMissing fun _debitDate() = debitDate
 
                     @JsonProperty("company_debit")
                     @ExcludeMissing
                     fun _companyDebit() = companyDebit
 
-                    @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
-
-                    @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
-
-                    @JsonProperty("employer_taxes")
-                    @ExcludeMissing
-                    fun _employerTaxes() = employerTaxes
+                    @JsonProperty("debit_date") @ExcludeMissing fun _debitDate() = debitDate
 
                     @JsonProperty("employee_taxes")
                     @ExcludeMissing
                     fun _employeeTaxes() = employeeTaxes
 
+                    @JsonProperty("employer_taxes")
+                    @ExcludeMissing
+                    fun _employerTaxes() = employerTaxes
+
+                    @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay() = grossPay
+
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
                     fun _individualIds() = individualIds
 
-                    @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod() = payPeriod
+                    @JsonProperty("net_pay") @ExcludeMissing fun _netPay() = netPay
 
-                    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+                    @JsonProperty("pay_date") @ExcludeMissing fun _payDate() = payDate
 
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     fun _payFrequencies() = payFrequencies
+
+                    @JsonProperty("pay_group_ids") @ExcludeMissing fun _payGroupIds() = payGroupIds
+
+                    @JsonProperty("pay_period") @ExcludeMissing fun _payPeriod() = payPeriod
 
                     @JsonAnyGetter
                     @ExcludeMissing
@@ -5168,17 +5168,17 @@ private constructor(
                     fun validate(): SupportedPaymentFields = apply {
                         if (!validated) {
                             id()
-                            payDate()
-                            debitDate()
                             companyDebit()
-                            grossPay()
-                            netPay()
-                            employerTaxes()
+                            debitDate()
                             employeeTaxes()
+                            employerTaxes()
+                            grossPay()
                             individualIds()
-                            payPeriod()?.validate()
-                            payGroupIds()
+                            netPay()
+                            payDate()
                             payFrequencies()
+                            payGroupIds()
+                            payPeriod()?.validate()
                             validated = true
                         }
                     }
@@ -5193,33 +5193,33 @@ private constructor(
                     class Builder {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
-                        private var payDate: JsonField<Boolean> = JsonMissing.of()
-                        private var debitDate: JsonField<Boolean> = JsonMissing.of()
                         private var companyDebit: JsonField<Boolean> = JsonMissing.of()
-                        private var grossPay: JsonField<Boolean> = JsonMissing.of()
-                        private var netPay: JsonField<Boolean> = JsonMissing.of()
-                        private var employerTaxes: JsonField<Boolean> = JsonMissing.of()
+                        private var debitDate: JsonField<Boolean> = JsonMissing.of()
                         private var employeeTaxes: JsonField<Boolean> = JsonMissing.of()
+                        private var employerTaxes: JsonField<Boolean> = JsonMissing.of()
+                        private var grossPay: JsonField<Boolean> = JsonMissing.of()
                         private var individualIds: JsonField<Boolean> = JsonMissing.of()
-                        private var payPeriod: JsonField<PayPeriod> = JsonMissing.of()
-                        private var payGroupIds: JsonField<Boolean> = JsonMissing.of()
+                        private var netPay: JsonField<Boolean> = JsonMissing.of()
+                        private var payDate: JsonField<Boolean> = JsonMissing.of()
                         private var payFrequencies: JsonField<Boolean> = JsonMissing.of()
+                        private var payGroupIds: JsonField<Boolean> = JsonMissing.of()
+                        private var payPeriod: JsonField<PayPeriod> = JsonMissing.of()
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
                         internal fun from(supportedPaymentFields: SupportedPaymentFields) = apply {
                             id = supportedPaymentFields.id
-                            payDate = supportedPaymentFields.payDate
-                            debitDate = supportedPaymentFields.debitDate
                             companyDebit = supportedPaymentFields.companyDebit
-                            grossPay = supportedPaymentFields.grossPay
-                            netPay = supportedPaymentFields.netPay
-                            employerTaxes = supportedPaymentFields.employerTaxes
+                            debitDate = supportedPaymentFields.debitDate
                             employeeTaxes = supportedPaymentFields.employeeTaxes
+                            employerTaxes = supportedPaymentFields.employerTaxes
+                            grossPay = supportedPaymentFields.grossPay
                             individualIds = supportedPaymentFields.individualIds
-                            payPeriod = supportedPaymentFields.payPeriod
-                            payGroupIds = supportedPaymentFields.payGroupIds
+                            netPay = supportedPaymentFields.netPay
+                            payDate = supportedPaymentFields.payDate
                             payFrequencies = supportedPaymentFields.payFrequencies
+                            payGroupIds = supportedPaymentFields.payGroupIds
+                            payPeriod = supportedPaymentFields.payPeriod
                             additionalProperties =
                                 supportedPaymentFields.additionalProperties.toMutableMap()
                         }
@@ -5228,16 +5228,6 @@ private constructor(
 
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
-                        fun payDate(payDate: Boolean) = payDate(JsonField.of(payDate))
-
-                        fun payDate(payDate: JsonField<Boolean>) = apply { this.payDate = payDate }
-
-                        fun debitDate(debitDate: Boolean) = debitDate(JsonField.of(debitDate))
-
-                        fun debitDate(debitDate: JsonField<Boolean>) = apply {
-                            this.debitDate = debitDate
-                        }
-
                         fun companyDebit(companyDebit: Boolean) =
                             companyDebit(JsonField.of(companyDebit))
 
@@ -5245,21 +5235,10 @@ private constructor(
                             this.companyDebit = companyDebit
                         }
 
-                        fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
+                        fun debitDate(debitDate: Boolean) = debitDate(JsonField.of(debitDate))
 
-                        fun grossPay(grossPay: JsonField<Boolean>) = apply {
-                            this.grossPay = grossPay
-                        }
-
-                        fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
-
-                        fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
-
-                        fun employerTaxes(employerTaxes: Boolean) =
-                            employerTaxes(JsonField.of(employerTaxes))
-
-                        fun employerTaxes(employerTaxes: JsonField<Boolean>) = apply {
-                            this.employerTaxes = employerTaxes
+                        fun debitDate(debitDate: JsonField<Boolean>) = apply {
+                            this.debitDate = debitDate
                         }
 
                         fun employeeTaxes(employeeTaxes: Boolean) =
@@ -5269,6 +5248,19 @@ private constructor(
                             this.employeeTaxes = employeeTaxes
                         }
 
+                        fun employerTaxes(employerTaxes: Boolean) =
+                            employerTaxes(JsonField.of(employerTaxes))
+
+                        fun employerTaxes(employerTaxes: JsonField<Boolean>) = apply {
+                            this.employerTaxes = employerTaxes
+                        }
+
+                        fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
+
+                        fun grossPay(grossPay: JsonField<Boolean>) = apply {
+                            this.grossPay = grossPay
+                        }
+
                         fun individualIds(individualIds: Boolean) =
                             individualIds(JsonField.of(individualIds))
 
@@ -5276,10 +5268,19 @@ private constructor(
                             this.individualIds = individualIds
                         }
 
-                        fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
+                        fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
 
-                        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply {
-                            this.payPeriod = payPeriod
+                        fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
+
+                        fun payDate(payDate: Boolean) = payDate(JsonField.of(payDate))
+
+                        fun payDate(payDate: JsonField<Boolean>) = apply { this.payDate = payDate }
+
+                        fun payFrequencies(payFrequencies: Boolean) =
+                            payFrequencies(JsonField.of(payFrequencies))
+
+                        fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
+                            this.payFrequencies = payFrequencies
                         }
 
                         fun payGroupIds(payGroupIds: Boolean) =
@@ -5289,11 +5290,10 @@ private constructor(
                             this.payGroupIds = payGroupIds
                         }
 
-                        fun payFrequencies(payFrequencies: Boolean) =
-                            payFrequencies(JsonField.of(payFrequencies))
+                        fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
 
-                        fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
-                            this.payFrequencies = payFrequencies
+                        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply {
+                            this.payPeriod = payPeriod
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -5321,17 +5321,17 @@ private constructor(
                         fun build(): SupportedPaymentFields =
                             SupportedPaymentFields(
                                 id,
-                                payDate,
-                                debitDate,
                                 companyDebit,
-                                grossPay,
-                                netPay,
-                                employerTaxes,
+                                debitDate,
                                 employeeTaxes,
+                                employerTaxes,
+                                grossPay,
                                 individualIds,
-                                payPeriod,
-                                payGroupIds,
+                                netPay,
+                                payDate,
                                 payFrequencies,
+                                payGroupIds,
+                                payPeriod,
                                 additionalProperties.toImmutable(),
                             )
                     }
@@ -5340,24 +5340,24 @@ private constructor(
                     class PayPeriod
                     @JsonCreator
                     private constructor(
-                        @JsonProperty("start_date")
-                        @ExcludeMissing
-                        private val startDate: JsonField<Boolean> = JsonMissing.of(),
                         @JsonProperty("end_date")
                         @ExcludeMissing
                         private val endDate: JsonField<Boolean> = JsonMissing.of(),
+                        @JsonProperty("start_date")
+                        @ExcludeMissing
+                        private val startDate: JsonField<Boolean> = JsonMissing.of(),
                         @JsonAnySetter
                         private val additionalProperties: Map<String, JsonValue> =
                             immutableEmptyMap(),
                     ) {
 
-                        fun startDate(): Boolean? = startDate.getNullable("start_date")
-
                         fun endDate(): Boolean? = endDate.getNullable("end_date")
 
-                        @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+                        fun startDate(): Boolean? = startDate.getNullable("start_date")
 
                         @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+
+                        @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
 
                         @JsonAnyGetter
                         @ExcludeMissing
@@ -5367,8 +5367,8 @@ private constructor(
 
                         fun validate(): PayPeriod = apply {
                             if (!validated) {
-                                startDate()
                                 endDate()
+                                startDate()
                                 validated = true
                             }
                         }
@@ -5382,27 +5382,27 @@ private constructor(
 
                         class Builder {
 
-                            private var startDate: JsonField<Boolean> = JsonMissing.of()
                             private var endDate: JsonField<Boolean> = JsonMissing.of()
+                            private var startDate: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
                             internal fun from(payPeriod: PayPeriod) = apply {
-                                startDate = payPeriod.startDate
                                 endDate = payPeriod.endDate
+                                startDate = payPeriod.startDate
                                 additionalProperties = payPeriod.additionalProperties.toMutableMap()
-                            }
-
-                            fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
-
-                            fun startDate(startDate: JsonField<Boolean>) = apply {
-                                this.startDate = startDate
                             }
 
                             fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
 
                             fun endDate(endDate: JsonField<Boolean>) = apply {
                                 this.endDate = endDate
+                            }
+
+                            fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
+
+                            fun startDate(startDate: JsonField<Boolean>) = apply {
+                                this.startDate = startDate
                             }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -5429,8 +5429,8 @@ private constructor(
 
                             fun build(): PayPeriod =
                                 PayPeriod(
-                                    startDate,
                                     endDate,
+                                    startDate,
                                     additionalProperties.toImmutable(),
                                 )
                         }
@@ -5440,17 +5440,17 @@ private constructor(
                                 return true
                             }
 
-                            return /* spotless:off */ other is PayPeriod && startDate == other.startDate && endDate == other.endDate && additionalProperties == other.additionalProperties /* spotless:on */
+                            return /* spotless:off */ other is PayPeriod && endDate == other.endDate && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
                         }
 
                         /* spotless:off */
-                        private val hashCode: Int by lazy { Objects.hash(startDate, endDate, additionalProperties) }
+                        private val hashCode: Int by lazy { Objects.hash(endDate, startDate, additionalProperties) }
                         /* spotless:on */
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "PayPeriod{startDate=$startDate, endDate=$endDate, additionalProperties=$additionalProperties}"
+                            "PayPeriod{endDate=$endDate, startDate=$startDate, additionalProperties=$additionalProperties}"
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -5458,17 +5458,17 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is SupportedPaymentFields && id == other.id && payDate == other.payDate && debitDate == other.debitDate && companyDebit == other.companyDebit && grossPay == other.grossPay && netPay == other.netPay && employerTaxes == other.employerTaxes && employeeTaxes == other.employeeTaxes && individualIds == other.individualIds && payPeriod == other.payPeriod && payGroupIds == other.payGroupIds && payFrequencies == other.payFrequencies && additionalProperties == other.additionalProperties /* spotless:on */
+                        return /* spotless:off */ other is SupportedPaymentFields && id == other.id && companyDebit == other.companyDebit && debitDate == other.debitDate && employeeTaxes == other.employeeTaxes && employerTaxes == other.employerTaxes && grossPay == other.grossPay && individualIds == other.individualIds && netPay == other.netPay && payDate == other.payDate && payFrequencies == other.payFrequencies && payGroupIds == other.payGroupIds && payPeriod == other.payPeriod && additionalProperties == other.additionalProperties /* spotless:on */
                     }
 
                     /* spotless:off */
-                    private val hashCode: Int by lazy { Objects.hash(id, payDate, debitDate, companyDebit, grossPay, netPay, employerTaxes, employeeTaxes, individualIds, payPeriod, payGroupIds, payFrequencies, additionalProperties) }
+                    private val hashCode: Int by lazy { Objects.hash(id, companyDebit, debitDate, employeeTaxes, employerTaxes, grossPay, individualIds, netPay, payDate, payFrequencies, payGroupIds, payPeriod, additionalProperties) }
                     /* spotless:on */
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "SupportedPaymentFields{id=$id, payDate=$payDate, debitDate=$debitDate, companyDebit=$companyDebit, grossPay=$grossPay, netPay=$netPay, employerTaxes=$employerTaxes, employeeTaxes=$employeeTaxes, individualIds=$individualIds, payPeriod=$payPeriod, payGroupIds=$payGroupIds, payFrequencies=$payFrequencies, additionalProperties=$additionalProperties}"
+                        "SupportedPaymentFields{id=$id, companyDebit=$companyDebit, debitDate=$debitDate, employeeTaxes=$employeeTaxes, employerTaxes=$employerTaxes, grossPay=$grossPay, individualIds=$individualIds, netPay=$netPay, payDate=$payDate, payFrequencies=$payFrequencies, payGroupIds=$payGroupIds, payPeriod=$payPeriod, additionalProperties=$additionalProperties}"
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -5476,17 +5476,17 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is SupportedFields && company == other.company && directory == other.directory && individual == other.individual && employment == other.employment && payment == other.payment && payStatement == other.payStatement && payGroup == other.payGroup && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is SupportedFields && company == other.company && directory == other.directory && employment == other.employment && individual == other.individual && payGroup == other.payGroup && payStatement == other.payStatement && payment == other.payment && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(company, directory, individual, employment, payment, payStatement, payGroup, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(company, directory, employment, individual, payGroup, payStatement, payment, additionalProperties) }
                 /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "SupportedFields{company=$company, directory=$directory, individual=$individual, employment=$employment, payment=$payment, payStatement=$payStatement, payGroup=$payGroup, additionalProperties=$additionalProperties}"
+                    "SupportedFields{company=$company, directory=$directory, employment=$employment, individual=$individual, payGroup=$payGroup, payStatement=$payStatement, payment=$payment, additionalProperties=$additionalProperties}"
             }
 
             class Type
@@ -5569,17 +5569,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is AuthenticationMethod && type == other.type && benefitsSupport == other.benefitsSupport && supportedFields == other.supportedFields && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is AuthenticationMethod && benefitsSupport == other.benefitsSupport && supportedFields == other.supportedFields && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(type, benefitsSupport, supportedFields, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(benefitsSupport, supportedFields, type, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "AuthenticationMethod{type=$type, benefitsSupport=$benefitsSupport, supportedFields=$supportedFields, additionalProperties=$additionalProperties}"
+                "AuthenticationMethod{benefitsSupport=$benefitsSupport, supportedFields=$supportedFields, type=$type, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -5587,17 +5587,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Data && status == other.status && authenticationMethod == other.authenticationMethod && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Data && authenticationMethod == other.authenticationMethod && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(status, authenticationMethod, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(authenticationMethod, status, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Data{status=$status, authenticationMethod=$authenticationMethod, additionalProperties=$additionalProperties}"
+            "Data{authenticationMethod=$authenticationMethod, status=$status, additionalProperties=$additionalProperties}"
     }
 
     class EventType
@@ -5656,15 +5656,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AccountUpdateEvent && connectionId == other.connectionId && companyId == other.companyId && accountId == other.accountId && eventType == other.eventType && data == other.data && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is AccountUpdateEvent && accountId == other.accountId && companyId == other.companyId && connectionId == other.connectionId && data == other.data && eventType == other.eventType && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(connectionId, companyId, accountId, eventType, data, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(accountId, companyId, connectionId, data, eventType, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AccountUpdateEvent{connectionId=$connectionId, companyId=$companyId, accountId=$accountId, eventType=$eventType, data=$data, additionalProperties=$additionalProperties}"
+        "AccountUpdateEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, data=$data, eventType=$eventType, additionalProperties=$additionalProperties}"
 }
