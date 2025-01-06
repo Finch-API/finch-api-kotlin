@@ -21,48 +21,32 @@ import java.util.Objects
 class SupportedBenefit
 @JsonCreator
 private constructor(
-    @JsonProperty("type")
-    @ExcludeMissing
-    private val type: JsonField<BenefitType> = JsonMissing.of(),
-    @JsonProperty("description")
-    @ExcludeMissing
-    private val description: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("frequencies")
-    @ExcludeMissing
-    private val frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
-    @JsonProperty("employee_deduction")
-    @ExcludeMissing
-    private val employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
-    @JsonProperty("company_contribution")
-    @ExcludeMissing
-    private val companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
     @JsonProperty("annual_maximum")
     @ExcludeMissing
     private val annualMaximum: JsonField<Boolean> = JsonMissing.of(),
     @JsonProperty("catch_up")
     @ExcludeMissing
     private val catchUp: JsonField<Boolean> = JsonMissing.of(),
+    @JsonProperty("company_contribution")
+    @ExcludeMissing
+    private val companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
+    @JsonProperty("description")
+    @ExcludeMissing
+    private val description: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("employee_deduction")
+    @ExcludeMissing
+    private val employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
+    @JsonProperty("frequencies")
+    @ExcludeMissing
+    private val frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
     @JsonProperty("hsa_contribution_limit")
     @ExcludeMissing
     private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
+    @JsonProperty("type")
+    @ExcludeMissing
+    private val type: JsonField<BenefitType> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** Type of benefit. */
-    fun type(): BenefitType? = type.getNullable("type")
-
-    fun description(): String? = description.getNullable("description")
-
-    /** The list of frequencies supported by the provider for this benefit */
-    fun frequencies(): List<BenefitFrequency?>? = frequencies.getNullable("frequencies")
-
-    /** Supported deduction types. An empty array indicates deductions are not supported. */
-    fun employeeDeduction(): List<EmployeeDeduction?>? =
-        employeeDeduction.getNullable("employee_deduction")
-
-    /** Supported contribution types. An empty array indicates contributions are not supported. */
-    fun companyContribution(): List<CompanyContribution?>? =
-        companyContribution.getNullable("company_contribution")
 
     /** Whether the provider supports an annual maximum for this benefit. */
     fun annualMaximum(): Boolean? = annualMaximum.getNullable("annual_maximum")
@@ -73,6 +57,19 @@ private constructor(
      */
     fun catchUp(): Boolean? = catchUp.getNullable("catch_up")
 
+    /** Supported contribution types. An empty array indicates contributions are not supported. */
+    fun companyContribution(): List<CompanyContribution?>? =
+        companyContribution.getNullable("company_contribution")
+
+    fun description(): String? = description.getNullable("description")
+
+    /** Supported deduction types. An empty array indicates deductions are not supported. */
+    fun employeeDeduction(): List<EmployeeDeduction?>? =
+        employeeDeduction.getNullable("employee_deduction")
+
+    /** The list of frequencies supported by the provider for this benefit */
+    fun frequencies(): List<BenefitFrequency?>? = frequencies.getNullable("frequencies")
+
     /**
      * Whether the provider supports HSA contribution limits. Empty if this feature is not supported
      * for the benefit. This array only has values for HSA benefits.
@@ -81,20 +78,7 @@ private constructor(
         hsaContributionLimit.getNullable("hsa_contribution_limit")
 
     /** Type of benefit. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
-
-    @JsonProperty("description") @ExcludeMissing fun _description() = description
-
-    /** The list of frequencies supported by the provider for this benefit */
-    @JsonProperty("frequencies") @ExcludeMissing fun _frequencies() = frequencies
-
-    /** Supported deduction types. An empty array indicates deductions are not supported. */
-    @JsonProperty("employee_deduction") @ExcludeMissing fun _employeeDeduction() = employeeDeduction
-
-    /** Supported contribution types. An empty array indicates contributions are not supported. */
-    @JsonProperty("company_contribution")
-    @ExcludeMissing
-    fun _companyContribution() = companyContribution
+    fun type(): BenefitType? = type.getNullable("type")
 
     /** Whether the provider supports an annual maximum for this benefit. */
     @JsonProperty("annual_maximum") @ExcludeMissing fun _annualMaximum() = annualMaximum
@@ -105,6 +89,19 @@ private constructor(
      */
     @JsonProperty("catch_up") @ExcludeMissing fun _catchUp() = catchUp
 
+    /** Supported contribution types. An empty array indicates contributions are not supported. */
+    @JsonProperty("company_contribution")
+    @ExcludeMissing
+    fun _companyContribution() = companyContribution
+
+    @JsonProperty("description") @ExcludeMissing fun _description() = description
+
+    /** Supported deduction types. An empty array indicates deductions are not supported. */
+    @JsonProperty("employee_deduction") @ExcludeMissing fun _employeeDeduction() = employeeDeduction
+
+    /** The list of frequencies supported by the provider for this benefit */
+    @JsonProperty("frequencies") @ExcludeMissing fun _frequencies() = frequencies
+
     /**
      * Whether the provider supports HSA contribution limits. Empty if this feature is not supported
      * for the benefit. This array only has values for HSA benefits.
@@ -112,6 +109,9 @@ private constructor(
     @JsonProperty("hsa_contribution_limit")
     @ExcludeMissing
     fun _hsaContributionLimit() = hsaContributionLimit
+
+    /** Type of benefit. */
+    @JsonProperty("type") @ExcludeMissing fun _type() = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -121,14 +121,14 @@ private constructor(
 
     fun validate(): SupportedBenefit = apply {
         if (!validated) {
-            type()
-            description()
-            frequencies()
-            employeeDeduction()
-            companyContribution()
             annualMaximum()
             catchUp()
+            companyContribution()
+            description()
+            employeeDeduction()
+            frequencies()
             hsaContributionLimit()
+            type()
             validated = true
         }
     }
@@ -142,69 +142,27 @@ private constructor(
 
     class Builder {
 
-        private var type: JsonField<BenefitType> = JsonMissing.of()
-        private var description: JsonField<String> = JsonMissing.of()
-        private var frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of()
-        private var employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
-        private var companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of()
         private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
         private var catchUp: JsonField<Boolean> = JsonMissing.of()
+        private var companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of()
+        private var description: JsonField<String> = JsonMissing.of()
+        private var employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of()
+        private var frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of()
         private var hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of()
+        private var type: JsonField<BenefitType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(supportedBenefit: SupportedBenefit) = apply {
-            type = supportedBenefit.type
-            description = supportedBenefit.description
-            frequencies = supportedBenefit.frequencies
-            employeeDeduction = supportedBenefit.employeeDeduction
-            companyContribution = supportedBenefit.companyContribution
             annualMaximum = supportedBenefit.annualMaximum
             catchUp = supportedBenefit.catchUp
+            companyContribution = supportedBenefit.companyContribution
+            description = supportedBenefit.description
+            employeeDeduction = supportedBenefit.employeeDeduction
+            frequencies = supportedBenefit.frequencies
             hsaContributionLimit = supportedBenefit.hsaContributionLimit
+            type = supportedBenefit.type
             additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
         }
-
-        /** Type of benefit. */
-        fun type(type: BenefitType) = type(JsonField.of(type))
-
-        /** Type of benefit. */
-        fun type(type: JsonField<BenefitType>) = apply { this.type = type }
-
-        fun description(description: String) = description(JsonField.of(description))
-
-        fun description(description: JsonField<String>) = apply { this.description = description }
-
-        /** The list of frequencies supported by the provider for this benefit */
-        fun frequencies(frequencies: List<BenefitFrequency?>) =
-            frequencies(JsonField.of(frequencies))
-
-        /** The list of frequencies supported by the provider for this benefit */
-        fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
-            this.frequencies = frequencies
-        }
-
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>) =
-            employeeDeduction(JsonField.of(employeeDeduction))
-
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
-            this.employeeDeduction = employeeDeduction
-        }
-
-        /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
-         */
-        fun companyContribution(companyContribution: List<CompanyContribution?>) =
-            companyContribution(JsonField.of(companyContribution))
-
-        /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
-         */
-        fun companyContribution(companyContribution: JsonField<List<CompanyContribution?>>) =
-            apply {
-                this.companyContribution = companyContribution
-            }
 
         /** Whether the provider supports an annual maximum for this benefit. */
         fun annualMaximum(annualMaximum: Boolean) = annualMaximum(JsonField.of(annualMaximum))
@@ -227,6 +185,42 @@ private constructor(
         fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
         /**
+         * Supported contribution types. An empty array indicates contributions are not supported.
+         */
+        fun companyContribution(companyContribution: List<CompanyContribution?>) =
+            companyContribution(JsonField.of(companyContribution))
+
+        /**
+         * Supported contribution types. An empty array indicates contributions are not supported.
+         */
+        fun companyContribution(companyContribution: JsonField<List<CompanyContribution?>>) =
+            apply {
+                this.companyContribution = companyContribution
+            }
+
+        fun description(description: String) = description(JsonField.of(description))
+
+        fun description(description: JsonField<String>) = apply { this.description = description }
+
+        /** Supported deduction types. An empty array indicates deductions are not supported. */
+        fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>) =
+            employeeDeduction(JsonField.of(employeeDeduction))
+
+        /** Supported deduction types. An empty array indicates deductions are not supported. */
+        fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
+            this.employeeDeduction = employeeDeduction
+        }
+
+        /** The list of frequencies supported by the provider for this benefit */
+        fun frequencies(frequencies: List<BenefitFrequency?>) =
+            frequencies(JsonField.of(frequencies))
+
+        /** The list of frequencies supported by the provider for this benefit */
+        fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
+            this.frequencies = frequencies
+        }
+
+        /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
          * supported for the benefit. This array only has values for HSA benefits.
          */
@@ -241,6 +235,12 @@ private constructor(
             apply {
                 this.hsaContributionLimit = hsaContributionLimit
             }
+
+        /** Type of benefit. */
+        fun type(type: BenefitType) = type(JsonField.of(type))
+
+        /** Type of benefit. */
+        fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -263,14 +263,14 @@ private constructor(
 
         fun build(): SupportedBenefit =
             SupportedBenefit(
-                type,
-                description,
-                frequencies.map { it.toImmutable() },
-                employeeDeduction.map { it.toImmutable() },
-                companyContribution.map { it.toImmutable() },
                 annualMaximum,
                 catchUp,
+                companyContribution.map { it.toImmutable() },
+                description,
+                employeeDeduction.map { it.toImmutable() },
+                frequencies.map { it.toImmutable() },
                 hsaContributionLimit.map { it.toImmutable() },
+                type,
                 additionalProperties.toImmutable(),
             )
     }
@@ -451,15 +451,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportedBenefit && type == other.type && description == other.description && frequencies == other.frequencies && employeeDeduction == other.employeeDeduction && companyContribution == other.companyContribution && annualMaximum == other.annualMaximum && catchUp == other.catchUp && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(type, description, frequencies, employeeDeduction, companyContribution, annualMaximum, catchUp, hsaContributionLimit, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, description, employeeDeduction, frequencies, hsaContributionLimit, type, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SupportedBenefit{type=$type, description=$description, frequencies=$frequencies, employeeDeduction=$employeeDeduction, companyContribution=$companyContribution, annualMaximum=$annualMaximum, catchUp=$catchUp, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+        "SupportedBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, type=$type, additionalProperties=$additionalProperties}"
 }

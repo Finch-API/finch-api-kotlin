@@ -19,22 +19,16 @@ import java.util.Objects
 class RequestForwardingForwardResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
-    @JsonProperty("statusCode")
-    @ExcludeMissing
-    private val statusCode: JsonField<Long> = JsonMissing.of(),
     @JsonProperty("data") @ExcludeMissing private val data: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
     @JsonProperty("request")
     @ExcludeMissing
     private val request: JsonField<Request> = JsonMissing.of(),
+    @JsonProperty("statusCode")
+    @ExcludeMissing
+    private val statusCode: JsonField<Long> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /**
-     * The HTTP status code of the forwarded request’s response, exactly received from the
-     * underlying integration’s API. This value will be returned as an integer.
-     */
-    fun statusCode(): Long = statusCode.getRequired("statusCode")
 
     /**
      * A string representation of the HTTP response body of the forwarded request’s response
@@ -49,16 +43,10 @@ private constructor(
     fun request(): Request = request.getRequired("request")
 
     /**
-     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
-     * integration’s API.
-     */
-    @JsonProperty("headers") @ExcludeMissing fun _headers() = headers
-
-    /**
      * The HTTP status code of the forwarded request’s response, exactly received from the
      * underlying integration’s API. This value will be returned as an integer.
      */
-    @JsonProperty("statusCode") @ExcludeMissing fun _statusCode() = statusCode
+    fun statusCode(): Long = statusCode.getRequired("statusCode")
 
     /**
      * A string representation of the HTTP response body of the forwarded request’s response
@@ -68,9 +56,21 @@ private constructor(
     @JsonProperty("data") @ExcludeMissing fun _data() = data
 
     /**
+     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
+     * integration’s API.
+     */
+    @JsonProperty("headers") @ExcludeMissing fun _headers() = headers
+
+    /**
      * An object containing details of your original forwarded request, for your ease of reference.
      */
     @JsonProperty("request") @ExcludeMissing fun _request() = request
+
+    /**
+     * The HTTP status code of the forwarded request’s response, exactly received from the
+     * underlying integration’s API. This value will be returned as an integer.
+     */
+    @JsonProperty("statusCode") @ExcludeMissing fun _statusCode() = statusCode
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -80,9 +80,9 @@ private constructor(
 
     fun validate(): RequestForwardingForwardResponse = apply {
         if (!validated) {
-            statusCode()
             data()
             request().validate()
+            statusCode()
             validated = true
         }
     }
@@ -96,39 +96,21 @@ private constructor(
 
     class Builder {
 
-        private var headers: JsonValue = JsonMissing.of()
-        private var statusCode: JsonField<Long> = JsonMissing.of()
         private var data: JsonField<String> = JsonMissing.of()
+        private var headers: JsonValue = JsonMissing.of()
         private var request: JsonField<Request> = JsonMissing.of()
+        private var statusCode: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(requestForwardingForwardResponse: RequestForwardingForwardResponse) =
             apply {
-                headers = requestForwardingForwardResponse.headers
-                statusCode = requestForwardingForwardResponse.statusCode
                 data = requestForwardingForwardResponse.data
+                headers = requestForwardingForwardResponse.headers
                 request = requestForwardingForwardResponse.request
+                statusCode = requestForwardingForwardResponse.statusCode
                 additionalProperties =
                     requestForwardingForwardResponse.additionalProperties.toMutableMap()
             }
-
-        /**
-         * The HTTP headers of the forwarded request’s response, exactly as received from the
-         * underlying integration’s API.
-         */
-        fun headers(headers: JsonValue) = apply { this.headers = headers }
-
-        /**
-         * The HTTP status code of the forwarded request’s response, exactly received from the
-         * underlying integration’s API. This value will be returned as an integer.
-         */
-        fun statusCode(statusCode: Long) = statusCode(JsonField.of(statusCode))
-
-        /**
-         * The HTTP status code of the forwarded request’s response, exactly received from the
-         * underlying integration’s API. This value will be returned as an integer.
-         */
-        fun statusCode(statusCode: JsonField<Long>) = apply { this.statusCode = statusCode }
 
         /**
          * A string representation of the HTTP response body of the forwarded request’s response
@@ -145,6 +127,12 @@ private constructor(
         fun data(data: JsonField<String>) = apply { this.data = data }
 
         /**
+         * The HTTP headers of the forwarded request’s response, exactly as received from the
+         * underlying integration’s API.
+         */
+        fun headers(headers: JsonValue) = apply { this.headers = headers }
+
+        /**
          * An object containing details of your original forwarded request, for your ease of
          * reference.
          */
@@ -155,6 +143,18 @@ private constructor(
          * reference.
          */
         fun request(request: JsonField<Request>) = apply { this.request = request }
+
+        /**
+         * The HTTP status code of the forwarded request’s response, exactly received from the
+         * underlying integration’s API. This value will be returned as an integer.
+         */
+        fun statusCode(statusCode: Long) = statusCode(JsonField.of(statusCode))
+
+        /**
+         * The HTTP status code of the forwarded request’s response, exactly received from the
+         * underlying integration’s API. This value will be returned as an integer.
+         */
+        fun statusCode(statusCode: JsonField<Long>) = apply { this.statusCode = statusCode }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -177,10 +177,10 @@ private constructor(
 
         fun build(): RequestForwardingForwardResponse =
             RequestForwardingForwardResponse(
-                headers,
-                statusCode,
                 data,
+                headers,
                 request,
+                statusCode,
                 additionalProperties.toImmutable(),
             )
     }
@@ -192,20 +192,27 @@ private constructor(
     class Request
     @JsonCreator
     private constructor(
-        @JsonProperty("method")
-        @ExcludeMissing
-        private val method: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("route")
-        @ExcludeMissing
-        private val route: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
-        @JsonProperty("params") @ExcludeMissing private val params: JsonValue = JsonMissing.of(),
         @JsonProperty("data")
         @ExcludeMissing
         private val data: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
+        @JsonProperty("method")
+        @ExcludeMissing
+        private val method: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("params") @ExcludeMissing private val params: JsonValue = JsonMissing.of(),
+        @JsonProperty("route")
+        @ExcludeMissing
+        private val route: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
+
+        /**
+         * The body that was specified for the forwarded request. If a value was not specified in
+         * the original request, this value will be returned as null ; otherwise, this value will
+         * always be returned as a string.
+         */
+        fun data(): String? = data.getNullable("data")
 
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
@@ -221,16 +228,7 @@ private constructor(
          * the original request, this value will be returned as null ; otherwise, this value will
          * always be returned as a string.
          */
-        fun data(): String? = data.getNullable("data")
-
-        /**
-         * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
-         * , `POST` , `PUT` , `DELETE` , and `PATCH`.
-         */
-        @JsonProperty("method") @ExcludeMissing fun _method() = method
-
-        /** The URL route path that was specified for the forwarded request. */
-        @JsonProperty("route") @ExcludeMissing fun _route() = route
+        @JsonProperty("data") @ExcludeMissing fun _data() = data
 
         /**
          * The specified HTTP headers that were included in the forwarded request. If no headers
@@ -239,17 +237,19 @@ private constructor(
         @JsonProperty("headers") @ExcludeMissing fun _headers() = headers
 
         /**
+         * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
+         * , `POST` , `PUT` , `DELETE` , and `PATCH`.
+         */
+        @JsonProperty("method") @ExcludeMissing fun _method() = method
+
+        /**
          * The query parameters that were included in the forwarded request. If no query parameters
          * were specified, this will be returned as `null`.
          */
         @JsonProperty("params") @ExcludeMissing fun _params() = params
 
-        /**
-         * The body that was specified for the forwarded request. If a value was not specified in
-         * the original request, this value will be returned as null ; otherwise, this value will
-         * always be returned as a string.
-         */
-        @JsonProperty("data") @ExcludeMissing fun _data() = data
+        /** The URL route path that was specified for the forwarded request. */
+        @JsonProperty("route") @ExcludeMissing fun _route() = route
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -259,9 +259,9 @@ private constructor(
 
         fun validate(): Request = apply {
             if (!validated) {
+                data()
                 method()
                 route()
-                data()
                 validated = true
             }
         }
@@ -275,51 +275,21 @@ private constructor(
 
         class Builder {
 
-            private var method: JsonField<String> = JsonMissing.of()
-            private var route: JsonField<String> = JsonMissing.of()
-            private var headers: JsonValue = JsonMissing.of()
-            private var params: JsonValue = JsonMissing.of()
             private var data: JsonField<String> = JsonMissing.of()
+            private var headers: JsonValue = JsonMissing.of()
+            private var method: JsonField<String> = JsonMissing.of()
+            private var params: JsonValue = JsonMissing.of()
+            private var route: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(request: Request) = apply {
-                method = request.method
-                route = request.route
-                headers = request.headers
-                params = request.params
                 data = request.data
+                headers = request.headers
+                method = request.method
+                params = request.params
+                route = request.route
                 additionalProperties = request.additionalProperties.toMutableMap()
             }
-
-            /**
-             * The HTTP method that was specified for the forwarded request. Valid values include:
-             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
-             */
-            fun method(method: String) = method(JsonField.of(method))
-
-            /**
-             * The HTTP method that was specified for the forwarded request. Valid values include:
-             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
-             */
-            fun method(method: JsonField<String>) = apply { this.method = method }
-
-            /** The URL route path that was specified for the forwarded request. */
-            fun route(route: String) = route(JsonField.of(route))
-
-            /** The URL route path that was specified for the forwarded request. */
-            fun route(route: JsonField<String>) = apply { this.route = route }
-
-            /**
-             * The specified HTTP headers that were included in the forwarded request. If no headers
-             * were specified, this will be returned as `null`.
-             */
-            fun headers(headers: JsonValue) = apply { this.headers = headers }
-
-            /**
-             * The query parameters that were included in the forwarded request. If no query
-             * parameters were specified, this will be returned as `null`.
-             */
-            fun params(params: JsonValue) = apply { this.params = params }
 
             /**
              * The body that was specified for the forwarded request. If a value was not specified
@@ -334,6 +304,36 @@ private constructor(
              * will always be returned as a string.
              */
             fun data(data: JsonField<String>) = apply { this.data = data }
+
+            /**
+             * The specified HTTP headers that were included in the forwarded request. If no headers
+             * were specified, this will be returned as `null`.
+             */
+            fun headers(headers: JsonValue) = apply { this.headers = headers }
+
+            /**
+             * The HTTP method that was specified for the forwarded request. Valid values include:
+             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
+             */
+            fun method(method: String) = method(JsonField.of(method))
+
+            /**
+             * The HTTP method that was specified for the forwarded request. Valid values include:
+             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
+             */
+            fun method(method: JsonField<String>) = apply { this.method = method }
+
+            /**
+             * The query parameters that were included in the forwarded request. If no query
+             * parameters were specified, this will be returned as `null`.
+             */
+            fun params(params: JsonValue) = apply { this.params = params }
+
+            /** The URL route path that was specified for the forwarded request. */
+            fun route(route: String) = route(JsonField.of(route))
+
+            /** The URL route path that was specified for the forwarded request. */
+            fun route(route: JsonField<String>) = apply { this.route = route }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -356,11 +356,11 @@ private constructor(
 
             fun build(): Request =
                 Request(
-                    method,
-                    route,
-                    headers,
-                    params,
                     data,
+                    headers,
+                    method,
+                    params,
+                    route,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -370,17 +370,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Request && method == other.method && route == other.route && headers == other.headers && params == other.params && data == other.data && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Request && data == other.data && headers == other.headers && method == other.method && params == other.params && route == other.route && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(method, route, headers, params, data, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(data, headers, method, params, route, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Request{method=$method, route=$route, headers=$headers, params=$params, data=$data, additionalProperties=$additionalProperties}"
+            "Request{data=$data, headers=$headers, method=$method, params=$params, route=$route, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -388,15 +388,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RequestForwardingForwardResponse && headers == other.headers && statusCode == other.statusCode && data == other.data && request == other.request && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is RequestForwardingForwardResponse && data == other.data && headers == other.headers && request == other.request && statusCode == other.statusCode && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(headers, statusCode, data, request, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(data, headers, request, statusCode, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RequestForwardingForwardResponse{headers=$headers, statusCode=$statusCode, data=$data, request=$request, additionalProperties=$additionalProperties}"
+        "RequestForwardingForwardResponse{data=$data, headers=$headers, request=$request, statusCode=$statusCode, additionalProperties=$additionalProperties}"
 }
