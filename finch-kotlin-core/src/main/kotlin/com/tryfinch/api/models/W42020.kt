@@ -41,13 +41,13 @@ private constructor(
     fun year(): Double? = year.getNullable("year")
 
     /** Detailed information specific to the 2020 W4 form. */
-    @JsonProperty("data") @ExcludeMissing fun _data() = data
+    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
     /** Specifies the form type, indicating that this document is a 2020 W4 form. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
     /** The tax year this W4 document applies to. */
-    @JsonProperty("year") @ExcludeMissing fun _year() = year
+    @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -98,7 +98,10 @@ private constructor(
         fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
-        fun year(year: Double) = year(JsonField.of(year))
+        fun year(year: Double?) = year(JsonField.ofNullable(year))
+
+        /** The tax year this W4 document applies to. */
+        fun year(year: Double) = year(year as Double?)
 
         /** The tax year this W4 document applies to. */
         fun year(year: JsonField<Double>) = apply { this.year = year }
@@ -198,34 +201,42 @@ private constructor(
         /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
         @JsonProperty("amount_for_other_dependents")
         @ExcludeMissing
-        fun _amountForOtherDependents() = amountForOtherDependents
+        fun _amountForOtherDependents(): JsonField<Long> = amountForOtherDependents
 
         /** Amount claimed for dependents under 17 years old (in cents). */
         @JsonProperty("amount_for_qualifying_children_under_17")
         @ExcludeMissing
-        fun _amountForQualifyingChildrenUnder17() = amountForQualifyingChildrenUnder17
+        fun _amountForQualifyingChildrenUnder17(): JsonField<Long> =
+            amountForQualifyingChildrenUnder17
 
         /** Deductible expenses (in cents). */
-        @JsonProperty("deductions") @ExcludeMissing fun _deductions() = deductions
+        @JsonProperty("deductions") @ExcludeMissing fun _deductions(): JsonField<Long> = deductions
 
         /** Additional withholding amount (in cents). */
         @JsonProperty("extra_withholding")
         @ExcludeMissing
-        fun _extraWithholding() = extraWithholding
+        fun _extraWithholding(): JsonField<Long> = extraWithholding
 
         /** The individual's filing status for tax purposes. */
-        @JsonProperty("filing_status") @ExcludeMissing fun _filingStatus() = filingStatus
+        @JsonProperty("filing_status")
+        @ExcludeMissing
+        fun _filingStatus(): JsonField<FilingStatus> = filingStatus
 
         /** The unique identifier for the individual associated with this document. */
-        @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
 
         /** Additional income from sources outside of primary employment (in cents). */
-        @JsonProperty("other_income") @ExcludeMissing fun _otherIncome() = otherIncome
+        @JsonProperty("other_income")
+        @ExcludeMissing
+        fun _otherIncome(): JsonField<Long> = otherIncome
 
         /** Total amount claimed for dependents and other credits (in cents). */
         @JsonProperty("total_claim_dependent_and_other_credits")
         @ExcludeMissing
-        fun _totalClaimDependentAndOtherCredits() = totalClaimDependentAndOtherCredits
+        fun _totalClaimDependentAndOtherCredits(): JsonField<Long> =
+            totalClaimDependentAndOtherCredits
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -279,8 +290,12 @@ private constructor(
             }
 
             /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
+            fun amountForOtherDependents(amountForOtherDependents: Long?) =
+                amountForOtherDependents(JsonField.ofNullable(amountForOtherDependents))
+
+            /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
             fun amountForOtherDependents(amountForOtherDependents: Long) =
-                amountForOtherDependents(JsonField.of(amountForOtherDependents))
+                amountForOtherDependents(amountForOtherDependents as Long?)
 
             /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
             fun amountForOtherDependents(amountForOtherDependents: JsonField<Long>) = apply {
@@ -288,8 +303,14 @@ private constructor(
             }
 
             /** Amount claimed for dependents under 17 years old (in cents). */
+            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long?) =
+                amountForQualifyingChildrenUnder17(
+                    JsonField.ofNullable(amountForQualifyingChildrenUnder17)
+                )
+
+            /** Amount claimed for dependents under 17 years old (in cents). */
             fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long) =
-                amountForQualifyingChildrenUnder17(JsonField.of(amountForQualifyingChildrenUnder17))
+                amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17 as Long?)
 
             /** Amount claimed for dependents under 17 years old (in cents). */
             fun amountForQualifyingChildrenUnder17(
@@ -299,14 +320,21 @@ private constructor(
             }
 
             /** Deductible expenses (in cents). */
-            fun deductions(deductions: Long) = deductions(JsonField.of(deductions))
+            fun deductions(deductions: Long?) = deductions(JsonField.ofNullable(deductions))
+
+            /** Deductible expenses (in cents). */
+            fun deductions(deductions: Long) = deductions(deductions as Long?)
 
             /** Deductible expenses (in cents). */
             fun deductions(deductions: JsonField<Long>) = apply { this.deductions = deductions }
 
             /** Additional withholding amount (in cents). */
+            fun extraWithholding(extraWithholding: Long?) =
+                extraWithholding(JsonField.ofNullable(extraWithholding))
+
+            /** Additional withholding amount (in cents). */
             fun extraWithholding(extraWithholding: Long) =
-                extraWithholding(JsonField.of(extraWithholding))
+                extraWithholding(extraWithholding as Long?)
 
             /** Additional withholding amount (in cents). */
             fun extraWithholding(extraWithholding: JsonField<Long>) = apply {
@@ -314,7 +342,8 @@ private constructor(
             }
 
             /** The individual's filing status for tax purposes. */
-            fun filingStatus(filingStatus: FilingStatus) = filingStatus(JsonField.of(filingStatus))
+            fun filingStatus(filingStatus: FilingStatus?) =
+                filingStatus(JsonField.ofNullable(filingStatus))
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: JsonField<FilingStatus>) = apply {
@@ -330,14 +359,23 @@ private constructor(
             }
 
             /** Additional income from sources outside of primary employment (in cents). */
-            fun otherIncome(otherIncome: Long) = otherIncome(JsonField.of(otherIncome))
+            fun otherIncome(otherIncome: Long?) = otherIncome(JsonField.ofNullable(otherIncome))
+
+            /** Additional income from sources outside of primary employment (in cents). */
+            fun otherIncome(otherIncome: Long) = otherIncome(otherIncome as Long?)
 
             /** Additional income from sources outside of primary employment (in cents). */
             fun otherIncome(otherIncome: JsonField<Long>) = apply { this.otherIncome = otherIncome }
 
             /** Total amount claimed for dependents and other credits (in cents). */
+            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long?) =
+                totalClaimDependentAndOtherCredits(
+                    JsonField.ofNullable(totalClaimDependentAndOtherCredits)
+                )
+
+            /** Total amount claimed for dependents and other credits (in cents). */
             fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long) =
-                totalClaimDependentAndOtherCredits(JsonField.of(totalClaimDependentAndOtherCredits))
+                totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits as Long?)
 
             /** Total amount claimed for dependents and other credits (in cents). */
             fun totalClaimDependentAndOtherCredits(

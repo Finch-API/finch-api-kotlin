@@ -43,14 +43,16 @@ private constructor(
     /** Type of benefit. */
     fun type(): BenefitType? = type.getNullable("type")
 
-    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId() = benefitId
+    @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
-    @JsonProperty("description") @ExcludeMissing fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
-    @JsonProperty("frequency") @ExcludeMissing fun _frequency() = frequency
+    @JsonProperty("frequency")
+    @ExcludeMissing
+    fun _frequency(): JsonField<BenefitFrequency> = frequency
 
     /** Type of benefit. */
-    @JsonProperty("type") @ExcludeMissing fun _type() = type
+    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -77,10 +79,10 @@ private constructor(
 
     class Builder {
 
-        private var benefitId: JsonField<String> = JsonMissing.of()
-        private var description: JsonField<String> = JsonMissing.of()
-        private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
-        private var type: JsonField<BenefitType> = JsonMissing.of()
+        private var benefitId: JsonField<String>? = null
+        private var description: JsonField<String>? = null
+        private var frequency: JsonField<BenefitFrequency>? = null
+        private var type: JsonField<BenefitType>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(companyBenefit: CompanyBenefit) = apply {
@@ -95,16 +97,16 @@ private constructor(
 
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
-        fun description(description: String) = description(JsonField.of(description))
+        fun description(description: String?) = description(JsonField.ofNullable(description))
 
         fun description(description: JsonField<String>) = apply { this.description = description }
 
-        fun frequency(frequency: BenefitFrequency) = frequency(JsonField.of(frequency))
+        fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
 
         /** Type of benefit. */
-        fun type(type: BenefitType) = type(JsonField.of(type))
+        fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
         /** Type of benefit. */
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
@@ -130,10 +132,10 @@ private constructor(
 
         fun build(): CompanyBenefit =
             CompanyBenefit(
-                benefitId,
-                description,
-                frequency,
-                type,
+                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                checkNotNull(description) { "`description` is required but was not set" },
+                checkNotNull(frequency) { "`frequency` is required but was not set" },
+                checkNotNull(type) { "`type` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

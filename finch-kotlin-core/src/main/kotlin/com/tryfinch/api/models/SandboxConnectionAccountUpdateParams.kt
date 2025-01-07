@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -28,11 +30,13 @@ constructor(
 
     fun connectionStatus(): ConnectionStatusType? = body.connectionStatus()
 
+    fun _connectionStatus(): JsonField<ConnectionStatusType> = body._connectionStatus()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): SandboxConnectionAccountUpdateBody = body
 
@@ -44,17 +48,32 @@ constructor(
     class SandboxConnectionAccountUpdateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("connection_status") private val connectionStatus: ConnectionStatusType?,
+        @JsonProperty("connection_status")
+        @ExcludeMissing
+        private val connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        fun connectionStatus(): ConnectionStatusType? =
+            connectionStatus.getNullable("connection_status")
+
         @JsonProperty("connection_status")
-        fun connectionStatus(): ConnectionStatusType? = connectionStatus
+        @ExcludeMissing
+        fun _connectionStatus(): JsonField<ConnectionStatusType> = connectionStatus
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxConnectionAccountUpdateBody = apply {
+            if (!validated) {
+                connectionStatus()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -65,7 +84,7 @@ constructor(
 
         class Builder {
 
-            private var connectionStatus: ConnectionStatusType? = null
+            private var connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(
@@ -76,7 +95,10 @@ constructor(
                     sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
             }
 
-            fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
+            fun connectionStatus(connectionStatus: ConnectionStatusType) =
+                connectionStatus(JsonField.of(connectionStatus))
+
+            fun connectionStatus(connectionStatus: JsonField<ConnectionStatusType>) = apply {
                 this.connectionStatus = connectionStatus
             }
 
@@ -148,8 +170,31 @@ constructor(
                 sandboxConnectionAccountUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun connectionStatus(connectionStatus: ConnectionStatusType?) = apply {
+        fun connectionStatus(connectionStatus: ConnectionStatusType) = apply {
             body.connectionStatus(connectionStatus)
+        }
+
+        fun connectionStatus(connectionStatus: JsonField<ConnectionStatusType>) = apply {
+            body.connectionStatus(connectionStatus)
+        }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -248,25 +293,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): SandboxConnectionAccountUpdateParams =

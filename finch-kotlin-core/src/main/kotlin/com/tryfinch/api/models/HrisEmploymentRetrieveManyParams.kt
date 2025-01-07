@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -26,11 +28,14 @@ constructor(
     /** The array of batch requests. */
     fun requests(): List<Request> = body.requests()
 
+    /** The array of batch requests. */
+    fun _requests(): JsonField<List<Request>> = body._requests()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): HrisEmploymentRetrieveManyBody = body
 
@@ -43,17 +48,33 @@ constructor(
     class HrisEmploymentRetrieveManyBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("requests") private val requests: List<Request>,
+        @JsonProperty("requests")
+        @ExcludeMissing
+        private val requests: JsonField<List<Request>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The array of batch requests. */
-        @JsonProperty("requests") fun requests(): List<Request> = requests
+        fun requests(): List<Request> = requests.getRequired("requests")
+
+        /** The array of batch requests. */
+        @JsonProperty("requests")
+        @ExcludeMissing
+        fun _requests(): JsonField<List<Request>> = requests
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisEmploymentRetrieveManyBody = apply {
+            if (!validated) {
+                requests().forEach { it.validate() }
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -64,24 +85,34 @@ constructor(
 
         class Builder {
 
-            private var requests: MutableList<Request>? = null
+            private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(hrisEmploymentRetrieveManyBody: HrisEmploymentRetrieveManyBody) =
                 apply {
-                    requests = hrisEmploymentRetrieveManyBody.requests.toMutableList()
+                    requests = hrisEmploymentRetrieveManyBody.requests.map { it.toMutableList() }
                     additionalProperties =
                         hrisEmploymentRetrieveManyBody.additionalProperties.toMutableMap()
                 }
 
             /** The array of batch requests. */
-            fun requests(requests: List<Request>) = apply {
-                this.requests = requests.toMutableList()
+            fun requests(requests: List<Request>) = requests(JsonField.of(requests))
+
+            /** The array of batch requests. */
+            fun requests(requests: JsonField<List<Request>>) = apply {
+                this.requests = requests.map { it.toMutableList() }
             }
 
             /** The array of batch requests. */
             fun addRequest(request: Request) = apply {
-                requests = (requests ?: mutableListOf()).apply { add(request) }
+                requests =
+                    (requests ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(request)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -106,7 +137,7 @@ constructor(
             fun build(): HrisEmploymentRetrieveManyBody =
                 HrisEmploymentRetrieveManyBody(
                     checkNotNull(requests) { "`requests` is required but was not set" }
-                        .toImmutable(),
+                        .map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -156,7 +187,29 @@ constructor(
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /** The array of batch requests. */
+        fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
+
+        /** The array of batch requests. */
         fun addRequest(request: Request) = apply { body.addRequest(request) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -256,25 +309,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): HrisEmploymentRetrieveManyParams =
             HrisEmploymentRetrieveManyParams(
                 body.build(),
@@ -287,7 +321,9 @@ constructor(
     class Request
     @JsonCreator
     private constructor(
-        @JsonProperty("individual_id") private val individualId: String,
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        private val individualId: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
@@ -297,11 +333,29 @@ constructor(
          * number of `individual_id` to send per request. It is preferantial to send all ids in a
          * single request for Finch to optimize provider rate-limits.
          */
-        @JsonProperty("individual_id") fun individualId(): String = individualId
+        fun individualId(): String = individualId.getRequired("individual_id")
+
+        /**
+         * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
+         * number of `individual_id` to send per request. It is preferantial to send all ids in a
+         * single request for Finch to optimize provider rate-limits.
+         */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Request = apply {
+            if (!validated) {
+                individualId()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -312,7 +366,7 @@ constructor(
 
         class Builder {
 
-            private var individualId: String? = null
+            private var individualId: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(request: Request) = apply {
@@ -325,7 +379,16 @@ constructor(
              * the number of `individual_id` to send per request. It is preferantial to send all ids
              * in a single request for Finch to optimize provider rate-limits.
              */
-            fun individualId(individualId: String) = apply { this.individualId = individualId }
+            fun individualId(individualId: String) = individualId(JsonField.of(individualId))
+
+            /**
+             * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to
+             * the number of `individual_id` to send per request. It is preferantial to send all ids
+             * in a single request for Finch to optimize provider rate-limits.
+             */
+            fun individualId(individualId: JsonField<String>) = apply {
+                this.individualId = individualId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

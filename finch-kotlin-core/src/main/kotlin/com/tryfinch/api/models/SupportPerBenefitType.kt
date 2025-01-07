@@ -33,11 +33,13 @@ private constructor(
     fun individualBenefits(): OperationSupportMatrix? =
         individualBenefits.getNullable("individual_benefits")
 
-    @JsonProperty("company_benefits") @ExcludeMissing fun _companyBenefits() = companyBenefits
+    @JsonProperty("company_benefits")
+    @ExcludeMissing
+    fun _companyBenefits(): JsonField<OperationSupportMatrix> = companyBenefits
 
     @JsonProperty("individual_benefits")
     @ExcludeMissing
-    fun _individualBenefits() = individualBenefits
+    fun _individualBenefits(): JsonField<OperationSupportMatrix> = individualBenefits
 
     @JsonAnyGetter
     @ExcludeMissing
