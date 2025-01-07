@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.1 (2025-01-07)
+
+Full Changelog: [v3.1.0...v3.1.1](https://github.com/Finch-API/finch-api-kotlin/compare/v3.1.0...v3.1.1)
+
+### Documentation
+
+* add params class javadocs ([#316](https://github.com/Finch-API/finch-api-kotlin/issues/316)) ([2c5e284](https://github.com/Finch-API/finch-api-kotlin/commit/2c5e2847fcf6a4ca14c2544485cc237d57e54ba8))
+
 ## 3.1.0 (2025-01-07)
 
 Full Changelog: [v3.0.0...v3.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.0.0...v3.1.0)
