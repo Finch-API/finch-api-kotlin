@@ -15,6 +15,11 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
+/**
+ * Read detailed pay statements for each individual.
+ *
+ * Deduction and contribution types are supported by the payroll systems that supports Benefits.
+ */
 class HrisPayStatementRetrieveManyParams
 constructor(
     private val body: HrisPayStatementRetrieveManyBody,

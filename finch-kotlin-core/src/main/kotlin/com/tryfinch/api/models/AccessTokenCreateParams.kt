@@ -15,6 +15,7 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
+/** Exchange the authorization code for an access token */
 class AccessTokenCreateParams
 constructor(
     private val body: AccessTokenCreateBody,

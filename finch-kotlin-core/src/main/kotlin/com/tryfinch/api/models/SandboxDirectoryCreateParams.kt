@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
+/** Add new individuals to a sandbox company */
 class SandboxDirectoryCreateParams
 constructor(
     private val body: List<IndividualOrEmployment>,
