@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.0 (2025-01-07)
+
+Full Changelog: [v3.0.0...v3.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.0.0...v3.1.0)
+
+### Features
+
+* **api:** manual updates ([#312](https://github.com/Finch-API/finch-api-kotlin/issues/312)) ([04943b0](https://github.com/Finch-API/finch-api-kotlin/commit/04943b03cdd586318e784e3e5f22a23f33247acf))
+
 ## 3.0.0 (2025-01-06)
 
 Full Changelog: [v2.0.0...v3.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v2.0.0...v3.0.0)
