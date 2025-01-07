@@ -101,47 +101,53 @@ private constructor(
     fun ssn(): String? = ssn.getNullable("ssn")
 
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    @JsonProperty("dob") @ExcludeMissing fun _dob() = dob
+    @JsonProperty("dob") @ExcludeMissing fun _dob(): JsonField<String> = dob
 
-    @JsonProperty("emails") @ExcludeMissing fun _emails() = emails
+    @JsonProperty("emails") @ExcludeMissing fun _emails(): JsonField<List<Email>> = emails
 
     /**
      * Social Security Number of the individual in **encrypted** format. This field is only
      * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set in
      * the body.
      */
-    @JsonProperty("encrypted_ssn") @ExcludeMissing fun _encryptedSsn() = encryptedSsn
+    @JsonProperty("encrypted_ssn")
+    @ExcludeMissing
+    fun _encryptedSsn(): JsonField<String> = encryptedSsn
 
     /** The EEOC-defined ethnicity of the individual. */
-    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity() = ethnicity
+    @JsonProperty("ethnicity") @ExcludeMissing fun _ethnicity(): JsonField<Ethnicity> = ethnicity
 
     /** The legal first name of the individual. */
-    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+    @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
     /** The gender of the individual. */
-    @JsonProperty("gender") @ExcludeMissing fun _gender() = gender
+    @JsonProperty("gender") @ExcludeMissing fun _gender(): JsonField<Gender> = gender
 
     /** The legal last name of the individual. */
-    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+    @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
     /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName(): JsonField<String> = middleName
 
-    @JsonProperty("phone_numbers") @ExcludeMissing fun _phoneNumbers() = phoneNumbers
+    @JsonProperty("phone_numbers")
+    @ExcludeMissing
+    fun _phoneNumbers(): JsonField<List<PhoneNumber?>> = phoneNumbers
 
     /** The preferred name of the individual. */
-    @JsonProperty("preferred_name") @ExcludeMissing fun _preferredName() = preferredName
+    @JsonProperty("preferred_name")
+    @ExcludeMissing
+    fun _preferredName(): JsonField<String> = preferredName
 
-    @JsonProperty("residence") @ExcludeMissing fun _residence() = residence
+    @JsonProperty("residence") @ExcludeMissing fun _residence(): JsonField<Location> = residence
 
     /**
      * Social Security Number of the individual. This field is only available with the `ssn` scope
      * enabled and the `options: { include: ['ssn'] }` param set in the body.
      * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
      */
-    @JsonProperty("ssn") @ExcludeMissing fun _ssn() = ssn
+    @JsonProperty("ssn") @ExcludeMissing fun _ssn(): JsonField<String> = ssn
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -179,14 +185,14 @@ private constructor(
 
         private var id: JsonField<String> = JsonMissing.of()
         private var dob: JsonField<String> = JsonMissing.of()
-        private var emails: JsonField<List<Email>> = JsonMissing.of()
+        private var emails: JsonField<MutableList<Email>>? = null
         private var encryptedSsn: JsonField<String> = JsonMissing.of()
         private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
         private var firstName: JsonField<String> = JsonMissing.of()
         private var gender: JsonField<Gender> = JsonMissing.of()
         private var lastName: JsonField<String> = JsonMissing.of()
         private var middleName: JsonField<String> = JsonMissing.of()
-        private var phoneNumbers: JsonField<List<PhoneNumber?>> = JsonMissing.of()
+        private var phoneNumbers: JsonField<MutableList<PhoneNumber?>>? = null
         private var preferredName: JsonField<String> = JsonMissing.of()
         private var residence: JsonField<Location> = JsonMissing.of()
         private var ssn: JsonField<String> = JsonMissing.of()
@@ -195,14 +201,14 @@ private constructor(
         internal fun from(individual: Individual) = apply {
             id = individual.id
             dob = individual.dob
-            emails = individual.emails
+            emails = individual.emails.map { it.toMutableList() }
             encryptedSsn = individual.encryptedSsn
             ethnicity = individual.ethnicity
             firstName = individual.firstName
             gender = individual.gender
             lastName = individual.lastName
             middleName = individual.middleName
-            phoneNumbers = individual.phoneNumbers
+            phoneNumbers = individual.phoneNumbers.map { it.toMutableList() }
             preferredName = individual.preferredName
             residence = individual.residence
             ssn = individual.ssn
@@ -215,20 +221,33 @@ private constructor(
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
-        fun dob(dob: String) = dob(JsonField.of(dob))
+        fun dob(dob: String?) = dob(JsonField.ofNullable(dob))
 
         fun dob(dob: JsonField<String>) = apply { this.dob = dob }
 
-        fun emails(emails: List<Email>) = emails(JsonField.of(emails))
+        fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
 
-        fun emails(emails: JsonField<List<Email>>) = apply { this.emails = emails }
+        fun emails(emails: JsonField<List<Email>>) = apply {
+            this.emails = emails.map { it.toMutableList() }
+        }
+
+        fun addEmail(email: Email) = apply {
+            emails =
+                (emails ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(email)
+                }
+        }
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        fun encryptedSsn(encryptedSsn: String) = encryptedSsn(JsonField.of(encryptedSsn))
+        fun encryptedSsn(encryptedSsn: String?) = encryptedSsn(JsonField.ofNullable(encryptedSsn))
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
@@ -240,51 +259,63 @@ private constructor(
         }
 
         /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Ethnicity) = ethnicity(JsonField.of(ethnicity))
+        fun ethnicity(ethnicity: Ethnicity?) = ethnicity(JsonField.ofNullable(ethnicity))
 
         /** The EEOC-defined ethnicity of the individual. */
         fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = firstName(JsonField.of(firstName))
+        fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** The gender of the individual. */
-        fun gender(gender: Gender) = gender(JsonField.of(gender))
+        fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
 
         /** The gender of the individual. */
         fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = lastName(JsonField.of(lastName))
+        fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
+        fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
-        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>) =
-            phoneNumbers(JsonField.of(phoneNumbers))
+        fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) =
+            phoneNumbers(JsonField.ofNullable(phoneNumbers))
 
         fun phoneNumbers(phoneNumbers: JsonField<List<PhoneNumber?>>) = apply {
-            this.phoneNumbers = phoneNumbers
+            this.phoneNumbers = phoneNumbers.map { it.toMutableList() }
+        }
+
+        fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+            phoneNumbers =
+                (phoneNumbers ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(phoneNumber)
+                }
         }
 
         /** The preferred name of the individual. */
-        fun preferredName(preferredName: String) = preferredName(JsonField.of(preferredName))
+        fun preferredName(preferredName: String?) =
+            preferredName(JsonField.ofNullable(preferredName))
 
         /** The preferred name of the individual. */
         fun preferredName(preferredName: JsonField<String>) = apply {
             this.preferredName = preferredName
         }
 
-        fun residence(residence: Location) = residence(JsonField.of(residence))
+        fun residence(residence: Location?) = residence(JsonField.ofNullable(residence))
 
         fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
 
@@ -293,7 +324,7 @@ private constructor(
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        fun ssn(ssn: String) = ssn(JsonField.of(ssn))
+        fun ssn(ssn: String?) = ssn(JsonField.ofNullable(ssn))
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
@@ -325,14 +356,14 @@ private constructor(
             Individual(
                 id,
                 dob,
-                emails.map { it.toImmutable() },
+                (emails ?: JsonMissing.of()).map { it.toImmutable() },
                 encryptedSsn,
                 ethnicity,
                 firstName,
                 gender,
                 lastName,
                 middleName,
-                phoneNumbers.map { it.toImmutable() },
+                (phoneNumbers ?: JsonMissing.of()).map { it.toImmutable() },
                 preferredName,
                 residence,
                 ssn,
@@ -356,9 +387,9 @@ private constructor(
 
         fun type(): Type? = type.getNullable("type")
 
-        @JsonProperty("data") @ExcludeMissing fun _data() = data
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -397,7 +428,7 @@ private constructor(
 
             fun data(data: JsonField<String>) = apply { this.data = data }
 
-            fun type(type: Type) = type(JsonField.of(type))
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
@@ -681,9 +712,9 @@ private constructor(
 
         fun type(): Type? = type.getNullable("type")
 
-        @JsonProperty("data") @ExcludeMissing fun _data() = data
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -718,11 +749,11 @@ private constructor(
                 additionalProperties = phoneNumber.additionalProperties.toMutableMap()
             }
 
-            fun data(data: String) = data(JsonField.of(data))
+            fun data(data: String?) = data(JsonField.ofNullable(data))
 
             fun data(data: JsonField<String>) = apply { this.data = data }
 
-            fun type(type: Type) = type(JsonField.of(type))
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             fun type(type: JsonField<Type>) = apply { this.type = type }
 

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -50,19 +52,37 @@ constructor(
      * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
      * "v1" }`
      */
-    fun headers(): JsonValue? = body.headers()
+    fun _headers(): JsonValue = body._headers()
 
     /**
      * The query parameters for the forwarded request. This value must be specified as a valid JSON
      * object rather than a query string.
      */
-    fun params(): JsonValue? = body.params()
+    fun _params(): JsonValue = body._params()
+
+    /**
+     * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+     * `DELETE` , and `PATCH`.
+     */
+    fun _method(): JsonField<String> = body._method()
+
+    /**
+     * The URL route path for the forwarded request. This value must begin with a forward-slash ( /
+     * ) and may only contain alphanumeric characters, hyphens, and underscores.
+     */
+    fun _route(): JsonField<String> = body._route()
+
+    /**
+     * The body for the forwarded request. This value must be specified as either a string or a
+     * valid JSON object.
+     */
+    fun _data(): JsonField<String> = body._data()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): RequestForwardingForwardBody = body
 
@@ -75,11 +95,17 @@ constructor(
     class RequestForwardingForwardBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("method") private val method: String,
-        @JsonProperty("route") private val route: String,
-        @JsonProperty("data") private val data: String?,
-        @JsonProperty("headers") private val headers: JsonValue?,
-        @JsonProperty("params") private val params: JsonValue?,
+        @JsonProperty("method")
+        @ExcludeMissing
+        private val method: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("route")
+        @ExcludeMissing
+        private val route: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("data")
+        @ExcludeMissing
+        private val data: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("headers") @ExcludeMissing private val headers: JsonValue = JsonMissing.of(),
+        @JsonProperty("params") @ExcludeMissing private val params: JsonValue = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
@@ -88,36 +114,65 @@ constructor(
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
          */
-        @JsonProperty("method") fun method(): String = method
+        fun method(): String = method.getRequired("method")
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
-        @JsonProperty("route") fun route(): String = route
+        fun route(): String = route.getRequired("route")
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        @JsonProperty("data") fun data(): String? = data
+        fun data(): String? = data.getNullable("data")
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        @JsonProperty("headers") fun headers(): JsonValue? = headers
+        @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        @JsonProperty("params") fun params(): JsonValue? = params
+        @JsonProperty("params") @ExcludeMissing fun _params(): JsonValue = params
+
+        /**
+         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+         * `DELETE` , and `PATCH`.
+         */
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
+
+        /**
+         * The URL route path for the forwarded request. This value must begin with a forward-slash
+         * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
+         */
+        @JsonProperty("route") @ExcludeMissing fun _route(): JsonField<String> = route
+
+        /**
+         * The body for the forwarded request. This value must be specified as either a string or a
+         * valid JSON object.
+         */
+        @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): RequestForwardingForwardBody = apply {
+            if (!validated) {
+                method()
+                route()
+                data()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -128,11 +183,11 @@ constructor(
 
         class Builder {
 
-            private var method: String? = null
-            private var route: String? = null
-            private var data: String? = null
-            private var headers: JsonValue? = null
-            private var params: JsonValue? = null
+            private var method: JsonField<String>? = null
+            private var route: JsonField<String>? = null
+            private var data: JsonField<String> = JsonMissing.of()
+            private var headers: JsonValue = JsonMissing.of()
+            private var params: JsonValue = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(requestForwardingForwardBody: RequestForwardingForwardBody) = apply {
@@ -149,33 +204,52 @@ constructor(
              * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
              * `PUT` , `DELETE` , and `PATCH`.
              */
-            fun method(method: String) = apply { this.method = method }
+            fun method(method: String) = method(JsonField.of(method))
+
+            /**
+             * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` ,
+             * `PUT` , `DELETE` , and `PATCH`.
+             */
+            fun method(method: JsonField<String>) = apply { this.method = method }
 
             /**
              * The URL route path for the forwarded request. This value must begin with a
              * forward-slash ( / ) and may only contain alphanumeric characters, hyphens, and
              * underscores.
              */
-            fun route(route: String) = apply { this.route = route }
+            fun route(route: String) = route(JsonField.of(route))
+
+            /**
+             * The URL route path for the forwarded request. This value must begin with a
+             * forward-slash ( / ) and may only contain alphanumeric characters, hyphens, and
+             * underscores.
+             */
+            fun route(route: JsonField<String>) = apply { this.route = route }
 
             /**
              * The body for the forwarded request. This value must be specified as either a string
              * or a valid JSON object.
              */
-            fun data(data: String?) = apply { this.data = data }
+            fun data(data: String?) = data(JsonField.ofNullable(data))
+
+            /**
+             * The body for the forwarded request. This value must be specified as either a string
+             * or a valid JSON object.
+             */
+            fun data(data: JsonField<String>) = apply { this.data = data }
 
             /**
              * The HTTP headers to include on the forwarded request. This value must be specified as
              * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
              * "X-API-Version": "v1" }`
              */
-            fun headers(headers: JsonValue?) = apply { this.headers = headers }
+            fun headers(headers: JsonValue) = apply { this.headers = headers }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
-            fun params(params: JsonValue?) = apply { this.params = params }
+            fun params(params: JsonValue) = apply { this.params = params }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -253,10 +327,22 @@ constructor(
         fun method(method: String) = apply { body.method(method) }
 
         /**
+         * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
+         * `DELETE` , and `PATCH`.
+         */
+        fun method(method: JsonField<String>) = apply { body.method(method) }
+
+        /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
         fun route(route: String) = apply { body.route(route) }
+
+        /**
+         * The URL route path for the forwarded request. This value must begin with a forward-slash
+         * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
+         */
+        fun route(route: JsonField<String>) = apply { body.route(route) }
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
@@ -265,17 +351,42 @@ constructor(
         fun data(data: String?) = apply { body.data(data) }
 
         /**
+         * The body for the forwarded request. This value must be specified as either a string or a
+         * valid JSON object.
+         */
+        fun data(data: JsonField<String>) = apply { body.data(data) }
+
+        /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        fun headers(headers: JsonValue?) = apply { body.headers(headers) }
+        fun headers(headers: JsonValue) = apply { body.headers(headers) }
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        fun params(params: JsonValue?) = apply { body.params(params) }
+        fun params(params: JsonValue) = apply { body.params(params) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -373,25 +484,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): RequestForwardingForwardParams =

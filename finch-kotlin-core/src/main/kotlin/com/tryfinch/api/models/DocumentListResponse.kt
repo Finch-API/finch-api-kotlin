@@ -32,9 +32,11 @@ private constructor(
 
     fun paging(): Paging = paging.getRequired("paging")
 
-    @JsonProperty("documents") @ExcludeMissing fun _documents() = documents
+    @JsonProperty("documents")
+    @ExcludeMissing
+    fun _documents(): JsonField<List<DocumentResponse>> = documents
 
-    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
+    @JsonProperty("paging") @ExcludeMissing fun _paging(): JsonField<Paging> = paging
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -59,12 +61,12 @@ private constructor(
 
     class Builder {
 
-        private var documents: JsonField<List<DocumentResponse>> = JsonMissing.of()
-        private var paging: JsonField<Paging> = JsonMissing.of()
+        private var documents: JsonField<MutableList<DocumentResponse>>? = null
+        private var paging: JsonField<Paging>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(documentListResponse: DocumentListResponse) = apply {
-            documents = documentListResponse.documents
+            documents = documentListResponse.documents.map { it.toMutableList() }
             paging = documentListResponse.paging
             additionalProperties = documentListResponse.additionalProperties.toMutableMap()
         }
@@ -72,7 +74,18 @@ private constructor(
         fun documents(documents: List<DocumentResponse>) = documents(JsonField.of(documents))
 
         fun documents(documents: JsonField<List<DocumentResponse>>) = apply {
-            this.documents = documents
+            this.documents = documents.map { it.toMutableList() }
+        }
+
+        fun addDocument(document: DocumentResponse) = apply {
+            documents =
+                (documents ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(document)
+                }
         }
 
         fun paging(paging: Paging) = paging(JsonField.of(paging))
@@ -100,8 +113,9 @@ private constructor(
 
         fun build(): DocumentListResponse =
             DocumentListResponse(
-                documents.map { it.toImmutable() },
-                paging,
+                checkNotNull(documents) { "`documents` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(paging) { "`paging` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }

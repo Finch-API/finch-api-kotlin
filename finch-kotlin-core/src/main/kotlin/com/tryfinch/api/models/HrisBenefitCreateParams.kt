@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -37,11 +39,22 @@ constructor(
     /** Type of benefit. */
     fun type(): BenefitType? = body.type()
 
+    /**
+     * Name of the benefit as it appears in the provider and pay statements. Recommend limiting this
+     * to <30 characters due to limitations in specific providers (e.g. Justworks).
+     */
+    fun _description(): JsonField<String> = body._description()
+
+    fun _frequency(): JsonField<BenefitFrequency> = body._frequency()
+
+    /** Type of benefit. */
+    fun _type(): JsonField<BenefitType> = body._type()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): HrisBenefitCreateBody = body
 
@@ -53,9 +66,15 @@ constructor(
     class HrisBenefitCreateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("description") private val description: String?,
-        @JsonProperty("frequency") private val frequency: BenefitFrequency?,
-        @JsonProperty("type") private val type: BenefitType?,
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("frequency")
+        @ExcludeMissing
+        private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+        @JsonProperty("type")
+        @ExcludeMissing
+        private val type: JsonField<BenefitType> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
@@ -64,16 +83,42 @@ constructor(
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): String? = description.getNullable("description")
 
-        @JsonProperty("frequency") fun frequency(): BenefitFrequency? = frequency
+        fun frequency(): BenefitFrequency? = frequency.getNullable("frequency")
 
         /** Type of benefit. */
-        @JsonProperty("type") fun type(): BenefitType? = type
+        fun type(): BenefitType? = type.getNullable("type")
+
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        @JsonProperty("frequency")
+        @ExcludeMissing
+        fun _frequency(): JsonField<BenefitFrequency> = frequency
+
+        /** Type of benefit. */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisBenefitCreateBody = apply {
+            if (!validated) {
+                description()
+                frequency()
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -84,9 +129,9 @@ constructor(
 
         class Builder {
 
-            private var description: String? = null
-            private var frequency: BenefitFrequency? = null
-            private var type: BenefitType? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
+            private var type: JsonField<BenefitType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(hrisBenefitCreateBody: HrisBenefitCreateBody) = apply {
@@ -101,12 +146,28 @@ constructor(
              * limiting this to <30 characters due to limitations in specific providers (e.g.
              * Justworks).
              */
-            fun description(description: String?) = apply { this.description = description }
+            fun description(description: String) = description(JsonField.of(description))
 
-            fun frequency(frequency: BenefitFrequency?) = apply { this.frequency = frequency }
+            /**
+             * Name of the benefit as it appears in the provider and pay statements. Recommend
+             * limiting this to <30 characters due to limitations in specific providers (e.g.
+             * Justworks).
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
+
+            fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
+                this.frequency = frequency
+            }
 
             /** Type of benefit. */
-            fun type(type: BenefitType?) = apply { this.type = type }
+            fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+
+            /** Type of benefit. */
+            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -178,12 +239,42 @@ constructor(
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        fun description(description: String?) = apply { body.description(description) }
+        fun description(description: String) = apply { body.description(description) }
+
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
+        fun frequency(frequency: JsonField<BenefitFrequency>) = apply { body.frequency(frequency) }
+
         /** Type of benefit. */
         fun type(type: BenefitType?) = apply { body.type(type) }
+
+        /** Type of benefit. */
+        fun type(type: JsonField<BenefitType>) = apply { body.type(type) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -281,25 +372,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitCreateParams =

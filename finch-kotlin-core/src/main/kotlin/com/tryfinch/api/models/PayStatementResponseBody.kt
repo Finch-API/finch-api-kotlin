@@ -33,10 +33,12 @@ private constructor(
     /** The array of pay statements for the current payment. */
     fun payStatements(): List<PayStatement>? = payStatements.getNullable("pay_statements")
 
-    @JsonProperty("paging") @ExcludeMissing fun _paging() = paging
+    @JsonProperty("paging") @ExcludeMissing fun _paging(): JsonField<Paging> = paging
 
     /** The array of pay statements for the current payment. */
-    @JsonProperty("pay_statements") @ExcludeMissing fun _payStatements() = payStatements
+    @JsonProperty("pay_statements")
+    @ExcludeMissing
+    fun _payStatements(): JsonField<List<PayStatement>> = payStatements
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -62,12 +64,12 @@ private constructor(
     class Builder {
 
         private var paging: JsonField<Paging> = JsonMissing.of()
-        private var payStatements: JsonField<List<PayStatement>> = JsonMissing.of()
+        private var payStatements: JsonField<MutableList<PayStatement>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payStatementResponseBody: PayStatementResponseBody) = apply {
             paging = payStatementResponseBody.paging
-            payStatements = payStatementResponseBody.payStatements
+            payStatements = payStatementResponseBody.payStatements.map { it.toMutableList() }
             additionalProperties = payStatementResponseBody.additionalProperties.toMutableMap()
         }
 
@@ -81,7 +83,19 @@ private constructor(
 
         /** The array of pay statements for the current payment. */
         fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
-            this.payStatements = payStatements
+            this.payStatements = payStatements.map { it.toMutableList() }
+        }
+
+        /** The array of pay statements for the current payment. */
+        fun addPayStatement(payStatement: PayStatement) = apply {
+            payStatements =
+                (payStatements ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(payStatement)
+                }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -106,7 +120,7 @@ private constructor(
         fun build(): PayStatementResponseBody =
             PayStatementResponseBody(
                 paging,
-                payStatements.map { it.toImmutable() },
+                (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

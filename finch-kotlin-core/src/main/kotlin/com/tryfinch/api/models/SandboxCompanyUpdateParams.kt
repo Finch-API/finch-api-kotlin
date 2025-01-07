@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -49,11 +50,34 @@ constructor(
     /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
     fun primaryPhoneNumber(): String? = body.primaryPhoneNumber()
 
+    /** An array of bank account objects associated with the payroll/HRIS system. */
+    fun _accounts(): JsonField<List<Account>> = body._accounts()
+
+    /** The array of company departments. */
+    fun _departments(): JsonField<List<Department?>> = body._departments()
+
+    /** The employer identification number. */
+    fun _ein(): JsonField<String> = body._ein()
+
+    /** The entity type object. */
+    fun _entity(): JsonField<Entity> = body._entity()
+
+    /** The legal name of the company. */
+    fun _legalName(): JsonField<String> = body._legalName()
+
+    fun _locations(): JsonField<List<Location?>> = body._locations()
+
+    /** The email of the main administrator on the account. */
+    fun _primaryEmail(): JsonField<String> = body._primaryEmail()
+
+    /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+    fun _primaryPhoneNumber(): JsonField<String> = body._primaryPhoneNumber()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): SandboxCompanyUpdateBody = body
 
@@ -65,44 +89,107 @@ constructor(
     class SandboxCompanyUpdateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("accounts") private val accounts: List<Account>?,
-        @JsonProperty("departments") private val departments: List<Department?>?,
-        @JsonProperty("ein") private val ein: String?,
-        @JsonProperty("entity") private val entity: Entity?,
-        @JsonProperty("legal_name") private val legalName: String?,
-        @JsonProperty("locations") private val locations: List<Location?>?,
-        @JsonProperty("primary_email") private val primaryEmail: String?,
-        @JsonProperty("primary_phone_number") private val primaryPhoneNumber: String?,
+        @JsonProperty("accounts")
+        @ExcludeMissing
+        private val accounts: JsonField<List<Account>> = JsonMissing.of(),
+        @JsonProperty("departments")
+        @ExcludeMissing
+        private val departments: JsonField<List<Department?>> = JsonMissing.of(),
+        @JsonProperty("ein") @ExcludeMissing private val ein: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("entity")
+        @ExcludeMissing
+        private val entity: JsonField<Entity> = JsonMissing.of(),
+        @JsonProperty("legal_name")
+        @ExcludeMissing
+        private val legalName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("locations")
+        @ExcludeMissing
+        private val locations: JsonField<List<Location?>> = JsonMissing.of(),
+        @JsonProperty("primary_email")
+        @ExcludeMissing
+        private val primaryEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("primary_phone_number")
+        @ExcludeMissing
+        private val primaryPhoneNumber: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        @JsonProperty("accounts") fun accounts(): List<Account>? = accounts
+        fun accounts(): List<Account>? = accounts.getNullable("accounts")
 
         /** The array of company departments. */
-        @JsonProperty("departments") fun departments(): List<Department?>? = departments
+        fun departments(): List<Department?>? = departments.getNullable("departments")
 
         /** The employer identification number. */
-        @JsonProperty("ein") fun ein(): String? = ein
+        fun ein(): String? = ein.getNullable("ein")
 
         /** The entity type object. */
-        @JsonProperty("entity") fun entity(): Entity? = entity
+        fun entity(): Entity? = entity.getNullable("entity")
 
         /** The legal name of the company. */
-        @JsonProperty("legal_name") fun legalName(): String? = legalName
+        fun legalName(): String? = legalName.getNullable("legal_name")
 
-        @JsonProperty("locations") fun locations(): List<Location?>? = locations
+        fun locations(): List<Location?>? = locations.getNullable("locations")
 
         /** The email of the main administrator on the account. */
-        @JsonProperty("primary_email") fun primaryEmail(): String? = primaryEmail
+        fun primaryEmail(): String? = primaryEmail.getNullable("primary_email")
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        @JsonProperty("primary_phone_number") fun primaryPhoneNumber(): String? = primaryPhoneNumber
+        fun primaryPhoneNumber(): String? = primaryPhoneNumber.getNullable("primary_phone_number")
+
+        /** An array of bank account objects associated with the payroll/HRIS system. */
+        @JsonProperty("accounts")
+        @ExcludeMissing
+        fun _accounts(): JsonField<List<Account>> = accounts
+
+        /** The array of company departments. */
+        @JsonProperty("departments")
+        @ExcludeMissing
+        fun _departments(): JsonField<List<Department?>> = departments
+
+        /** The employer identification number. */
+        @JsonProperty("ein") @ExcludeMissing fun _ein(): JsonField<String> = ein
+
+        /** The entity type object. */
+        @JsonProperty("entity") @ExcludeMissing fun _entity(): JsonField<Entity> = entity
+
+        /** The legal name of the company. */
+        @JsonProperty("legal_name") @ExcludeMissing fun _legalName(): JsonField<String> = legalName
+
+        @JsonProperty("locations")
+        @ExcludeMissing
+        fun _locations(): JsonField<List<Location?>> = locations
+
+        /** The email of the main administrator on the account. */
+        @JsonProperty("primary_email")
+        @ExcludeMissing
+        fun _primaryEmail(): JsonField<String> = primaryEmail
+
+        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        @JsonProperty("primary_phone_number")
+        @ExcludeMissing
+        fun _primaryPhoneNumber(): JsonField<String> = primaryPhoneNumber
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): SandboxCompanyUpdateBody = apply {
+            if (!validated) {
+                accounts()?.forEach { it.validate() }
+                departments()?.forEach { it?.validate() }
+                ein()
+                entity()?.validate()
+                legalName()
+                locations()?.forEach { it?.validate() }
+                primaryEmail()
+                primaryPhoneNumber()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -113,70 +200,119 @@ constructor(
 
         class Builder {
 
-            private var accounts: MutableList<Account>? = null
-            private var departments: MutableList<Department?>? = null
-            private var ein: String? = null
-            private var entity: Entity? = null
-            private var legalName: String? = null
-            private var locations: MutableList<Location?>? = null
-            private var primaryEmail: String? = null
-            private var primaryPhoneNumber: String? = null
+            private var accounts: JsonField<MutableList<Account>>? = null
+            private var departments: JsonField<MutableList<Department?>>? = null
+            private var ein: JsonField<String>? = null
+            private var entity: JsonField<Entity>? = null
+            private var legalName: JsonField<String>? = null
+            private var locations: JsonField<MutableList<Location?>>? = null
+            private var primaryEmail: JsonField<String>? = null
+            private var primaryPhoneNumber: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                accounts = sandboxCompanyUpdateBody.accounts?.toMutableList()
-                departments = sandboxCompanyUpdateBody.departments?.toMutableList()
+                accounts = sandboxCompanyUpdateBody.accounts.map { it.toMutableList() }
+                departments = sandboxCompanyUpdateBody.departments.map { it.toMutableList() }
                 ein = sandboxCompanyUpdateBody.ein
                 entity = sandboxCompanyUpdateBody.entity
                 legalName = sandboxCompanyUpdateBody.legalName
-                locations = sandboxCompanyUpdateBody.locations?.toMutableList()
+                locations = sandboxCompanyUpdateBody.locations.map { it.toMutableList() }
                 primaryEmail = sandboxCompanyUpdateBody.primaryEmail
                 primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
                 additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
-            fun accounts(accounts: List<Account>?) = apply {
-                this.accounts = accounts?.toMutableList()
+            fun accounts(accounts: List<Account>?) = accounts(JsonField.ofNullable(accounts))
+
+            /** An array of bank account objects associated with the payroll/HRIS system. */
+            fun accounts(accounts: JsonField<List<Account>>) = apply {
+                this.accounts = accounts.map { it.toMutableList() }
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
             fun addAccount(account: Account) = apply {
-                accounts = (accounts ?: mutableListOf()).apply { add(account) }
+                accounts =
+                    (accounts ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(account)
+                    }
             }
 
             /** The array of company departments. */
-            fun departments(departments: List<Department?>?) = apply {
-                this.departments = departments?.toMutableList()
+            fun departments(departments: List<Department?>?) =
+                departments(JsonField.ofNullable(departments))
+
+            /** The array of company departments. */
+            fun departments(departments: JsonField<List<Department?>>) = apply {
+                this.departments = departments.map { it.toMutableList() }
             }
 
             /** The array of company departments. */
             fun addDepartment(department: Department) = apply {
-                departments = (departments ?: mutableListOf()).apply { add(department) }
+                departments =
+                    (departments ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(department)
+                    }
             }
 
             /** The employer identification number. */
-            fun ein(ein: String?) = apply { this.ein = ein }
+            fun ein(ein: String?) = ein(JsonField.ofNullable(ein))
+
+            /** The employer identification number. */
+            fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
             /** The entity type object. */
-            fun entity(entity: Entity?) = apply { this.entity = entity }
+            fun entity(entity: Entity?) = entity(JsonField.ofNullable(entity))
+
+            /** The entity type object. */
+            fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
             /** The legal name of the company. */
-            fun legalName(legalName: String?) = apply { this.legalName = legalName }
+            fun legalName(legalName: String?) = legalName(JsonField.ofNullable(legalName))
 
-            fun locations(locations: List<Location?>?) = apply {
-                this.locations = locations?.toMutableList()
+            /** The legal name of the company. */
+            fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
+
+            fun locations(locations: List<Location?>?) = locations(JsonField.ofNullable(locations))
+
+            fun locations(locations: JsonField<List<Location?>>) = apply {
+                this.locations = locations.map { it.toMutableList() }
             }
 
             fun addLocation(location: Location) = apply {
-                locations = (locations ?: mutableListOf()).apply { add(location) }
+                locations =
+                    (locations ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(location)
+                    }
             }
 
             /** The email of the main administrator on the account. */
-            fun primaryEmail(primaryEmail: String?) = apply { this.primaryEmail = primaryEmail }
+            fun primaryEmail(primaryEmail: String?) =
+                primaryEmail(JsonField.ofNullable(primaryEmail))
+
+            /** The email of the main administrator on the account. */
+            fun primaryEmail(primaryEmail: JsonField<String>) = apply {
+                this.primaryEmail = primaryEmail
+            }
 
             /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-            fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
+            fun primaryPhoneNumber(primaryPhoneNumber: String?) =
+                primaryPhoneNumber(JsonField.ofNullable(primaryPhoneNumber))
+
+            /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+            fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
                 this.primaryPhoneNumber = primaryPhoneNumber
             }
 
@@ -201,14 +337,19 @@ constructor(
 
             fun build(): SandboxCompanyUpdateBody =
                 SandboxCompanyUpdateBody(
-                    accounts?.toImmutable(),
-                    departments?.toImmutable(),
-                    ein,
-                    entity,
-                    legalName,
-                    locations?.toImmutable(),
-                    primaryEmail,
-                    primaryPhoneNumber,
+                    checkNotNull(accounts) { "`accounts` is required but was not set" }
+                        .map { it.toImmutable() },
+                    checkNotNull(departments) { "`departments` is required but was not set" }
+                        .map { it.toImmutable() },
+                    checkNotNull(ein) { "`ein` is required but was not set" },
+                    checkNotNull(entity) { "`entity` is required but was not set" },
+                    checkNotNull(legalName) { "`legalName` is required but was not set" },
+                    checkNotNull(locations) { "`locations` is required but was not set" }
+                        .map { it.toImmutable() },
+                    checkNotNull(primaryEmail) { "`primaryEmail` is required but was not set" },
+                    checkNotNull(primaryPhoneNumber) {
+                        "`primaryPhoneNumber` is required but was not set"
+                    },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -255,10 +396,18 @@ constructor(
         fun accounts(accounts: List<Account>?) = apply { body.accounts(accounts) }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
+        fun accounts(accounts: JsonField<List<Account>>) = apply { body.accounts(accounts) }
+
+        /** An array of bank account objects associated with the payroll/HRIS system. */
         fun addAccount(account: Account) = apply { body.addAccount(account) }
 
         /** The array of company departments. */
         fun departments(departments: List<Department?>?) = apply { body.departments(departments) }
+
+        /** The array of company departments. */
+        fun departments(departments: JsonField<List<Department?>>) = apply {
+            body.departments(departments)
+        }
 
         /** The array of company departments. */
         fun addDepartment(department: Department) = apply { body.addDepartment(department) }
@@ -266,22 +415,62 @@ constructor(
         /** The employer identification number. */
         fun ein(ein: String?) = apply { body.ein(ein) }
 
+        /** The employer identification number. */
+        fun ein(ein: JsonField<String>) = apply { body.ein(ein) }
+
         /** The entity type object. */
         fun entity(entity: Entity?) = apply { body.entity(entity) }
+
+        /** The entity type object. */
+        fun entity(entity: JsonField<Entity>) = apply { body.entity(entity) }
 
         /** The legal name of the company. */
         fun legalName(legalName: String?) = apply { body.legalName(legalName) }
 
+        /** The legal name of the company. */
+        fun legalName(legalName: JsonField<String>) = apply { body.legalName(legalName) }
+
         fun locations(locations: List<Location?>?) = apply { body.locations(locations) }
+
+        fun locations(locations: JsonField<List<Location?>>) = apply { body.locations(locations) }
 
         fun addLocation(location: Location) = apply { body.addLocation(location) }
 
         /** The email of the main administrator on the account. */
         fun primaryEmail(primaryEmail: String?) = apply { body.primaryEmail(primaryEmail) }
 
+        /** The email of the main administrator on the account. */
+        fun primaryEmail(primaryEmail: JsonField<String>) = apply {
+            body.primaryEmail(primaryEmail)
+        }
+
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: String?) = apply {
             body.primaryPhoneNumber(primaryPhoneNumber)
+        }
+
+        /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
+        fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
+            body.primaryPhoneNumber(primaryPhoneNumber)
+        }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -382,25 +571,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): SandboxCompanyUpdateParams =
             SandboxCompanyUpdateParams(
                 body.build(),
@@ -413,35 +583,85 @@ constructor(
     class Account
     @JsonCreator
     private constructor(
-        @JsonProperty("account_name") private val accountName: String?,
-        @JsonProperty("account_number") private val accountNumber: String?,
-        @JsonProperty("account_type") private val accountType: AccountType?,
-        @JsonProperty("institution_name") private val institutionName: String?,
-        @JsonProperty("routing_number") private val routingNumber: String?,
+        @JsonProperty("account_name")
+        @ExcludeMissing
+        private val accountName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_number")
+        @ExcludeMissing
+        private val accountNumber: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_type")
+        @ExcludeMissing
+        private val accountType: JsonField<AccountType> = JsonMissing.of(),
+        @JsonProperty("institution_name")
+        @ExcludeMissing
+        private val institutionName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("routing_number")
+        @ExcludeMissing
+        private val routingNumber: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The name of the bank associated in the payroll/HRIS system. */
-        @JsonProperty("account_name") fun accountName(): String? = accountName
+        fun accountName(): String? = accountName.getNullable("account_name")
 
         /** 10-12 digit number to specify the bank account */
-        @JsonProperty("account_number") fun accountNumber(): String? = accountNumber
+        fun accountNumber(): String? = accountNumber.getNullable("account_number")
 
         /** The type of bank account. */
-        @JsonProperty("account_type") fun accountType(): AccountType? = accountType
+        fun accountType(): AccountType? = accountType.getNullable("account_type")
 
         /** Name of the banking institution. */
-        @JsonProperty("institution_name") fun institutionName(): String? = institutionName
+        fun institutionName(): String? = institutionName.getNullable("institution_name")
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
          */
-        @JsonProperty("routing_number") fun routingNumber(): String? = routingNumber
+        fun routingNumber(): String? = routingNumber.getNullable("routing_number")
+
+        /** The name of the bank associated in the payroll/HRIS system. */
+        @JsonProperty("account_name")
+        @ExcludeMissing
+        fun _accountName(): JsonField<String> = accountName
+
+        /** 10-12 digit number to specify the bank account */
+        @JsonProperty("account_number")
+        @ExcludeMissing
+        fun _accountNumber(): JsonField<String> = accountNumber
+
+        /** The type of bank account. */
+        @JsonProperty("account_type")
+        @ExcludeMissing
+        fun _accountType(): JsonField<AccountType> = accountType
+
+        /** Name of the banking institution. */
+        @JsonProperty("institution_name")
+        @ExcludeMissing
+        fun _institutionName(): JsonField<String> = institutionName
+
+        /**
+         * A nine-digit code that's based on the U.S. Bank location where your account was opened.
+         */
+        @JsonProperty("routing_number")
+        @ExcludeMissing
+        fun _routingNumber(): JsonField<String> = routingNumber
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Account = apply {
+            if (!validated) {
+                accountName()
+                accountNumber()
+                accountType()
+                institutionName()
+                routingNumber()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -452,11 +672,11 @@ constructor(
 
         class Builder {
 
-            private var accountName: String? = null
-            private var accountNumber: String? = null
-            private var accountType: AccountType? = null
-            private var institutionName: String? = null
-            private var routingNumber: String? = null
+            private var accountName: JsonField<String> = JsonMissing.of()
+            private var accountNumber: JsonField<String> = JsonMissing.of()
+            private var accountType: JsonField<AccountType> = JsonMissing.of()
+            private var institutionName: JsonField<String> = JsonMissing.of()
+            private var routingNumber: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(account: Account) = apply {
@@ -469,16 +689,37 @@ constructor(
             }
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            fun accountName(accountName: String?) = apply { this.accountName = accountName }
+            fun accountName(accountName: String?) = accountName(JsonField.ofNullable(accountName))
+
+            /** The name of the bank associated in the payroll/HRIS system. */
+            fun accountName(accountName: JsonField<String>) = apply {
+                this.accountName = accountName
+            }
 
             /** 10-12 digit number to specify the bank account */
-            fun accountNumber(accountNumber: String?) = apply { this.accountNumber = accountNumber }
+            fun accountNumber(accountNumber: String?) =
+                accountNumber(JsonField.ofNullable(accountNumber))
+
+            /** 10-12 digit number to specify the bank account */
+            fun accountNumber(accountNumber: JsonField<String>) = apply {
+                this.accountNumber = accountNumber
+            }
 
             /** The type of bank account. */
-            fun accountType(accountType: AccountType?) = apply { this.accountType = accountType }
+            fun accountType(accountType: AccountType?) =
+                accountType(JsonField.ofNullable(accountType))
+
+            /** The type of bank account. */
+            fun accountType(accountType: JsonField<AccountType>) = apply {
+                this.accountType = accountType
+            }
 
             /** Name of the banking institution. */
-            fun institutionName(institutionName: String?) = apply {
+            fun institutionName(institutionName: String?) =
+                institutionName(JsonField.ofNullable(institutionName))
+
+            /** Name of the banking institution. */
+            fun institutionName(institutionName: JsonField<String>) = apply {
                 this.institutionName = institutionName
             }
 
@@ -486,7 +727,16 @@ constructor(
              * A nine-digit code that's based on the U.S. Bank location where your account was
              * opened.
              */
-            fun routingNumber(routingNumber: String?) = apply { this.routingNumber = routingNumber }
+            fun routingNumber(routingNumber: String?) =
+                routingNumber(JsonField.ofNullable(routingNumber))
+
+            /**
+             * A nine-digit code that's based on the U.S. Bank location where your account was
+             * opened.
+             */
+            fun routingNumber(routingNumber: JsonField<String>) = apply {
+                this.routingNumber = routingNumber
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -597,21 +847,41 @@ constructor(
     class Department
     @JsonCreator
     private constructor(
-        @JsonProperty("name") private val name: String?,
-        @JsonProperty("parent") private val parent: Parent?,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("parent")
+        @ExcludeMissing
+        private val parent: JsonField<Parent> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The department name. */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String? = name.getNullable("name")
 
         /** The parent department, if present. */
-        @JsonProperty("parent") fun parent(): Parent? = parent
+        fun parent(): Parent? = parent.getNullable("parent")
+
+        /** The department name. */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** The parent department, if present. */
+        @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Department = apply {
+            if (!validated) {
+                name()
+                parent()?.validate()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -622,8 +892,8 @@ constructor(
 
         class Builder {
 
-            private var name: String? = null
-            private var parent: Parent? = null
+            private var name: JsonField<String> = JsonMissing.of()
+            private var parent: JsonField<Parent> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(department: Department) = apply {
@@ -633,10 +903,16 @@ constructor(
             }
 
             /** The department name. */
-            fun name(name: String?) = apply { this.name = name }
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /** The department name. */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The parent department, if present. */
-            fun parent(parent: Parent?) = apply { this.parent = parent }
+            fun parent(parent: Parent?) = parent(JsonField.ofNullable(parent))
+
+            /** The parent department, if present. */
+            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -670,17 +946,31 @@ constructor(
         class Parent
         @JsonCreator
         private constructor(
-            @JsonProperty("name") private val name: String?,
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
             @JsonAnySetter
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
             /** The parent department's name. */
-            @JsonProperty("name") fun name(): String? = name
+            fun name(): String? = name.getNullable("name")
+
+            /** The parent department's name. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): Parent = apply {
+                if (!validated) {
+                    name()
+                    validated = true
+                }
+            }
 
             fun toBuilder() = Builder().from(this)
 
@@ -691,7 +981,7 @@ constructor(
 
             class Builder {
 
-                private var name: String? = null
+                private var name: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(parent: Parent) = apply {
@@ -700,7 +990,10 @@ constructor(
                 }
 
                 /** The parent department's name. */
-                fun name(name: String?) = apply { this.name = name }
+                fun name(name: String?) = name(JsonField.ofNullable(name))
+
+                /** The parent department's name. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -768,21 +1061,39 @@ constructor(
     class Entity
     @JsonCreator
     private constructor(
-        @JsonProperty("subtype") private val subtype: Subtype?,
-        @JsonProperty("type") private val type: Type?,
+        @JsonProperty("subtype")
+        @ExcludeMissing
+        private val subtype: JsonField<Subtype> = JsonMissing.of(),
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The tax payer subtype of the company. */
-        @JsonProperty("subtype") fun subtype(): Subtype? = subtype
+        fun subtype(): Subtype? = subtype.getNullable("subtype")
 
         /** The tax payer type of the company. */
-        @JsonProperty("type") fun type(): Type? = type
+        fun type(): Type? = type.getNullable("type")
+
+        /** The tax payer subtype of the company. */
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
+
+        /** The tax payer type of the company. */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Entity = apply {
+            if (!validated) {
+                subtype()
+                type()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -793,8 +1104,8 @@ constructor(
 
         class Builder {
 
-            private var subtype: Subtype? = null
-            private var type: Type? = null
+            private var subtype: JsonField<Subtype> = JsonMissing.of()
+            private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(entity: Entity) = apply {
@@ -804,10 +1115,16 @@ constructor(
             }
 
             /** The tax payer subtype of the company. */
-            fun subtype(subtype: Subtype?) = apply { this.subtype = subtype }
+            fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
+
+            /** The tax payer subtype of the company. */
+            fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** The tax payer type of the company. */
-            fun type(type: Type?) = apply { this.type = type }
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
+
+            /** The tax payer type of the company. */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
