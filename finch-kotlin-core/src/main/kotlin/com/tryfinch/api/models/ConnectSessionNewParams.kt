@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -45,11 +46,30 @@ constructor(
 
     fun sandbox(): Sandbox? = body.sandbox()
 
+    fun _customerId(): JsonField<String> = body._customerId()
+
+    fun _customerName(): JsonField<String> = body._customerName()
+
+    fun _products(): JsonField<List<ConnectProducts>> = body._products()
+
+    fun _customerEmail(): JsonField<String> = body._customerEmail()
+
+    fun _integration(): JsonField<Integration> = body._integration()
+
+    fun _manual(): JsonField<Boolean> = body._manual()
+
+    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
+
+    fun _redirectUri(): JsonField<String> = body._redirectUri()
+
+    fun _sandbox(): JsonField<Sandbox> = body._sandbox()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): ConnectSessionNewBody = body
 
@@ -61,43 +81,113 @@ constructor(
     class ConnectSessionNewBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("customer_id") private val customerId: String,
-        @JsonProperty("customer_name") private val customerName: String,
-        @JsonProperty("products") private val products: List<ConnectProducts>,
-        @JsonProperty("customer_email") private val customerEmail: String?,
-        @JsonProperty("integration") private val integration: Integration?,
-        @JsonProperty("manual") private val manual: Boolean?,
-        @JsonProperty("minutes_to_expire") private val minutesToExpire: Double?,
-        @JsonProperty("redirect_uri") private val redirectUri: String?,
-        @JsonProperty("sandbox") private val sandbox: Sandbox?,
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        private val customerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        private val customerName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        private val customerEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("integration")
+        @ExcludeMissing
+        private val integration: JsonField<Integration> = JsonMissing.of(),
+        @JsonProperty("manual")
+        @ExcludeMissing
+        private val manual: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        private val minutesToExpire: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        private val redirectUri: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("sandbox")
+        @ExcludeMissing
+        private val sandbox: JsonField<Sandbox> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("customer_id") fun customerId(): String = customerId
+        fun customerId(): String = customerId.getRequired("customer_id")
 
-        @JsonProperty("customer_name") fun customerName(): String = customerName
+        fun customerName(): String = customerName.getRequired("customer_name")
 
-        @JsonProperty("products") fun products(): List<ConnectProducts> = products
+        fun products(): List<ConnectProducts> = products.getRequired("products")
 
-        @JsonProperty("customer_email") fun customerEmail(): String? = customerEmail
+        fun customerEmail(): String? = customerEmail.getNullable("customer_email")
 
-        @JsonProperty("integration") fun integration(): Integration? = integration
+        fun integration(): Integration? = integration.getNullable("integration")
 
-        @JsonProperty("manual") fun manual(): Boolean? = manual
+        fun manual(): Boolean? = manual.getNullable("manual")
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
          */
-        @JsonProperty("minutes_to_expire") fun minutesToExpire(): Double? = minutesToExpire
+        fun minutesToExpire(): Double? = minutesToExpire.getNullable("minutes_to_expire")
 
-        @JsonProperty("redirect_uri") fun redirectUri(): String? = redirectUri
+        fun redirectUri(): String? = redirectUri.getNullable("redirect_uri")
 
-        @JsonProperty("sandbox") fun sandbox(): Sandbox? = sandbox
+        fun sandbox(): Sandbox? = sandbox.getNullable("sandbox")
+
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        fun _customerId(): JsonField<String> = customerId
+
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        fun _customerName(): JsonField<String> = customerName
+
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<ConnectProducts>> = products
+
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        fun _customerEmail(): JsonField<String> = customerEmail
+
+        @JsonProperty("integration")
+        @ExcludeMissing
+        fun _integration(): JsonField<Integration> = integration
+
+        @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
+
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        fun _minutesToExpire(): JsonField<Double> = minutesToExpire
+
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        fun _redirectUri(): JsonField<String> = redirectUri
+
+        @JsonProperty("sandbox") @ExcludeMissing fun _sandbox(): JsonField<Sandbox> = sandbox
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectSessionNewBody = apply {
+            if (!validated) {
+                customerId()
+                customerName()
+                products()
+                customerEmail()
+                integration()?.validate()
+                manual()
+                minutesToExpire()
+                redirectUri()
+                sandbox()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -108,21 +198,21 @@ constructor(
 
         class Builder {
 
-            private var customerId: String? = null
-            private var customerName: String? = null
-            private var products: MutableList<ConnectProducts>? = null
-            private var customerEmail: String? = null
-            private var integration: Integration? = null
-            private var manual: Boolean? = null
-            private var minutesToExpire: Double? = null
-            private var redirectUri: String? = null
-            private var sandbox: Sandbox? = null
+            private var customerId: JsonField<String>? = null
+            private var customerName: JsonField<String>? = null
+            private var products: JsonField<MutableList<ConnectProducts>>? = null
+            private var customerEmail: JsonField<String> = JsonMissing.of()
+            private var integration: JsonField<Integration> = JsonMissing.of()
+            private var manual: JsonField<Boolean> = JsonMissing.of()
+            private var minutesToExpire: JsonField<Double> = JsonMissing.of()
+            private var redirectUri: JsonField<String> = JsonMissing.of()
+            private var sandbox: JsonField<Sandbox> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(connectSessionNewBody: ConnectSessionNewBody) = apply {
                 customerId = connectSessionNewBody.customerId
                 customerName = connectSessionNewBody.customerName
-                products = connectSessionNewBody.products.toMutableList()
+                products = connectSessionNewBody.products.map { it.toMutableList() }
                 customerEmail = connectSessionNewBody.customerEmail
                 integration = connectSessionNewBody.integration
                 manual = connectSessionNewBody.manual
@@ -132,33 +222,59 @@ constructor(
                 additionalProperties = connectSessionNewBody.additionalProperties.toMutableMap()
             }
 
-            fun customerId(customerId: String) = apply { this.customerId = customerId }
+            fun customerId(customerId: String) = customerId(JsonField.of(customerId))
 
-            fun customerName(customerName: String) = apply { this.customerName = customerName }
+            fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
-            fun products(products: List<ConnectProducts>) = apply {
-                this.products = products.toMutableList()
+            fun customerName(customerName: String) = customerName(JsonField.of(customerName))
+
+            fun customerName(customerName: JsonField<String>) = apply {
+                this.customerName = customerName
+            }
+
+            fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
+
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
             }
 
             fun addProduct(product: ConnectProducts) = apply {
-                products = (products ?: mutableListOf()).apply { add(product) }
+                products =
+                    (products ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(product)
+                    }
             }
 
-            fun customerEmail(customerEmail: String?) = apply { this.customerEmail = customerEmail }
+            fun customerEmail(customerEmail: String?) =
+                customerEmail(JsonField.ofNullable(customerEmail))
 
-            fun integration(integration: Integration?) = apply { this.integration = integration }
+            fun customerEmail(customerEmail: JsonField<String>) = apply {
+                this.customerEmail = customerEmail
+            }
 
-            fun manual(manual: Boolean?) = apply { this.manual = manual }
+            fun integration(integration: Integration?) =
+                integration(JsonField.ofNullable(integration))
+
+            fun integration(integration: JsonField<Integration>) = apply {
+                this.integration = integration
+            }
+
+            fun manual(manual: Boolean?) = manual(JsonField.ofNullable(manual))
 
             fun manual(manual: Boolean) = manual(manual as Boolean?)
+
+            fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Double?) = apply {
-                this.minutesToExpire = minutesToExpire
-            }
+            fun minutesToExpire(minutesToExpire: Double?) =
+                minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
              * The number of minutes until the session expires (defaults to 20,160, which is 14
@@ -167,9 +283,23 @@ constructor(
             fun minutesToExpire(minutesToExpire: Double) =
                 minutesToExpire(minutesToExpire as Double?)
 
-            fun redirectUri(redirectUri: String?) = apply { this.redirectUri = redirectUri }
+            /**
+             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * days)
+             */
+            fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
+                this.minutesToExpire = minutesToExpire
+            }
 
-            fun sandbox(sandbox: Sandbox?) = apply { this.sandbox = sandbox }
+            fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
+
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
+
+            fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
+
+            fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -195,7 +325,7 @@ constructor(
                     checkNotNull(customerId) { "`customerId` is required but was not set" },
                     checkNotNull(customerName) { "`customerName` is required but was not set" },
                     checkNotNull(products) { "`products` is required but was not set" }
-                        .toImmutable(),
+                        .map { it.toImmutable() },
                     customerEmail,
                     integration,
                     manual,
@@ -246,19 +376,37 @@ constructor(
 
         fun customerId(customerId: String) = apply { body.customerId(customerId) }
 
+        fun customerId(customerId: JsonField<String>) = apply { body.customerId(customerId) }
+
         fun customerName(customerName: String) = apply { body.customerName(customerName) }
 
+        fun customerName(customerName: JsonField<String>) = apply {
+            body.customerName(customerName)
+        }
+
         fun products(products: List<ConnectProducts>) = apply { body.products(products) }
+
+        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
         fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
+        fun customerEmail(customerEmail: JsonField<String>) = apply {
+            body.customerEmail(customerEmail)
+        }
+
         fun integration(integration: Integration?) = apply { body.integration(integration) }
+
+        fun integration(integration: JsonField<Integration>) = apply {
+            body.integration(integration)
+        }
 
         fun manual(manual: Boolean?) = apply { body.manual(manual) }
 
         fun manual(manual: Boolean) = manual(manual as Boolean?)
+
+        fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
         /**
          * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
@@ -272,9 +420,39 @@ constructor(
          */
         fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
+        /**
+         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         */
+        fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
+
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
+
         fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
+
+        fun sandbox(sandbox: JsonField<Sandbox>) = apply { body.sandbox(sandbox) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -372,25 +550,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): ConnectSessionNewParams =
@@ -498,19 +657,39 @@ constructor(
     class Integration
     @JsonCreator
     private constructor(
-        @JsonProperty("auth_method") private val authMethod: AuthMethod?,
-        @JsonProperty("provider") private val provider: String?,
+        @JsonProperty("auth_method")
+        @ExcludeMissing
+        private val authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+        @JsonProperty("provider")
+        @ExcludeMissing
+        private val provider: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("auth_method") fun authMethod(): AuthMethod? = authMethod
+        fun authMethod(): AuthMethod? = authMethod.getNullable("auth_method")
 
-        @JsonProperty("provider") fun provider(): String? = provider
+        fun provider(): String? = provider.getNullable("provider")
+
+        @JsonProperty("auth_method")
+        @ExcludeMissing
+        fun _authMethod(): JsonField<AuthMethod> = authMethod
+
+        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Integration = apply {
+            if (!validated) {
+                authMethod()
+                provider()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -521,8 +700,8 @@ constructor(
 
         class Builder {
 
-            private var authMethod: AuthMethod? = null
-            private var provider: String? = null
+            private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
+            private var provider: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(integration: Integration) = apply {
@@ -531,9 +710,15 @@ constructor(
                 additionalProperties = integration.additionalProperties.toMutableMap()
             }
 
-            fun authMethod(authMethod: AuthMethod?) = apply { this.authMethod = authMethod }
+            fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
 
-            fun provider(provider: String?) = apply { this.provider = provider }
+            fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
+                this.authMethod = authMethod
+            }
+
+            fun provider(provider: String?) = provider(JsonField.ofNullable(provider))
+
+            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

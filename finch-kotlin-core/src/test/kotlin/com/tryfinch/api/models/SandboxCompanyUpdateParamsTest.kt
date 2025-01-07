@@ -169,8 +169,28 @@ class SandboxCompanyUpdateParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = SandboxCompanyUpdateParams.builder().build()
+        val params =
+            SandboxCompanyUpdateParams.builder()
+                .accounts(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
+                .departments(listOf(SandboxCompanyUpdateParams.Department.builder().build()))
+                .ein("ein")
+                .entity(SandboxCompanyUpdateParams.Entity.builder().build())
+                .legalName("legal_name")
+                .locations(listOf(Location.builder().build()))
+                .primaryEmail("primary_email")
+                .primaryPhoneNumber("primary_phone_number")
+                .build()
         val body = params.getBody()
         assertThat(body).isNotNull
+        assertThat(body.accounts())
+            .isEqualTo(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
+        assertThat(body.departments())
+            .isEqualTo(listOf(SandboxCompanyUpdateParams.Department.builder().build()))
+        assertThat(body.ein()).isEqualTo("ein")
+        assertThat(body.entity()).isEqualTo(SandboxCompanyUpdateParams.Entity.builder().build())
+        assertThat(body.legalName()).isEqualTo("legal_name")
+        assertThat(body.locations()).isEqualTo(listOf(Location.builder().build()))
+        assertThat(body.primaryEmail()).isEqualTo("primary_email")
+        assertThat(body.primaryPhoneNumber()).isEqualTo("primary_phone_number")
     }
 }

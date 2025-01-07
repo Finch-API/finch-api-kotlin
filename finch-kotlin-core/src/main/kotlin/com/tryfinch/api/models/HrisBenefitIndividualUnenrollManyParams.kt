@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -29,11 +31,14 @@ constructor(
     /** Array of individual_ids to unenroll. */
     fun individualIds(): List<String>? = body.individualIds()
 
+    /** Array of individual_ids to unenroll. */
+    fun _individualIds(): JsonField<List<String>> = body._individualIds()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): HrisBenefitIndividualUnenrollManyBody = body
 
@@ -52,17 +57,33 @@ constructor(
     class HrisBenefitIndividualUnenrollManyBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("individual_ids") private val individualIds: List<String>?,
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        private val individualIds: JsonField<List<String>> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Array of individual_ids to unenroll. */
-        @JsonProperty("individual_ids") fun individualIds(): List<String>? = individualIds
+        fun individualIds(): List<String>? = individualIds.getNullable("individual_ids")
+
+        /** Array of individual_ids to unenroll. */
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        fun _individualIds(): JsonField<List<String>> = individualIds
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisBenefitIndividualUnenrollManyBody = apply {
+            if (!validated) {
+                individualIds()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -73,25 +94,37 @@ constructor(
 
         class Builder {
 
-            private var individualIds: MutableList<String>? = null
+            private var individualIds: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(
                 hrisBenefitIndividualUnenrollManyBody: HrisBenefitIndividualUnenrollManyBody
             ) = apply {
-                individualIds = hrisBenefitIndividualUnenrollManyBody.individualIds?.toMutableList()
+                individualIds =
+                    hrisBenefitIndividualUnenrollManyBody.individualIds.map { it.toMutableList() }
                 additionalProperties =
                     hrisBenefitIndividualUnenrollManyBody.additionalProperties.toMutableMap()
             }
 
             /** Array of individual_ids to unenroll. */
-            fun individualIds(individualIds: List<String>?) = apply {
-                this.individualIds = individualIds?.toMutableList()
+            fun individualIds(individualIds: List<String>) =
+                individualIds(JsonField.of(individualIds))
+
+            /** Array of individual_ids to unenroll. */
+            fun individualIds(individualIds: JsonField<List<String>>) = apply {
+                this.individualIds = individualIds.map { it.toMutableList() }
             }
 
             /** Array of individual_ids to unenroll. */
             fun addIndividualId(individualId: String) = apply {
-                individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
+                individualIds =
+                    (individualIds ?: JsonField.of(mutableListOf())).apply {
+                        (asKnown()
+                                ?: throw IllegalStateException(
+                                    "Field was set to non-list type: ${javaClass.simpleName}"
+                                ))
+                            .add(individualId)
+                    }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -115,7 +148,7 @@ constructor(
 
             fun build(): HrisBenefitIndividualUnenrollManyBody =
                 HrisBenefitIndividualUnenrollManyBody(
-                    individualIds?.toImmutable(),
+                    (individualIds ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -168,12 +201,34 @@ constructor(
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Array of individual_ids to unenroll. */
-        fun individualIds(individualIds: List<String>?) = apply {
+        fun individualIds(individualIds: List<String>) = apply { body.individualIds(individualIds) }
+
+        /** Array of individual_ids to unenroll. */
+        fun individualIds(individualIds: JsonField<List<String>>) = apply {
             body.individualIds(individualIds)
         }
 
         /** Array of individual_ids to unenroll. */
         fun addIndividualId(individualId: String) = apply { body.addIndividualId(individualId) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -271,25 +326,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitIndividualUnenrollManyParams =
