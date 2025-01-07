@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
+/** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
 constructor(
     private val body: ConnectSessionReauthenticateBody,
