@@ -7,6 +7,7 @@ import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
+/** Read company directory and organization structure */
 class HrisDirectoryListParams
 constructor(
     private val limit: Long?,
