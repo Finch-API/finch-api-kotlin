@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
+/** Update sandbox employment */
 class SandboxEmploymentUpdateParams
 constructor(
     private val individualId: String,

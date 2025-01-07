@@ -18,6 +18,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
+/** Update a sandbox company's data */
 class SandboxCompanyUpdateParams
 constructor(
     private val body: SandboxCompanyUpdateBody,
