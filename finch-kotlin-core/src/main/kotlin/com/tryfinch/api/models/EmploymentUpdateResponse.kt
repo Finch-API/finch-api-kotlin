@@ -138,64 +138,76 @@ private constructor(
     fun title(): String? = title.getNullable("title")
 
     /** A stable Finch `id` (UUID v4) for an individual in the company. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** Worker's compensation classification code for this employee */
-    @JsonProperty("class_code") @ExcludeMissing fun _classCode() = classCode
+    @JsonProperty("class_code") @ExcludeMissing fun _classCode(): JsonField<String> = classCode
 
     /**
      * Custom fields for the individual. These are fields which are defined by the employer in the
      * system. Custom fields are not currently supported for assisted connections.
      */
-    @JsonProperty("custom_fields") @ExcludeMissing fun _customFields() = customFields
+    @JsonProperty("custom_fields")
+    @ExcludeMissing
+    fun _customFields(): JsonField<List<CustomField>> = customFields
 
     /** The department object. */
-    @JsonProperty("department") @ExcludeMissing fun _department() = department
+    @JsonProperty("department")
+    @ExcludeMissing
+    fun _department(): JsonField<Department> = department
 
     /** The employment object. */
-    @JsonProperty("employment") @ExcludeMissing fun _employment() = employment
+    @JsonProperty("employment")
+    @ExcludeMissing
+    fun _employment(): JsonField<Employment> = employment
 
     /** The detailed employment status of the individual. */
-    @JsonProperty("employment_status") @ExcludeMissing fun _employmentStatus() = employmentStatus
+    @JsonProperty("employment_status")
+    @ExcludeMissing
+    fun _employmentStatus(): JsonField<EmploymentStatus> = employmentStatus
 
-    @JsonProperty("end_date") @ExcludeMissing fun _endDate() = endDate
+    @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
 
     /** The legal first name of the individual. */
-    @JsonProperty("first_name") @ExcludeMissing fun _firstName() = firstName
+    @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
     /**
      * The employee's income as reported by the provider. This may not always be annualized income,
      * but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
      * provider returns.
      */
-    @JsonProperty("income") @ExcludeMissing fun _income() = income
+    @JsonProperty("income") @ExcludeMissing fun _income(): JsonField<Income> = income
 
     /** The array of income history. */
-    @JsonProperty("income_history") @ExcludeMissing fun _incomeHistory() = incomeHistory
+    @JsonProperty("income_history")
+    @ExcludeMissing
+    fun _incomeHistory(): JsonField<List<Income?>> = incomeHistory
 
     /** `true` if the individual an an active employee or contractor at the company. */
-    @JsonProperty("is_active") @ExcludeMissing fun _isActive() = isActive
+    @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
 
     /** The legal last name of the individual. */
-    @JsonProperty("last_name") @ExcludeMissing fun _lastName() = lastName
+    @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
-    @JsonProperty("latest_rehire_date") @ExcludeMissing fun _latestRehireDate() = latestRehireDate
+    @JsonProperty("latest_rehire_date")
+    @ExcludeMissing
+    fun _latestRehireDate(): JsonField<String> = latestRehireDate
 
-    @JsonProperty("location") @ExcludeMissing fun _location() = location
+    @JsonProperty("location") @ExcludeMissing fun _location(): JsonField<Location> = location
 
     /** The manager object representing the manager of the individual within the org. */
-    @JsonProperty("manager") @ExcludeMissing fun _manager() = manager
+    @JsonProperty("manager") @ExcludeMissing fun _manager(): JsonField<Manager> = manager
 
     /** The legal middle name of the individual. */
-    @JsonProperty("middle_name") @ExcludeMissing fun _middleName() = middleName
+    @JsonProperty("middle_name") @ExcludeMissing fun _middleName(): JsonField<String> = middleName
 
     /** The source system's unique employment identifier for this individual */
-    @JsonProperty("source_id") @ExcludeMissing fun _sourceId() = sourceId
+    @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
 
-    @JsonProperty("start_date") @ExcludeMissing fun _startDate() = startDate
+    @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
 
     /** The current title of the individual. */
-    @JsonProperty("title") @ExcludeMissing fun _title() = title
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -239,14 +251,14 @@ private constructor(
 
         private var id: JsonField<String> = JsonMissing.of()
         private var classCode: JsonField<String> = JsonMissing.of()
-        private var customFields: JsonField<List<CustomField>> = JsonMissing.of()
+        private var customFields: JsonField<MutableList<CustomField>>? = null
         private var department: JsonField<Department> = JsonMissing.of()
         private var employment: JsonField<Employment> = JsonMissing.of()
         private var employmentStatus: JsonField<EmploymentStatus> = JsonMissing.of()
         private var endDate: JsonField<String> = JsonMissing.of()
         private var firstName: JsonField<String> = JsonMissing.of()
         private var income: JsonField<Income> = JsonMissing.of()
-        private var incomeHistory: JsonField<List<Income?>> = JsonMissing.of()
+        private var incomeHistory: JsonField<MutableList<Income?>>? = null
         private var isActive: JsonField<Boolean> = JsonMissing.of()
         private var lastName: JsonField<String> = JsonMissing.of()
         private var latestRehireDate: JsonField<String> = JsonMissing.of()
@@ -261,14 +273,14 @@ private constructor(
         internal fun from(employmentUpdateResponse: EmploymentUpdateResponse) = apply {
             id = employmentUpdateResponse.id
             classCode = employmentUpdateResponse.classCode
-            customFields = employmentUpdateResponse.customFields
+            customFields = employmentUpdateResponse.customFields.map { it.toMutableList() }
             department = employmentUpdateResponse.department
             employment = employmentUpdateResponse.employment
             employmentStatus = employmentUpdateResponse.employmentStatus
             endDate = employmentUpdateResponse.endDate
             firstName = employmentUpdateResponse.firstName
             income = employmentUpdateResponse.income
-            incomeHistory = employmentUpdateResponse.incomeHistory
+            incomeHistory = employmentUpdateResponse.incomeHistory.map { it.toMutableList() }
             isActive = employmentUpdateResponse.isActive
             lastName = employmentUpdateResponse.lastName
             latestRehireDate = employmentUpdateResponse.latestRehireDate
@@ -288,7 +300,7 @@ private constructor(
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Worker's compensation classification code for this employee */
-        fun classCode(classCode: String) = classCode(JsonField.of(classCode))
+        fun classCode(classCode: String?) = classCode(JsonField.ofNullable(classCode))
 
         /** Worker's compensation classification code for this employee */
         fun classCode(classCode: JsonField<String>) = apply { this.classCode = classCode }
@@ -304,36 +316,51 @@ private constructor(
          * the system. Custom fields are not currently supported for assisted connections.
          */
         fun customFields(customFields: JsonField<List<CustomField>>) = apply {
-            this.customFields = customFields
+            this.customFields = customFields.map { it.toMutableList() }
+        }
+
+        /**
+         * Custom fields for the individual. These are fields which are defined by the employer in
+         * the system. Custom fields are not currently supported for assisted connections.
+         */
+        fun addCustomField(customField: CustomField) = apply {
+            customFields =
+                (customFields ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(customField)
+                }
         }
 
         /** The department object. */
-        fun department(department: Department) = department(JsonField.of(department))
+        fun department(department: Department?) = department(JsonField.ofNullable(department))
 
         /** The department object. */
         fun department(department: JsonField<Department>) = apply { this.department = department }
 
         /** The employment object. */
-        fun employment(employment: Employment) = employment(JsonField.of(employment))
+        fun employment(employment: Employment?) = employment(JsonField.ofNullable(employment))
 
         /** The employment object. */
         fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
 
         /** The detailed employment status of the individual. */
-        fun employmentStatus(employmentStatus: EmploymentStatus) =
-            employmentStatus(JsonField.of(employmentStatus))
+        fun employmentStatus(employmentStatus: EmploymentStatus?) =
+            employmentStatus(JsonField.ofNullable(employmentStatus))
 
         /** The detailed employment status of the individual. */
         fun employmentStatus(employmentStatus: JsonField<EmploymentStatus>) = apply {
             this.employmentStatus = employmentStatus
         }
 
-        fun endDate(endDate: String) = endDate(JsonField.of(endDate))
+        fun endDate(endDate: String?) = endDate(JsonField.ofNullable(endDate))
 
         fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String) = firstName(JsonField.of(firstName))
+        fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
         /** The legal first name of the individual. */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
@@ -343,7 +370,7 @@ private constructor(
          * income, but may be in units of bi-weekly, semi-monthly, daily, etc, depending on what
          * information the provider returns.
          */
-        fun income(income: Income) = income(JsonField.of(income))
+        fun income(income: Income?) = income(JsonField.ofNullable(income))
 
         /**
          * The employee's income as reported by the provider. This may not always be annualized
@@ -353,44 +380,60 @@ private constructor(
         fun income(income: JsonField<Income>) = apply { this.income = income }
 
         /** The array of income history. */
-        fun incomeHistory(incomeHistory: List<Income?>) = incomeHistory(JsonField.of(incomeHistory))
+        fun incomeHistory(incomeHistory: List<Income?>?) =
+            incomeHistory(JsonField.ofNullable(incomeHistory))
 
         /** The array of income history. */
         fun incomeHistory(incomeHistory: JsonField<List<Income?>>) = apply {
-            this.incomeHistory = incomeHistory
+            this.incomeHistory = incomeHistory.map { it.toMutableList() }
+        }
+
+        /** The array of income history. */
+        fun addIncomeHistory(incomeHistory: Income) = apply {
+            this.incomeHistory =
+                (this.incomeHistory ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(incomeHistory)
+                }
         }
 
         /** `true` if the individual an an active employee or contractor at the company. */
-        fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
+        fun isActive(isActive: Boolean?) = isActive(JsonField.ofNullable(isActive))
+
+        /** `true` if the individual an an active employee or contractor at the company. */
+        fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
 
         /** `true` if the individual an an active employee or contractor at the company. */
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String) = lastName(JsonField.of(lastName))
+        fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
         /** The legal last name of the individual. */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-        fun latestRehireDate(latestRehireDate: String) =
-            latestRehireDate(JsonField.of(latestRehireDate))
+        fun latestRehireDate(latestRehireDate: String?) =
+            latestRehireDate(JsonField.ofNullable(latestRehireDate))
 
         fun latestRehireDate(latestRehireDate: JsonField<String>) = apply {
             this.latestRehireDate = latestRehireDate
         }
 
-        fun location(location: Location) = location(JsonField.of(location))
+        fun location(location: Location?) = location(JsonField.ofNullable(location))
 
         fun location(location: JsonField<Location>) = apply { this.location = location }
 
         /** The manager object representing the manager of the individual within the org. */
-        fun manager(manager: Manager) = manager(JsonField.of(manager))
+        fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
 
         /** The manager object representing the manager of the individual within the org. */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String) = middleName(JsonField.of(middleName))
+        fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
@@ -401,12 +444,12 @@ private constructor(
         /** The source system's unique employment identifier for this individual */
         fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
-        fun startDate(startDate: String) = startDate(JsonField.of(startDate))
+        fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
         fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
         /** The current title of the individual. */
-        fun title(title: String) = title(JsonField.of(title))
+        fun title(title: String?) = title(JsonField.ofNullable(title))
 
         /** The current title of the individual. */
         fun title(title: JsonField<String>) = apply { this.title = title }
@@ -434,14 +477,14 @@ private constructor(
             EmploymentUpdateResponse(
                 id,
                 classCode,
-                customFields.map { it.toImmutable() },
+                (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                 department,
                 employment,
                 employmentStatus,
                 endDate,
                 firstName,
                 income,
-                incomeHistory.map { it.toImmutable() },
+                (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
                 isActive,
                 lastName,
                 latestRehireDate,
@@ -469,9 +512,9 @@ private constructor(
 
         fun name(): String? = name.getNullable("name")
 
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
-        @JsonProperty("value") @ExcludeMissing fun _value() = value
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -505,7 +548,7 @@ private constructor(
                 additionalProperties = customField.additionalProperties.toMutableMap()
             }
 
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
             fun name(name: JsonField<String>) = apply { this.name = name }
 
@@ -572,7 +615,7 @@ private constructor(
         fun name(): String? = name.getNullable("name")
 
         /** The name of the department associated with the individual. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -605,7 +648,7 @@ private constructor(
             }
 
             /** The name of the department associated with the individual. */
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The name of the department associated with the individual. */
             fun name(name: JsonField<String>) = apply { this.name = name }
@@ -676,10 +719,10 @@ private constructor(
          * The secondary employment type of the individual. Options: `full_time`, `part_time`,
          * `intern`, `temp`, `seasonal` and `individual_contractor`.
          */
-        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
 
         /** The main employment type of the individual. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -718,7 +761,7 @@ private constructor(
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
+            fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
@@ -727,7 +770,7 @@ private constructor(
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** The main employment type of the individual. */
-            fun type(type: Type) = type(JsonField.of(type))
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The main employment type of the individual. */
             fun type(type: JsonField<Type>) = apply { this.type = type }
@@ -1016,7 +1059,7 @@ private constructor(
         fun id(): String? = id.getNullable("id")
 
         /** A stable Finch `id` (UUID v4) for an individual in the company. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
         @JsonAnyGetter
         @ExcludeMissing

@@ -39,13 +39,15 @@ private constructor(
     fun payFrequencies(): List<PayFrequency>? = payFrequencies.getNullable("pay_frequencies")
 
     /** Finch id (uuidv4) for the pay group */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** Name of the pay group */
-    @JsonProperty("name") @ExcludeMissing fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /** List of pay frequencies associated with this pay group */
-    @JsonProperty("pay_frequencies") @ExcludeMissing fun _payFrequencies() = payFrequencies
+    @JsonProperty("pay_frequencies")
+    @ExcludeMissing
+    fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -73,13 +75,13 @@ private constructor(
 
         private var id: JsonField<String> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
-        private var payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of()
+        private var payFrequencies: JsonField<MutableList<PayFrequency>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payGroupListResponse: PayGroupListResponse) = apply {
             id = payGroupListResponse.id
             name = payGroupListResponse.name
-            payFrequencies = payGroupListResponse.payFrequencies
+            payFrequencies = payGroupListResponse.payFrequencies.map { it.toMutableList() }
             additionalProperties = payGroupListResponse.additionalProperties.toMutableMap()
         }
 
@@ -101,7 +103,19 @@ private constructor(
 
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
-            this.payFrequencies = payFrequencies
+            this.payFrequencies = payFrequencies.map { it.toMutableList() }
+        }
+
+        /** List of pay frequencies associated with this pay group */
+        fun addPayFrequency(payFrequency: PayFrequency) = apply {
+            payFrequencies =
+                (payFrequencies ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(payFrequency)
+                }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -127,7 +141,7 @@ private constructor(
             PayGroupListResponse(
                 id,
                 name,
-                payFrequencies.map { it.toImmutable() },
+                (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toImmutable(),
             )
     }

@@ -35,11 +35,13 @@ private constructor(
 
     fun individualId(): String? = individualId.getNullable("individual_id")
 
-    @JsonProperty("body") @ExcludeMissing fun _body() = body
+    @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Body> = body
 
-    @JsonProperty("code") @ExcludeMissing fun _code() = code
+    @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Long> = code
 
-    @JsonProperty("individual_id") @ExcludeMissing fun _individualId() = individualId
+    @JsonProperty("individual_id")
+    @ExcludeMissing
+    fun _individualId(): JsonField<String> = individualId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -162,26 +164,28 @@ private constructor(
             hsaContributionLimit.getNullable("hsa_contribution_limit")
 
         /** If the benefit supports annual maximum, the amount in cents for this individual. */
-        @JsonProperty("annual_maximum") @ExcludeMissing fun _annualMaximum() = annualMaximum
+        @JsonProperty("annual_maximum")
+        @ExcludeMissing
+        fun _annualMaximum(): JsonField<Long> = annualMaximum
 
         /**
          * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for this
          * individual.
          */
-        @JsonProperty("catch_up") @ExcludeMissing fun _catchUp() = catchUp
+        @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
 
         @JsonProperty("company_contribution")
         @ExcludeMissing
-        fun _companyContribution() = companyContribution
+        fun _companyContribution(): JsonField<BenefitContribution> = companyContribution
 
         @JsonProperty("employee_deduction")
         @ExcludeMissing
-        fun _employeeDeduction() = employeeDeduction
+        fun _employeeDeduction(): JsonField<BenefitContribution> = employeeDeduction
 
         /** Type for HSA contribution limit if the benefit is a HSA. */
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
-        fun _hsaContributionLimit() = hsaContributionLimit
+        fun _hsaContributionLimit(): JsonField<HsaContributionLimit> = hsaContributionLimit
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -226,7 +230,11 @@ private constructor(
             }
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
-            fun annualMaximum(annualMaximum: Long) = annualMaximum(JsonField.of(annualMaximum))
+            fun annualMaximum(annualMaximum: Long?) =
+                annualMaximum(JsonField.ofNullable(annualMaximum))
+
+            /** If the benefit supports annual maximum, the amount in cents for this individual. */
+            fun annualMaximum(annualMaximum: Long) = annualMaximum(annualMaximum as Long?)
 
             /** If the benefit supports annual maximum, the amount in cents for this individual. */
             fun annualMaximum(annualMaximum: JsonField<Long>) = apply {
@@ -237,7 +245,13 @@ private constructor(
              * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
              * this individual.
              */
-            fun catchUp(catchUp: Boolean) = catchUp(JsonField.of(catchUp))
+            fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
+
+            /**
+             * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
+             * this individual.
+             */
+            fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
 
             /**
              * If the benefit supports catch up (401k, 403b, etc.), whether catch up is enabled for
@@ -245,23 +259,23 @@ private constructor(
              */
             fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
-            fun companyContribution(companyContribution: BenefitContribution) =
-                companyContribution(JsonField.of(companyContribution))
+            fun companyContribution(companyContribution: BenefitContribution?) =
+                companyContribution(JsonField.ofNullable(companyContribution))
 
             fun companyContribution(companyContribution: JsonField<BenefitContribution>) = apply {
                 this.companyContribution = companyContribution
             }
 
-            fun employeeDeduction(employeeDeduction: BenefitContribution) =
-                employeeDeduction(JsonField.of(employeeDeduction))
+            fun employeeDeduction(employeeDeduction: BenefitContribution?) =
+                employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
             fun employeeDeduction(employeeDeduction: JsonField<BenefitContribution>) = apply {
                 this.employeeDeduction = employeeDeduction
             }
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
-            fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit) =
-                hsaContributionLimit(JsonField.of(hsaContributionLimit))
+            fun hsaContributionLimit(hsaContributionLimit: HsaContributionLimit?) =
+                hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
 
             /** Type for HSA contribution limit if the benefit is a HSA. */
             fun hsaContributionLimit(hsaContributionLimit: JsonField<HsaContributionLimit>) =

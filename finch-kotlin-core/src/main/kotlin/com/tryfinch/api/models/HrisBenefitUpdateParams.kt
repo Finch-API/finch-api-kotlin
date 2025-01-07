@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ExcludeMissing
+import com.tryfinch.api.core.JsonField
+import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.http.Headers
@@ -29,11 +31,14 @@ constructor(
     /** Updated name or description. */
     fun description(): String? = body.description()
 
+    /** Updated name or description. */
+    fun _description(): JsonField<String> = body._description()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     internal fun getBody(): HrisBenefitUpdateBody = body
 
@@ -52,17 +57,33 @@ constructor(
     class HrisBenefitUpdateBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("description") private val description: String?,
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** Updated name or description. */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): String? = description.getNullable("description")
+
+        /** Updated name or description. */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): HrisBenefitUpdateBody = apply {
+            if (!validated) {
+                description()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -73,7 +94,7 @@ constructor(
 
         class Builder {
 
-            private var description: String? = null
+            private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(hrisBenefitUpdateBody: HrisBenefitUpdateBody) = apply {
@@ -82,7 +103,12 @@ constructor(
             }
 
             /** Updated name or description. */
-            fun description(description: String?) = apply { this.description = description }
+            fun description(description: String) = description(JsonField.of(description))
+
+            /** Updated name or description. */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -150,7 +176,29 @@ constructor(
         fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
 
         /** Updated name or description. */
-        fun description(description: String?) = apply { body.description(description) }
+        fun description(description: String) = apply { body.description(description) }
+
+        /** Updated name or description. */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -248,25 +296,6 @@ constructor(
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
-        }
-
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): HrisBenefitUpdateParams =

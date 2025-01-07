@@ -70,29 +70,35 @@ private constructor(
     fun primaryPhoneNumber(): String? = primaryPhoneNumber.getNullable("primary_phone_number")
 
     /** An array of bank account objects associated with the payroll/HRIS system. */
-    @JsonProperty("accounts") @ExcludeMissing fun _accounts() = accounts
+    @JsonProperty("accounts") @ExcludeMissing fun _accounts(): JsonField<List<Account>> = accounts
 
     /** The array of company departments. */
-    @JsonProperty("departments") @ExcludeMissing fun _departments() = departments
+    @JsonProperty("departments")
+    @ExcludeMissing
+    fun _departments(): JsonField<List<Department?>> = departments
 
     /** The employer identification number. */
-    @JsonProperty("ein") @ExcludeMissing fun _ein() = ein
+    @JsonProperty("ein") @ExcludeMissing fun _ein(): JsonField<String> = ein
 
     /** The entity type object. */
-    @JsonProperty("entity") @ExcludeMissing fun _entity() = entity
+    @JsonProperty("entity") @ExcludeMissing fun _entity(): JsonField<Entity> = entity
 
     /** The legal name of the company. */
-    @JsonProperty("legal_name") @ExcludeMissing fun _legalName() = legalName
+    @JsonProperty("legal_name") @ExcludeMissing fun _legalName(): JsonField<String> = legalName
 
-    @JsonProperty("locations") @ExcludeMissing fun _locations() = locations
+    @JsonProperty("locations")
+    @ExcludeMissing
+    fun _locations(): JsonField<List<Location?>> = locations
 
     /** The email of the main administrator on the account. */
-    @JsonProperty("primary_email") @ExcludeMissing fun _primaryEmail() = primaryEmail
+    @JsonProperty("primary_email")
+    @ExcludeMissing
+    fun _primaryEmail(): JsonField<String> = primaryEmail
 
     /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
     @JsonProperty("primary_phone_number")
     @ExcludeMissing
-    fun _primaryPhoneNumber() = primaryPhoneNumber
+    fun _primaryPhoneNumber(): JsonField<String> = primaryPhoneNumber
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -123,66 +129,106 @@ private constructor(
 
     class Builder {
 
-        private var accounts: JsonField<List<Account>> = JsonMissing.of()
-        private var departments: JsonField<List<Department?>> = JsonMissing.of()
-        private var ein: JsonField<String> = JsonMissing.of()
-        private var entity: JsonField<Entity> = JsonMissing.of()
-        private var legalName: JsonField<String> = JsonMissing.of()
-        private var locations: JsonField<List<Location?>> = JsonMissing.of()
-        private var primaryEmail: JsonField<String> = JsonMissing.of()
-        private var primaryPhoneNumber: JsonField<String> = JsonMissing.of()
+        private var accounts: JsonField<MutableList<Account>>? = null
+        private var departments: JsonField<MutableList<Department?>>? = null
+        private var ein: JsonField<String>? = null
+        private var entity: JsonField<Entity>? = null
+        private var legalName: JsonField<String>? = null
+        private var locations: JsonField<MutableList<Location?>>? = null
+        private var primaryEmail: JsonField<String>? = null
+        private var primaryPhoneNumber: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(companyUpdateResponse: CompanyUpdateResponse) = apply {
-            accounts = companyUpdateResponse.accounts
-            departments = companyUpdateResponse.departments
+            accounts = companyUpdateResponse.accounts.map { it.toMutableList() }
+            departments = companyUpdateResponse.departments.map { it.toMutableList() }
             ein = companyUpdateResponse.ein
             entity = companyUpdateResponse.entity
             legalName = companyUpdateResponse.legalName
-            locations = companyUpdateResponse.locations
+            locations = companyUpdateResponse.locations.map { it.toMutableList() }
             primaryEmail = companyUpdateResponse.primaryEmail
             primaryPhoneNumber = companyUpdateResponse.primaryPhoneNumber
             additionalProperties = companyUpdateResponse.additionalProperties.toMutableMap()
         }
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: List<Account>) = accounts(JsonField.of(accounts))
+        fun accounts(accounts: List<Account>?) = accounts(JsonField.ofNullable(accounts))
 
         /** An array of bank account objects associated with the payroll/HRIS system. */
-        fun accounts(accounts: JsonField<List<Account>>) = apply { this.accounts = accounts }
+        fun accounts(accounts: JsonField<List<Account>>) = apply {
+            this.accounts = accounts.map { it.toMutableList() }
+        }
+
+        /** An array of bank account objects associated with the payroll/HRIS system. */
+        fun addAccount(account: Account) = apply {
+            accounts =
+                (accounts ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(account)
+                }
+        }
 
         /** The array of company departments. */
-        fun departments(departments: List<Department?>) = departments(JsonField.of(departments))
+        fun departments(departments: List<Department?>?) =
+            departments(JsonField.ofNullable(departments))
 
         /** The array of company departments. */
         fun departments(departments: JsonField<List<Department?>>) = apply {
-            this.departments = departments
+            this.departments = departments.map { it.toMutableList() }
+        }
+
+        /** The array of company departments. */
+        fun addDepartment(department: Department) = apply {
+            departments =
+                (departments ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(department)
+                }
         }
 
         /** The employer identification number. */
-        fun ein(ein: String) = ein(JsonField.of(ein))
+        fun ein(ein: String?) = ein(JsonField.ofNullable(ein))
 
         /** The employer identification number. */
         fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
         /** The entity type object. */
-        fun entity(entity: Entity) = entity(JsonField.of(entity))
+        fun entity(entity: Entity?) = entity(JsonField.ofNullable(entity))
 
         /** The entity type object. */
         fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
         /** The legal name of the company. */
-        fun legalName(legalName: String) = legalName(JsonField.of(legalName))
+        fun legalName(legalName: String?) = legalName(JsonField.ofNullable(legalName))
 
         /** The legal name of the company. */
         fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
 
-        fun locations(locations: List<Location?>) = locations(JsonField.of(locations))
+        fun locations(locations: List<Location?>?) = locations(JsonField.ofNullable(locations))
 
-        fun locations(locations: JsonField<List<Location?>>) = apply { this.locations = locations }
+        fun locations(locations: JsonField<List<Location?>>) = apply {
+            this.locations = locations.map { it.toMutableList() }
+        }
+
+        fun addLocation(location: Location) = apply {
+            locations =
+                (locations ?: JsonField.of(mutableListOf())).apply {
+                    (asKnown()
+                            ?: throw IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            ))
+                        .add(location)
+                }
+        }
 
         /** The email of the main administrator on the account. */
-        fun primaryEmail(primaryEmail: String) = primaryEmail(JsonField.of(primaryEmail))
+        fun primaryEmail(primaryEmail: String?) = primaryEmail(JsonField.ofNullable(primaryEmail))
 
         /** The email of the main administrator on the account. */
         fun primaryEmail(primaryEmail: JsonField<String>) = apply {
@@ -190,8 +236,8 @@ private constructor(
         }
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
-        fun primaryPhoneNumber(primaryPhoneNumber: String) =
-            primaryPhoneNumber(JsonField.of(primaryPhoneNumber))
+        fun primaryPhoneNumber(primaryPhoneNumber: String?) =
+            primaryPhoneNumber(JsonField.ofNullable(primaryPhoneNumber))
 
         /** The phone number of the main administrator on the account. Format: `XXXXXXXXXX` */
         fun primaryPhoneNumber(primaryPhoneNumber: JsonField<String>) = apply {
@@ -219,14 +265,19 @@ private constructor(
 
         fun build(): CompanyUpdateResponse =
             CompanyUpdateResponse(
-                accounts.map { it.toImmutable() },
-                departments.map { it.toImmutable() },
-                ein,
-                entity,
-                legalName,
-                locations.map { it.toImmutable() },
-                primaryEmail,
-                primaryPhoneNumber,
+                checkNotNull(accounts) { "`accounts` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(departments) { "`departments` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(ein) { "`ein` is required but was not set" },
+                checkNotNull(entity) { "`entity` is required but was not set" },
+                checkNotNull(legalName) { "`legalName` is required but was not set" },
+                checkNotNull(locations) { "`locations` is required but was not set" }
+                    .map { it.toImmutable() },
+                checkNotNull(primaryEmail) { "`primaryEmail` is required but was not set" },
+                checkNotNull(primaryPhoneNumber) {
+                    "`primaryPhoneNumber` is required but was not set"
+                },
                 additionalProperties.toImmutable(),
             )
     }
@@ -272,21 +323,31 @@ private constructor(
         fun routingNumber(): String? = routingNumber.getNullable("routing_number")
 
         /** The name of the bank associated in the payroll/HRIS system. */
-        @JsonProperty("account_name") @ExcludeMissing fun _accountName() = accountName
+        @JsonProperty("account_name")
+        @ExcludeMissing
+        fun _accountName(): JsonField<String> = accountName
 
         /** 10-12 digit number to specify the bank account */
-        @JsonProperty("account_number") @ExcludeMissing fun _accountNumber() = accountNumber
+        @JsonProperty("account_number")
+        @ExcludeMissing
+        fun _accountNumber(): JsonField<String> = accountNumber
 
         /** The type of bank account. */
-        @JsonProperty("account_type") @ExcludeMissing fun _accountType() = accountType
+        @JsonProperty("account_type")
+        @ExcludeMissing
+        fun _accountType(): JsonField<AccountType> = accountType
 
         /** Name of the banking institution. */
-        @JsonProperty("institution_name") @ExcludeMissing fun _institutionName() = institutionName
+        @JsonProperty("institution_name")
+        @ExcludeMissing
+        fun _institutionName(): JsonField<String> = institutionName
 
         /**
          * A nine-digit code that's based on the U.S. Bank location where your account was opened.
          */
-        @JsonProperty("routing_number") @ExcludeMissing fun _routingNumber() = routingNumber
+        @JsonProperty("routing_number")
+        @ExcludeMissing
+        fun _routingNumber(): JsonField<String> = routingNumber
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -331,7 +392,7 @@ private constructor(
             }
 
             /** The name of the bank associated in the payroll/HRIS system. */
-            fun accountName(accountName: String) = accountName(JsonField.of(accountName))
+            fun accountName(accountName: String?) = accountName(JsonField.ofNullable(accountName))
 
             /** The name of the bank associated in the payroll/HRIS system. */
             fun accountName(accountName: JsonField<String>) = apply {
@@ -339,7 +400,8 @@ private constructor(
             }
 
             /** 10-12 digit number to specify the bank account */
-            fun accountNumber(accountNumber: String) = accountNumber(JsonField.of(accountNumber))
+            fun accountNumber(accountNumber: String?) =
+                accountNumber(JsonField.ofNullable(accountNumber))
 
             /** 10-12 digit number to specify the bank account */
             fun accountNumber(accountNumber: JsonField<String>) = apply {
@@ -347,7 +409,8 @@ private constructor(
             }
 
             /** The type of bank account. */
-            fun accountType(accountType: AccountType) = accountType(JsonField.of(accountType))
+            fun accountType(accountType: AccountType?) =
+                accountType(JsonField.ofNullable(accountType))
 
             /** The type of bank account. */
             fun accountType(accountType: JsonField<AccountType>) = apply {
@@ -355,8 +418,8 @@ private constructor(
             }
 
             /** Name of the banking institution. */
-            fun institutionName(institutionName: String) =
-                institutionName(JsonField.of(institutionName))
+            fun institutionName(institutionName: String?) =
+                institutionName(JsonField.ofNullable(institutionName))
 
             /** Name of the banking institution. */
             fun institutionName(institutionName: JsonField<String>) = apply {
@@ -367,7 +430,8 @@ private constructor(
              * A nine-digit code that's based on the U.S. Bank location where your account was
              * opened.
              */
-            fun routingNumber(routingNumber: String) = routingNumber(JsonField.of(routingNumber))
+            fun routingNumber(routingNumber: String?) =
+                routingNumber(JsonField.ofNullable(routingNumber))
 
             /**
              * A nine-digit code that's based on the U.S. Bank location where your account was
@@ -503,10 +567,10 @@ private constructor(
         fun parent(): Parent? = parent.getNullable("parent")
 
         /** The department name. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /** The parent department, if present. */
-        @JsonProperty("parent") @ExcludeMissing fun _parent() = parent
+        @JsonProperty("parent") @ExcludeMissing fun _parent(): JsonField<Parent> = parent
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -542,13 +606,13 @@ private constructor(
             }
 
             /** The department name. */
-            fun name(name: String) = name(JsonField.of(name))
+            fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /** The department name. */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The parent department, if present. */
-            fun parent(parent: Parent) = parent(JsonField.of(parent))
+            fun parent(parent: Parent?) = parent(JsonField.ofNullable(parent))
 
             /** The parent department, if present. */
             fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
@@ -596,7 +660,7 @@ private constructor(
             fun name(): String? = name.getNullable("name")
 
             /** The parent department's name. */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -629,7 +693,7 @@ private constructor(
                 }
 
                 /** The parent department's name. */
-                fun name(name: String) = name(JsonField.of(name))
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /** The parent department's name. */
                 fun name(name: JsonField<String>) = apply { this.name = name }
@@ -715,10 +779,10 @@ private constructor(
         fun type(): Type? = type.getNullable("type")
 
         /** The tax payer subtype of the company. */
-        @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
 
         /** The tax payer type of the company. */
-        @JsonProperty("type") @ExcludeMissing fun _type() = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -754,13 +818,13 @@ private constructor(
             }
 
             /** The tax payer subtype of the company. */
-            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
+            fun subtype(subtype: Subtype?) = subtype(JsonField.ofNullable(subtype))
 
             /** The tax payer subtype of the company. */
             fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** The tax payer type of the company. */
-            fun type(type: Type) = type(JsonField.of(type))
+            fun type(type: Type?) = type(JsonField.ofNullable(type))
 
             /** The tax payer type of the company. */
             fun type(type: JsonField<Type>) = apply { this.type = type }
