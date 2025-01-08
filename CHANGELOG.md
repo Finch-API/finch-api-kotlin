@@ -1,5 +1,33 @@
 # Changelog
 
+## 3.2.0 (2025-01-08)
+
+Full Changelog: [v3.1.1...v3.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.1.1...v3.2.0)
+
+### Features
+
+* **client:** add various convenience setters to models ([#319](https://github.com/Finch-API/finch-api-kotlin/issues/319)) ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+* **client:** allow setting arbitrary JSON for top-level body params ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+* **client:** expose getters for `JsonField` of body params ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+
+
+### Bug Fixes
+
+* **client:** consistently throw on omitting required fields ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+* **client:** convert `JsonField` containing list type to mutable in builder ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+
+
+### Chores
+
+* **internal:** codegen related update ([#321](https://github.com/Finch-API/finch-api-kotlin/issues/321)) ([a0433d7](https://github.com/Finch-API/finch-api-kotlin/commit/a0433d72596b91f1cc48159d15b13fd1a2ff3a1b))
+
+
+### Styles
+
+* **internal:** explicitly add some method return types ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+* **internal:** move headers and query params setters below others ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+* **internal:** simplify existing convenience setters on params ([8d2ac5a](https://github.com/Finch-API/finch-api-kotlin/commit/8d2ac5aea6d94e90b63088b11fc22296681fe44e))
+
 ## 3.1.1 (2025-01-07)
 
 Full Changelog: [v3.1.0...v3.1.1](https://github.com/Finch-API/finch-api-kotlin/compare/v3.1.0...v3.1.1)
