@@ -48,11 +48,13 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): SupportPerBenefitType = apply {
-        if (!validated) {
-            companyBenefits()?.validate()
-            individualBenefits()?.validate()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        companyBenefits()?.validate()
+        individualBenefits()?.validate()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
