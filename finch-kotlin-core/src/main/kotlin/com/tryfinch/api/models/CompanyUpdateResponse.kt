@@ -107,17 +107,19 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): CompanyUpdateResponse = apply {
-        if (!validated) {
-            accounts()?.forEach { it.validate() }
-            departments()?.forEach { it?.validate() }
-            ein()
-            entity()?.validate()
-            legalName()
-            locations()?.forEach { it?.validate() }
-            primaryEmail()
-            primaryPhoneNumber()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accounts()?.forEach { it.validate() }
+        departments()?.forEach { it?.validate() }
+        ein()
+        entity()?.validate()
+        legalName()
+        locations()?.forEach { it?.validate() }
+        primaryEmail()
+        primaryPhoneNumber()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -356,14 +358,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Account = apply {
-            if (!validated) {
-                accountName()
-                accountNumber()
-                accountType()
-                institutionName()
-                routingNumber()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            accountName()
+            accountNumber()
+            accountType()
+            institutionName()
+            routingNumber()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -579,11 +583,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Department = apply {
-            if (!validated) {
-                name()
-                parent()?.validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            name()
+            parent()?.validate()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -669,10 +675,12 @@ private constructor(
             private var validated: Boolean = false
 
             fun validate(): Parent = apply {
-                if (!validated) {
-                    name()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                name()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -791,11 +799,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Entity = apply {
-            if (!validated) {
-                subtype()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            subtype()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

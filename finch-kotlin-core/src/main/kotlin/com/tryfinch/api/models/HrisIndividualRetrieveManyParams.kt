@@ -76,11 +76,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): HrisIndividualRetrieveManyBody = apply {
-            if (!validated) {
-                options()?.validate()
-                requests()?.forEach { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            options()?.validate()
+            requests()?.forEach { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -350,10 +352,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Options = apply {
-            if (!validated) {
-                include()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            include()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -458,10 +462,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Request = apply {
-            if (!validated) {
-                individualId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            individualId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

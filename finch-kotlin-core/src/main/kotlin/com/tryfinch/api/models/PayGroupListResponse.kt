@@ -56,12 +56,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PayGroupListResponse = apply {
-        if (!validated) {
-            id()
-            name()
-            payFrequencies()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        name()
+        payFrequencies()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

@@ -266,21 +266,23 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): SandboxIndividualUpdateBody = apply {
-            if (!validated) {
-                dob()
-                emails()?.forEach { it.validate() }
-                encryptedSsn()
-                ethnicity()
-                firstName()
-                gender()
-                lastName()
-                middleName()
-                phoneNumbers()?.forEach { it?.validate() }
-                preferredName()
-                residence()?.validate()
-                ssn()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            dob()
+            emails()?.forEach { it.validate() }
+            encryptedSsn()
+            ethnicity()
+            firstName()
+            gender()
+            lastName()
+            middleName()
+            phoneNumbers()?.forEach { it?.validate() }
+            preferredName()
+            residence()?.validate()
+            ssn()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -761,11 +763,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Email = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -1086,11 +1090,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): PhoneNumber = apply {
-            if (!validated) {
-                data()
-                type()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            data()
+            type()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
