@@ -48,12 +48,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PayStatementResponse = apply {
-        if (!validated) {
-            body()?.validate()
-            code()
-            paymentId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body()?.validate()
+        code()
+        paymentId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

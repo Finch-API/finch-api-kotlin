@@ -93,14 +93,16 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): PaymentEvent = apply {
-        if (!validated) {
-            accountId()
-            companyId()
-            connectionId()
-            data()?.validate()
-            eventType()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        accountId()
+        companyId()
+        connectionId()
+        data()?.validate()
+        eventType()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -231,11 +233,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): PaymentIdentifiers = apply {
-            if (!validated) {
-                payDate()
-                paymentId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            payDate()
+            paymentId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

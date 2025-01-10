@@ -50,12 +50,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualBenefit = apply {
-        if (!validated) {
-            body()?.validate()
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body()?.validate()
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -194,14 +196,16 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Body = apply {
-            if (!validated) {
-                annualMaximum()
-                catchUp()
-                companyContribution()?.validate()
-                employeeDeduction()?.validate()
-                hsaContributionLimit()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            annualMaximum()
+            catchUp()
+            companyContribution()?.validate()
+            employeeDeduction()?.validate()
+            hsaContributionLimit()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
