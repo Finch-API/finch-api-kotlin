@@ -143,21 +143,23 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): BenefitsSupport = apply {
-        if (!validated) {
-            commuter()?.validate()
-            customPostTax()?.validate()
-            customPreTax()?.validate()
-            fsaDependentCare()?.validate()
-            fsaMedical()?.validate()
-            hsaPost()?.validate()
-            hsaPre()?.validate()
-            s125Dental()?.validate()
-            s125Medical()?.validate()
-            s125Vision()?.validate()
-            simple()?.validate()
-            simpleIra()?.validate()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        commuter()?.validate()
+        customPostTax()?.validate()
+        customPreTax()?.validate()
+        fsaDependentCare()?.validate()
+        fsaMedical()?.validate()
+        hsaPost()?.validate()
+        hsaPre()?.validate()
+        s125Dental()?.validate()
+        s125Medical()?.validate()
+        s125Vision()?.validate()
+        simple()?.validate()
+        simpleIra()?.validate()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

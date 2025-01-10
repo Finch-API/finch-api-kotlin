@@ -50,12 +50,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): IndividualResponse = apply {
-        if (!validated) {
-            body()?.validate()
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body()?.validate()
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)

@@ -50,12 +50,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): UnenrolledIndividual = apply {
-        if (!validated) {
-            body()?.validate()
-            code()
-            individualId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        body()?.validate()
+        code()
+        individualId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -165,12 +167,14 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Body = apply {
-            if (!validated) {
-                finchCode()
-                message()
-                name()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            finchCode()
+            message()
+            name()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
