@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.3.0 (2025-01-13)
+
+Full Changelog: [v3.2.0...v3.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.2.0...v3.3.0)
+
+### Features
+
+* **api:** api update ([#323](https://github.com/Finch-API/finch-api-kotlin/issues/323)) ([14fdd9c](https://github.com/Finch-API/finch-api-kotlin/commit/14fdd9cfec5a7ad293686c89d1166ff5bbf2c9d5))
+
+
+### Chores
+
+* **internal:** codegen related update ([#325](https://github.com/Finch-API/finch-api-kotlin/issues/325)) ([4a3a195](https://github.com/Finch-API/finch-api-kotlin/commit/4a3a19537b032085b9550cbe74b2778785672156))
+* **internal:** fix up root `build.gradle.kts` formatting ([#326](https://github.com/Finch-API/finch-api-kotlin/issues/326)) ([628ef46](https://github.com/Finch-API/finch-api-kotlin/commit/628ef46495035b04c0fa2ece6170744d26e5657b))
+* **internal:** remove unused Gradle imports ([#327](https://github.com/Finch-API/finch-api-kotlin/issues/327)) ([0a1b324](https://github.com/Finch-API/finch-api-kotlin/commit/0a1b32437ea63f88b301ea8c2be39c48c18a8cc5))
+
 ## 3.2.0 (2025-01-08)
 
 Full Changelog: [v3.1.1...v3.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.1.1...v3.2.0)
