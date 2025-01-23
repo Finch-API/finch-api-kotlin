@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListPageAsync
 private constructor(
     private val payGroupsService: PayGroupServiceAsync,

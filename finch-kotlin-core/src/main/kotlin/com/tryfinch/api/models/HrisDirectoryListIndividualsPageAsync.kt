@@ -18,6 +18,8 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,
@@ -60,7 +62,6 @@ private constructor(
     }
 
     suspend fun getNextPage(): HrisDirectoryListIndividualsPageAsync? {
-        @Suppress("DEPRECATION")
         return getNextPageParams()?.let { directoryService.listIndividuals(it) }
     }
 

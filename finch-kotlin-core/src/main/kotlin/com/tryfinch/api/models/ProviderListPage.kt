@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.ProviderService
 import java.util.Objects
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListPage
 private constructor(
     private val providersService: ProviderService,

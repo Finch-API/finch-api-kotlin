@@ -16,6 +16,8 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
     private val directoryService: DirectoryService,
@@ -58,7 +60,6 @@ private constructor(
     }
 
     fun getNextPage(): HrisDirectoryListIndividualsPage? {
-        @Suppress("DEPRECATION")
         return getNextPageParams()?.let { directoryService.listIndividuals(it) }
     }
 

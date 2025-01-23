@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Objects
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListPage
 private constructor(
     private val paymentsService: PaymentService,
