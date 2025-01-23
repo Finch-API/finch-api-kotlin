@@ -902,6 +902,7 @@ constructor(
             "Email{data=$data, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The EEOC-defined ethnicity of the individual. */
     class Ethnicity
     @JsonCreator
     private constructor(
@@ -995,6 +996,7 @@ constructor(
         override fun toString() = value.toString()
     }
 
+    /** The gender of the individual. */
     class Gender
     @JsonCreator
     private constructor(

@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPageAsync
 private constructor(
     private val employmentsService: EmploymentServiceAsync,

@@ -421,6 +421,7 @@ private constructor(
                 )
         }
 
+        /** The individual's filing status for tax purposes. */
         class FilingStatus
         @JsonCreator
         private constructor(
@@ -505,6 +506,7 @@ private constructor(
             "Data{amountForOtherDependents=$amountForOtherDependents, amountForQualifyingChildrenUnder17=$amountForQualifyingChildrenUnder17, deductions=$deductions, extraWithholding=$extraWithholding, filingStatus=$filingStatus, individualId=$individualId, otherIncome=$otherIncome, totalClaimDependentAndOtherCredits=$totalClaimDependentAndOtherCredits, additionalProperties=$additionalProperties}"
     }
 
+    /** Specifies the form type, indicating that this document is a 2020 W4 form. */
     class Type
     @JsonCreator
     private constructor(

@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.IndividualService
 import java.util.Objects
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyPage
 private constructor(
     private val individualsService: IndividualService,

@@ -16,7 +16,7 @@ import com.tryfinch.api.models.HrisPayStatementRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 
 class PayStatementServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PayStatementServiceAsync {
 

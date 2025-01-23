@@ -18,7 +18,7 @@ import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsync
 import com.tryfinch.api.services.async.sandbox.jobs.ConfigurationServiceAsyncImpl
 
 class JobServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : JobServiceAsync {
 
