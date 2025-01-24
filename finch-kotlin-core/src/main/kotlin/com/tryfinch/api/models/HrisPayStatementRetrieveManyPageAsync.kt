@@ -18,6 +18,11 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/**
+ * Read detailed pay statements for each individual.
+ *
+ * Deduction and contribution types are supported by the payroll systems that supports Benefits.
+ */
 class HrisPayStatementRetrieveManyPageAsync
 private constructor(
     private val payStatementsService: PayStatementServiceAsync,

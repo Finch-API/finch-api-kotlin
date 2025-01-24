@@ -115,6 +115,7 @@ private constructor(
             )
     }
 
+    /** Contribution type. */
     class Type
     @JsonCreator
     private constructor(

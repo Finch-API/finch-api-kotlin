@@ -6,31 +6,25 @@
 
 <!-- x-release-please-end -->
 
-The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin. It includes helper classes with helpful types and documentation for every request and response property.
+The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin.
 
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
-## Documentation
-
 The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
----
-
-## Getting started
-
-### Install dependencies
-
-#### Gradle
+## Installation
 
 <!-- x-release-please-start-version -->
+
+### Gradle
 
 ```kotlin
 implementation("com.tryfinch.api:finch-kotlin:3.3.0")
 ```
 
-#### Maven
+### Maven
 
 ```xml
 <dependency>
@@ -41,6 +35,12 @@ implementation("com.tryfinch.api:finch-kotlin:3.3.0")
 ```
 
 <!-- x-release-please-end -->
+
+## Requirements
+
+This library requires Java 8 or later.
+
+## Usage
 
 ### Configure the client
 
@@ -349,7 +349,3 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/Finch-API/finch-api-kotlin/issues) with questions, bugs, or suggestions.
-
-## Requirements
-
-This library requires Java 8 or later.

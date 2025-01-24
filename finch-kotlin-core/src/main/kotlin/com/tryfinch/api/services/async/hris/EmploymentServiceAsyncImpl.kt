@@ -16,7 +16,7 @@ import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
 class EmploymentServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : EmploymentServiceAsync {
 

@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read company directory and organization structure */
 class HrisDirectoryListPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,

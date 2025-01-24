@@ -144,7 +144,7 @@ private constructor(
     fun title(): String? = title.getNullable("title")
 
     /** This field is deprecated in favour of `source_id` */
-    fun workId(): String? = workId.getNullable("work_id")
+    @Deprecated("deprecated") fun workId(): String? = workId.getNullable("work_id")
 
     /** string A stable Finch `id` (UUID v4) for an individual in the company. */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
@@ -222,7 +222,10 @@ private constructor(
     @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
     /** This field is deprecated in favour of `source_id` */
-    @JsonProperty("work_id") @ExcludeMissing fun _workId(): JsonField<String> = workId
+    @Deprecated("deprecated")
+    @JsonProperty("work_id")
+    @ExcludeMissing
+    fun _workId(): JsonField<String> = workId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -482,9 +485,10 @@ private constructor(
         fun title(title: JsonField<String>) = apply { this.title = title }
 
         /** This field is deprecated in favour of `source_id` */
-        fun workId(workId: String?) = workId(JsonField.ofNullable(workId))
+        @Deprecated("deprecated") fun workId(workId: String?) = workId(JsonField.ofNullable(workId))
 
         /** This field is deprecated in favour of `source_id` */
+        @Deprecated("deprecated")
         fun workId(workId: JsonField<String>) = apply { this.workId = workId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -842,6 +846,10 @@ private constructor(
                 )
         }
 
+        /**
+         * The secondary employment type of the individual. Options: `full_time`, `part_time`,
+         * `intern`, `temp`, `seasonal` and `individual_contractor`.
+         */
         class Subtype
         @JsonCreator
         private constructor(
@@ -923,6 +931,7 @@ private constructor(
             override fun toString() = value.toString()
         }
 
+        /** The main employment type of the individual. */
         class Type
         @JsonCreator
         private constructor(
@@ -998,6 +1007,10 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /**
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     */
     class EmploymentStatus
     @JsonCreator
     private constructor(
