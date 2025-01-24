@@ -347,6 +347,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** Only `data_sync_all` currently supported */
     class Type
     @JsonCreator
     private constructor(

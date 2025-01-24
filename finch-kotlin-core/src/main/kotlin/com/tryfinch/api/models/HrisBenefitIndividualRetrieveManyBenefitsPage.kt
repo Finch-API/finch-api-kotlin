@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
 
+/** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsPage
 private constructor(
     private val individualsService: IndividualService,

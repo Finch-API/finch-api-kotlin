@@ -77,7 +77,7 @@ private constructor(
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * account ID.
      */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     fun authenticationMethods(): List<AuthenticationMethod> =
         authenticationMethods.getRequired("authentication_methods")
@@ -92,7 +92,7 @@ private constructor(
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * company ID.
      */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
@@ -133,6 +133,7 @@ private constructor(
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
      */
+    @Deprecated("deprecated")
     fun payrollProviderId(): String = payrollProviderId.getRequired("payroll_provider_id")
 
     /** An array of the authorized products associated with the `access_token`. */
@@ -148,7 +149,10 @@ private constructor(
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * account ID.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     @JsonProperty("authentication_methods")
     @ExcludeMissing
@@ -166,7 +170,10 @@ private constructor(
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
      * company ID.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     @JsonProperty("connection_id")
@@ -217,6 +224,7 @@ private constructor(
     /**
      * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider ID.
      */
+    @Deprecated("deprecated")
     @JsonProperty("payroll_provider_id")
     @ExcludeMissing
     fun _payrollProviderId(): JsonField<String> = payrollProviderId
@@ -311,12 +319,14 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethod>) =
@@ -354,12 +364,14 @@ private constructor(
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
          * this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The Finch UUID of the connection associated with the `access_token`. */
@@ -451,6 +463,7 @@ private constructor(
          * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
          * ID.
          */
+        @Deprecated("deprecated")
         fun payrollProviderId(payrollProviderId: String) =
             payrollProviderId(JsonField.of(payrollProviderId))
 
@@ -458,6 +471,7 @@ private constructor(
          * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
          * ID.
          */
+        @Deprecated("deprecated")
         fun payrollProviderId(payrollProviderId: JsonField<String>) = apply {
             this.payrollProviderId = payrollProviderId
         }
@@ -787,6 +801,7 @@ private constructor(
                 "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
         }
 
+        /** The type of authentication method. */
         class Type
         @JsonCreator
         private constructor(
@@ -880,6 +895,7 @@ private constructor(
             "AuthenticationMethod{connectionStatus=$connectionStatus, products=$products, type=$type, additionalProperties=$additionalProperties}"
     }
 
+    /** The type of application associated with a token. */
     class ClientType
     @JsonCreator
     private constructor(
@@ -1055,6 +1071,11 @@ private constructor(
             "ConnectionStatus{message=$message, status=$status, additionalProperties=$additionalProperties}"
     }
 
+    /**
+     * The type of the connection associated with the token.
+     * - `provider` - connection to an external provider
+     * - `finch` - finch-generated data.
+     */
     class ConnectionType
     @JsonCreator
     private constructor(

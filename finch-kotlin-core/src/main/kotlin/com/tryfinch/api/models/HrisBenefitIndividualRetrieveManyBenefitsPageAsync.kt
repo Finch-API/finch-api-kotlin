@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,

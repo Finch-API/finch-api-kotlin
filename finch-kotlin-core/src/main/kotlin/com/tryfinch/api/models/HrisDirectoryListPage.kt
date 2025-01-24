@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 
+/** Read company directory and organization structure */
 class HrisDirectoryListPage
 private constructor(
     private val directoryService: DirectoryService,

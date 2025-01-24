@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Return details on all available payroll and HR systems. */
 class ProviderListPageAsync
 private constructor(
     private val providersService: ProviderServiceAsync,

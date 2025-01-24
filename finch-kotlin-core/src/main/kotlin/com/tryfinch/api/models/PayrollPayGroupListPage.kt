@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
 import java.util.Objects
 
+/** Read company pay groups and frequencies */
 class PayrollPayGroupListPage
 private constructor(
     private val payGroupsService: PayGroupService,

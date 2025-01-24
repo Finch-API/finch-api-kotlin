@@ -389,6 +389,7 @@ constructor(
                 DataSyncAll(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
+        /** The type of job to start. */
         class Type
         @JsonCreator
         private constructor(
@@ -560,6 +561,7 @@ constructor(
                 )
         }
 
+        /** The type of job to start. */
         class Type
         @JsonCreator
         private constructor(

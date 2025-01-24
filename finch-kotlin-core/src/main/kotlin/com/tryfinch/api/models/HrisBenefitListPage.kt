@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import java.util.Objects
 
+/** List all company-wide deductions and contributions. */
 class HrisBenefitListPage
 private constructor(
     private val benefitsService: BenefitService,
