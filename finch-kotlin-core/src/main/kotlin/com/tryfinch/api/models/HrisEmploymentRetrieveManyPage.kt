@@ -145,8 +145,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisEmploymentRetrieveManyPage,
     ) : Sequence<EmploymentDataResponse> {
 
