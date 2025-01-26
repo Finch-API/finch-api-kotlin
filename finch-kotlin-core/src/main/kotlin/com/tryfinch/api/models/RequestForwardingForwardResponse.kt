@@ -97,7 +97,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var data: JsonField<String>? = null
         private var headers: JsonValue? = null
@@ -278,7 +278,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var data: JsonField<String>? = null
             private var headers: JsonValue? = null

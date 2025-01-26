@@ -22,7 +22,7 @@ import java.util.Objects
 
 /** Create a new account for an existing connection (company/provider pair) */
 class SandboxConnectionAccountCreateParams
-constructor(
+private constructor(
     private val body: SandboxConnectionAccountCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -144,7 +144,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var companyId: JsonField<String>? = null
             private var providerId: JsonField<String>? = null
@@ -264,7 +264,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxConnectionAccountCreateBody.Builder =
             SandboxConnectionAccountCreateBody.builder()
