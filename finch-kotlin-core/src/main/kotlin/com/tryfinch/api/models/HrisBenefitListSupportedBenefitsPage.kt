@@ -140,8 +140,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisBenefitListSupportedBenefitsPage,
     ) : Sequence<SupportedBenefit> {
 

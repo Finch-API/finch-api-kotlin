@@ -24,7 +24,7 @@ import java.util.Objects
  * Deduction and contribution types are supported by the payroll systems that supports Benefits.
  */
 class HrisPayStatementRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisPayStatementRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -89,7 +89,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -173,7 +173,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisPayStatementRetrieveManyBody.Builder =
             HrisPayStatementRetrieveManyBody.builder()
@@ -381,7 +381,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var paymentId: JsonField<String>? = null
             private var limit: JsonField<Long> = JsonMissing.of()

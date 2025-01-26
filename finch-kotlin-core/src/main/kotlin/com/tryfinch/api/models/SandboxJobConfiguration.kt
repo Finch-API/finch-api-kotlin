@@ -62,7 +62,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var completionStatus: JsonField<CompletionStatus>? = null
         private var type: JsonField<Type>? = null

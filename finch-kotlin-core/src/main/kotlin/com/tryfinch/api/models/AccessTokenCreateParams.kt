@@ -20,7 +20,7 @@ import java.util.Objects
 
 /** Exchange the authorization code for an access token */
 class AccessTokenCreateParams
-constructor(
+private constructor(
     private val body: AccessTokenCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -119,7 +119,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
             private var clientId: JsonField<String> = JsonMissing.of()
@@ -210,7 +210,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: AccessTokenCreateBody.Builder = AccessTokenCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()

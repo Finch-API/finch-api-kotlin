@@ -59,7 +59,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var count: JsonField<Long> = JsonMissing.of()
         private var offset: JsonField<Long> = JsonMissing.of()

@@ -22,7 +22,7 @@ import java.util.Objects
 
 /** Enqueue a new sandbox job */
 class SandboxJobCreateParams
-constructor(
+private constructor(
     private val body: SandboxJobCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -83,7 +83,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -151,7 +151,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxJobCreateBody.Builder = SandboxJobCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
