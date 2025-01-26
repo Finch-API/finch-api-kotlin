@@ -73,7 +73,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var data: JsonField<Data> = JsonMissing.of()
         private var type: JsonField<Type> = JsonMissing.of()
@@ -228,7 +228,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var additionalWithholding: JsonField<Long> = JsonMissing.of()
             private var exemption: JsonField<Exemption> = JsonMissing.of()

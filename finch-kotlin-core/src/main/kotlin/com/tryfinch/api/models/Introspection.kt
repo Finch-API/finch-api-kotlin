@@ -275,7 +275,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var accountId: JsonField<String>? = null
         private var authenticationMethods: JsonField<MutableList<AuthenticationMethod>>? = null
@@ -611,7 +611,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var connectionStatus: JsonField<ConnectionStatus> = JsonMissing.of()
             private var products: JsonField<MutableList<String>>? = null
@@ -733,7 +733,7 @@ private constructor(
                 fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var message: JsonField<String> = JsonMissing.of()
                 private var status: JsonField<ConnectionStatusType> = JsonMissing.of()
@@ -1006,7 +1006,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var message: JsonField<String> = JsonMissing.of()
             private var status: JsonField<ConnectionStatusType> = JsonMissing.of()

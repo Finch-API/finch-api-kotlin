@@ -22,7 +22,7 @@ import java.util.Objects
 
 /** Update sandbox employment */
 class SandboxEmploymentUpdateParams
-constructor(
+private constructor(
     private val individualId: String,
     private val body: SandboxEmploymentUpdateBody,
     private val additionalHeaders: Headers,
@@ -394,7 +394,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var classCode: JsonField<String> = JsonMissing.of()
             private var customFields: JsonField<MutableList<CustomField>>? = null
@@ -668,7 +668,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualId: String? = null
         private var body: SandboxEmploymentUpdateBody.Builder =
@@ -993,7 +993,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var value: JsonValue = JsonMissing.of()
@@ -1096,7 +1096,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1206,7 +1206,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var subtype: JsonField<Subtype> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()
@@ -1550,7 +1550,7 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
