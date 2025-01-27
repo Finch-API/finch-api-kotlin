@@ -52,6 +52,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [UpdateCompanyBenefitResponse]. */
     class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null

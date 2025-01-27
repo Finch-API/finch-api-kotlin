@@ -29,6 +29,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitListParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

@@ -113,6 +113,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [IndividualInDirectory]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
@@ -252,6 +253,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Department]. */
         class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
@@ -346,6 +348,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Manager]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String> = JsonMissing.of()

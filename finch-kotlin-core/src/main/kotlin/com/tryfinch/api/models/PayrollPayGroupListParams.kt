@@ -42,6 +42,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [PayrollPayGroupListParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
