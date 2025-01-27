@@ -64,6 +64,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [SessionNewResponse]. */
     class Builder internal constructor() {
 
         private var connectUrl: JsonField<String>? = null

@@ -63,6 +63,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [PayStatementResponseBody]. */
     class Builder internal constructor() {
 
         private var paging: JsonField<Paging> = JsonMissing.of()

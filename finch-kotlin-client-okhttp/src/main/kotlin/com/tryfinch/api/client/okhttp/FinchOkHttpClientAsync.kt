@@ -21,6 +21,7 @@ class FinchOkHttpClientAsync private constructor() {
         fun fromEnv(): FinchClientAsync = builder().fromEnv().build()
     }
 
+    /** A builder for [FinchOkHttpClientAsync]. */
     class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()

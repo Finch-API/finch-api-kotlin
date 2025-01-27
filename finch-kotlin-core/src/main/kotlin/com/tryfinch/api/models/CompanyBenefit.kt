@@ -80,6 +80,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [CompanyBenefit]. */
     class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null

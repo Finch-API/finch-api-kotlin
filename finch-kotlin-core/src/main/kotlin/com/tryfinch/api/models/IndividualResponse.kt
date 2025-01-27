@@ -67,6 +67,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [IndividualResponse]. */
     class Builder internal constructor() {
 
         private var body: JsonField<Individual> = JsonMissing.of()
