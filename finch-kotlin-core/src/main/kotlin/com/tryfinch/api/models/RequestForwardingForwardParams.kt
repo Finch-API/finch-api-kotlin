@@ -184,6 +184,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [RequestForwardingForwardBody]. */
         class Builder internal constructor() {
 
             private var method: JsonField<String>? = null
@@ -309,6 +310,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [RequestForwardingForwardParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

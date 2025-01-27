@@ -94,6 +94,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [BaseWebhookEvent]. */
     class Builder internal constructor() {
 
         private var accountId: JsonField<String>? = null

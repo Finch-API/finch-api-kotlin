@@ -64,6 +64,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [PaymentCreateResponse]. */
     class Builder internal constructor() {
 
         private var payDate: JsonField<String>? = null

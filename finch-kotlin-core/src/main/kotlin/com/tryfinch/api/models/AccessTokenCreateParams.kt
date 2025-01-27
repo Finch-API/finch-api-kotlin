@@ -119,6 +119,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [AccessTokenCreateBody]. */
         class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
@@ -209,6 +210,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [AccessTokenCreateParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

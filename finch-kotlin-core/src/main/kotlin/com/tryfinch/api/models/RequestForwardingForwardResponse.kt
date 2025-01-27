@@ -97,6 +97,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [RequestForwardingForwardResponse]. */
     class Builder internal constructor() {
 
         private var data: JsonField<String>? = null
@@ -278,6 +279,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Request]. */
         class Builder internal constructor() {
 
             private var data: JsonField<String>? = null

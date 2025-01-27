@@ -92,6 +92,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [HrisIndividualRetrieveManyBody]. */
         class Builder internal constructor() {
 
             private var options: JsonField<Options> = JsonMissing.of()
@@ -179,6 +180,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisIndividualRetrieveManyParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -367,6 +369,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Options]. */
         class Builder internal constructor() {
 
             private var include: JsonField<MutableList<String>>? = null
@@ -477,6 +480,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Request]. */
         class Builder internal constructor() {
 
             private var individualId: JsonField<String> = JsonMissing.of()

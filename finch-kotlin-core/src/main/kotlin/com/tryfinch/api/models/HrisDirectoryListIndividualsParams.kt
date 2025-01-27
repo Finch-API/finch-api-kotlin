@@ -44,6 +44,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisDirectoryListIndividualsParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
