@@ -54,6 +54,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [DisconnectResponse]. */
     class Builder internal constructor() {
 
         private var status: JsonField<String>? = null

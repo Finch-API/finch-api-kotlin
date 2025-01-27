@@ -95,6 +95,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [HrisBenefitUpdateBody]. */
         class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
@@ -161,6 +162,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitUpdateParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

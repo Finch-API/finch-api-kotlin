@@ -117,6 +117,7 @@ private constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [AccountUpdateEvent]. */
     class Builder internal constructor() {
 
         private var accountId: JsonField<String>? = null
@@ -259,6 +260,7 @@ private constructor(
             fun builder() = Builder()
         }
 
+        /** A builder for [Data]. */
         class Builder internal constructor() {
 
             private var authenticationMethod: JsonField<AuthenticationMethod>? = null
@@ -381,6 +383,7 @@ private constructor(
                 fun builder() = Builder()
             }
 
+            /** A builder for [AuthenticationMethod]. */
             class Builder internal constructor() {
 
                 private var benefitsSupport: JsonField<BenefitsSupport> = JsonMissing.of()
@@ -557,6 +560,7 @@ private constructor(
                     fun builder() = Builder()
                 }
 
+                /** A builder for [SupportedFields]. */
                 class Builder internal constructor() {
 
                     private var company: JsonField<SupportedCompanyFields> = JsonMissing.of()
@@ -778,6 +782,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedCompanyFields]. */
                     class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
@@ -975,6 +980,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Accounts]. */
                         class Builder internal constructor() {
 
                             private var accountName: JsonField<Boolean> = JsonMissing.of()
@@ -1128,6 +1134,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Departments]. */
                         class Builder internal constructor() {
 
                             private var name: JsonField<Boolean> = JsonMissing.of()
@@ -1221,6 +1228,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [Parent]. */
                             class Builder internal constructor() {
 
                                 private var name: JsonField<Boolean> = JsonMissing.of()
@@ -1348,6 +1356,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Entity]. */
                         class Builder internal constructor() {
 
                             private var subtype: JsonField<Boolean> = JsonMissing.of()
@@ -1507,6 +1516,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Locations]. */
                         class Builder internal constructor() {
 
                             private var city: JsonField<Boolean> = JsonMissing.of()
@@ -1676,6 +1686,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedDirectoryFields]. */
                     class Builder internal constructor() {
 
                         private var individuals: JsonField<Individuals> = JsonMissing.of()
@@ -1830,6 +1841,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Individuals]. */
                         class Builder internal constructor() {
 
                             private var id: JsonField<Boolean> = JsonMissing.of()
@@ -1970,6 +1982,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [Manager]. */
                             class Builder internal constructor() {
 
                                 private var id: JsonField<Boolean> = JsonMissing.of()
@@ -2099,6 +2112,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Paging]. */
                         class Builder internal constructor() {
 
                             private var count: JsonField<Boolean> = JsonMissing.of()
@@ -2382,6 +2396,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedEmploymentFields]. */
                     class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
@@ -2607,6 +2622,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Department]. */
                         class Builder internal constructor() {
 
                             private var name: JsonField<Boolean> = JsonMissing.of()
@@ -2715,6 +2731,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Employment]. */
                         class Builder internal constructor() {
 
                             private var subtype: JsonField<Boolean> = JsonMissing.of()
@@ -2845,6 +2862,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Income]. */
                         class Builder internal constructor() {
 
                             private var amount: JsonField<Boolean> = JsonMissing.of()
@@ -3011,6 +3029,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Location]. */
                         class Builder internal constructor() {
 
                             private var city: JsonField<Boolean> = JsonMissing.of()
@@ -3151,6 +3170,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Manager]. */
                         class Builder internal constructor() {
 
                             private var id: JsonField<Boolean> = JsonMissing.of()
@@ -3380,6 +3400,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedIndividualFields]. */
                     class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
@@ -3575,6 +3596,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Emails]. */
                         class Builder internal constructor() {
 
                             private var data: JsonField<Boolean> = JsonMissing.of()
@@ -3690,6 +3712,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [PhoneNumbers]. */
                         class Builder internal constructor() {
 
                             private var data: JsonField<Boolean> = JsonMissing.of()
@@ -3848,6 +3871,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Residence]. */
                         class Builder internal constructor() {
 
                             private var city: JsonField<Boolean> = JsonMissing.of()
@@ -4033,6 +4057,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedPayGroupFields]. */
                     class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
@@ -4174,6 +4199,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedPayStatementFields]. */
                     class Builder internal constructor() {
 
                         private var paging: JsonField<Paging> = JsonMissing.of()
@@ -4281,6 +4307,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [Paging]. */
                         class Builder internal constructor() {
 
                             private var count: JsonField<Boolean>? = null
@@ -4484,6 +4511,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [PayStatements]. */
                         class Builder internal constructor() {
 
                             private var earnings: JsonField<Earnings> = JsonMissing.of()
@@ -4685,6 +4713,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [Earnings]. */
                             class Builder internal constructor() {
 
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
@@ -4855,6 +4884,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [EmployeeDeductions]. */
                             class Builder internal constructor() {
 
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
@@ -5014,6 +5044,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [EmployerContributions]. */
                             class Builder internal constructor() {
 
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
@@ -5179,6 +5210,7 @@ private constructor(
                                 fun builder() = Builder()
                             }
 
+                            /** A builder for [Taxes]. */
                             class Builder internal constructor() {
 
                                 private var amount: JsonField<Boolean> = JsonMissing.of()
@@ -5459,6 +5491,7 @@ private constructor(
                         fun builder() = Builder()
                     }
 
+                    /** A builder for [SupportedPaymentFields]. */
                     class Builder internal constructor() {
 
                         private var id: JsonField<Boolean> = JsonMissing.of()
@@ -5655,6 +5688,7 @@ private constructor(
                             fun builder() = Builder()
                         }
 
+                        /** A builder for [PayPeriod]. */
                         class Builder internal constructor() {
 
                             private var endDate: JsonField<Boolean> = JsonMissing.of()
@@ -5771,6 +5805,14 @@ private constructor(
                 private val value: JsonField<String>,
             ) : Enum {
 
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
                 companion object {
@@ -5788,6 +5830,7 @@ private constructor(
                     fun of(value: String) = Type(JsonField.of(value))
                 }
 
+                /** An enum containing [Type]'s known values. */
                 enum class Known {
                     ASSISTED,
                     CREDENTIAL,
@@ -5796,15 +5839,34 @@ private constructor(
                     OAUTH,
                 }
 
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
                 enum class Value {
                     ASSISTED,
                     CREDENTIAL,
                     API_TOKEN,
                     API_CREDENTIAL,
                     OAUTH,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
                     _UNKNOWN,
                 }
 
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
                 fun value(): Value =
                     when (this) {
                         ASSISTED -> Value.ASSISTED
@@ -5815,6 +5877,15 @@ private constructor(
                         else -> Value._UNKNOWN
                     }
 
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
+                 */
                 fun known(): Known =
                     when (this) {
                         ASSISTED -> Known.ASSISTED
@@ -5882,6 +5953,14 @@ private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -5891,21 +5970,49 @@ private constructor(
             fun of(value: String) = EventType(JsonField.of(value))
         }
 
+        /** An enum containing [EventType]'s known values. */
         enum class Known {
             ACCOUNT_UPDATED,
         }
 
+        /**
+         * An enum containing [EventType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [EventType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             ACCOUNT_UPDATED,
+            /**
+             * An enum member indicating that [EventType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 ACCOUNT_UPDATED -> Value.ACCOUNT_UPDATED
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 ACCOUNT_UPDATED -> Known.ACCOUNT_UPDATED
