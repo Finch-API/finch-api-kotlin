@@ -5,7 +5,6 @@ package com.tryfinch.api.client
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getPackageVersion
-import java.net.URLEncoder
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -35,6 +34,7 @@ import com.tryfinch.api.services.async.SandboxServiceAsync
 import com.tryfinch.api.services.async.SandboxServiceAsyncImpl
 import com.tryfinch.api.services.async.WebhookServiceAsync
 import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
+import java.net.URLEncoder
 
 class FinchClientAsyncImpl
 constructor(
@@ -113,6 +113,8 @@ constructor(
     override fun payroll(): PayrollServiceAsync = payroll
 
     override fun connect(): ConnectServiceAsync = connect
+
+    override fun close() = clientOptions.httpClient.close()
 
     // Auth helpers:
     /** @deprecated use client.accessTokens().create instead */
