@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
 
+/** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyPage
 private constructor(
     private val individualsService: IndividualService,
@@ -139,8 +140,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisBenefitIndividualUnenrollManyPage,
     ) : Sequence<UnenrolledIndividual> {
 

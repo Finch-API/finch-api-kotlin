@@ -18,6 +18,8 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,
@@ -45,7 +47,12 @@ private constructor(
         "HrisDirectoryListIndividualsPageAsync{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !individuals().isEmpty()
+        if (individuals().isEmpty()) {
+            return false
+        }
+
+        return (paging().offset() ?: 0) + individuals().count() <
+            (paging().count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
@@ -60,7 +67,6 @@ private constructor(
     }
 
     suspend fun getNextPage(): HrisDirectoryListIndividualsPageAsync? {
-        @Suppress("DEPRECATION")
         return getNextPageParams()?.let { directoryService.listIndividuals(it) }
     }
 
@@ -173,8 +179,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisDirectoryListIndividualsPageAsync,
     ) : Flow<IndividualInDirectory> {
 

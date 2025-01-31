@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -58,13 +59,13 @@ private constructor(
     fun accessToken(): String = accessToken.getRequired("access_token")
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /** The type of application associated with a token. */
     fun clientType(): ClientType = clientType.getRequired("client_type")
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     fun connectionId(): String = connectionId.getRequired("connection_id")
@@ -97,7 +98,10 @@ private constructor(
     fun _accessToken(): JsonField<String> = accessToken
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID. */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     /** The type of application associated with a token. */
     @JsonProperty("client_type")
@@ -105,7 +109,10 @@ private constructor(
     fun _clientType(): JsonField<ClientType> = clientType
 
     /** [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID. */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** The Finch UUID of the connection associated with the `access_token`. */
     @JsonProperty("connection_id")
@@ -167,7 +174,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [CreateAccessTokenResponse]. */
+    class Builder internal constructor() {
 
         private var accessToken: JsonField<String>? = null
         private var accountId: JsonField<String>? = null
@@ -204,11 +212,13 @@ private constructor(
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** The type of application associated with a token. */
@@ -220,11 +230,13 @@ private constructor(
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this company ID.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** The Finch UUID of the connection associated with the `access_token`. */
@@ -317,27 +329,35 @@ private constructor(
 
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
-                checkNotNull(accessToken) { "`accessToken` is required but was not set" },
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(clientType) { "`clientType` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
-                checkNotNull(connectionId) { "`connectionId` is required but was not set" },
-                checkNotNull(connectionType) { "`connectionType` is required but was not set" },
-                checkNotNull(products) { "`products` is required but was not set" }
-                    .map { it.toImmutable() },
-                checkNotNull(providerId) { "`providerId` is required but was not set" },
+                checkRequired("accessToken", accessToken),
+                checkRequired("accountId", accountId),
+                checkRequired("clientType", clientType),
+                checkRequired("companyId", companyId),
+                checkRequired("connectionId", connectionId),
+                checkRequired("connectionType", connectionType),
+                checkRequired("products", products).map { it.toImmutable() },
+                checkRequired("providerId", providerId),
                 customerId,
                 tokenType,
                 additionalProperties.toImmutable(),
             )
     }
 
+    /** The type of application associated with a token. */
     class ClientType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -351,19 +371,39 @@ private constructor(
             fun of(value: String) = ClientType(JsonField.of(value))
         }
 
+        /** An enum containing [ClientType]'s known values. */
         enum class Known {
             PRODUCTION,
             DEVELOPMENT,
             SANDBOX,
         }
 
+        /**
+         * An enum containing [ClientType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ClientType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             PRODUCTION,
             DEVELOPMENT,
             SANDBOX,
+            /**
+             * An enum member indicating that [ClientType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 PRODUCTION -> Value.PRODUCTION
@@ -372,6 +412,14 @@ private constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 PRODUCTION -> Known.PRODUCTION
@@ -395,12 +443,25 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /**
+     * The type of the connection associated with the token.
+     * - `provider` - connection to an external provider
+     * - `finch` - finch-generated data.
+     */
     class ConnectionType
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -412,17 +473,38 @@ private constructor(
             fun of(value: String) = ConnectionType(JsonField.of(value))
         }
 
+        /** An enum containing [ConnectionType]'s known values. */
         enum class Known {
             PROVIDER,
             FINCH,
         }
 
+        /**
+         * An enum containing [ConnectionType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ConnectionType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             PROVIDER,
             FINCH,
+            /**
+             * An enum member indicating that [ConnectionType] was instantiated with an unknown
+             * value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 PROVIDER -> Value.PROVIDER
@@ -430,6 +512,14 @@ private constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 PROVIDER -> Known.PROVIDER

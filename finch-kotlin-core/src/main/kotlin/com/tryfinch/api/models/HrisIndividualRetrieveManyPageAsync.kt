@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,
@@ -144,8 +145,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisIndividualRetrieveManyPageAsync,
     ) : Flow<IndividualResponse> {
 

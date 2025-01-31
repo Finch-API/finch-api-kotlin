@@ -64,7 +64,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [SupportPerBenefitType]. */
+    class Builder internal constructor() {
 
         private var companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of()
         private var individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of()

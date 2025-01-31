@@ -10,28 +10,22 @@ class SandboxCompanyUpdateParamsTest {
     @Test
     fun createSandboxCompanyUpdateParams() {
         SandboxCompanyUpdateParams.builder()
-            .accounts(
-                listOf(
-                    SandboxCompanyUpdateParams.Account.builder()
-                        .accountName("account_name")
-                        .accountNumber("account_number")
-                        .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
-                        .institutionName("institution_name")
-                        .routingNumber("routing_number")
-                        .build()
-                )
+            .addAccount(
+                SandboxCompanyUpdateParams.Account.builder()
+                    .accountName("account_name")
+                    .accountNumber("account_number")
+                    .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
+                    .institutionName("institution_name")
+                    .routingNumber("routing_number")
+                    .build()
             )
-            .departments(
-                listOf(
-                    SandboxCompanyUpdateParams.Department.builder()
-                        .name("name")
-                        .parent(
-                            SandboxCompanyUpdateParams.Department.Parent.builder()
-                                .name("name")
-                                .build()
-                        )
-                        .build()
-                )
+            .addDepartment(
+                SandboxCompanyUpdateParams.Department.builder()
+                    .name("name")
+                    .parent(
+                        SandboxCompanyUpdateParams.Department.Parent.builder().name("name").build()
+                    )
+                    .build()
             )
             .ein("ein")
             .entity(
@@ -41,8 +35,55 @@ class SandboxCompanyUpdateParamsTest {
                     .build()
             )
             .legalName("legal_name")
-            .locations(
-                listOf(
+            .addLocation(
+                Location.builder()
+                    .city("city")
+                    .country("country")
+                    .line1("line1")
+                    .line2("line2")
+                    .name("name")
+                    .postalCode("postal_code")
+                    .sourceId("source_id")
+                    .state("state")
+                    .build()
+            )
+            .primaryEmail("primary_email")
+            .primaryPhoneNumber("primary_phone_number")
+            .build()
+    }
+
+    @Test
+    fun body() {
+        val params =
+            SandboxCompanyUpdateParams.builder()
+                .addAccount(
+                    SandboxCompanyUpdateParams.Account.builder()
+                        .accountName("account_name")
+                        .accountNumber("account_number")
+                        .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
+                        .institutionName("institution_name")
+                        .routingNumber("routing_number")
+                        .build()
+                )
+                .addDepartment(
+                    SandboxCompanyUpdateParams.Department.builder()
+                        .name("name")
+                        .parent(
+                            SandboxCompanyUpdateParams.Department.Parent.builder()
+                                .name("name")
+                                .build()
+                        )
+                        .build()
+                )
+                .ein("ein")
+                .entity(
+                    SandboxCompanyUpdateParams.Entity.builder()
+                        .subtype(SandboxCompanyUpdateParams.Entity.Subtype.S_CORPORATION)
+                        .type(SandboxCompanyUpdateParams.Entity.Type.LLC)
+                        .build()
+                )
+                .legalName("legal_name")
+                .addLocation(
                     Location.builder()
                         .city("city")
                         .country("country")
@@ -54,65 +95,10 @@ class SandboxCompanyUpdateParamsTest {
                         .state("state")
                         .build()
                 )
-            )
-            .primaryEmail("primary_email")
-            .primaryPhoneNumber("primary_phone_number")
-            .build()
-    }
-
-    @Test
-    fun getBody() {
-        val params =
-            SandboxCompanyUpdateParams.builder()
-                .accounts(
-                    listOf(
-                        SandboxCompanyUpdateParams.Account.builder()
-                            .accountName("account_name")
-                            .accountNumber("account_number")
-                            .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
-                            .institutionName("institution_name")
-                            .routingNumber("routing_number")
-                            .build()
-                    )
-                )
-                .departments(
-                    listOf(
-                        SandboxCompanyUpdateParams.Department.builder()
-                            .name("name")
-                            .parent(
-                                SandboxCompanyUpdateParams.Department.Parent.builder()
-                                    .name("name")
-                                    .build()
-                            )
-                            .build()
-                    )
-                )
-                .ein("ein")
-                .entity(
-                    SandboxCompanyUpdateParams.Entity.builder()
-                        .subtype(SandboxCompanyUpdateParams.Entity.Subtype.S_CORPORATION)
-                        .type(SandboxCompanyUpdateParams.Entity.Type.LLC)
-                        .build()
-                )
-                .legalName("legal_name")
-                .locations(
-                    listOf(
-                        Location.builder()
-                            .city("city")
-                            .country("country")
-                            .line1("line1")
-                            .line2("line2")
-                            .name("name")
-                            .postalCode("postal_code")
-                            .sourceId("source_id")
-                            .state("state")
-                            .build()
-                    )
-                )
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .isEqualTo(
@@ -168,19 +154,19 @@ class SandboxCompanyUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             SandboxCompanyUpdateParams.builder()
-                .accounts(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
-                .departments(listOf(SandboxCompanyUpdateParams.Department.builder().build()))
+                .addAccount(SandboxCompanyUpdateParams.Account.builder().build())
+                .addDepartment(SandboxCompanyUpdateParams.Department.builder().build())
                 .ein("ein")
                 .entity(SandboxCompanyUpdateParams.Entity.builder().build())
                 .legalName("legal_name")
-                .locations(listOf(Location.builder().build()))
+                .addLocation(Location.builder().build())
                 .primaryEmail("primary_email")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.accounts())
             .isEqualTo(listOf(SandboxCompanyUpdateParams.Account.builder().build()))

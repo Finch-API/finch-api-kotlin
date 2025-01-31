@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import java.util.Objects
 
+/** Get deductions metadata */
 class HrisBenefitListSupportedBenefitsPage
 private constructor(
     private val benefitsService: BenefitService,
@@ -139,8 +140,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisBenefitListSupportedBenefitsPage,
     ) : Sequence<SupportedBenefit> {
 

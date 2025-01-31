@@ -169,7 +169,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [BenefitsSupport]. */
+    class Builder internal constructor() {
 
         private var commuter: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of()
         private var customPostTax: JsonField<BenefitFeaturesAndOperations> = JsonMissing.of()

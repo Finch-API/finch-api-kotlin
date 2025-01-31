@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -35,13 +36,13 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
@@ -50,13 +51,19 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id")
@@ -87,7 +94,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [BaseWebhookEvent]. */
+    class Builder internal constructor() {
 
         private var accountId: JsonField<String>? = null
         private var companyId: JsonField<String>? = null
@@ -105,24 +113,28 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -154,8 +166,8 @@ private constructor(
 
         fun build(): BaseWebhookEvent =
             BaseWebhookEvent(
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkRequired("accountId", accountId),
+                checkRequired("companyId", companyId),
                 connectionId,
                 additionalProperties.toImmutable(),
             )

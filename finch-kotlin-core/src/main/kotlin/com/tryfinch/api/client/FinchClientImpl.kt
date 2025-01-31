@@ -12,7 +12,6 @@ import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.json
-import java.net.URLEncoder
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.services.blocking.AccessTokenService
@@ -35,9 +34,9 @@ import com.tryfinch.api.services.blocking.SandboxService
 import com.tryfinch.api.services.blocking.SandboxServiceImpl
 import com.tryfinch.api.services.blocking.WebhookService
 import com.tryfinch.api.services.blocking.WebhookServiceImpl
+import java.net.URLEncoder
 
-class FinchClientImpl
-constructor(
+class FinchClientImpl(
     private val clientOptions: ClientOptions,
 ) : FinchClient {
 
@@ -103,6 +102,8 @@ constructor(
     override fun payroll(): PayrollService = payroll
 
     override fun connect(): ConnectService = connect
+
+    override fun close() = clientOptions.httpClient.close()
 
     // auth helpers:
     /** @deprecated use client.accessTokens().create instead */

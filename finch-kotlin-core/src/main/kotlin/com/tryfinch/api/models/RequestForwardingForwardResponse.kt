@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -96,7 +97,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [RequestForwardingForwardResponse]. */
+    class Builder internal constructor() {
 
         private var data: JsonField<String>? = null
         private var headers: JsonValue? = null
@@ -179,10 +181,10 @@ private constructor(
 
         fun build(): RequestForwardingForwardResponse =
             RequestForwardingForwardResponse(
-                checkNotNull(data) { "`data` is required but was not set" },
-                checkNotNull(headers) { "`headers` is required but was not set" },
-                checkNotNull(request) { "`request` is required but was not set" },
-                checkNotNull(statusCode) { "`statusCode` is required but was not set" },
+                checkRequired("data", data),
+                checkRequired("headers", headers),
+                checkRequired("request", request),
+                checkRequired("statusCode", statusCode),
                 additionalProperties.toImmutable(),
             )
     }
@@ -277,7 +279,8 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
 
             private var data: JsonField<String>? = null
             private var headers: JsonValue? = null
@@ -360,11 +363,11 @@ private constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(data) { "`data` is required but was not set" },
-                    checkNotNull(headers) { "`headers` is required but was not set" },
-                    checkNotNull(method) { "`method` is required but was not set" },
-                    checkNotNull(params) { "`params` is required but was not set" },
-                    checkNotNull(route) { "`route` is required but was not set" },
+                    checkRequired("data", data),
+                    checkRequired("headers", headers),
+                    checkRequired("method", method),
+                    checkRequired("params", params),
+                    checkRequired("route", route),
                     additionalProperties.toImmutable(),
                 )
         }

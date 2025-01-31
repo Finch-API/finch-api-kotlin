@@ -10,33 +10,29 @@ class HrisPayStatementRetrieveManyParamsTest {
     @Test
     fun createHrisPayStatementRetrieveManyParams() {
         HrisPayStatementRetrieveManyParams.builder()
-            .requests(
-                listOf(
+            .addRequest(
+                HrisPayStatementRetrieveManyParams.Request.builder()
+                    .paymentId("string")
+                    .limit(50L)
+                    .offset(0L)
+                    .build()
+            )
+            .build()
+    }
+
+    @Test
+    fun body() {
+        val params =
+            HrisPayStatementRetrieveManyParams.builder()
+                .addRequest(
                     HrisPayStatementRetrieveManyParams.Request.builder()
                         .paymentId("string")
                         .limit(50L)
                         .offset(0L)
                         .build()
                 )
-            )
-            .build()
-    }
-
-    @Test
-    fun getBody() {
-        val params =
-            HrisPayStatementRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
-                            .limit(50L)
-                            .offset(0L)
-                            .build()
-                    )
-                )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(
@@ -51,18 +47,14 @@ class HrisPayStatementRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisPayStatementRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
-                            .build()
-                    )
+                .addRequest(
+                    HrisPayStatementRetrieveManyParams.Request.builder().paymentId("string").build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(

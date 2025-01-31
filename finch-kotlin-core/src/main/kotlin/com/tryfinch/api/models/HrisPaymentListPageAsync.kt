@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read payroll and contractor related payments by the company. */
 class HrisPaymentListPageAsync
 private constructor(
     private val paymentsService: PaymentServiceAsync,
@@ -140,8 +141,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisPaymentListPageAsync,
     ) : Flow<Payment> {
 

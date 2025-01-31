@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -23,11 +25,11 @@ import java.util.Objects
  * pull data models directly against an integration’s API.
  */
 class RequestForwardingForwardParams
-constructor(
+private constructor(
     private val body: RequestForwardingForwardBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /**
      * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
@@ -52,7 +54,7 @@ constructor(
      * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
      * "v1" }`
      */
-    fun _headers(): JsonValue = body._headers()
+    fun _headers_(): JsonValue = body._headers_()
 
     /**
      * The query parameters for the forwarded request. This value must be specified as a valid JSON
@@ -84,11 +86,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): RequestForwardingForwardBody = body
+    internal fun _body(): RequestForwardingForwardBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     /** Forward Request Body */
     @NoAutoDetect
@@ -133,7 +135,7 @@ constructor(
          * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
          * "v1" }`
          */
-        @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
+        @JsonProperty("headers") @ExcludeMissing fun _headers_(): JsonValue = headers
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
@@ -183,7 +185,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [RequestForwardingForwardBody]. */
+        class Builder internal constructor() {
 
             private var method: JsonField<String>? = null
             private var route: JsonField<String>? = null
@@ -274,8 +277,8 @@ constructor(
 
             fun build(): RequestForwardingForwardBody =
                 RequestForwardingForwardBody(
-                    checkNotNull(method) { "`method` is required but was not set" },
-                    checkNotNull(route) { "`route` is required but was not set" },
+                    checkRequired("method", method),
+                    checkRequired("route", route),
                     data,
                     headers,
                     params,
@@ -308,8 +311,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [RequestForwardingForwardParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: RequestForwardingForwardBody.Builder =
             RequestForwardingForwardBody.builder()

@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Read company directory and organization structure */
 class HrisDirectoryListPageAsync
 private constructor(
     private val directoryService: DirectoryServiceAsync,
@@ -45,7 +46,12 @@ private constructor(
         "HrisDirectoryListPageAsync{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !individuals().isEmpty()
+        if (individuals().isEmpty()) {
+            return false
+        }
+
+        return (paging().offset() ?: 0) + individuals().count() <
+            (paging().count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): HrisDirectoryListParams? {
@@ -172,8 +178,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisDirectoryListPageAsync,
     ) : Flow<IndividualInDirectory> {
 

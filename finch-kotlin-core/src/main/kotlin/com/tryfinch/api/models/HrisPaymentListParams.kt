@@ -3,6 +3,8 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.time.LocalDate
@@ -10,12 +12,12 @@ import java.util.Objects
 
 /** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
-constructor(
+private constructor(
     private val endDate: LocalDate,
     private val startDate: LocalDate,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
     fun endDate(): LocalDate = endDate
@@ -27,9 +29,9 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.endDate.let { queryParams.put("end_date", listOf(it.toString())) }
         this.startDate.let { queryParams.put("start_date", listOf(it.toString())) }
@@ -44,8 +46,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisPaymentListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
         private var startDate: LocalDate? = null
@@ -165,8 +168,8 @@ constructor(
 
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
-                checkNotNull(endDate) { "`endDate` is required but was not set" },
-                checkNotNull(startDate) { "`startDate` is required but was not set" },
+                checkRequired("endDate", endDate),
+                checkRequired("startDate", startDate),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

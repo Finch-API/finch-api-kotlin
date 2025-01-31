@@ -67,7 +67,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [UnenrolledIndividual]. */
+    class Builder internal constructor() {
 
         private var body: JsonField<Body> = JsonMissing.of()
         private var code: JsonField<Long> = JsonMissing.of()
@@ -184,7 +185,8 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
 
             private var finchCode: JsonField<String> = JsonMissing.of()
             private var message: JsonField<String> = JsonMissing.of()

@@ -16,6 +16,11 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.jobs.AutomatedService
 import java.util.Objects
 
+/**
+ * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are sorted in
+ * descending order by submission time. For scheduled jobs such as data syncs, only the next
+ * scheduled job is shown.
+ */
 class JobAutomatedListPage
 private constructor(
     private val automatedService: AutomatedService,
@@ -43,7 +48,11 @@ private constructor(
         "JobAutomatedListPage{automatedService=$automatedService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !data().isEmpty()
+        if (data().isEmpty()) {
+            return false
+        }
+
+        return (paging().offset() ?: 0) + data().count() < (paging().count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): JobAutomatedListParams? {
@@ -165,8 +174,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: JobAutomatedListPage,
     ) : Sequence<AutomatedAsyncJob> {
 

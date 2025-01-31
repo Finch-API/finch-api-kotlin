@@ -3,18 +3,20 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val individualIds: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun benefitId(): String = benefitId
 
@@ -28,9 +30,9 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.individualIds?.let { queryParams.put("individual_ids", listOf(it.toString())) }
         queryParams.putAll(additionalQueryParams)
@@ -51,8 +53,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitIndividualRetrieveManyBenefitsParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var individualIds: String? = null
@@ -179,7 +182,7 @@ constructor(
 
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsParams =
             HrisBenefitIndividualRetrieveManyBenefitsParams(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                checkRequired("benefitId", benefitId),
                 individualIds,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),

@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -41,13 +42,13 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun accountId(): String = accountId.getRequired("account_id")
+    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    fun companyId(): String = companyId.getRequired("company_id")
+    @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
@@ -60,13 +61,19 @@ private constructor(
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
+    @Deprecated("deprecated")
+    @JsonProperty("account_id")
+    @ExcludeMissing
+    fun _accountId(): JsonField<String> = accountId
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
      */
-    @JsonProperty("company_id") @ExcludeMissing fun _companyId(): JsonField<String> = companyId
+    @Deprecated("deprecated")
+    @JsonProperty("company_id")
+    @ExcludeMissing
+    fun _companyId(): JsonField<String> = companyId
 
     /** Unique Finch ID of the connection associated with the webhook event. */
     @JsonProperty("connection_id")
@@ -110,7 +117,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [JobCompletionEvent]. */
+    class Builder internal constructor() {
 
         private var accountId: JsonField<String>? = null
         private var companyId: JsonField<String>? = null
@@ -132,24 +140,28 @@ private constructor(
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
          * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
          * `connection_id` instead to identify the connection associated with this event.
          */
+        @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
@@ -189,8 +201,8 @@ private constructor(
 
         fun build(): JobCompletionEvent =
             JobCompletionEvent(
-                checkNotNull(accountId) { "`accountId` is required but was not set" },
-                checkNotNull(companyId) { "`companyId` is required but was not set" },
+                checkRequired("accountId", accountId),
+                checkRequired("companyId", companyId),
                 connectionId,
                 data,
                 eventType,
@@ -247,7 +259,8 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Data]. */
+        class Builder internal constructor() {
 
             private var jobId: JsonField<String>? = null
             private var jobUrl: JsonField<String>? = null
@@ -292,8 +305,8 @@ private constructor(
 
             fun build(): Data =
                 Data(
-                    checkNotNull(jobId) { "`jobId` is required but was not set" },
-                    checkNotNull(jobUrl) { "`jobUrl` is required but was not set" },
+                    checkRequired("jobId", jobId),
+                    checkRequired("jobUrl", jobUrl),
                     additionalProperties.toImmutable(),
                 )
         }
@@ -322,6 +335,14 @@ private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -341,6 +362,7 @@ private constructor(
             fun of(value: String) = EventType(JsonField.of(value))
         }
 
+        /** An enum containing [EventType]'s known values. */
         enum class Known {
             JOB_BENEFIT_CREATE_COMPLETED,
             JOB_BENEFIT_ENROLL_COMPLETED,
@@ -350,6 +372,15 @@ private constructor(
             JOB_DATA_SYNC_ALL_COMPLETED,
         }
 
+        /**
+         * An enum containing [EventType]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [EventType] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             JOB_BENEFIT_CREATE_COMPLETED,
             JOB_BENEFIT_ENROLL_COMPLETED,
@@ -357,9 +388,19 @@ private constructor(
             JOB_BENEFIT_UNENROLL_COMPLETED,
             JOB_BENEFIT_UPDATE_COMPLETED,
             JOB_DATA_SYNC_ALL_COMPLETED,
+            /**
+             * An enum member indicating that [EventType] was instantiated with an unknown value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 JOB_BENEFIT_CREATE_COMPLETED -> Value.JOB_BENEFIT_CREATE_COMPLETED
@@ -371,6 +412,14 @@ private constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 JOB_BENEFIT_CREATE_COMPLETED -> Known.JOB_BENEFIT_CREATE_COMPLETED

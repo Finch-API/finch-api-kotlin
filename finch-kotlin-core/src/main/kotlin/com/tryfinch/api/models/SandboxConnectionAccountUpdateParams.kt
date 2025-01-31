@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -22,11 +23,11 @@ import java.util.Objects
  * responds.
  */
 class SandboxConnectionAccountUpdateParams
-constructor(
+private constructor(
     private val body: SandboxConnectionAccountUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun connectionStatus(): ConnectionStatusType? = body.connectionStatus()
 
@@ -38,11 +39,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): SandboxConnectionAccountUpdateBody = body
+    internal fun _body(): SandboxConnectionAccountUpdateBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class SandboxConnectionAccountUpdateBody
@@ -84,7 +85,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [SandboxConnectionAccountUpdateBody]. */
+        class Builder internal constructor() {
 
             private var connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -155,8 +157,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [SandboxConnectionAccountUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: SandboxConnectionAccountUpdateBody.Builder =
             SandboxConnectionAccountUpdateBody.builder()

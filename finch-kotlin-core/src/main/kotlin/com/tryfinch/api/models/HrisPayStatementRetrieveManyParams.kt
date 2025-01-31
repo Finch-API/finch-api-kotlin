@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -23,11 +25,11 @@ import java.util.Objects
  * Deduction and contribution types are supported by the payroll systems that supports Benefits.
  */
 class HrisPayStatementRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisPayStatementRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The array of batch requests. */
     fun requests(): List<Request> = body.requests()
@@ -41,11 +43,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisPayStatementRetrieveManyBody = body
+    internal fun _body(): HrisPayStatementRetrieveManyBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class HrisPayStatementRetrieveManyBody
@@ -88,7 +90,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisPayStatementRetrieveManyBody]. */
+        class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -141,8 +144,7 @@ constructor(
 
             fun build(): HrisPayStatementRetrieveManyBody =
                 HrisPayStatementRetrieveManyBody(
-                    checkNotNull(requests) { "`requests` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("requests", requests).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -172,8 +174,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisPayStatementRetrieveManyParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisPayStatementRetrieveManyBody.Builder =
             HrisPayStatementRetrieveManyBody.builder()
@@ -381,7 +384,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
 
             private var paymentId: JsonField<String>? = null
             private var limit: JsonField<Long> = JsonMissing.of()
@@ -434,7 +438,7 @@ constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(paymentId) { "`paymentId` is required but was not set" },
+                    checkRequired("paymentId", paymentId),
                     limit,
                     offset,
                     additionalProperties.toImmutable(),

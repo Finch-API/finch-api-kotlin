@@ -11,40 +11,34 @@ class HrisIndividualRetrieveManyParamsTest {
     fun createHrisIndividualRetrieveManyParams() {
         HrisIndividualRetrieveManyParams.builder()
             .options(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
-            .requests(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .options(
-                    HrisIndividualRetrieveManyParams.Options.builder()
-                        .include(listOf("string"))
+                    HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
+                )
+                .addRequest(
+                    HrisIndividualRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
                         .build()
                 )
-                .requests(
-                    listOf(
-                        HrisIndividualRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
-                )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.options())
             .isEqualTo(
-                HrisIndividualRetrieveManyParams.Options.builder().include(listOf("string")).build()
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
         assertThat(body.requests())
             .isEqualTo(
@@ -57,9 +51,9 @@ class HrisIndividualRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = HrisIndividualRetrieveManyParams.builder().build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 }

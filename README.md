@@ -1,40 +1,46 @@
 # Finch Kotlin API Library
 
-The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin. It includes helper classes with helpful types and documentation for every request and response property.
+<!-- x-release-please-start-version -->
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.0.0)
+
+<!-- x-release-please-end -->
+
+The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin.
 
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
-## Documentation
-
 The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
----
-
-## Getting started
-
-### Install dependencies
-
-#### Gradle
+## Installation
 
 <!-- x-release-please-start-version -->
 
+### Gradle
+
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:3.3.0")
+implementation("com.tryfinch.api:finch-kotlin:4.0.0")
 ```
 
-#### Maven
+### Maven
 
 ```xml
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>3.3.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
 <!-- x-release-please-end -->
+
+## Requirements
+
+This library requires Java 8 or later.
+
+## Usage
 
 ### Configure the client
 
@@ -122,19 +128,7 @@ See [Pagination](#pagination) below for more information on transparently workin
 
 To make a request to the Finch API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListParams.builder()` to pass to the `list` method of the `directory` service.
-
-Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case, you can attach them using the `putAdditionalProperty` method.
-
-```kotlin
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.HrisDirectoryListParams
-
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    // ... normal properties
-    .putAdditionalProperty("secret_param", JsonValue.from("4242"))
-    .build()
-```
+See [Undocumented request params](#undocumented-request-params) for how to send arbitrary parameters.
 
 ## Responses
 
@@ -317,6 +311,33 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .build()
 ```
 
+## Making custom/undocumented requests
+
+This library is typed for convenient access to the documented API. If you need to access undocumented params or response properties, the library can still be used.
+
+### Undocumented request params
+
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `HrisDirectoryListParams.builder()` to pass to the `list` method of the `directory` service.
+
+Sometimes, the API may support other properties that are not yet supported in the Kotlin SDK types. In that case, you can attach them using raw setters:
+
+```kotlin
+import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.models.HrisDirectoryListParams
+
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
+    .putAdditionalHeader("Secret-Header", "42")
+    .putAdditionalQueryParam("secret_query_param", "42")
+    .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
+    .build()
+```
+
+You can also use the `putAdditionalProperty` method on nested headers, query params, or body objects.
+
+### Undocumented response properties
+
+To access undocumented response properties, you can use `res._additionalProperties()` on a response object to get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like `res._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class to extract it to a desired type.
+
 ## Logging
 
 We use the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
@@ -343,7 +364,3 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/Finch-API/finch-api-kotlin/issues) with questions, bugs, or suggestions.
-
-## Requirements
-
-This library requires Java 8 or later.

@@ -16,6 +16,11 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import java.util.Objects
 
+/**
+ * Read detailed pay statements for each individual.
+ *
+ * Deduction and contribution types are supported by the payroll systems that supports Benefits.
+ */
 class HrisPayStatementRetrieveManyPage
 private constructor(
     private val payStatementsService: PayStatementService,
@@ -143,8 +148,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisPayStatementRetrieveManyPage,
     ) : Sequence<PayStatementResponse> {
 

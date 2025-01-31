@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -19,11 +20,11 @@ import java.util.Objects
 
 /** Read individual data, excluding income and employment data */
 class HrisIndividualRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisIndividualRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun options(): Options? = body.options()
 
@@ -39,11 +40,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisIndividualRetrieveManyBody = body
+    internal fun _body(): HrisIndividualRetrieveManyBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class HrisIndividualRetrieveManyBody
@@ -92,7 +93,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisIndividualRetrieveManyBody]. */
+        class Builder internal constructor() {
 
             private var options: JsonField<Options> = JsonMissing.of()
             private var requests: JsonField<MutableList<Request>>? = null
@@ -179,8 +181,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisIndividualRetrieveManyParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisIndividualRetrieveManyBody.Builder =
             HrisIndividualRetrieveManyBody.builder()
@@ -367,7 +370,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Options]. */
+        class Builder internal constructor() {
 
             private var include: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -477,7 +481,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
 
             private var individualId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
