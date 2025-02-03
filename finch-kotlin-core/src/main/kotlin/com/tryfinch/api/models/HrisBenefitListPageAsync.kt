@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** List all company-wide deductions and contributions. */
 class HrisBenefitListPageAsync
 private constructor(
     private val benefitsService: BenefitServiceAsync,
@@ -141,8 +142,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisBenefitListPageAsync,
     ) : Flow<CompanyBenefit> {
 

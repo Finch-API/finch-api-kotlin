@@ -16,6 +16,8 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 
+/** Read company directory and organization structure */
+@Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPage
 private constructor(
     private val directoryService: DirectoryService,
@@ -43,7 +45,12 @@ private constructor(
         "HrisDirectoryListIndividualsPage{directoryService=$directoryService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !individuals().isEmpty()
+        if (individuals().isEmpty()) {
+            return false
+        }
+
+        return (paging().offset() ?: 0) + individuals().count() <
+            (paging().count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
@@ -58,7 +65,6 @@ private constructor(
     }
 
     fun getNextPage(): HrisDirectoryListIndividualsPage? {
-        @Suppress("DEPRECATION")
         return getNextPageParams()?.let { directoryService.listIndividuals(it) }
     }
 
@@ -171,8 +177,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisDirectoryListIndividualsPage,
     ) : Sequence<IndividualInDirectory> {
 

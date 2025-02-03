@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -19,12 +21,12 @@ import java.util.Objects
 
 /** Updates an existing company-wide deduction or contribution */
 class HrisBenefitUpdateParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val body: HrisBenefitUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun benefitId(): String = benefitId
 
@@ -40,11 +42,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisBenefitUpdateBody = body
+    internal fun _body(): HrisBenefitUpdateBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -94,7 +96,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisBenefitUpdateBody]. */
+        class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -160,8 +163,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitUpdateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var body: HrisBenefitUpdateBody.Builder = HrisBenefitUpdateBody.builder()
@@ -302,7 +306,7 @@ constructor(
 
         fun build(): HrisBenefitUpdateParams =
             HrisBenefitUpdateParams(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                checkRequired("benefitId", benefitId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),

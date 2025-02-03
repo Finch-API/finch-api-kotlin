@@ -109,7 +109,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [Location]. */
+    class Builder internal constructor() {
 
         private var city: JsonField<String> = JsonMissing.of()
         private var country: JsonField<String> = JsonMissing.of()

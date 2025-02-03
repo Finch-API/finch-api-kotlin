@@ -12,6 +12,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -21,16 +23,16 @@ import java.util.Objects
 
 /** Create a new Connect session for reauthenticating an existing connection */
 class ConnectSessionReauthenticateParams
-constructor(
+private constructor(
     private val body: ConnectSessionReauthenticateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The ID of the existing connection to reauthenticate */
     fun connectionId(): String = body.connectionId()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun minutesToExpire(): Long? = body.minutesToExpire()
 
     /** The products to request access to (optional for reauthentication) */
@@ -42,7 +44,7 @@ constructor(
     /** The ID of the existing connection to reauthenticate */
     fun _connectionId(): JsonField<String> = body._connectionId()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun _minutesToExpire(): JsonField<Long> = body._minutesToExpire()
 
     /** The products to request access to (optional for reauthentication) */
@@ -57,11 +59,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): ConnectSessionReauthenticateBody = body
+    internal fun _body(): ConnectSessionReauthenticateBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class ConnectSessionReauthenticateBody
@@ -87,7 +89,7 @@ constructor(
         fun connectionId(): String = connectionId.getRequired("connection_id")
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(): Long? = minutesToExpire.getNullable("minutes_to_expire")
 
@@ -103,7 +105,7 @@ constructor(
         fun _connectionId(): JsonField<String> = connectionId
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
@@ -144,7 +146,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ConnectSessionReauthenticateBody]. */
+        class Builder internal constructor() {
 
             private var connectionId: JsonField<String>? = null
             private var minutesToExpire: JsonField<Long> = JsonMissing.of()
@@ -171,20 +174,20 @@ constructor(
             }
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Long?) =
                 minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
@@ -241,7 +244,7 @@ constructor(
 
             fun build(): ConnectSessionReauthenticateBody =
                 ConnectSessionReauthenticateBody(
-                    checkNotNull(connectionId) { "`connectionId` is required but was not set" },
+                    checkRequired("connectionId", connectionId),
                     minutesToExpire,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     redirectUri,
@@ -274,8 +277,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [ConnectSessionReauthenticateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: ConnectSessionReauthenticateBody.Builder =
             ConnectSessionReauthenticateBody.builder()
@@ -299,19 +303,19 @@ constructor(
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Long?) = apply {
             body.minutesToExpire(minutesToExpire)
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Long) = minutesToExpire(minutesToExpire as Long?)
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: JsonField<Long>) = apply {
             body.minutesToExpire(minutesToExpire)
@@ -457,12 +461,21 @@ constructor(
             )
     }
 
+    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -486,6 +499,7 @@ constructor(
             fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
 
+        /** An enum containing [ConnectProducts]'s known values. */
         enum class Known {
             COMPANY,
             DIRECTORY,
@@ -497,6 +511,15 @@ constructor(
             SSN,
         }
 
+        /**
+         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             COMPANY,
             DIRECTORY,
@@ -506,9 +529,20 @@ constructor(
             PAY_STATEMENT,
             BENEFITS,
             SSN,
+            /**
+             * An enum member indicating that [ConnectProducts] was instantiated with an unknown
+             * value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 COMPANY -> Value.COMPANY
@@ -522,6 +556,14 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 COMPANY -> Known.COMPANY

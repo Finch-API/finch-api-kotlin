@@ -113,7 +113,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [IndividualInDirectory]. */
+    class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
         private var department: JsonField<Department> = JsonMissing.of()
@@ -252,7 +253,8 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Department]. */
+        class Builder internal constructor() {
 
             private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -346,7 +348,8 @@ private constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Manager]. */
+        class Builder internal constructor() {
 
             private var id: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -19,12 +21,12 @@ import java.util.Objects
 
 /** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyParams
-constructor(
+private constructor(
     private val benefitId: String,
     private val body: HrisBenefitIndividualUnenrollManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun benefitId(): String = benefitId
 
@@ -40,11 +42,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisBenefitIndividualUnenrollManyBody = body
+    internal fun _body(): HrisBenefitIndividualUnenrollManyBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -94,7 +96,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisBenefitIndividualUnenrollManyBody]. */
+        class Builder internal constructor() {
 
             private var individualIds: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -180,8 +183,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitIndividualUnenrollManyParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var benefitId: String? = null
         private var body: HrisBenefitIndividualUnenrollManyBody.Builder =
@@ -332,7 +336,7 @@ constructor(
 
         fun build(): HrisBenefitIndividualUnenrollManyParams =
             HrisBenefitIndividualUnenrollManyParams(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
+                checkRequired("benefitId", benefitId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),

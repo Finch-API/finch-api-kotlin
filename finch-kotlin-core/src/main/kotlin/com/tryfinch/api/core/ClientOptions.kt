@@ -39,7 +39,8 @@ private constructor(
         fun fromEnv(): ClientOptions = builder().fromEnv().build()
     }
 
-    class Builder {
+    /** A builder for [ClientOptions]. */
+    class Builder internal constructor() {
 
         private var httpClient: HttpClient? = null
         private var jsonMapper: JsonMapper = jsonMapper()
@@ -178,7 +179,7 @@ private constructor(
         }
 
         fun build(): ClientOptions {
-            checkNotNull(httpClient) { "`httpClient` is required but was not set" }
+            val httpClient = checkRequired("httpClient", httpClient)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -209,10 +210,10 @@ private constructor(
             queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
-                httpClient!!,
+                httpClient,
                 PhantomReachableClosingHttpClient(
                     RetryingHttpClient.builder()
-                        .httpClient(httpClient!!)
+                        .httpClient(httpClient)
                         .clock(clock)
                         .maxRetries(maxRetries)
                         .build()

@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -10,12 +11,12 @@ import java.util.Objects
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
-constructor(
+private constructor(
     private val individualId: String?,
     private val payFrequencies: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun individualId(): String? = individualId
 
@@ -25,9 +26,9 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.individualId?.let { queryParams.put("individual_id", listOf(it.toString())) }
         this.payFrequencies?.let { queryParams.put("pay_frequencies[]", it.map(Any::toString)) }
@@ -42,8 +43,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [PayrollPayGroupListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var individualId: String? = null
         private var payFrequencies: MutableList<String>? = null

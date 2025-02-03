@@ -10,29 +10,25 @@ class HrisEmploymentRetrieveManyParamsTest {
     @Test
     fun createHrisEmploymentRetrieveManyParams() {
         HrisEmploymentRetrieveManyParams.builder()
-            .requests(
-                listOf(
-                    HrisEmploymentRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .addRequest(
+                HrisEmploymentRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(
@@ -45,18 +41,16 @@ class HrisEmploymentRetrieveManyParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             HrisEmploymentRetrieveManyParams.builder()
-                .requests(
-                    listOf(
-                        HrisEmploymentRetrieveManyParams.Request.builder()
-                            .individualId("individual_id")
-                            .build()
-                    )
+                .addRequest(
+                    HrisEmploymentRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.requests())
             .isEqualTo(

@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -22,11 +23,11 @@ import java.util.Objects
  * view available types for each provider.
  */
 class HrisBenefitCreateParams
-constructor(
+private constructor(
     private val body: HrisBenefitCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /**
      * Name of the benefit as it appears in the provider and pay statements. Recommend limiting this
@@ -56,11 +57,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisBenefitCreateBody = body
+    internal fun _body(): HrisBenefitCreateBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class HrisBenefitCreateBody
@@ -129,7 +130,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisBenefitCreateBody]. */
+        class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
             private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
@@ -224,8 +226,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisBenefitCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisBenefitCreateBody.Builder = HrisBenefitCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()

@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -19,11 +21,11 @@ import java.util.Objects
 
 /** Read individual employment and income data */
 class HrisEmploymentRetrieveManyParams
-constructor(
+private constructor(
     private val body: HrisEmploymentRetrieveManyBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The array of batch requests. */
     fun requests(): List<Request> = body.requests()
@@ -37,11 +39,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): HrisEmploymentRetrieveManyBody = body
+    internal fun _body(): HrisEmploymentRetrieveManyBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     /** Individual Ids Request Body */
     @NoAutoDetect
@@ -85,7 +87,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [HrisEmploymentRetrieveManyBody]. */
+        class Builder internal constructor() {
 
             private var requests: JsonField<MutableList<Request>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -138,8 +141,7 @@ constructor(
 
             fun build(): HrisEmploymentRetrieveManyBody =
                 HrisEmploymentRetrieveManyBody(
-                    checkNotNull(requests) { "`requests` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("requests", requests).map { it.toImmutable() },
                     additionalProperties.toImmutable()
                 )
         }
@@ -169,8 +171,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [HrisEmploymentRetrieveManyParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: HrisEmploymentRetrieveManyBody.Builder =
             HrisEmploymentRetrieveManyBody.builder()
@@ -368,7 +371,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Request]. */
+        class Builder internal constructor() {
 
             private var individualId: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -415,7 +419,7 @@ constructor(
 
             fun build(): Request =
                 Request(
-                    checkNotNull(individualId) { "`individualId` is required but was not set" },
+                    checkRequired("individualId", individualId),
                     additionalProperties.toImmutable()
                 )
         }

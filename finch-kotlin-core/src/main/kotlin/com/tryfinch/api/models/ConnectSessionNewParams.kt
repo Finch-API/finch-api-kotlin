@@ -12,6 +12,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -21,11 +23,11 @@ import java.util.Objects
 
 /** Create a new connect session for an employer */
 class ConnectSessionNewParams
-constructor(
+private constructor(
     private val body: ConnectSessionNewBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun customerId(): String = body.customerId()
 
@@ -39,7 +41,7 @@ constructor(
 
     fun manual(): Boolean? = body.manual()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun minutesToExpire(): Double? = body.minutesToExpire()
 
     fun redirectUri(): String? = body.redirectUri()
@@ -58,7 +60,7 @@ constructor(
 
     fun _manual(): JsonField<Boolean> = body._manual()
 
-    /** The number of minutes until the session expires (defaults to 20,160, which is 14 days) */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
 
     fun _redirectUri(): JsonField<String> = body._redirectUri()
@@ -71,11 +73,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): ConnectSessionNewBody = body
+    internal fun _body(): ConnectSessionNewBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class ConnectSessionNewBody
@@ -125,7 +127,7 @@ constructor(
         fun manual(): Boolean? = manual.getNullable("manual")
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(): Double? = minutesToExpire.getNullable("minutes_to_expire")
 
@@ -156,7 +158,7 @@ constructor(
         @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
@@ -198,7 +200,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [ConnectSessionNewBody]. */
+        class Builder internal constructor() {
 
             private var customerId: JsonField<String>? = null
             private var customerName: JsonField<String>? = null
@@ -272,21 +275,21 @@ constructor(
             fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Double?) =
                 minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: Double) =
                 minutesToExpire(minutesToExpire as Double?)
 
             /**
-             * The number of minutes until the session expires (defaults to 20,160, which is 14
+             * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
             fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
@@ -324,10 +327,9 @@ constructor(
 
             fun build(): ConnectSessionNewBody =
                 ConnectSessionNewBody(
-                    checkNotNull(customerId) { "`customerId` is required but was not set" },
-                    checkNotNull(customerName) { "`customerName` is required but was not set" },
-                    checkNotNull(products) { "`products` is required but was not set" }
-                        .map { it.toImmutable() },
+                    checkRequired("customerId", customerId),
+                    checkRequired("customerName", customerName),
+                    checkRequired("products", products).map { it.toImmutable() },
                     customerEmail,
                     integration,
                     manual,
@@ -363,8 +365,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [ConnectSessionNewParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: ConnectSessionNewBody.Builder = ConnectSessionNewBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -411,19 +414,19 @@ constructor(
         fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Double?) = apply {
             body.minutesToExpire(minutesToExpire)
         }
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
         /**
-         * The number of minutes until the session expires (defaults to 20,160, which is 14 days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
             body.minutesToExpire(minutesToExpire)
@@ -562,12 +565,21 @@ constructor(
             )
     }
 
+    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts
     @JsonCreator
     private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -591,6 +603,7 @@ constructor(
             fun of(value: String) = ConnectProducts(JsonField.of(value))
         }
 
+        /** An enum containing [ConnectProducts]'s known values. */
         enum class Known {
             COMPANY,
             DIRECTORY,
@@ -602,6 +615,15 @@ constructor(
             SSN,
         }
 
+        /**
+         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             COMPANY,
             DIRECTORY,
@@ -611,9 +633,20 @@ constructor(
             PAY_STATEMENT,
             BENEFITS,
             SSN,
+            /**
+             * An enum member indicating that [ConnectProducts] was instantiated with an unknown
+             * value.
+             */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 COMPANY -> Value.COMPANY
@@ -627,6 +660,14 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 COMPANY -> Known.COMPANY
@@ -702,7 +743,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [Integration]. */
+        class Builder internal constructor() {
 
             private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
             private var provider: JsonField<String> = JsonMissing.of()
@@ -757,6 +799,14 @@ constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
@@ -772,6 +822,7 @@ constructor(
                 fun of(value: String) = AuthMethod(JsonField.of(value))
             }
 
+            /** An enum containing [AuthMethod]'s known values. */
             enum class Known {
                 ASSISTED,
                 CREDENTIAL,
@@ -779,14 +830,34 @@ constructor(
                 API_TOKEN,
             }
 
+            /**
+             * An enum containing [AuthMethod]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [AuthMethod] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 ASSISTED,
                 CREDENTIAL,
                 OAUTH,
                 API_TOKEN,
+                /**
+                 * An enum member indicating that [AuthMethod] was instantiated with an unknown
+                 * value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     ASSISTED -> Value.ASSISTED
@@ -796,6 +867,15 @@ constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
                     ASSISTED -> Known.ASSISTED
@@ -844,6 +924,14 @@ constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -855,17 +943,35 @@ constructor(
             fun of(value: String) = Sandbox(JsonField.of(value))
         }
 
+        /** An enum containing [Sandbox]'s known values. */
         enum class Known {
             FINCH,
             PROVIDER,
         }
 
+        /**
+         * An enum containing [Sandbox]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Sandbox] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             FINCH,
             PROVIDER,
+            /** An enum member indicating that [Sandbox] was instantiated with an unknown value. */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 FINCH -> Value.FINCH
@@ -873,6 +979,14 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 FINCH -> Known.FINCH

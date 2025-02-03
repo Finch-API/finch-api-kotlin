@@ -11,6 +11,8 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -19,11 +21,11 @@ import java.util.Objects
 
 /** Exchange the authorization code for an access token */
 class AccessTokenCreateParams
-constructor(
+private constructor(
     private val body: AccessTokenCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun code(): String = body.code()
 
@@ -47,11 +49,11 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getBody(): AccessTokenCreateBody = body
+    internal fun _body(): AccessTokenCreateBody = body
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
     class AccessTokenCreateBody
@@ -118,7 +120,8 @@ constructor(
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [AccessTokenCreateBody]. */
+        class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
             private var clientId: JsonField<String> = JsonMissing.of()
@@ -175,7 +178,7 @@ constructor(
 
             fun build(): AccessTokenCreateBody =
                 AccessTokenCreateBody(
-                    checkNotNull(code) { "`code` is required but was not set" },
+                    checkRequired("code", code),
                     clientId,
                     clientSecret,
                     redirectUri,
@@ -208,8 +211,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [AccessTokenCreateParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: AccessTokenCreateBody.Builder = AccessTokenCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()

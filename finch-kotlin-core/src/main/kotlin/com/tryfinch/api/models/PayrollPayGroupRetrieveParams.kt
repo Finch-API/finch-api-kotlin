@@ -3,17 +3,19 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
 /** Read information from a single pay group */
 class PayrollPayGroupRetrieveParams
-constructor(
+private constructor(
     private val payGroupId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun payGroupId(): String = payGroupId
 
@@ -21,9 +23,9 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -39,8 +41,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [PayrollPayGroupRetrieveParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var payGroupId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -154,7 +157,7 @@ constructor(
 
         fun build(): PayrollPayGroupRetrieveParams =
             PayrollPayGroupRetrieveParams(
-                checkNotNull(payGroupId) { "`payGroupId` is required but was not set" },
+                checkRequired("payGroupId", payGroupId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

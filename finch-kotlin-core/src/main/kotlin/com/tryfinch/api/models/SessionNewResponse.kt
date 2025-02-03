@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -63,7 +64,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [SessionNewResponse]. */
+    class Builder internal constructor() {
 
         private var connectUrl: JsonField<String>? = null
         private var sessionId: JsonField<String>? = null
@@ -108,8 +110,8 @@ private constructor(
 
         fun build(): SessionNewResponse =
             SessionNewResponse(
-                checkNotNull(connectUrl) { "`connectUrl` is required but was not set" },
-                checkNotNull(sessionId) { "`sessionId` is required but was not set" },
+                checkRequired("connectUrl", connectUrl),
+                checkRequired("sessionId", sessionId),
                 additionalProperties.toImmutable(),
             )
     }

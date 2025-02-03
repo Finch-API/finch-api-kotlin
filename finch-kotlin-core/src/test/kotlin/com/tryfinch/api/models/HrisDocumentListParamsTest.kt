@@ -11,34 +11,34 @@ class HrisDocumentListParamsTest {
     @Test
     fun createHrisDocumentListParams() {
         HrisDocumentListParams.builder()
-            .individualIds(listOf("string"))
+            .addIndividualId("string")
             .limit(0L)
             .offset(0L)
-            .types(listOf(HrisDocumentListParams.Type.W4_2020))
+            .addType(HrisDocumentListParams.Type.W4_2020)
             .build()
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             HrisDocumentListParams.builder()
-                .individualIds(listOf("string"))
+                .addIndividualId("string")
                 .limit(0L)
                 .offset(0L)
-                .types(listOf(HrisDocumentListParams.Type.W4_2020))
+                .addType(HrisDocumentListParams.Type.W4_2020)
                 .build()
         val expected = QueryParams.builder()
         expected.put("individual_ids[]", "string")
         expected.put("limit", "0")
         expected.put("offset", "0")
         expected.put("types[]", HrisDocumentListParams.Type.W4_2020.toString())
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = HrisDocumentListParams.builder().build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

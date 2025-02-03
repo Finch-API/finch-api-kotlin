@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
@@ -13,12 +14,12 @@ import java.util.Objects
  * scheduled job is shown.
  */
 class JobAutomatedListParams
-constructor(
+private constructor(
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** Number of items to return */
     fun limit(): Long? = limit
@@ -30,9 +31,9 @@ constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
         this.offset?.let { queryParams.put("offset", listOf(it.toString())) }
@@ -47,8 +48,9 @@ constructor(
         fun builder() = Builder()
     }
 
+    /** A builder for [JobAutomatedListParams]. */
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var limit: Long? = null
         private var offset: Long? = null

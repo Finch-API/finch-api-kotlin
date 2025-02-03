@@ -18,6 +18,7 @@ import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
+/** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyPageAsync
 private constructor(
     private val individualsService: IndividualServiceAsync,
@@ -141,8 +142,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisBenefitIndividualUnenrollManyPageAsync,
     ) : Flow<UnenrolledIndividual> {
 

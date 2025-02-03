@@ -11,6 +11,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
@@ -79,7 +80,8 @@ private constructor(
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [CompanyBenefit]. */
+    class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null
         private var description: JsonField<String>? = null
@@ -134,10 +136,10 @@ private constructor(
 
         fun build(): CompanyBenefit =
             CompanyBenefit(
-                checkNotNull(benefitId) { "`benefitId` is required but was not set" },
-                checkNotNull(description) { "`description` is required but was not set" },
-                checkNotNull(frequency) { "`frequency` is required but was not set" },
-                checkNotNull(type) { "`type` is required but was not set" },
+                checkRequired("benefitId", benefitId),
+                checkRequired("description", description),
+                checkRequired("frequency", frequency),
+                checkRequired("type", type),
                 additionalProperties.toImmutable(),
             )
     }

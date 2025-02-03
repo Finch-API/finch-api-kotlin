@@ -16,6 +16,7 @@ import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import java.util.Objects
 
+/** Read individual employment and income data */
 class HrisEmploymentRetrieveManyPage
 private constructor(
     private val employmentsService: EmploymentService,
@@ -144,8 +145,7 @@ private constructor(
         }
     }
 
-    class AutoPager
-    constructor(
+    class AutoPager(
         private val firstPage: HrisEmploymentRetrieveManyPage,
     ) : Sequence<EmploymentDataResponse> {
 

@@ -12,21 +12,21 @@ class ConnectSessionReauthenticateParamsTest {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
             .minutesToExpire(0L)
-            .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
             .redirectUri("https://example.com")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ConnectSessionReauthenticateParams.builder()
                 .connectionId("connection_id")
                 .minutesToExpire(0L)
-                .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
                 .redirectUri("https://example.com")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.connectionId()).isEqualTo("connection_id")
         assertThat(body.minutesToExpire()).isEqualTo(0L)
@@ -36,10 +36,10 @@ class ConnectSessionReauthenticateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ConnectSessionReauthenticateParams.builder().connectionId("connection_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.connectionId()).isEqualTo("connection_id")
     }

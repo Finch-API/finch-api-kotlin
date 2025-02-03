@@ -12,13 +12,11 @@ class SandboxIndividualUpdateParamsTest {
         SandboxIndividualUpdateParams.builder()
             .individualId("individual_id")
             .dob("12/20/1989")
-            .emails(
-                listOf(
-                    SandboxIndividualUpdateParams.Email.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.Email.Type.WORK)
-                        .build()
-                )
+            .addEmail(
+                SandboxIndividualUpdateParams.Email.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.Email.Type.WORK)
+                    .build()
             )
             .encryptedSsn("encrypted_ssn")
             .ethnicity(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
@@ -26,13 +24,11 @@ class SandboxIndividualUpdateParamsTest {
             .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
             .lastName("last_name")
             .middleName("middle_name")
-            .phoneNumbers(
-                listOf(
-                    SandboxIndividualUpdateParams.PhoneNumber.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
-                        .build()
-                )
+            .addPhoneNumber(
+                SandboxIndividualUpdateParams.PhoneNumber.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
+                    .build()
             )
             .preferredName("preferred_name")
             .residence(
@@ -52,18 +48,16 @@ class SandboxIndividualUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxIndividualUpdateParams.builder()
                 .individualId("individual_id")
                 .dob("12/20/1989")
-                .emails(
-                    listOf(
-                        SandboxIndividualUpdateParams.Email.builder()
-                            .data("data")
-                            .type(SandboxIndividualUpdateParams.Email.Type.WORK)
-                            .build()
-                    )
+                .addEmail(
+                    SandboxIndividualUpdateParams.Email.builder()
+                        .data("data")
+                        .type(SandboxIndividualUpdateParams.Email.Type.WORK)
+                        .build()
                 )
                 .encryptedSsn("encrypted_ssn")
                 .ethnicity(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
@@ -71,13 +65,11 @@ class SandboxIndividualUpdateParamsTest {
                 .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
                 .lastName("last_name")
                 .middleName("middle_name")
-                .phoneNumbers(
-                    listOf(
-                        SandboxIndividualUpdateParams.PhoneNumber.builder()
-                            .data("data")
-                            .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
-                            .build()
-                    )
+                .addPhoneNumber(
+                    SandboxIndividualUpdateParams.PhoneNumber.builder()
+                        .data("data")
+                        .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
+                        .build()
                 )
                 .preferredName("preferred_name")
                 .residence(
@@ -94,7 +86,7 @@ class SandboxIndividualUpdateParamsTest {
                 )
                 .ssn("ssn")
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.dob()).isEqualTo("12/20/1989")
         assertThat(body.emails())
@@ -139,9 +131,9 @@ class SandboxIndividualUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
     }
 
