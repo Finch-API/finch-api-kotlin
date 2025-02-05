@@ -38,8 +38,7 @@ internal constructor(
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response.use { createHandler.handle(it) }
-        }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response.use { createHandler.handle(it) }
     }
 }

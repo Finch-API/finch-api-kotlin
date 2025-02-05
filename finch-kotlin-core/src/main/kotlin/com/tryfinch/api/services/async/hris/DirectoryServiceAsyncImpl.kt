@@ -39,16 +39,15 @@ internal constructor(
                 .addPathSegments("employer", "directory")
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response
+            .use { listHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-                .let { HrisDirectoryListPageAsync.of(this, params, it) }
-        }
+            }
+            .let { HrisDirectoryListPageAsync.of(this, params, it) }
     }
 
     private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageAsync.Response> =
@@ -67,15 +66,14 @@ internal constructor(
                 .addPathSegments("employer", "directory")
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listIndividualsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response
+            .use { listIndividualsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-                .let { HrisDirectoryListIndividualsPageAsync.of(this, params, it) }
-        }
+            }
+            .let { HrisDirectoryListIndividualsPageAsync.of(this, params, it) }
     }
 }
