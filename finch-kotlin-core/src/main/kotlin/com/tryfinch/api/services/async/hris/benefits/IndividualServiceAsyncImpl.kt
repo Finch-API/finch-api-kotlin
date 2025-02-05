@@ -44,15 +44,14 @@ internal constructor(
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { enrolledIdsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response
+            .use { enrolledIdsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 
     private val retrieveManyBenefitsHandler: Handler<List<IndividualBenefit>> =
@@ -70,21 +69,23 @@ internal constructor(
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { retrieveManyBenefitsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response
+            .use { retrieveManyBenefitsHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.forEach { it.validate() }
                 }
-                .let {
-                    HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.Builder()
+            }
+            .let {
+                HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(
+                    this,
+                    params,
+                    HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.builder()
                         .items(it)
                         .build()
-                }
-                .let { HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(this, params, it) }
-        }
+                )
+            }
     }
 
     private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
@@ -103,18 +104,20 @@ internal constructor(
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepareAsync(clientOptions, params)
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { unenrollManyHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
+        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+        return response
+            .use { unenrollManyHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.forEach { it.validate() }
                 }
-                .let {
-                    HrisBenefitIndividualUnenrollManyPageAsync.Response.Builder().items(it).build()
-                }
-                .let { HrisBenefitIndividualUnenrollManyPageAsync.of(this, params, it) }
-        }
+            }
+            .let {
+                HrisBenefitIndividualUnenrollManyPageAsync.of(
+                    this,
+                    params,
+                    HrisBenefitIndividualUnenrollManyPageAsync.Response.builder().items(it).build()
+                )
+            }
     }
 }
