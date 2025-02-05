@@ -1,5 +1,66 @@
 # Changelog
 
+## 4.0.0 (2025-02-05)
+
+Full Changelog: [v3.3.0...v4.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.3.0...v4.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** better union variant method and variable names ([#339](https://github.com/Finch-API/finch-api-kotlin/issues/339))
+
+### Features
+
+* **api:** api update ([#347](https://github.com/Finch-API/finch-api-kotlin/issues/347)) ([04d6a87](https://github.com/Finch-API/finch-api-kotlin/commit/04d6a873898c3d98514831634922f914d652ce7e))
+* **api:** api update ([#355](https://github.com/Finch-API/finch-api-kotlin/issues/355)) ([9a726a4](https://github.com/Finch-API/finch-api-kotlin/commit/9a726a4e1c6ad6a4ea9777307e8caeb68d80113b))
+* **api:** api update ([#356](https://github.com/Finch-API/finch-api-kotlin/issues/356)) ([7092a04](https://github.com/Finch-API/finch-api-kotlin/commit/7092a042cd80e9d90d1283408151341b8ba820fd))
+* **client:** add `_queryParams` and `_headers` methods ([#348](https://github.com/Finch-API/finch-api-kotlin/issues/348)) ([04aaaa9](https://github.com/Finch-API/finch-api-kotlin/commit/04aaaa9523019e0fca68488b8952e0a37256bd1a))
+* **client:** add `close` method ([#341](https://github.com/Finch-API/finch-api-kotlin/issues/341)) ([825e883](https://github.com/Finch-API/finch-api-kotlin/commit/825e883b3c61e26bc8ada110e3c85a5ad40141f6))
+* **client:** better union variant method and variable names ([#339](https://github.com/Finch-API/finch-api-kotlin/issues/339)) ([e81ed75](https://github.com/Finch-API/finch-api-kotlin/commit/e81ed7546f0c0dd961c30dcb11195e88bdf6ba73))
+* **client:** send client-side timeout headers ([#357](https://github.com/Finch-API/finch-api-kotlin/issues/357)) ([a6c35fb](https://github.com/Finch-API/finch-api-kotlin/commit/a6c35fb2649642eca7e1665298a8376331620626))
+
+
+### Bug Fixes
+
+* **api:** add missing `@MustBeClosed` annotations ([#358](https://github.com/Finch-API/finch-api-kotlin/issues/358)) ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **api:** switch `CompletableFuture&lt;Void&gt;` to `CompletableFuture<Void?>` ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **client:** add missing validation calls on response ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **client:** always provide a body for `PATCH` methods ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **client:** compiler errors ([#351](https://github.com/Finch-API/finch-api-kotlin/issues/351)) ([315a715](https://github.com/Finch-API/finch-api-kotlin/commit/315a715ceadea7880693bfadfdeafbc608899dbe))
+* **client:** don't leak responses when retrying ([#352](https://github.com/Finch-API/finch-api-kotlin/issues/352)) ([b1c1eed](https://github.com/Finch-API/finch-api-kotlin/commit/b1c1eed8f35b4693e0bac5bccc59cfe0577e5efd))
+* **client:** make some classes and constructors non-public ([#345](https://github.com/Finch-API/finch-api-kotlin/issues/345)) ([9f577fb](https://github.com/Finch-API/finch-api-kotlin/commit/9f577fb6ad6bb0b3f642dcb448e763e42ba7e17e))
+
+
+### Chores
+
+* add max retries to test ([#340](https://github.com/Finch-API/finch-api-kotlin/issues/340)) ([8a156a6](https://github.com/Finch-API/finch-api-kotlin/commit/8a156a671b87f3944e2bf3566412ebeec2f34498))
+* **internal:** add and tweak check functions ([#333](https://github.com/Finch-API/finch-api-kotlin/issues/333)) ([a1f86a6](https://github.com/Finch-API/finch-api-kotlin/commit/a1f86a64cd9c5f4d576b5d941aad1620279191ca))
+* **internal:** codegen related update ([#336](https://github.com/Finch-API/finch-api-kotlin/issues/336)) ([c5c9430](https://github.com/Finch-API/finch-api-kotlin/commit/c5c94303029e3a626bd835f1b62ef90948f0d4d7))
+* **internal:** codegen related update ([#354](https://github.com/Finch-API/finch-api-kotlin/issues/354)) ([f29354f](https://github.com/Finch-API/finch-api-kotlin/commit/f29354fa8762b1b449fbfd77c5d13e4ecd7fb73a))
+* **internal:** extract a `checkRequired` function ([#332](https://github.com/Finch-API/finch-api-kotlin/issues/332)) ([5935caa](https://github.com/Finch-API/finch-api-kotlin/commit/5935caa32c706c02239eaa12b7bd9e83a68c756c))
+* **internal:** improve `RetryingHttpClientTest` ([#350](https://github.com/Finch-API/finch-api-kotlin/issues/350)) ([788ef10](https://github.com/Finch-API/finch-api-kotlin/commit/788ef10a6337cc0d0b9f86e84491b70509dcc1d0))
+* **internal:** minor formatting/style changes ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **internal:** remove some unnecessary `constructor` keywords ([9f577fb](https://github.com/Finch-API/finch-api-kotlin/commit/9f577fb6ad6bb0b3f642dcb448e763e42ba7e17e))
+* **internal:** remove unused or unnecessary Gradle imports ([#329](https://github.com/Finch-API/finch-api-kotlin/issues/329)) ([185e8d4](https://github.com/Finch-API/finch-api-kotlin/commit/185e8d4692279092dbb7081690554471b1555f59))
+* **internal:** rename some tests ([3508adc](https://github.com/Finch-API/finch-api-kotlin/commit/3508adc927bfb80ee0416f82d04e51cab7a2b121))
+* **internal:** swap `checkNotNull` to `checkRequired` ([#338](https://github.com/Finch-API/finch-api-kotlin/issues/338)) ([b59e3d9](https://github.com/Finch-API/finch-api-kotlin/commit/b59e3d96bb509a58c5b18200fb272de4bef7e5ea))
+* **internal:** tweak client options nullability handling ([a1f86a6](https://github.com/Finch-API/finch-api-kotlin/commit/a1f86a64cd9c5f4d576b5d941aad1620279191ca))
+* **internal:** update some gradle formatting ([#331](https://github.com/Finch-API/finch-api-kotlin/issues/331)) ([2c357e4](https://github.com/Finch-API/finch-api-kotlin/commit/2c357e4fda18da5c41ca1aa8f98f39e2093d3376))
+* simplify examples involving lists ([#334](https://github.com/Finch-API/finch-api-kotlin/issues/334)) ([05e5597](https://github.com/Finch-API/finch-api-kotlin/commit/05e559763038207867fbfba43e57f161ec90a7a6))
+
+
+### Documentation
+
+* `async` and `sync` method comments ([#344](https://github.com/Finch-API/finch-api-kotlin/issues/344)) ([dc20094](https://github.com/Finch-API/finch-api-kotlin/commit/dc2009480a1124f7bb48d2faf2fa654d8350c22c))
+* add client documentation ([#343](https://github.com/Finch-API/finch-api-kotlin/issues/343)) ([ffc8d25](https://github.com/Finch-API/finch-api-kotlin/commit/ffc8d2578ba298837768183f96d15da1cefb0f1c))
+* add sonatype readme badge ([#335](https://github.com/Finch-API/finch-api-kotlin/issues/335)) ([6806444](https://github.com/Finch-API/finch-api-kotlin/commit/680644410925b203ecc49c51c2020ff545cc4ba8))
+* builder, enum, and union comments ([#346](https://github.com/Finch-API/finch-api-kotlin/issues/346)) ([c60ef22](https://github.com/Finch-API/finch-api-kotlin/commit/c60ef22ba308cace6e5c5251b1a4d51b23175536))
+* fix incorrect additional properties info ([#353](https://github.com/Finch-API/finch-api-kotlin/issues/353)) ([14f8de0](https://github.com/Finch-API/finch-api-kotlin/commit/14f8de0b993ae413a95f492a2638a8142287f2e4))
+
+
+### Refactors
+
+* **internal:** extract request preparation logic ([04aaaa9](https://github.com/Finch-API/finch-api-kotlin/commit/04aaaa9523019e0fca68488b8952e0a37256bd1a))
+
 ## 3.3.0 (2025-01-13)
 
 Full Changelog: [v3.2.0...v3.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v3.2.0...v3.3.0)
