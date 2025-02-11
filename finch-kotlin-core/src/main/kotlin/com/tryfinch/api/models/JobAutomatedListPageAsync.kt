@@ -34,7 +34,7 @@ private constructor(
 
     fun data(): List<AutomatedAsyncJob> = response().data()
 
-    fun paging(): Paging = response().paging()
+    fun paging(): Paging? = response().paging()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -54,7 +54,7 @@ private constructor(
             return false
         }
 
-        return (paging().offset() ?: 0) + data().count() < (paging().count() ?: Long.MAX_VALUE)
+        return (paging()?.offset() ?: 0) + data().count() < (paging()?.count() ?: Long.MAX_VALUE)
     }
 
     fun getNextPageParams(): JobAutomatedListParams? {
@@ -64,7 +64,7 @@ private constructor(
 
         return JobAutomatedListParams.builder()
             .from(params)
-            .offset((paging().offset() ?: 0) + data().count())
+            .offset((paging()?.offset() ?: 0) + data().count())
             .build()
     }
 
@@ -101,7 +101,7 @@ private constructor(
 
         fun data(): List<AutomatedAsyncJob> = data.getNullable("data") ?: listOf()
 
-        fun paging(): Paging = paging.getRequired("paging")
+        fun paging(): Paging? = paging.getNullable("paging")
 
         @JsonProperty("data") fun _data(): JsonField<List<AutomatedAsyncJob>>? = data
 
@@ -119,7 +119,7 @@ private constructor(
             }
 
             data().map { it.validate() }
-            paging().validate()
+            paging()?.validate()
             validated = true
         }
 
