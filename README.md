@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.0.2)
 
 <!-- x-release-please-end -->
 
@@ -21,7 +21,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:4.0.1")
+implementation("com.tryfinch.api:finch-kotlin:4.0.2")
 ```
 
 ### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-kotlin:4.0.1")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2</version>
 </dependency>
 ```
 

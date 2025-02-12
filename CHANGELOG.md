@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.2 (2025-02-12)
+
+Full Changelog: [v4.0.1...v4.0.2](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.1...v4.0.2)
+
+### Chores
+
+* **internal:** codegen related update ([#363](https://github.com/Finch-API/finch-api-kotlin/issues/363)) ([c2e67e5](https://github.com/Finch-API/finch-api-kotlin/commit/c2e67e5f85a991a00b1c0a6df058dd3f832a11a7))
+
 ## 4.0.1 (2025-02-11)
 
 Full Changelog: [v4.0.0...v4.0.1](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.0...v4.0.1)
