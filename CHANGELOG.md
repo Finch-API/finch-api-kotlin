@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.3 (2025-02-13)
+
+Full Changelog: [v4.0.2...v4.0.3](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.2...v4.0.3)
+
+### Chores
+
+* **test:** update some test values ([#366](https://github.com/Finch-API/finch-api-kotlin/issues/366)) ([bb7a194](https://github.com/Finch-API/finch-api-kotlin/commit/bb7a194175ef1a149df8b070233cbe51010e2a06))
+
 ## 4.0.2 (2025-02-12)
 
 Full Changelog: [v4.0.1...v4.0.2](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.1...v4.0.2)
