@@ -24,7 +24,7 @@ import java.util.Objects
  */
 class SandboxConnectionAccountUpdateParams
 private constructor(
-    private val body: SandboxConnectionAccountUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -39,16 +39,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): SandboxConnectionAccountUpdateBody = body
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxConnectionAccountUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("connection_status")
         @ExcludeMissing
         private val connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of(),
@@ -69,7 +69,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxConnectionAccountUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -85,18 +85,15 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [SandboxConnectionAccountUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var connectionStatus: JsonField<ConnectionStatusType> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(
-                sandboxConnectionAccountUpdateBody: SandboxConnectionAccountUpdateBody
-            ) = apply {
-                connectionStatus = sandboxConnectionAccountUpdateBody.connectionStatus
-                additionalProperties =
-                    sandboxConnectionAccountUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                connectionStatus = body.connectionStatus
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun connectionStatus(connectionStatus: ConnectionStatusType) =
@@ -125,11 +122,7 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxConnectionAccountUpdateBody =
-                SandboxConnectionAccountUpdateBody(
-                    connectionStatus,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body = Body(connectionStatus, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -137,7 +130,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxConnectionAccountUpdateBody && connectionStatus == other.connectionStatus && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && connectionStatus == other.connectionStatus && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -147,7 +140,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxConnectionAccountUpdateBody{connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
+            "Body{connectionStatus=$connectionStatus, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -161,8 +154,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxConnectionAccountUpdateBody.Builder =
-            SandboxConnectionAccountUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

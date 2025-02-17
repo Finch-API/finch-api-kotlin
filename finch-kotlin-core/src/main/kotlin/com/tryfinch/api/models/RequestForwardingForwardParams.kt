@@ -26,7 +26,7 @@ import java.util.Objects
  */
 class RequestForwardingForwardParams
 private constructor(
-    private val body: RequestForwardingForwardBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -86,7 +86,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): RequestForwardingForwardBody = body
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -94,9 +94,9 @@ private constructor(
 
     /** Forward Request Body */
     @NoAutoDetect
-    class RequestForwardingForwardBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("method")
         @ExcludeMissing
         private val method: JsonField<String> = JsonMissing.of(),
@@ -167,7 +167,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): RequestForwardingForwardBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -185,7 +185,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [RequestForwardingForwardBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var method: JsonField<String>? = null
@@ -195,14 +195,13 @@ private constructor(
             private var params: JsonValue = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(requestForwardingForwardBody: RequestForwardingForwardBody) = apply {
-                method = requestForwardingForwardBody.method
-                route = requestForwardingForwardBody.route
-                data = requestForwardingForwardBody.data
-                headers = requestForwardingForwardBody.headers
-                params = requestForwardingForwardBody.params
-                additionalProperties =
-                    requestForwardingForwardBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                method = body.method
+                route = body.route
+                data = body.data
+                headers = body.headers
+                params = body.params
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /**
@@ -275,8 +274,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): RequestForwardingForwardBody =
-                RequestForwardingForwardBody(
+            fun build(): Body =
+                Body(
                     checkRequired("method", method),
                     checkRequired("route", route),
                     data,
@@ -291,7 +290,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is RequestForwardingForwardBody && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && method == other.method && route == other.route && data == other.data && headers == other.headers && params == other.params && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -301,7 +300,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "RequestForwardingForwardBody{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
+            "Body{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -315,8 +314,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: RequestForwardingForwardBody.Builder =
-            RequestForwardingForwardBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

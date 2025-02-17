@@ -22,7 +22,7 @@ import java.util.Objects
 /** Exchange the authorization code for an access token */
 class AccessTokenCreateParams
 private constructor(
-    private val body: AccessTokenCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -49,16 +49,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): AccessTokenCreateBody = body
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class AccessTokenCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("code")
         @ExcludeMissing
         private val code: JsonField<String> = JsonMissing.of(),
@@ -101,7 +101,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): AccessTokenCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -120,7 +120,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [AccessTokenCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
@@ -129,12 +129,12 @@ private constructor(
             private var redirectUri: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(accessTokenCreateBody: AccessTokenCreateBody) = apply {
-                code = accessTokenCreateBody.code
-                clientId = accessTokenCreateBody.clientId
-                clientSecret = accessTokenCreateBody.clientSecret
-                redirectUri = accessTokenCreateBody.redirectUri
-                additionalProperties = accessTokenCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                code = body.code
+                clientId = body.clientId
+                clientSecret = body.clientSecret
+                redirectUri = body.redirectUri
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun code(code: String) = code(JsonField.of(code))
@@ -176,8 +176,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): AccessTokenCreateBody =
-                AccessTokenCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("code", code),
                     clientId,
                     clientSecret,
@@ -191,7 +191,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AccessTokenCreateBody && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && code == other.code && clientId == other.clientId && clientSecret == other.clientSecret && redirectUri == other.redirectUri && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -201,7 +201,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AccessTokenCreateBody{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
+            "Body{code=$code, clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -215,7 +215,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: AccessTokenCreateBody.Builder = AccessTokenCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
