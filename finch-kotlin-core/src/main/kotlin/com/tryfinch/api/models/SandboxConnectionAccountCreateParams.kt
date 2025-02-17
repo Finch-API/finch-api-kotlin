@@ -24,7 +24,7 @@ import java.util.Objects
 /** Create a new account for an existing connection (company/provider pair) */
 class SandboxConnectionAccountCreateParams
 private constructor(
-    private val body: SandboxConnectionAccountCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -61,16 +61,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): SandboxConnectionAccountCreateBody = body
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxConnectionAccountCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("company_id")
         @ExcludeMissing
         private val companyId: JsonField<String> = JsonMissing.of(),
@@ -126,7 +126,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxConnectionAccountCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -145,7 +145,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [SandboxConnectionAccountCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var companyId: JsonField<String>? = null
@@ -154,15 +154,12 @@ private constructor(
             private var products: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(
-                sandboxConnectionAccountCreateBody: SandboxConnectionAccountCreateBody
-            ) = apply {
-                companyId = sandboxConnectionAccountCreateBody.companyId
-                providerId = sandboxConnectionAccountCreateBody.providerId
-                authenticationType = sandboxConnectionAccountCreateBody.authenticationType
-                products = sandboxConnectionAccountCreateBody.products.map { it.toMutableList() }
-                additionalProperties =
-                    sandboxConnectionAccountCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                companyId = body.companyId
+                providerId = body.providerId
+                authenticationType = body.authenticationType
+                products = body.products.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -230,8 +227,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxConnectionAccountCreateBody =
-                SandboxConnectionAccountCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("companyId", companyId),
                     checkRequired("providerId", providerId),
                     authenticationType,
@@ -245,7 +242,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxConnectionAccountCreateBody && companyId == other.companyId && providerId == other.providerId && authenticationType == other.authenticationType && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && companyId == other.companyId && providerId == other.providerId && authenticationType == other.authenticationType && products == other.products && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -255,7 +252,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxConnectionAccountCreateBody{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalProperties=$additionalProperties}"
+            "Body{companyId=$companyId, providerId=$providerId, authenticationType=$authenticationType, products=$products, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -269,8 +266,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxConnectionAccountCreateBody.Builder =
-            SandboxConnectionAccountCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
