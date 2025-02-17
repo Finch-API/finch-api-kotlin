@@ -24,7 +24,7 @@ import java.util.Objects
 /** Update a sandbox company's data */
 class SandboxCompanyUpdateParams
 private constructor(
-    private val body: SandboxCompanyUpdateBody,
+    private val body: CompanyWithoutId,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -81,16 +81,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): SandboxCompanyUpdateBody = body
+    internal fun _body(): CompanyWithoutId = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class SandboxCompanyUpdateBody
+    class CompanyWithoutId
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("accounts")
         @ExcludeMissing
         private val accounts: JsonField<List<Account>> = JsonMissing.of(),
@@ -179,7 +179,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxCompanyUpdateBody = apply {
+        fun validate(): CompanyWithoutId = apply {
             if (validated) {
                 return@apply
             }
@@ -202,7 +202,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [SandboxCompanyUpdateBody]. */
+        /** A builder for [CompanyWithoutId]. */
         class Builder internal constructor() {
 
             private var accounts: JsonField<MutableList<Account>>? = null
@@ -215,16 +215,16 @@ private constructor(
             private var primaryPhoneNumber: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(sandboxCompanyUpdateBody: SandboxCompanyUpdateBody) = apply {
-                accounts = sandboxCompanyUpdateBody.accounts.map { it.toMutableList() }
-                departments = sandboxCompanyUpdateBody.departments.map { it.toMutableList() }
-                ein = sandboxCompanyUpdateBody.ein
-                entity = sandboxCompanyUpdateBody.entity
-                legalName = sandboxCompanyUpdateBody.legalName
-                locations = sandboxCompanyUpdateBody.locations.map { it.toMutableList() }
-                primaryEmail = sandboxCompanyUpdateBody.primaryEmail
-                primaryPhoneNumber = sandboxCompanyUpdateBody.primaryPhoneNumber
-                additionalProperties = sandboxCompanyUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(companyWithoutId: CompanyWithoutId) = apply {
+                accounts = companyWithoutId.accounts.map { it.toMutableList() }
+                departments = companyWithoutId.departments.map { it.toMutableList() }
+                ein = companyWithoutId.ein
+                entity = companyWithoutId.entity
+                legalName = companyWithoutId.legalName
+                locations = companyWithoutId.locations.map { it.toMutableList() }
+                primaryEmail = companyWithoutId.primaryEmail
+                primaryPhoneNumber = companyWithoutId.primaryPhoneNumber
+                additionalProperties = companyWithoutId.additionalProperties.toMutableMap()
             }
 
             /** An array of bank account objects associated with the payroll/HRIS system. */
@@ -340,8 +340,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxCompanyUpdateBody =
-                SandboxCompanyUpdateBody(
+            fun build(): CompanyWithoutId =
+                CompanyWithoutId(
                     checkRequired("accounts", accounts).map { it.toImmutable() },
                     checkRequired("departments", departments).map { it.toImmutable() },
                     checkRequired("ein", ein),
@@ -359,7 +359,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxCompanyUpdateBody && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is CompanyWithoutId && accounts == other.accounts && departments == other.departments && ein == other.ein && entity == other.entity && legalName == other.legalName && locations == other.locations && primaryEmail == other.primaryEmail && primaryPhoneNumber == other.primaryPhoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -369,7 +369,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxCompanyUpdateBody{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
+            "CompanyWithoutId{accounts=$accounts, departments=$departments, ein=$ein, entity=$entity, legalName=$legalName, locations=$locations, primaryEmail=$primaryEmail, primaryPhoneNumber=$primaryPhoneNumber, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -383,7 +383,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: SandboxCompanyUpdateBody.Builder = SandboxCompanyUpdateBody.builder()
+        private var body: CompanyWithoutId.Builder = CompanyWithoutId.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
