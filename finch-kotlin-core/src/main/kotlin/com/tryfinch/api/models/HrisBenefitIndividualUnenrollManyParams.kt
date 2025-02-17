@@ -154,7 +154,7 @@ private constructor(
             fun build(): HrisBenefitIndividualUnenrollManyBody =
                 HrisBenefitIndividualUnenrollManyBody(
                     (individualIds ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

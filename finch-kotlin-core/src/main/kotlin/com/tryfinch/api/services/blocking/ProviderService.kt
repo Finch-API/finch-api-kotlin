@@ -11,6 +11,6 @@ interface ProviderService {
     /** Return details on all available payroll and HR systems. */
     fun list(
         params: ProviderListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPage
 }

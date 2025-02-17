@@ -11,6 +11,6 @@ interface DirectoryServiceAsync {
     /** Add new individuals to a sandbox company */
     suspend fun create(
         params: SandboxDirectoryCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): List<JsonValue>
 }

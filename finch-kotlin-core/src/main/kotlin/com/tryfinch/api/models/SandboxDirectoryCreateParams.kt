@@ -970,11 +970,7 @@ private constructor(
                 }
 
                 fun build(): CustomField =
-                    CustomField(
-                        name,
-                        value,
-                        additionalProperties.toImmutable(),
-                    )
+                    CustomField(name, value, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1183,19 +1179,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
-                fun build(): Email =
-                    Email(
-                        data,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                fun build(): Email = Email(data, type, additionalProperties.toImmutable())
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1413,22 +1401,15 @@ private constructor(
                 }
 
                 fun build(): Employment =
-                    Employment(
-                        subtype,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Employment(subtype, type, additionalProperties.toImmutable())
             }
 
             /**
              * The secondary employment type of the individual. Options: `full_time`, `part_time`,
              * `intern`, `temp`, `seasonal` and `individual_contractor`.
              */
-            class Subtype
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Subtype @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1544,11 +1525,8 @@ private constructor(
             }
 
             /** The main employment type of the individual. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1659,9 +1637,7 @@ private constructor(
         /** The detailed employment status of the individual. */
         class EmploymentStatus
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1784,11 +1760,8 @@ private constructor(
         }
 
         /** The EEOC-defined ethnicity of the individual. */
-        class Ethnicity
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Ethnicity @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1916,11 +1889,7 @@ private constructor(
         }
 
         /** The gender of the individual. */
-        class Gender
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Gender @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -2210,18 +2179,11 @@ private constructor(
                 }
 
                 fun build(): PhoneNumber =
-                    PhoneNumber(
-                        data,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    PhoneNumber(data, type, additionalProperties.toImmutable())
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.

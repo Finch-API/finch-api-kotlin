@@ -566,11 +566,8 @@ private constructor(
     }
 
     /** The Finch products that can be requested during the Connect flow. */
-    class ConnectProducts
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -786,18 +783,11 @@ private constructor(
             }
 
             fun build(): Integration =
-                Integration(
-                    authMethod,
-                    provider,
-                    additionalProperties.toImmutable(),
-                )
+                Integration(authMethod, provider, additionalProperties.toImmutable())
         }
 
-        class AuthMethod
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -918,11 +908,7 @@ private constructor(
             "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
     }
 
-    class Sandbox
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Sandbox @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.

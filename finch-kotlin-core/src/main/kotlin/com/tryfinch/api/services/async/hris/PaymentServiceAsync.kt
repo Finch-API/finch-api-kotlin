@@ -11,6 +11,6 @@ interface PaymentServiceAsync {
     /** Read payroll and contractor related payments by the company. */
     suspend fun list(
         params: HrisPaymentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisPaymentListPageAsync
 }

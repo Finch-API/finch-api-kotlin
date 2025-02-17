@@ -16,10 +16,8 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.EmploymentUpdateResponse
 import com.tryfinch.api.models.SandboxEmploymentUpdateParams
 
-class EmploymentServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : EmploymentServiceAsync {
+class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Update sandbox employment */
     override suspend fun update(
         params: SandboxEmploymentUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): EmploymentUpdateResponse {
         val request =
             HttpRequest.builder()

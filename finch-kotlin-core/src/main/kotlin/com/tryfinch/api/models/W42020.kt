@@ -128,13 +128,7 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): W42020 =
-            W42020(
-                data,
-                type,
-                year,
-                additionalProperties.toImmutable(),
-            )
+        fun build(): W42020 = W42020(data, type, year, additionalProperties.toImmutable())
     }
 
     /** Detailed information specific to the 2020 W4 form. */
@@ -424,11 +418,8 @@ private constructor(
         }
 
         /** The individual's filing status for tax purposes. */
-        class FilingStatus
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class FilingStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -547,11 +538,7 @@ private constructor(
     }
 
     /** Specifies the form type, indicating that this document is a 2020 W4 form. */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -572,7 +559,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            W4_2020,
+            W4_2020
         }
 
         /**

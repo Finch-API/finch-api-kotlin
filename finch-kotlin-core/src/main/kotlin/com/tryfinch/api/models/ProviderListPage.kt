@@ -58,11 +58,7 @@ private constructor(
     companion object {
 
         fun of(providersService: ProviderService, params: ProviderListParams, response: Response) =
-            ProviderListPage(
-                providersService,
-                params,
-                response,
-            )
+            ProviderListPage(providersService, params, response)
     }
 
     @NoAutoDetect
@@ -135,9 +131,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProviderListPage,
-    ) : Sequence<Provider> {
+    class AutoPager(private val firstPage: ProviderListPage) : Sequence<Provider> {
 
         override fun iterator(): Iterator<Provider> = iterator {
             var page = firstPage

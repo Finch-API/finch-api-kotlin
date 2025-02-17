@@ -62,13 +62,8 @@ private constructor(
         fun of(
             providersService: ProviderServiceAsync,
             params: ProviderListParams,
-            response: Response
-        ) =
-            ProviderListPageAsync(
-                providersService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = ProviderListPageAsync(providersService, params, response)
     }
 
     @NoAutoDetect
@@ -141,9 +136,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProviderListPageAsync,
-    ) : Flow<Provider> {
+    class AutoPager(private val firstPage: ProviderListPageAsync) : Flow<Provider> {
 
         override suspend fun collect(collector: FlowCollector<Provider>) {
             var page = firstPage

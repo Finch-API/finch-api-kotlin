@@ -11,6 +11,6 @@ interface DirectoryService {
     /** Add new individuals to a sandbox company */
     fun create(
         params: SandboxDirectoryCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): List<JsonValue>
 }

@@ -116,12 +116,7 @@ private constructor(
         }
 
         fun build(): IndividualBenefit =
-            IndividualBenefit(
-                body,
-                code,
-                individualId,
-                additionalProperties.toImmutable(),
-            )
+            IndividualBenefit(body, code, individualId, additionalProperties.toImmutable())
     }
 
     @NoAutoDetect
@@ -322,9 +317,7 @@ private constructor(
         /** Type for HSA contribution limit if the benefit is a HSA. */
         class HsaContributionLimit
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
