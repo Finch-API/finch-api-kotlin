@@ -25,30 +25,30 @@ interface BenefitService {
      */
     fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
 
     /** Lists deductions and contributions information for a given item */
     fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit
 
     /** Updates an existing company-wide deduction or contribution */
     fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse
 
     /** List all company-wide deductions and contributions. */
     fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPage
 
     /** Get deductions metadata */
     fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPage
 }

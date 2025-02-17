@@ -14,6 +14,6 @@ interface ConnectionService {
     /** Create a new connection (new company/provider pair) with a new account */
     fun create(
         params: SandboxConnectionCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ConnectionCreateResponse
 }

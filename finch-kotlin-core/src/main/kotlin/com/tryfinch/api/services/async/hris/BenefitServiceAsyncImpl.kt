@@ -27,10 +27,8 @@ import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 
-class BenefitServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : BenefitServiceAsync {
+class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    BenefitServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -50,7 +48,7 @@ internal constructor(
      */
     override suspend fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CreateCompanyBenefitsResponse {
         val request =
             HttpRequest.builder()
@@ -75,7 +73,7 @@ internal constructor(
     /** Lists deductions and contributions information for a given item */
     override suspend fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompanyBenefit {
         val request =
             HttpRequest.builder()
@@ -100,7 +98,7 @@ internal constructor(
     /** Updates an existing company-wide deduction or contribution */
     override suspend fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): UpdateCompanyBenefitResponse {
         val request =
             HttpRequest.builder()
@@ -125,7 +123,7 @@ internal constructor(
     /** List all company-wide deductions and contributions. */
     override suspend fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitListPageAsync {
         val request =
             HttpRequest.builder()
@@ -145,7 +143,7 @@ internal constructor(
                 HrisBenefitListPageAsync.of(
                     this,
                     params,
-                    HrisBenefitListPageAsync.Response.builder().items(it).build()
+                    HrisBenefitListPageAsync.Response.builder().items(it).build(),
                 )
             }
     }
@@ -156,7 +154,7 @@ internal constructor(
     /** Get deductions metadata */
     override suspend fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitListSupportedBenefitsPageAsync {
         val request =
             HttpRequest.builder()
@@ -176,7 +174,7 @@ internal constructor(
                 HrisBenefitListSupportedBenefitsPageAsync.of(
                     this,
                     params,
-                    HrisBenefitListSupportedBenefitsPageAsync.Response.builder().items(it).build()
+                    HrisBenefitListSupportedBenefitsPageAsync.Response.builder().items(it).build(),
                 )
             }
     }

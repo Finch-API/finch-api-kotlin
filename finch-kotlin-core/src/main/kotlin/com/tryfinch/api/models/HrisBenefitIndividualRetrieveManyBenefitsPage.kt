@@ -60,13 +60,8 @@ private constructor(
         fun of(
             individualsService: IndividualService,
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            response: Response
-        ) =
-            HrisBenefitIndividualRetrieveManyBenefitsPage(
-                individualsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisBenefitIndividualRetrieveManyBenefitsPage(individualsService, params, response)
     }
 
     @NoAutoDetect
@@ -140,9 +135,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPage,
-    ) : Sequence<IndividualBenefit> {
+    class AutoPager(private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPage) :
+        Sequence<IndividualBenefit> {
 
         override fun iterator(): Iterator<IndividualBenefit> = iterator {
             var page = firstPage

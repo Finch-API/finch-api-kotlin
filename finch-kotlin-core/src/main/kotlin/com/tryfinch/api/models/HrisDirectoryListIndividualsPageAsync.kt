@@ -77,13 +77,8 @@ private constructor(
         fun of(
             directoryService: DirectoryServiceAsync,
             params: HrisDirectoryListIndividualsParams,
-            response: Response
-        ) =
-            HrisDirectoryListIndividualsPageAsync(
-                directoryService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisDirectoryListIndividualsPageAsync(directoryService, params, response)
     }
 
     @NoAutoDetect
@@ -170,18 +165,12 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    individuals,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(individuals, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisDirectoryListIndividualsPageAsync,
-    ) : Flow<IndividualInDirectory> {
+    class AutoPager(private val firstPage: HrisDirectoryListIndividualsPageAsync) :
+        Flow<IndividualInDirectory> {
 
         override suspend fun collect(collector: FlowCollector<IndividualInDirectory>) {
             var page = firstPage

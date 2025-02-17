@@ -344,11 +344,7 @@ private constructor(
     }
 
     /** The type of application associated with a token. */
-    class ClientType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ClientType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -448,11 +444,8 @@ private constructor(
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
      */
-    class ConnectionType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ConnectionType @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.

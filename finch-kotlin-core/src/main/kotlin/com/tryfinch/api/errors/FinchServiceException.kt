@@ -8,7 +8,7 @@ abstract class FinchServiceException(
     private val body: String,
     private val error: FinchError,
     message: String = "$statusCode: $error",
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : FinchException(message, cause) {
 
     fun statusCode(): Int = statusCode

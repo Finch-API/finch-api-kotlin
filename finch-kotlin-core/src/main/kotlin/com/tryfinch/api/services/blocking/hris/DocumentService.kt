@@ -15,7 +15,7 @@ interface DocumentService {
      */
     fun list(
         params: HrisDocumentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
 
     /**
@@ -24,6 +24,6 @@ interface DocumentService {
      */
     fun retreive(
         params: HrisDocumentRetreiveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
 }

@@ -13,12 +13,12 @@ interface PayGroupService {
     /** Read information from a single pay group */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
 
     /** Read company pay groups and frequencies */
     fun list(
         params: PayrollPayGroupListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPage
 }

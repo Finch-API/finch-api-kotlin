@@ -16,10 +16,8 @@ import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
-class DirectoryServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DirectoryServiceAsync {
+class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    DirectoryServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Add new individuals to a sandbox company */
     override suspend fun create(
         params: SandboxDirectoryCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): List<JsonValue> {
         val request =
             HttpRequest.builder()

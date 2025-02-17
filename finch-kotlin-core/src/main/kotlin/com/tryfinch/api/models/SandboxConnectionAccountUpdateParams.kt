@@ -128,7 +128,7 @@ private constructor(
             fun build(): SandboxConnectionAccountUpdateBody =
                 SandboxConnectionAccountUpdateBody(
                     connectionStatus,
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 

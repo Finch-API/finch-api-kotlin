@@ -18,10 +18,8 @@ import com.tryfinch.api.models.SandboxConnectionCreateParams
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsync
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsyncImpl
 
-class ConnectionServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ConnectionServiceAsync {
+class ConnectionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ConnectionServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -36,7 +34,7 @@ internal constructor(
     /** Create a new connection (new company/provider pair) with a new account */
     override suspend fun create(
         params: SandboxConnectionCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ConnectionCreateResponse {
         val request =
             HttpRequest.builder()

@@ -11,6 +11,6 @@ interface CompanyService {
     /** Read basic company data */
     fun retrieve(
         params: HrisCompanyRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 }

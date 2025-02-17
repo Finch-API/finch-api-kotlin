@@ -13,7 +13,7 @@ interface AccountServiceAsync {
     /** Create a new account for an existing connection (company/provider pair) */
     suspend fun create(
         params: SandboxConnectionAccountCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountCreateResponse
 
     /**
@@ -22,6 +22,6 @@ interface AccountServiceAsync {
      */
     suspend fun update(
         params: SandboxConnectionAccountUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 }

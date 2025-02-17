@@ -16,10 +16,8 @@ import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
 
-class ProviderServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProviderServiceAsync {
+class ProviderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProviderServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,7 +27,7 @@ internal constructor(
     /** Return details on all available payroll and HR systems. */
     override suspend fun list(
         params: ProviderListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProviderListPageAsync {
         val request =
             HttpRequest.builder()
@@ -49,7 +47,7 @@ internal constructor(
                 ProviderListPageAsync.of(
                     this,
                     params,
-                    ProviderListPageAsync.Response.builder().items(it).build()
+                    ProviderListPageAsync.Response.builder().items(it).build(),
                 )
             }
     }

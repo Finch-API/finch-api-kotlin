@@ -58,11 +58,7 @@ private constructor(
     companion object {
 
         fun of(paymentsService: PaymentService, params: HrisPaymentListParams, response: Response) =
-            HrisPaymentListPage(
-                paymentsService,
-                params,
-                response,
-            )
+            HrisPaymentListPage(paymentsService, params, response)
     }
 
     @NoAutoDetect
@@ -135,9 +131,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPaymentListPage,
-    ) : Sequence<Payment> {
+    class AutoPager(private val firstPage: HrisPaymentListPage) : Sequence<Payment> {
 
         override fun iterator(): Iterator<Payment> = iterator {
             var page = firstPage

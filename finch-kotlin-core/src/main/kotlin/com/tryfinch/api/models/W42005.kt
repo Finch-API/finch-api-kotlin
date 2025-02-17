@@ -128,13 +128,7 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): W42005 =
-            W42005(
-                data,
-                type,
-                year,
-                additionalProperties.toImmutable(),
-            )
+        fun build(): W42005 = W42005(data, type, year, additionalProperties.toImmutable())
     }
 
     /** Detailed information specific to the 2005 W4 form. */
@@ -327,11 +321,8 @@ private constructor(
         }
 
         /** Indicates exemption status from federal tax withholding. */
-        class Exemption
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Exemption @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -423,11 +414,8 @@ private constructor(
         }
 
         /** The individual's filing status for tax purposes. */
-        class FilingStatus
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class FilingStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -546,11 +534,7 @@ private constructor(
     }
 
     /** Specifies the form type, indicating that this document is a 2005 W4 form. */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -571,7 +555,7 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            W4_2005,
+            W4_2005
         }
 
         /**

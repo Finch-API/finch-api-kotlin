@@ -15,18 +15,18 @@ interface IndividualServiceAsync {
     /** Lists individuals currently enrolled in a given deduction. */
     suspend fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualEnrolledIdsResponse
 
     /** Get enrollment information for the given individuals. */
     suspend fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 
     /** Unenroll individuals from a deduction or contribution */
     suspend fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualUnenrollManyPageAsync
 }

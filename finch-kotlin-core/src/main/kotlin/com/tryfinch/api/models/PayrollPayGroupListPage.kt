@@ -60,13 +60,8 @@ private constructor(
         fun of(
             payGroupsService: PayGroupService,
             params: PayrollPayGroupListParams,
-            response: Response
-        ) =
-            PayrollPayGroupListPage(
-                payGroupsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = PayrollPayGroupListPage(payGroupsService, params, response)
     }
 
     @NoAutoDetect
@@ -140,9 +135,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: PayrollPayGroupListPage,
-    ) : Sequence<PayGroupListResponse> {
+    class AutoPager(private val firstPage: PayrollPayGroupListPage) :
+        Sequence<PayGroupListResponse> {
 
         override fun iterator(): Iterator<PayGroupListResponse> = iterator {
             var page = firstPage
