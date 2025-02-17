@@ -25,7 +25,7 @@ import java.util.Objects
 class SandboxEmploymentUpdateParams
 private constructor(
     private val individualId: String,
-    private val body: SandboxEmploymentUpdateBody,
+    private val body: EmploymentWithoutId,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -152,7 +152,7 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): SandboxEmploymentUpdateBody = body
+    internal fun _body(): EmploymentWithoutId = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -166,9 +166,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class SandboxEmploymentUpdateBody
+    class EmploymentWithoutId
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("class_code")
         @ExcludeMissing
         private val classCode: JsonField<String> = JsonMissing.of(),
@@ -362,7 +362,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): SandboxEmploymentUpdateBody = apply {
+        fun validate(): EmploymentWithoutId = apply {
             if (validated) {
                 return@apply
             }
@@ -395,7 +395,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [SandboxEmploymentUpdateBody]. */
+        /** A builder for [EmploymentWithoutId]. */
         class Builder internal constructor() {
 
             private var classCode: JsonField<String> = JsonMissing.of()
@@ -418,27 +418,26 @@ private constructor(
             private var title: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(sandboxEmploymentUpdateBody: SandboxEmploymentUpdateBody) = apply {
-                classCode = sandboxEmploymentUpdateBody.classCode
-                customFields = sandboxEmploymentUpdateBody.customFields.map { it.toMutableList() }
-                department = sandboxEmploymentUpdateBody.department
-                employment = sandboxEmploymentUpdateBody.employment
-                employmentStatus = sandboxEmploymentUpdateBody.employmentStatus
-                endDate = sandboxEmploymentUpdateBody.endDate
-                firstName = sandboxEmploymentUpdateBody.firstName
-                income = sandboxEmploymentUpdateBody.income
-                incomeHistory = sandboxEmploymentUpdateBody.incomeHistory.map { it.toMutableList() }
-                isActive = sandboxEmploymentUpdateBody.isActive
-                lastName = sandboxEmploymentUpdateBody.lastName
-                latestRehireDate = sandboxEmploymentUpdateBody.latestRehireDate
-                location = sandboxEmploymentUpdateBody.location
-                manager = sandboxEmploymentUpdateBody.manager
-                middleName = sandboxEmploymentUpdateBody.middleName
-                sourceId = sandboxEmploymentUpdateBody.sourceId
-                startDate = sandboxEmploymentUpdateBody.startDate
-                title = sandboxEmploymentUpdateBody.title
-                additionalProperties =
-                    sandboxEmploymentUpdateBody.additionalProperties.toMutableMap()
+            internal fun from(employmentWithoutId: EmploymentWithoutId) = apply {
+                classCode = employmentWithoutId.classCode
+                customFields = employmentWithoutId.customFields.map { it.toMutableList() }
+                department = employmentWithoutId.department
+                employment = employmentWithoutId.employment
+                employmentStatus = employmentWithoutId.employmentStatus
+                endDate = employmentWithoutId.endDate
+                firstName = employmentWithoutId.firstName
+                income = employmentWithoutId.income
+                incomeHistory = employmentWithoutId.incomeHistory.map { it.toMutableList() }
+                isActive = employmentWithoutId.isActive
+                lastName = employmentWithoutId.lastName
+                latestRehireDate = employmentWithoutId.latestRehireDate
+                location = employmentWithoutId.location
+                manager = employmentWithoutId.manager
+                middleName = employmentWithoutId.middleName
+                sourceId = employmentWithoutId.sourceId
+                startDate = employmentWithoutId.startDate
+                title = employmentWithoutId.title
+                additionalProperties = employmentWithoutId.additionalProperties.toMutableMap()
             }
 
             /** Worker's compensation classification code for this employee */
@@ -620,8 +619,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): SandboxEmploymentUpdateBody =
-                SandboxEmploymentUpdateBody(
+            fun build(): EmploymentWithoutId =
+                EmploymentWithoutId(
                     classCode,
                     (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                     department,
@@ -649,7 +648,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SandboxEmploymentUpdateBody && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is EmploymentWithoutId && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -659,7 +658,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SandboxEmploymentUpdateBody{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "EmploymentWithoutId{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -674,8 +673,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var individualId: String? = null
-        private var body: SandboxEmploymentUpdateBody.Builder =
-            SandboxEmploymentUpdateBody.builder()
+        private var body: EmploymentWithoutId.Builder = EmploymentWithoutId.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
