@@ -22,10 +22,8 @@ import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 import com.tryfinch.api.models.UnenrolledIndividual
 
-class IndividualServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : IndividualServiceAsync {
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -36,7 +34,7 @@ internal constructor(
     /** Lists individuals currently enrolled in a given deduction. */
     override suspend fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): IndividualEnrolledIdsResponse {
         val request =
             HttpRequest.builder()
@@ -61,7 +59,7 @@ internal constructor(
     /** Get enrollment information for the given individuals. */
     override suspend fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync {
         val request =
             HttpRequest.builder()
@@ -83,7 +81,7 @@ internal constructor(
                     params,
                     HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.builder()
                         .items(it)
-                        .build()
+                        .build(),
                 )
             }
     }
@@ -95,7 +93,7 @@ internal constructor(
     /** Unenroll individuals from a deduction or contribution */
     override suspend fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): HrisBenefitIndividualUnenrollManyPageAsync {
         val request =
             HttpRequest.builder()
@@ -116,7 +114,7 @@ internal constructor(
                 HrisBenefitIndividualUnenrollManyPageAsync.of(
                     this,
                     params,
-                    HrisBenefitIndividualUnenrollManyPageAsync.Response.builder().items(it).build()
+                    HrisBenefitIndividualUnenrollManyPageAsync.Response.builder().items(it).build(),
                 )
             }
     }

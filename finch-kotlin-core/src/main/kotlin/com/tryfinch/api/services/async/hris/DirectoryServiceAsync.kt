@@ -13,13 +13,13 @@ interface DirectoryServiceAsync {
     /** Read company directory and organization structure */
     suspend fun list(
         params: HrisDirectoryListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPageAsync
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
     suspend fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPageAsync
 }

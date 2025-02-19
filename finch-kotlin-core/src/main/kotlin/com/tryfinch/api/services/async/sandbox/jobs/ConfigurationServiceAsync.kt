@@ -12,12 +12,12 @@ interface ConfigurationServiceAsync {
     /** Get configurations for sandbox jobs */
     suspend fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): List<SandboxJobConfiguration>
 
     /** Update configurations for sandbox jobs */
     suspend fun update(
         params: SandboxJobConfigurationUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SandboxJobConfiguration
 }

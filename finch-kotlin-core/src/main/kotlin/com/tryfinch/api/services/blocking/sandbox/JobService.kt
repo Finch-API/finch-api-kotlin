@@ -14,6 +14,6 @@ interface JobService {
     /** Enqueue a new sandbox job */
     fun create(
         params: SandboxJobCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): JobCreateResponse
 }

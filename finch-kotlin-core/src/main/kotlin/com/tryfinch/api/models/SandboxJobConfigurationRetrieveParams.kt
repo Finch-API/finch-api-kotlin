@@ -146,7 +146,7 @@ private constructor(
         fun build(): SandboxJobConfigurationRetrieveParams =
             SandboxJobConfigurationRetrieveParams(
                 additionalHeaders.build(),
-                additionalQueryParams.build()
+                additionalQueryParams.build(),
             )
     }
 

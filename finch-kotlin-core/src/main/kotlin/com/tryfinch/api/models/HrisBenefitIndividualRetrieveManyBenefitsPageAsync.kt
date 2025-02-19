@@ -62,13 +62,8 @@ private constructor(
         fun of(
             individualsService: IndividualServiceAsync,
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            response: Response
-        ) =
-            HrisBenefitIndividualRetrieveManyBenefitsPageAsync(
-                individualsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisBenefitIndividualRetrieveManyBenefitsPageAsync(individualsService, params, response)
     }
 
     @NoAutoDetect
@@ -142,9 +137,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPageAsync,
-    ) : Flow<IndividualBenefit> {
+    class AutoPager(private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPageAsync) :
+        Flow<IndividualBenefit> {
 
         override suspend fun collect(collector: FlowCollector<IndividualBenefit>) {
             var page = firstPage

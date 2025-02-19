@@ -25,30 +25,30 @@ interface BenefitServiceAsync {
      */
     suspend fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
 
     /** Lists deductions and contributions information for a given item */
     suspend fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit
 
     /** Updates an existing company-wide deduction or contribution */
     suspend fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse
 
     /** List all company-wide deductions and contributions. */
     suspend fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPageAsync
 
     /** Get deductions metadata */
     suspend fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPageAsync
 }

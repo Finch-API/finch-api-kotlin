@@ -11,6 +11,6 @@ interface AccessTokenService {
     /** Exchange the authorization code for an access token */
     fun create(
         params: AccessTokenCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateAccessTokenResponse
 }

@@ -11,6 +11,6 @@ interface AccessTokenServiceAsync {
     /** Exchange the authorization code for an access token */
     suspend fun create(
         params: AccessTokenCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateAccessTokenResponse
 }

@@ -62,13 +62,8 @@ private constructor(
         fun of(
             paymentsService: PaymentServiceAsync,
             params: HrisPaymentListParams,
-            response: Response
-        ) =
-            HrisPaymentListPageAsync(
-                paymentsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisPaymentListPageAsync(paymentsService, params, response)
     }
 
     @NoAutoDetect
@@ -141,9 +136,7 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisPaymentListPageAsync,
-    ) : Flow<Payment> {
+    class AutoPager(private val firstPage: HrisPaymentListPageAsync) : Flow<Payment> {
 
         override suspend fun collect(collector: FlowCollector<Payment>) {
             var page = firstPage

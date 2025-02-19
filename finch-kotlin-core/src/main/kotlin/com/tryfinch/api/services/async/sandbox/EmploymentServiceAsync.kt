@@ -11,6 +11,6 @@ interface EmploymentServiceAsync {
     /** Update sandbox employment */
     suspend fun update(
         params: SandboxEmploymentUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
 }

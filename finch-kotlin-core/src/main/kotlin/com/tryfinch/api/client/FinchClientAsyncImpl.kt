@@ -36,9 +36,7 @@ import com.tryfinch.api.services.async.WebhookServiceAsync
 import com.tryfinch.api.services.async.WebhookServiceAsyncImpl
 import java.net.URLEncoder
 
-class FinchClientAsyncImpl(
-    private val clientOptions: ClientOptions,
-) : FinchClientAsync {
+class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClientAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 

@@ -146,7 +146,7 @@ private constructor(
         fun build(): HrisBenefitListSupportedBenefitsParams =
             HrisBenefitListSupportedBenefitsParams(
                 additionalHeaders.build(),
-                additionalQueryParams.build()
+                additionalQueryParams.build(),
             )
     }
 

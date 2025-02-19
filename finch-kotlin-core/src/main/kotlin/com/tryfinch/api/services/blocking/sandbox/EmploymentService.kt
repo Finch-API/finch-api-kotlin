@@ -11,6 +11,6 @@ interface EmploymentService {
     /** Update sandbox employment */
     fun update(
         params: SandboxEmploymentUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
 }

@@ -1180,11 +1180,7 @@ private constructor(
                             }
 
                             fun build(): Departments =
-                                Departments(
-                                    name,
-                                    parent,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Departments(name, parent, additionalProperties.toImmutable())
                         }
 
                         @NoAutoDetect
@@ -1403,11 +1399,7 @@ private constructor(
                             }
 
                             fun build(): Entity =
-                                Entity(
-                                    subtype,
-                                    type,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Entity(subtype, type, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -2157,11 +2149,7 @@ private constructor(
                             }
 
                             fun build(): Paging =
-                                Paging(
-                                    count,
-                                    offset,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Paging(count, offset, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -2779,11 +2767,7 @@ private constructor(
                             }
 
                             fun build(): Employment =
-                                Employment(
-                                    subtype,
-                                    type,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Employment(subtype, type, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -2915,12 +2899,7 @@ private constructor(
                             }
 
                             fun build(): Income =
-                                Income(
-                                    amount,
-                                    currency,
-                                    unit,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Income(amount, currency, unit, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -3641,11 +3620,7 @@ private constructor(
                             }
 
                             fun build(): Emails =
-                                Emails(
-                                    data,
-                                    type,
-                                    additionalProperties.toImmutable(),
-                                )
+                                Emails(data, type, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -3758,11 +3733,7 @@ private constructor(
                             }
 
                             fun build(): PhoneNumbers =
-                                PhoneNumbers(
-                                    data,
-                                    type,
-                                    additionalProperties.toImmutable(),
-                                )
+                                PhoneNumbers(data, type, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -5737,11 +5708,7 @@ private constructor(
                             }
 
                             fun build(): PayPeriod =
-                                PayPeriod(
-                                    endDate,
-                                    startDate,
-                                    additionalProperties.toImmutable(),
-                                )
+                                PayPeriod(endDate, startDate, additionalProperties.toImmutable())
                         }
 
                         override fun equals(other: Any?): Boolean {
@@ -5799,11 +5766,8 @@ private constructor(
             }
 
             /** The type of authentication method. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -5947,11 +5911,7 @@ private constructor(
             "Data{authenticationMethod=$authenticationMethod, status=$status, additionalProperties=$additionalProperties}"
     }
 
-    class EventType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class EventType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -5972,7 +5932,7 @@ private constructor(
 
         /** An enum containing [EventType]'s known values. */
         enum class Known {
-            ACCOUNT_UPDATED,
+            ACCOUNT_UPDATED
         }
 
         /**

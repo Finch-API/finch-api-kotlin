@@ -11,6 +11,6 @@ interface CompanyServiceAsync {
     /** Update a sandbox company's data */
     suspend fun update(
         params: SandboxCompanyUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyUpdateResponse
 }

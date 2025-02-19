@@ -457,19 +457,10 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Email =
-                Email(
-                    data,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Email = Email(data, type, additionalProperties.toImmutable())
         }
 
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -576,11 +567,7 @@ private constructor(
     }
 
     /** The EEOC-defined ethnicity of the individual. */
-    class Ethnicity
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Ethnicity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -706,11 +693,7 @@ private constructor(
     }
 
     /** The gender of the individual. */
-    class Gender
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Gender @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -892,19 +875,10 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): PhoneNumber =
-                PhoneNumber(
-                    data,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): PhoneNumber = PhoneNumber(data, type, additionalProperties.toImmutable())
         }
 
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

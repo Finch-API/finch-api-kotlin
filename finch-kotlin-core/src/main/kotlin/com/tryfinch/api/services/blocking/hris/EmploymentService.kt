@@ -11,6 +11,6 @@ interface EmploymentService {
     /** Read individual employment and income data */
     fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisEmploymentRetrieveManyPage
 }

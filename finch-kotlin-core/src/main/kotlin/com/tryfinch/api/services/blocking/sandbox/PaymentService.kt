@@ -11,6 +11,6 @@ interface PaymentService {
     /** Add a new sandbox payment */
     fun create(
         params: SandboxPaymentCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): PaymentCreateResponse
 }

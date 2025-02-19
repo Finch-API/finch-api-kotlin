@@ -13,12 +13,12 @@ interface AccountService {
     /** Disconnect one or more `access_token`s from your application. */
     fun disconnect(
         params: AccountDisconnectParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
     /** Read account information associated with an `access_token` */
     fun introspect(
         params: AccountIntrospectParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
 }

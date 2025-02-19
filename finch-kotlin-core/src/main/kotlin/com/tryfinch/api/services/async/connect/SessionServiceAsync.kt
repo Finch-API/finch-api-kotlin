@@ -13,12 +13,12 @@ interface SessionServiceAsync {
     /** Create a new connect session for an employer */
     suspend fun new(
         params: ConnectSessionNewParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SessionNewResponse
 
     /** Create a new Connect session for reauthenticating an existing connection */
     suspend fun reauthenticate(
         params: ConnectSessionReauthenticateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): SessionReauthenticateResponse
 }

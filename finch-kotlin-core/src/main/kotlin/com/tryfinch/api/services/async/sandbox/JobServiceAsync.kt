@@ -14,6 +14,6 @@ interface JobServiceAsync {
     /** Enqueue a new sandbox job */
     suspend fun create(
         params: SandboxJobCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): JobCreateResponse
 }

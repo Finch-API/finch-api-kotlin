@@ -104,12 +104,7 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
-        fun build(): Money =
-            Money(
-                amount,
-                currency,
-                additionalProperties.toImmutable(),
-            )
+        fun build(): Money = Money(amount, currency, additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

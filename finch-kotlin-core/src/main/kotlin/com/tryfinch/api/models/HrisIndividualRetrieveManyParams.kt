@@ -420,7 +420,7 @@ private constructor(
             fun build(): Options =
                 Options(
                     (include ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable()
+                    additionalProperties.toImmutable(),
                 )
         }
 
