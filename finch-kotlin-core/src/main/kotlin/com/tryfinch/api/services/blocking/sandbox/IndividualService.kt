@@ -11,6 +11,6 @@ interface IndividualService {
     /** Update sandbox individual */
     fun update(
         params: SandboxIndividualUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualUpdateResponse
 }

@@ -779,11 +779,7 @@ private constructor(
                 }
 
                 fun build(): ConnectionStatus =
-                    ConnectionStatus(
-                        message,
-                        status,
-                        additionalProperties.toImmutable(),
-                    )
+                    ConnectionStatus(message, status, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -805,11 +801,7 @@ private constructor(
         }
 
         /** The type of authentication method. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -934,11 +926,7 @@ private constructor(
     }
 
     /** The type of application associated with a token. */
-    class ClientType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ClientType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -1121,11 +1109,7 @@ private constructor(
             }
 
             fun build(): ConnectionStatus =
-                ConnectionStatus(
-                    message,
-                    status,
-                    additionalProperties.toImmutable(),
-                )
+                ConnectionStatus(message, status, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1151,11 +1135,8 @@ private constructor(
      * - `provider` - connection to an external provider
      * - `finch` - finch-generated data.
      */
-    class ConnectionType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class ConnectionType @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.

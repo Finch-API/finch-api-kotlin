@@ -15,6 +15,6 @@ interface PayStatementServiceAsync {
      */
     suspend fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisPayStatementRetrieveManyPageAsync
 }

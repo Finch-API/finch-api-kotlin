@@ -11,6 +11,6 @@ interface IndividualServiceAsync {
     /** Read individual data, excluding income and employment data */
     suspend fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPageAsync
 }

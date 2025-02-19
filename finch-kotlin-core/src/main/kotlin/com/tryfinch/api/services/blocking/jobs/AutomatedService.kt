@@ -29,13 +29,13 @@ interface AutomatedService {
      */
     fun create(
         params: JobAutomatedCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
 
     /** Get an automated job by `job_id`. */
     fun retrieve(
         params: JobAutomatedRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob
 
     /**
@@ -45,6 +45,6 @@ interface AutomatedService {
      */
     fun list(
         params: JobAutomatedListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): JobAutomatedListPage
 }

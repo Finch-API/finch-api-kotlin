@@ -859,22 +859,12 @@ private constructor(
                 }
 
                 fun build(): Earning =
-                    Earning(
-                        amount,
-                        currency,
-                        hours,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Earning(amount, currency, hours, name, type, additionalProperties.toImmutable())
             }
 
             /** The type of earning. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1397,11 +1387,8 @@ private constructor(
         }
 
         /** The payment method. */
-        class PaymentMethod
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class PaymentMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1649,22 +1636,12 @@ private constructor(
                 }
 
                 fun build(): Tax =
-                    Tax(
-                        amount,
-                        currency,
-                        employer,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                    Tax(amount, currency, employer, name, type, additionalProperties.toImmutable())
             }
 
             /** The type of taxes. */
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1785,11 +1762,7 @@ private constructor(
         }
 
         /** The type of the payment associated with the pay statement. */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

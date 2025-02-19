@@ -11,6 +11,6 @@ interface CompanyService {
     /** Update a sandbox company's data */
     fun update(
         params: SandboxCompanyUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyUpdateResponse
 }

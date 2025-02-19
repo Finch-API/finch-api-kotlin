@@ -77,13 +77,8 @@ private constructor(
         fun of(
             automatedService: AutomatedService,
             params: JobAutomatedListParams,
-            response: Response
-        ) =
-            JobAutomatedListPage(
-                automatedService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = JobAutomatedListPage(automatedService, params, response)
     }
 
     @NoAutoDetect
@@ -165,18 +160,11 @@ private constructor(
                 this.additionalProperties.put(key, value)
             }
 
-            fun build() =
-                Response(
-                    data,
-                    paging,
-                    additionalProperties.toImmutable(),
-                )
+            fun build() = Response(data, paging, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: JobAutomatedListPage,
-    ) : Sequence<AutomatedAsyncJob> {
+    class AutoPager(private val firstPage: JobAutomatedListPage) : Sequence<AutomatedAsyncJob> {
 
         override fun iterator(): Iterator<AutomatedAsyncJob> = iterator {
             var page = firstPage

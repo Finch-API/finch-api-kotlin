@@ -62,13 +62,8 @@ private constructor(
         fun of(
             employmentsService: EmploymentServiceAsync,
             params: HrisEmploymentRetrieveManyParams,
-            response: Response
-        ) =
-            HrisEmploymentRetrieveManyPageAsync(
-                employmentsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = HrisEmploymentRetrieveManyPageAsync(employmentsService, params, response)
     }
 
     @NoAutoDetect
@@ -147,9 +142,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: HrisEmploymentRetrieveManyPageAsync,
-    ) : Flow<EmploymentDataResponse> {
+    class AutoPager(private val firstPage: HrisEmploymentRetrieveManyPageAsync) :
+        Flow<EmploymentDataResponse> {
 
         override suspend fun collect(collector: FlowCollector<EmploymentDataResponse>) {
             var page = firstPage

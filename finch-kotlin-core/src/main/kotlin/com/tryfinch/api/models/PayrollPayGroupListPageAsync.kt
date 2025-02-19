@@ -62,13 +62,8 @@ private constructor(
         fun of(
             payGroupsService: PayGroupServiceAsync,
             params: PayrollPayGroupListParams,
-            response: Response
-        ) =
-            PayrollPayGroupListPageAsync(
-                payGroupsService,
-                params,
-                response,
-            )
+            response: Response,
+        ) = PayrollPayGroupListPageAsync(payGroupsService, params, response)
     }
 
     @NoAutoDetect
@@ -142,9 +137,8 @@ private constructor(
         }
     }
 
-    class AutoPager(
-        private val firstPage: PayrollPayGroupListPageAsync,
-    ) : Flow<PayGroupListResponse> {
+    class AutoPager(private val firstPage: PayrollPayGroupListPageAsync) :
+        Flow<PayGroupListResponse> {
 
         override suspend fun collect(collector: FlowCollector<PayGroupListResponse>) {
             var page = firstPage

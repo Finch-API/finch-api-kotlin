@@ -11,6 +11,6 @@ interface CompanyServiceAsync {
     /** Read basic company data */
     suspend fun retrieve(
         params: HrisCompanyRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 }

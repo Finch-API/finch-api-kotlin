@@ -20,10 +20,8 @@ import com.tryfinch.api.models.JobAutomatedListPageAsync
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
-class AutomatedServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : AutomatedServiceAsync {
+class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AutomatedServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -48,7 +46,7 @@ internal constructor(
      */
     override suspend fun create(
         params: JobAutomatedCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): AutomatedCreateResponse {
         val request =
             HttpRequest.builder()
@@ -73,7 +71,7 @@ internal constructor(
     /** Get an automated job by `job_id`. */
     override suspend fun retrieve(
         params: JobAutomatedRetrieveParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): AutomatedAsyncJob {
         val request =
             HttpRequest.builder()
@@ -102,7 +100,7 @@ internal constructor(
      */
     override suspend fun list(
         params: JobAutomatedListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): JobAutomatedListPageAsync {
         val request =
             HttpRequest.builder()

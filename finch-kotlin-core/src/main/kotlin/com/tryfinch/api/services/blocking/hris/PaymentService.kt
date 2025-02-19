@@ -11,6 +11,6 @@ interface PaymentService {
     /** Read payroll and contractor related payments by the company. */
     fun list(
         params: HrisPaymentListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisPaymentListPage
 }

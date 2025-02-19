@@ -17,9 +17,7 @@ import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 
 class RequestForwardingServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : RequestForwardingServiceAsync {
+internal constructor(private val clientOptions: ClientOptions) : RequestForwardingServiceAsync {
 
     private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
@@ -34,7 +32,7 @@ internal constructor(
      */
     override suspend fun forward(
         params: RequestForwardingForwardParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): RequestForwardingForwardResponse {
         val request =
             HttpRequest.builder()
