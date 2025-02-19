@@ -78,7 +78,7 @@ interface FinchClientAsync {
         clientId: String,
         clientSecret: String,
         code: String,
-        redirectUri: String?
+        redirectUri: String?,
     ): String
 
     suspend fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String
