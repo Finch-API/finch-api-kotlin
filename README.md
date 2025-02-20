@@ -331,9 +331,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```kotlin
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.models.AccessTokenCreateParams
+import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params: AccessTokenCreateParams = AccessTokenCreateParams.builder()
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -345,10 +345,9 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set a documented parameter or property to an undocumented or not yet supported _value_, pass a `JsonValue` object to its setter:
 
 ```kotlin
-import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params: AccessTokenCreateParams = HrisDirectoryListParams.builder().build()
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
 ```
 
 ### Response properties
