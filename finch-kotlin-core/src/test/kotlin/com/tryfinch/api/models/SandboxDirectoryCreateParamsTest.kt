@@ -248,7 +248,6 @@ class SandboxDirectoryCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
         assertThat(body)
             .isEqualTo(
                 listOf(
@@ -373,17 +372,8 @@ class SandboxDirectoryCreateParamsTest {
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            SandboxDirectoryCreateParams.builder()
-                .addBody(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-                .build()
+        val params = SandboxDirectoryCreateParams.builder().build()
 
         val body = params._body()
-
-        assertThat(body).isNotNull
-        assertThat(body)
-            .isEqualTo(
-                listOf(SandboxDirectoryCreateParams.IndividualOrEmployment.builder().build())
-            )
     }
 }

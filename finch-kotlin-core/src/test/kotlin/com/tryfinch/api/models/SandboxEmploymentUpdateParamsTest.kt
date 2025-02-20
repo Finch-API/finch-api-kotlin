@@ -3,6 +3,7 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -130,7 +131,7 @@ class SandboxEmploymentUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.classCode()).isEqualTo("class_code")
         assertThat(body.customFields())
             .isEqualTo(
@@ -204,7 +205,7 @@ class SandboxEmploymentUpdateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
     }
 
     @Test
