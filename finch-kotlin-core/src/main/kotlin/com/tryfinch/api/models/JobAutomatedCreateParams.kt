@@ -48,18 +48,18 @@ import java.util.Objects
  */
 class JobAutomatedCreateParams
 private constructor(
-    private val body: Body,
+    private val body: Body?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun body(): Body = body
+    fun body(): Body? = body
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    internal fun _body(): Body = body
+    internal fun _body(): Body? = body
 
     override fun _headers(): Headers = additionalHeaders
 
@@ -747,7 +747,7 @@ private constructor(
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun body(body: Body) = apply { this.body = body }
+        fun body(body: Body?) = apply { this.body = body }
 
         fun body(dataSyncAll: Body.DataSyncAll) = body(Body.ofDataSyncAll(dataSyncAll))
 
@@ -863,11 +863,7 @@ private constructor(
         }
 
         fun build(): JobAutomatedCreateParams =
-            JobAutomatedCreateParams(
-                checkRequired("body", body),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     override fun equals(other: Any?): Boolean {
