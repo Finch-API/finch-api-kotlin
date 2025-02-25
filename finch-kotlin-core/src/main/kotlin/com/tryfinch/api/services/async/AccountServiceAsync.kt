@@ -12,13 +12,21 @@ interface AccountServiceAsync {
 
     /** Disconnect one or more `access_token`s from your application. */
     suspend fun disconnect(
-        params: AccountDisconnectParams,
+        params: AccountDisconnectParams = AccountDisconnectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
+    /** Disconnect one or more `access_token`s from your application. */
+    suspend fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
+        disconnect(AccountDisconnectParams.none(), requestOptions)
+
     /** Read account information associated with an `access_token` */
     suspend fun introspect(
-        params: AccountIntrospectParams,
+        params: AccountIntrospectParams = AccountIntrospectParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
+
+    /** Read account information associated with an `access_token` */
+    suspend fun introspect(requestOptions: RequestOptions): Introspection =
+        introspect(AccountIntrospectParams.none(), requestOptions)
 }

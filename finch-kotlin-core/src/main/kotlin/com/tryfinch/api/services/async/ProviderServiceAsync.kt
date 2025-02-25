@@ -10,7 +10,11 @@ interface ProviderServiceAsync {
 
     /** Return details on all available payroll and HR systems. */
     suspend fun list(
-        params: ProviderListParams,
+        params: ProviderListParams = ProviderListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPageAsync
+
+    /** Return details on all available payroll and HR systems. */
+    suspend fun list(requestOptions: RequestOptions): ProviderListPageAsync =
+        list(ProviderListParams.none(), requestOptions)
 }

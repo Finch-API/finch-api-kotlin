@@ -40,6 +40,8 @@ private constructor(
 
     companion object {
 
+        fun none(): PayrollPayGroupListParams = builder().build()
+
         fun builder() = Builder()
     }
 
