@@ -10,7 +10,11 @@ interface IndividualService {
 
     /** Read individual data, excluding income and employment data */
     fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams,
+        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPage
+
+    /** Read individual data, excluding income and employment data */
+    fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
+        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 }

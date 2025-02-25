@@ -45,6 +45,8 @@ private constructor(
 
     companion object {
 
+        fun none(): JobAutomatedListParams = builder().build()
+
         fun builder() = Builder()
     }
 

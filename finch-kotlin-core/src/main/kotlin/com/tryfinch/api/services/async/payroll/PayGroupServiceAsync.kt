@@ -18,7 +18,11 @@ interface PayGroupServiceAsync {
 
     /** Read company pay groups and frequencies */
     suspend fun list(
-        params: PayrollPayGroupListParams,
+        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPageAsync
+
+    /** Read company pay groups and frequencies */
+    suspend fun list(requestOptions: RequestOptions): PayrollPayGroupListPageAsync =
+        list(PayrollPayGroupListParams.none(), requestOptions)
 }

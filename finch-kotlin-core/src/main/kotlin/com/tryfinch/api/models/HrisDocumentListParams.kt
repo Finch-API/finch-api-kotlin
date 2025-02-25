@@ -59,6 +59,8 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisDocumentListParams = builder().build()
+
         fun builder() = Builder()
     }
 

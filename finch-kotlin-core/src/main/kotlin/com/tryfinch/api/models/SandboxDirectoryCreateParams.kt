@@ -2213,6 +2213,8 @@ private constructor(
 
     companion object {
 
+        fun none(): SandboxDirectoryCreateParams = builder().build()
+
         fun builder() = Builder()
     }
 

@@ -176,6 +176,8 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisIndividualRetrieveManyParams = builder().build()
+
         fun builder() = Builder()
     }
 

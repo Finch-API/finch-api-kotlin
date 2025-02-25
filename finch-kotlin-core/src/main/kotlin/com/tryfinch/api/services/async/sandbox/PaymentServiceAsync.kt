@@ -10,7 +10,11 @@ interface PaymentServiceAsync {
 
     /** Add a new sandbox payment */
     suspend fun create(
-        params: SandboxPaymentCreateParams,
+        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PaymentCreateResponse
+
+    /** Add a new sandbox payment */
+    suspend fun create(requestOptions: RequestOptions): PaymentCreateResponse =
+        create(SandboxPaymentCreateParams.none(), requestOptions)
 }

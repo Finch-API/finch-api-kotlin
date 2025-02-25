@@ -730,6 +730,8 @@ private constructor(
 
     companion object {
 
+        fun none(): JobAutomatedCreateParams = builder().build()
+
         fun builder() = Builder()
     }
 
