@@ -54,8 +54,7 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
-val page: HrisDirectoryListPage = client.hris().directory().list(params)
+val page: HrisDirectoryListPage = client.hris().directory().list()
 ```
 
 ## Client configuration
@@ -140,8 +139,7 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
-val page: HrisDirectoryListPageAsync = client.async().hris().directory().list(params)
+val page: HrisDirectoryListPageAsync = client.async().hris().directory().list()
 ```
 
 Or create an asynchronous client from the beginning:
@@ -158,8 +156,7 @@ val client: FinchClientAsync = FinchOkHttpClientAsync.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
-val page: HrisDirectoryListPageAsync = client.hris().directory().list(params)
+val page: HrisDirectoryListPageAsync = client.hris().directory().list()
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
@@ -299,9 +296,7 @@ To set a custom timeout, configure the method call using the `timeout` method:
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val page: HrisDirectoryListPage = client.hris().directory().list(
-  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
-)
+val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build())
 ```
 
 Or configure the default for all method calls at the client level:
@@ -431,9 +426,7 @@ Or configure the method call to validate the response using the `responseValidat
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val page: HrisDirectoryListPage = client.hris().directory().list(
-  params, RequestOptions.builder().responseValidation(true).build()
-)
+val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build())
 ```
 
 Or configure the default for all method calls at the client level:

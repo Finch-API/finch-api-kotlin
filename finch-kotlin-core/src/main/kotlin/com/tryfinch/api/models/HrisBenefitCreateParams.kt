@@ -218,6 +218,8 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisBenefitCreateParams = builder().build()
+
         fun builder() = Builder()
     }
 

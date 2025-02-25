@@ -14,9 +14,15 @@ interface DocumentService {
      * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
      */
     fun list(
-        params: HrisDocumentListParams,
+        params: HrisDocumentListParams = HrisDocumentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
+
+    /**
+     * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
+     */
+    fun list(requestOptions: RequestOptions): DocumentListResponse =
+        list(HrisDocumentListParams.none(), requestOptions)
 
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by

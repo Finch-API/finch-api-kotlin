@@ -24,9 +24,16 @@ interface BenefitServiceAsync {
      * view available types for each provider.
      */
     suspend fun create(
-        params: HrisBenefitCreateParams,
+        params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
+
+    /**
+     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
+     * view available types for each provider.
+     */
+    suspend fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
+        create(HrisBenefitCreateParams.none(), requestOptions)
 
     /** Lists deductions and contributions information for a given item */
     suspend fun retrieve(
@@ -42,13 +49,24 @@ interface BenefitServiceAsync {
 
     /** List all company-wide deductions and contributions. */
     suspend fun list(
-        params: HrisBenefitListParams,
+        params: HrisBenefitListParams = HrisBenefitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPageAsync
 
+    /** List all company-wide deductions and contributions. */
+    suspend fun list(requestOptions: RequestOptions): HrisBenefitListPageAsync =
+        list(HrisBenefitListParams.none(), requestOptions)
+
     /** Get deductions metadata */
     suspend fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams,
+        params: HrisBenefitListSupportedBenefitsParams =
+            HrisBenefitListSupportedBenefitsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPageAsync
+
+    /** Get deductions metadata */
+    suspend fun listSupportedBenefits(
+        requestOptions: RequestOptions
+    ): HrisBenefitListSupportedBenefitsPageAsync =
+        listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
 }

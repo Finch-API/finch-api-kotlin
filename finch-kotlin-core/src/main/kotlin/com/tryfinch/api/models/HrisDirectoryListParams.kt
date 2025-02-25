@@ -41,6 +41,8 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisDirectoryListParams = builder().build()
+
         fun builder() = Builder()
     }
 

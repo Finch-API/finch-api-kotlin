@@ -202,6 +202,8 @@ private constructor(
 
     companion object {
 
+        fun none(): SandboxPaymentCreateParams = builder().build()
+
         fun builder() = Builder()
     }
 
