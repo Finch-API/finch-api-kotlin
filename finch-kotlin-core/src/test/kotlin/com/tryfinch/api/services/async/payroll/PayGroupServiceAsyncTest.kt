@@ -1,27 +1,27 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.payroll
+package com.tryfinch.api.services.async.payroll
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PayGroupServiceTest {
+class PayGroupServiceAsyncTest {
 
     @Test
-    fun retrieve() {
+    suspend fun retrieve() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val payGroupService = client.payroll().payGroups()
+        val payGroupServiceAsync = client.payroll().payGroups()
 
         val payGroup =
-            payGroupService.retrieve(
+            payGroupServiceAsync.retrieve(
                 PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
             )
 
@@ -29,15 +29,15 @@ class PayGroupServiceTest {
     }
 
     @Test
-    fun list() {
+    suspend fun list() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val payGroupService = client.payroll().payGroups()
+        val payGroupServiceAsync = client.payroll().payGroups()
 
-        val page = payGroupService.list()
+        val page = payGroupServiceAsync.list()
 
         page.response().validate()
     }
