@@ -1,28 +1,28 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.connect
+package com.tryfinch.api.services.async.connect
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.ConnectSessionNewParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class SessionServiceTest {
+class SessionServiceAsyncTest {
 
     @Test
-    fun new() {
+    suspend fun new() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val sessionService = client.connect().sessions()
+        val sessionServiceAsync = client.connect().sessions()
 
         val response =
-            sessionService.new(
+            sessionServiceAsync.new(
                 ConnectSessionNewParams.builder()
                     .customerId("x")
                     .customerName("x")
@@ -45,16 +45,16 @@ class SessionServiceTest {
     }
 
     @Test
-    fun reauthenticate() {
+    suspend fun reauthenticate() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val sessionService = client.connect().sessions()
+        val sessionServiceAsync = client.connect().sessions()
 
         val response =
-            sessionService.reauthenticate(
+            sessionServiceAsync.reauthenticate(
                 ConnectSessionReauthenticateParams.builder()
                     .connectionId("connection_id")
                     .minutesToExpire(0L)
