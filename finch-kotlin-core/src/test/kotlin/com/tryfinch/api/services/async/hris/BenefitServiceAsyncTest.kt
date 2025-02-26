@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.tryfinch.api.services.blocking.hris
+package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.TestServerExtension
-import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class BenefitServiceTest {
+class BenefitServiceAsyncTest {
 
     @Test
-    fun create() {
+    suspend fun create() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val benefitService = client.hris().benefits()
+        val benefitServiceAsync = client.hris().benefits()
 
         val createCompanyBenefitsResponse =
-            benefitService.create(
+            benefitServiceAsync.create(
                 HrisBenefitCreateParams.builder()
                     .description("description")
                     .frequency(BenefitFrequency.ONE_TIME)
@@ -37,16 +37,16 @@ class BenefitServiceTest {
     }
 
     @Test
-    fun retrieve() {
+    suspend fun retrieve() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val benefitService = client.hris().benefits()
+        val benefitServiceAsync = client.hris().benefits()
 
         val companyBenefit =
-            benefitService.retrieve(
+            benefitServiceAsync.retrieve(
                 HrisBenefitRetrieveParams.builder().benefitId("benefit_id").build()
             )
 
@@ -54,16 +54,16 @@ class BenefitServiceTest {
     }
 
     @Test
-    fun update() {
+    suspend fun update() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val benefitService = client.hris().benefits()
+        val benefitServiceAsync = client.hris().benefits()
 
         val updateCompanyBenefitResponse =
-            benefitService.update(
+            benefitServiceAsync.update(
                 HrisBenefitUpdateParams.builder()
                     .benefitId("benefit_id")
                     .description("description")
@@ -74,29 +74,29 @@ class BenefitServiceTest {
     }
 
     @Test
-    fun list() {
+    suspend fun list() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val benefitService = client.hris().benefits()
+        val benefitServiceAsync = client.hris().benefits()
 
-        val page = benefitService.list()
+        val page = benefitServiceAsync.list()
 
         page.response().validate()
     }
 
     @Test
-    fun listSupportedBenefits() {
+    suspend fun listSupportedBenefits() {
         val client =
-            FinchOkHttpClient.builder()
+            FinchOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
-        val benefitService = client.hris().benefits()
+        val benefitServiceAsync = client.hris().benefits()
 
-        val page = benefitService.listSupportedBenefits()
+        val page = benefitServiceAsync.listSupportedBenefits()
 
         page.response().validate()
     }
