@@ -1,5 +1,52 @@
 # Changelog
 
+## 4.1.0 (2025-02-26)
+
+Full Changelog: [v4.0.2...v4.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.2...v4.1.0)
+
+### Features
+
+* **api:** api update ([#383](https://github.com/Finch-API/finch-api-kotlin/issues/383)) ([1979ad1](https://github.com/Finch-API/finch-api-kotlin/commit/1979ad1f022c2671e5e0c14691db3ffc17b4709c))
+* **client:** allow omitting params object when none required ([#384](https://github.com/Finch-API/finch-api-kotlin/issues/384)) ([0a9823d](https://github.com/Finch-API/finch-api-kotlin/commit/0a9823d8a374ec4e6b8fa2379239eb0c247327db))
+* **client:** support `JsonField#asX()` for known values ([#372](https://github.com/Finch-API/finch-api-kotlin/issues/372)) ([52e9af1](https://github.com/Finch-API/finch-api-kotlin/commit/52e9af1bacdc2103de7fdef552409076c8f63747))
+* **client:** update enum `asX` methods ([#371](https://github.com/Finch-API/finch-api-kotlin/issues/371)) ([43cce41](https://github.com/Finch-API/finch-api-kotlin/commit/43cce415d8da2dc25cd2218e482cba55e8f5c5dc))
+
+
+### Bug Fixes
+
+* **client:** mark some request bodies as optional ([#380](https://github.com/Finch-API/finch-api-kotlin/issues/380)) ([1e07ee4](https://github.com/Finch-API/finch-api-kotlin/commit/1e07ee49679232c6500846af3c5a9b0bd2d5c424))
+
+
+### Chores
+
+* **ci:** update gradle actions to v4 ([#376](https://github.com/Finch-API/finch-api-kotlin/issues/376)) ([f46e8d4](https://github.com/Finch-API/finch-api-kotlin/commit/f46e8d49b64a2614ed20b120fbf52956e5895fa2))
+* **client:** remove checked exception related code ([#378](https://github.com/Finch-API/finch-api-kotlin/issues/378)) ([e9bb534](https://github.com/Finch-API/finch-api-kotlin/commit/e9bb53429ee802fe09791ef9a27ab2355873c117))
+* **docs:** add faq to readme ([#379](https://github.com/Finch-API/finch-api-kotlin/issues/379)) ([8c10cff](https://github.com/Finch-API/finch-api-kotlin/commit/8c10cff3275a3010ff075b62e599bdab81461734))
+* **docs:** reorganize readme ([#373](https://github.com/Finch-API/finch-api-kotlin/issues/373)) ([565415d](https://github.com/Finch-API/finch-api-kotlin/commit/565415d9847a1ff51fc3c5e31097c8415c429ecb))
+* **internal:** add async service tests ([#385](https://github.com/Finch-API/finch-api-kotlin/issues/385)) ([bac77be](https://github.com/Finch-API/finch-api-kotlin/commit/bac77befec34928d0e4418ca61d0878115ce8725))
+* **internal:** codegen related update ([#377](https://github.com/Finch-API/finch-api-kotlin/issues/377)) ([d3f1571](https://github.com/Finch-API/finch-api-kotlin/commit/d3f15719a368a25650b90ad5ae3c7cb2db316830))
+* **internal:** get rid of configuration cache ([#375](https://github.com/Finch-API/finch-api-kotlin/issues/375)) ([92be5c4](https://github.com/Finch-API/finch-api-kotlin/commit/92be5c42ffffb6a4f685bded5ed31428a7432c6c))
+* **internal:** improve sync service tests ([bac77be](https://github.com/Finch-API/finch-api-kotlin/commit/bac77befec34928d0e4418ca61d0878115ce8725))
+* **internal:** make body class constructors private ([be1aa10](https://github.com/Finch-API/finch-api-kotlin/commit/be1aa10cf4cff6b4421f68b90bcedc70fbb124a2))
+* **internal:** make body classes for multipart requests ([be1aa10](https://github.com/Finch-API/finch-api-kotlin/commit/be1aa10cf4cff6b4421f68b90bcedc70fbb124a2))
+* **internal:** misc formatting changes ([be1aa10](https://github.com/Finch-API/finch-api-kotlin/commit/be1aa10cf4cff6b4421f68b90bcedc70fbb124a2))
+* **internal:** optimize build and test perf ([5edf995](https://github.com/Finch-API/finch-api-kotlin/commit/5edf995e861371bfb817cb0ba475e07cd7279a16))
+* **internal:** remove unnecessary non-null asserts in tests ([1e07ee4](https://github.com/Finch-API/finch-api-kotlin/commit/1e07ee49679232c6500846af3c5a9b0bd2d5c424))
+* **internal:** rename internal body classes ([be1aa10](https://github.com/Finch-API/finch-api-kotlin/commit/be1aa10cf4cff6b4421f68b90bcedc70fbb124a2))
+* **internal:** update formatter ([#368](https://github.com/Finch-API/finch-api-kotlin/issues/368)) ([5edf995](https://github.com/Finch-API/finch-api-kotlin/commit/5edf995e861371bfb817cb0ba475e07cd7279a16))
+* **internal:** update formatting ([94e49ed](https://github.com/Finch-API/finch-api-kotlin/commit/94e49ed464836e89c8ec0be968d844543d0f19bd))
+* **internal:** update some formatting in `Values.kt` ([52e9af1](https://github.com/Finch-API/finch-api-kotlin/commit/52e9af1bacdc2103de7fdef552409076c8f63747))
+* **internal:** use `assertNotNull` in tests for type narrowing ([1e07ee4](https://github.com/Finch-API/finch-api-kotlin/commit/1e07ee49679232c6500846af3c5a9b0bd2d5c424))
+* **internal:** use better test example values ([#370](https://github.com/Finch-API/finch-api-kotlin/issues/370)) ([be1aa10](https://github.com/Finch-API/finch-api-kotlin/commit/be1aa10cf4cff6b4421f68b90bcedc70fbb124a2))
+* **test:** update some test values ([#366](https://github.com/Finch-API/finch-api-kotlin/issues/366)) ([bb7a194](https://github.com/Finch-API/finch-api-kotlin/commit/bb7a194175ef1a149df8b070233cbe51010e2a06))
+
+
+### Documentation
+
+* add immutability explanation to readme ([#381](https://github.com/Finch-API/finch-api-kotlin/issues/381)) ([3f492ff](https://github.com/Finch-API/finch-api-kotlin/commit/3f492ff9467a40e9cc668f4dea7de7ed58f51b53))
+* add source file links to readme ([#382](https://github.com/Finch-API/finch-api-kotlin/issues/382)) ([0bec292](https://github.com/Finch-API/finch-api-kotlin/commit/0bec29282bf18b38be8f470295be10c2d62de5d3))
+* readme parameter tweaks ([bac77be](https://github.com/Finch-API/finch-api-kotlin/commit/bac77befec34928d0e4418ca61d0878115ce8725))
+
 ## 4.0.2 (2025-02-12)
 
 Full Changelog: [v4.0.1...v4.0.2](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.1...v4.0.2)
