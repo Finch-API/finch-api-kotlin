@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.2.0 (2025-02-27)
+
+Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.1.0...v4.2.0)
+
+### Features
+
+* **api:** api update ([#391](https://github.com/Finch-API/finch-api-kotlin/issues/391)) ([e5d8883](https://github.com/Finch-API/finch-api-kotlin/commit/e5d8883f562f58072bd816ab5926104a21d7fd8e))
+
+
+### Chores
+
+* **client:** use deep identity methods for primitive array types ([#386](https://github.com/Finch-API/finch-api-kotlin/issues/386)) ([02aea8c](https://github.com/Finch-API/finch-api-kotlin/commit/02aea8c8b8ee6b95817715236dde0dc5e36f1deb))
+* **internal:** refactor `ServiceParamsTest` ([#388](https://github.com/Finch-API/finch-api-kotlin/issues/388)) ([983dad9](https://github.com/Finch-API/finch-api-kotlin/commit/983dad92af13921946256a52a6072dbe878392e9))
+
 ## 4.1.0 (2025-02-26)
 
 Full Changelog: [v4.0.2...v4.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.0.2...v4.1.0)
