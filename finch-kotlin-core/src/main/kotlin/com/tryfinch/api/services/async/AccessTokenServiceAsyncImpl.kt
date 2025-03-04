@@ -13,6 +13,7 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.CreateAccessTokenResponse
 
@@ -30,10 +31,36 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions,
     ): CreateAccessTokenResponse {
+        val builder = params.toBuilder()
+
+        if (params.clientSecret() == null) {
+            if (clientOptions.clientSecret == null || clientOptions.clientSecret.isEmpty()) {
+                throw FinchException(
+                    "client_secret must be provided as an argument or with the FINCH_CLIENT_SECRET environment variable"
+                )
+            }
+            builder.clientSecret(clientOptions.clientSecret)
+        }
+
+        if (params.clientId() == null) {
+            if (clientOptions.clientId == null || clientOptions.clientId.isEmpty()) {
+                throw FinchException(
+                    "client_id must be provided as an argument or with the FINCH_CLIENT_ID environment variable"
+                )
+            }
+            builder.clientId(clientOptions.clientId)
+        }
+
+        val modifiedParams = builder.build()
+
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("auth", "token")
+                .putAllQueryParams(clientOptions.queryParams)
+                .replaceAllQueryParams(params._queryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params._headers())
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepareAsync(clientOptions, params)

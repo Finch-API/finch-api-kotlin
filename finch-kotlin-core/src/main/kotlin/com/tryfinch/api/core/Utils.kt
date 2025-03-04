@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.core
 
+import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.SortedMap
@@ -54,5 +55,8 @@ internal fun Any?.contentToString(): String {
     }
     return string
 }
+
+internal fun Headers.getRequiredHeader(name: String): String =
+    values(name).firstOrNull() ?: throw FinchInvalidDataException("Could not find $name header")
 
 internal interface Enum
