@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -222,12 +223,8 @@ private constructor(
          */
         fun addCompanyContribution(companyContribution: CompanyContribution) = apply {
             this.companyContribution =
-                (this.companyContribution ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(companyContribution)
+                (this.companyContribution ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("companyContribution", it).add(companyContribution)
                 }
         }
 
@@ -247,12 +244,8 @@ private constructor(
         /** Supported deduction types. An empty array indicates deductions are not supported. */
         fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
             this.employeeDeduction =
-                (this.employeeDeduction ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(employeeDeduction)
+                (this.employeeDeduction ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("employeeDeduction", it).add(employeeDeduction)
                 }
         }
 
@@ -268,12 +261,8 @@ private constructor(
         /** The list of frequencies supported by the provider for this benefit */
         fun addFrequency(frequency: BenefitFrequency) = apply {
             frequencies =
-                (frequencies ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(frequency)
+                (frequencies ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("frequencies", it).add(frequency)
                 }
         }
 
@@ -299,12 +288,8 @@ private constructor(
          */
         fun addHsaContributionLimit(hsaContributionLimit: HsaContributionLimit) = apply {
             this.hsaContributionLimit =
-                (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(hsaContributionLimit)
+                (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("hsaContributionLimit", it).add(hsaContributionLimit)
                 }
         }
 

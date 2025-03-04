@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
@@ -115,12 +116,8 @@ private constructor(
 
         fun addIndividualId(individualId: String) = apply {
             individualIds =
-                (individualIds ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(individualId)
+                (individualIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("individualIds", it).add(individualId)
                 }
         }
 
@@ -142,12 +139,8 @@ private constructor(
         /** List of pay frequencies associated with this pay group */
         fun addPayFrequency(payFrequency: PayFrequency) = apply {
             payFrequencies =
-                (payFrequencies ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(payFrequency)
+                (payFrequencies ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("payFrequencies", it).add(payFrequency)
                 }
         }
 
