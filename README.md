@@ -160,6 +160,32 @@ val page: HrisDirectoryListPageAsync = client.hris().directory().list()
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Kotlin classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```kotlin
+import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
+
+val page: HttpResponseFor<HrisDirectoryListPage> = client.hris().directory().withRawResponse().list()
+
+val statusCode: Int = page.statusCode()
+val headers: Headers = page.headers()
+```
+
+You can still deserialize the response into an instance of a Kotlin class if needed:
+
+```kotlin
+import com.tryfinch.api.models.HrisDirectoryListPage
+
+val parsedPage: HrisDirectoryListPage = page.parse()
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
