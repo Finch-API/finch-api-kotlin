@@ -273,6 +273,29 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Introspection].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .authenticationMethods()
+         * .clientId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionStatus()
+         * .connectionType()
+         * .customerEmail()
+         * .customerId()
+         * .customerName()
+         * .manual()
+         * .payrollProviderId()
+         * .products()
+         * .providerId()
+         * .username()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -602,6 +625,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [AuthenticationMethod]. */
             fun builder() = Builder()
         }
 
@@ -721,6 +745,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
                 fun builder() = Builder()
             }
 
@@ -1074,6 +1099,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [ConnectionStatus]. */
             fun builder() = Builder()
         }
 

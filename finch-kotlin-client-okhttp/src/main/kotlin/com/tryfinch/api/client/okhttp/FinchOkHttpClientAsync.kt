@@ -17,6 +17,7 @@ class FinchOkHttpClientAsync private constructor() {
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [FinchOkHttpClientAsync]. */
         fun builder() = Builder()
 
         fun fromEnv(): FinchClientAsync = builder().fromEnv().build()

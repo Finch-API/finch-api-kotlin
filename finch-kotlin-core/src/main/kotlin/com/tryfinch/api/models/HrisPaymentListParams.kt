@@ -43,6 +43,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisPaymentListParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .endDate()
+         * .startDate()
+         * ```
+         */
         fun builder() = Builder()
     }
 

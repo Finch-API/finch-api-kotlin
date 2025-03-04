@@ -148,6 +148,22 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AutomatedAsyncJob].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .completedAt()
+         * .createdAt()
+         * .jobId()
+         * .jobUrl()
+         * .params()
+         * .scheduledAt()
+         * .startedAt()
+         * .status()
+         * .type()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -325,6 +341,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Params]. */
             fun builder() = Builder()
         }
 

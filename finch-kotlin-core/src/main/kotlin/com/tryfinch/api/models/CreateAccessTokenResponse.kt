@@ -172,6 +172,21 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CreateAccessTokenResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accessToken()
+         * .accountId()
+         * .clientType()
+         * .companyId()
+         * .connectionId()
+         * .connectionType()
+         * .products()
+         * .providerId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

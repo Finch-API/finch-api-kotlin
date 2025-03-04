@@ -42,6 +42,9 @@ private constructor(
 
         fun none(): PayrollPayGroupListParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
+         */
         fun builder() = Builder()
     }
 

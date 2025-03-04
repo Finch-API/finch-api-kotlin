@@ -91,6 +91,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [BaseWebhookEvent].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

@@ -91,6 +91,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             fun builder() = Builder()
         }
 
@@ -175,6 +176,10 @@ private constructor(
 
         fun none(): HrisIndividualRetrieveManyParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisIndividualRetrieveManyParams].
+         */
         fun builder() = Builder()
     }
 
@@ -363,6 +368,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Options]. */
             fun builder() = Builder()
         }
 
@@ -470,6 +476,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Request]. */
             fun builder() = Builder()
         }
 

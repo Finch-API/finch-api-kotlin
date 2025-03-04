@@ -64,6 +64,9 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [BenefitFeaturesAndOperations].
+         */
         fun builder() = Builder()
     }
 
@@ -246,6 +249,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [BenefitFeature]. */
             fun builder() = Builder()
         }
 

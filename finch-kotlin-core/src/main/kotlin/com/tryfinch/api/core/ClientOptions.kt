@@ -35,6 +35,14 @@ private constructor(
 
         const val PRODUCTION_URL = "https://api.tryfinch.com"
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ClientOptions].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .httpClient()
+         * ```
+         */
         fun builder() = Builder()
 
         fun fromEnv(): ClientOptions = builder().fromEnv().build()

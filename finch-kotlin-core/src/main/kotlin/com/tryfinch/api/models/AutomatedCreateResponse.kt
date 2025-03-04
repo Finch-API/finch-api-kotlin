@@ -83,6 +83,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AutomatedCreateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .allowedRefreshes()
+         * .jobId()
+         * .jobUrl()
+         * .remainingRefreshes()
+         * ```
+         */
         fun builder() = Builder()
     }
 
