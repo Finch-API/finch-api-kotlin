@@ -42,11 +42,12 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "enrolled")
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response
             .use { enrolledIdsHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }
@@ -67,11 +68,12 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                 .addPathSegments("employer", "benefits", params.getPathParam(0), "individuals")
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response
             .use { retrieveManyBenefitsHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.forEach { it.validate() }
                 }
             }
@@ -102,11 +104,12 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                 .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response
             .use { unenrollManyHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.forEach { it.validate() }
                 }
             }

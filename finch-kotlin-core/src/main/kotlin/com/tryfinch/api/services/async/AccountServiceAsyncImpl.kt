@@ -38,11 +38,12 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response
             .use { disconnectHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }
@@ -62,11 +63,12 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 .addPathSegments("introspect")
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response
             .use { introspectHandler.handle(it) }
             .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                if (requestOptions.responseValidation!!) {
                     it.validate()
                 }
             }
