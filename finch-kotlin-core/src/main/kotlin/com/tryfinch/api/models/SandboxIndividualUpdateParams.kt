@@ -292,6 +292,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [IndividualWithoutId]. */
             fun builder() = Builder()
         }
 
@@ -492,6 +493,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxIndividualUpdateParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .individualId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -771,6 +781,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Email]. */
             fun builder() = Builder()
         }
 
@@ -1219,6 +1230,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
             fun builder() = Builder()
         }
 

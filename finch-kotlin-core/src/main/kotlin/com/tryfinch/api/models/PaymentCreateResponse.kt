@@ -61,6 +61,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PaymentCreateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .payDate()
+         * .paymentId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

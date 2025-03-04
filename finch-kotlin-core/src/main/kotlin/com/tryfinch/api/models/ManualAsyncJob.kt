@@ -68,6 +68,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ManualAsyncJob].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * .jobId()
+         * .status()
+         * ```
+         */
         fun builder() = Builder()
     }
 

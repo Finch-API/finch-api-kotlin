@@ -61,6 +61,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SessionReauthenticateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .connectUrl()
+         * .sessionId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

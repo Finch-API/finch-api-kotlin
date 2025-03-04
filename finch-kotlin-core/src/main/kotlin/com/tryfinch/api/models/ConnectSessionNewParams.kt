@@ -198,6 +198,16 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .customerId()
+             * .customerName()
+             * .products()
+             * ```
+             */
             fun builder() = Builder()
         }
 
@@ -359,6 +369,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ConnectSessionNewParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .customerId()
+         * .customerName()
+         * .products()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -744,6 +764,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Integration]. */
             fun builder() = Builder()
         }
 

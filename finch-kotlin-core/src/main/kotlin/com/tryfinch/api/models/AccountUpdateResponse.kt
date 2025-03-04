@@ -111,6 +111,18 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AccountUpdateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .authenticationType()
+         * .companyId()
+         * .products()
+         * .providerId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

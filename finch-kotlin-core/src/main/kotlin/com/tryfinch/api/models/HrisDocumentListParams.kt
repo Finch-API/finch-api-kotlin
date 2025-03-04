@@ -61,6 +61,7 @@ private constructor(
 
         fun none(): HrisDocumentListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisDocumentListParams]. */
         fun builder() = Builder()
     }
 

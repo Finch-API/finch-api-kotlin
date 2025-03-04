@@ -110,6 +110,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [IndividualInDirectory]. */
         fun builder() = Builder()
     }
 
@@ -250,6 +251,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             fun builder() = Builder()
         }
 
@@ -345,6 +347,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             fun builder() = Builder()
         }
 
