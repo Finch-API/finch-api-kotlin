@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.DocumentListResponse
@@ -20,61 +22,83 @@ import com.tryfinch.api.models.HrisDocumentRetreiveParams
 class DocumentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DocumentServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: DocumentServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val listHandler: Handler<DocumentListResponse> =
-        jsonHandler<DocumentListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+    override fun withRawResponse(): DocumentServiceAsync.WithRawResponse = withRawResponse
 
-    /**
-     * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
-     */
     override suspend fun list(
         params: HrisDocumentListParams,
         requestOptions: RequestOptions,
-    ): DocumentListResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "documents")
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-        return response
-            .use { listHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
-            }
-    }
+    ): DocumentListResponse =
+        // get /employer/documents
+        withRawResponse().list(params, requestOptions).parse()
 
-    private val retreiveHandler: Handler<DocumentRetreiveResponse> =
-        jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /**
-     * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by
-     * its ID.
-     */
     override suspend fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions,
-    ): DocumentRetreiveResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "documents", params.getPathParam(0))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-        return response
-            .use { retreiveHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
+    ): DocumentRetreiveResponse =
+        // get /employer/documents/{document_id}
+        withRawResponse().retreive(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        DocumentServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val listHandler: Handler<DocumentListResponse> =
+            jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override suspend fun list(
+            params: HrisDocumentListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocumentListResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "documents")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
+        }
+
+        private val retreiveHandler: Handler<DocumentRetreiveResponse> =
+            jsonHandler<DocumentRetreiveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override suspend fun retreive(
+            params: HrisDocumentRetreiveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocumentRetreiveResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("employer", "documents", params.getPathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retreiveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }
