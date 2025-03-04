@@ -136,6 +136,22 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Company].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .id()
+         * .accounts()
+         * .departments()
+         * .ein()
+         * .entity()
+         * .legalName()
+         * .locations()
+         * .primaryEmail()
+         * .primaryPhoneNumber()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -377,6 +393,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Account]. */
             fun builder() = Builder()
         }
 
@@ -646,6 +663,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             fun builder() = Builder()
         }
 
@@ -733,6 +751,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Parent]. */
                 fun builder() = Builder()
             }
 
@@ -859,6 +878,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Entity]. */
             fun builder() = Builder()
         }
 

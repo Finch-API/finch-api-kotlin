@@ -121,6 +121,20 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AccountCreateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accessToken()
+         * .accountId()
+         * .authenticationType()
+         * .companyId()
+         * .connectionId()
+         * .products()
+         * .providerId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

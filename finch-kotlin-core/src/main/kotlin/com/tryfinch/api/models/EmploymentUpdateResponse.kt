@@ -247,6 +247,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [EmploymentUpdateResponse]. */
         fun builder() = Builder()
     }
 
@@ -531,6 +532,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [CustomField]. */
             fun builder() = Builder()
         }
 
@@ -630,6 +632,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             fun builder() = Builder()
         }
 
@@ -741,6 +744,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Employment]. */
             fun builder() = Builder()
         }
 
@@ -1210,6 +1214,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             fun builder() = Builder()
         }
 

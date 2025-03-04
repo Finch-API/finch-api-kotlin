@@ -145,6 +145,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PayStatement]. */
         fun builder() = Builder()
     }
 
@@ -404,6 +405,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Earning]. */
             fun builder() = Builder()
         }
 
@@ -546,6 +548,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 fun builder() = Builder()
             }
 
@@ -635,6 +638,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     fun builder() = Builder()
                 }
 
@@ -721,6 +725,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1083,6 +1091,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [EmployeeDeduction]. */
             fun builder() = Builder()
         }
 
@@ -1216,6 +1225,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 fun builder() = Builder()
             }
 
@@ -1305,6 +1315,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     fun builder() = Builder()
                 }
 
@@ -1391,6 +1402,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1578,6 +1593,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [EmployerContribution]. */
             fun builder() = Builder()
         }
 
@@ -1699,6 +1715,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 fun builder() = Builder()
             }
 
@@ -1788,6 +1805,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     fun builder() = Builder()
                 }
 
@@ -1874,6 +1892,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -2171,6 +2193,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Tax]. */
             fun builder() = Builder()
         }
 
@@ -2304,6 +2327,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Attributes]. */
                 fun builder() = Builder()
             }
 
@@ -2393,6 +2417,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Metadata]. */
                     fun builder() = Builder()
                 }
 
@@ -2479,6 +2504,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InnerMetadata].
+                         */
                         fun builder() = Builder()
                     }
 

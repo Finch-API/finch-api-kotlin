@@ -38,6 +38,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [JobAutomatedRetrieveParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .jobId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

@@ -159,6 +159,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Payment]. */
         fun builder() = Builder()
     }
 
@@ -515,6 +516,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PayPeriod]. */
             fun builder() = Builder()
         }
 

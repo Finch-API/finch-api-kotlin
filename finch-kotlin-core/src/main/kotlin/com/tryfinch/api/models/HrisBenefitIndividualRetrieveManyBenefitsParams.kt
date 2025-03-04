@@ -50,6 +50,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitIndividualRetrieveManyBenefitsParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .benefitId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

@@ -116,6 +116,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PaymentEvent].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -258,6 +267,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [PaymentIdentifiers].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .payDate()
+             * .paymentId()
+             * ```
+             */
             fun builder() = Builder()
         }
 

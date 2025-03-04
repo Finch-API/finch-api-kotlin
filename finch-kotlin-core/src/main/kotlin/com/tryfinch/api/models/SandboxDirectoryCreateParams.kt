@@ -368,6 +368,9 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [IndividualOrEmployment].
+             */
             fun builder() = Builder()
         }
 
@@ -740,6 +743,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [CustomField]. */
                 fun builder() = Builder()
             }
 
@@ -843,6 +847,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Department]. */
                 fun builder() = Builder()
             }
 
@@ -948,6 +953,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Email]. */
                 fun builder() = Builder()
             }
 
@@ -1169,6 +1175,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Employment]. */
                 fun builder() = Builder()
             }
 
@@ -1903,6 +1910,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Manager]. */
                 fun builder() = Builder()
             }
 
@@ -2007,6 +2015,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
                 fun builder() = Builder()
             }
 
@@ -2200,6 +2209,9 @@ private constructor(
 
         fun none(): SandboxDirectoryCreateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxDirectoryCreateParams].
+         */
         fun builder() = Builder()
     }
 

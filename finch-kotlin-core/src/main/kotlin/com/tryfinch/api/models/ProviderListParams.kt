@@ -29,6 +29,7 @@ private constructor(
 
         fun none(): ProviderListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [ProviderListParams]. */
         fun builder() = Builder()
     }
 

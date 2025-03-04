@@ -29,6 +29,10 @@ private constructor(
 
         fun none(): HrisBenefitListSupportedBenefitsParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitListSupportedBenefitsParams].
+         */
         fun builder() = Builder()
     }
 

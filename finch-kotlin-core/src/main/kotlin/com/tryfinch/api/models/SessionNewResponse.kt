@@ -61,6 +61,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SessionNewResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .connectUrl()
+         * .sessionId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
