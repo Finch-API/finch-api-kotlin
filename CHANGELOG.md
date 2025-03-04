@@ -1,5 +1,23 @@
 # Changelog
 
+## 4.3.0 (2025-03-04)
+
+Full Changelog: [v4.2.0...v4.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.2.0...v4.3.0)
+
+### Features
+
+* **client:** allow configuring timeouts granularly ([#397](https://github.com/Finch-API/finch-api-kotlin/issues/397)) ([dd98413](https://github.com/Finch-API/finch-api-kotlin/commit/dd9841357f92a8a41601fa346de5f9e025c79fc7))
+
+
+### Chores
+
+* **internal:** refactor `ErrorHandlingTest` ([#396](https://github.com/Finch-API/finch-api-kotlin/issues/396)) ([dbd1c39](https://github.com/Finch-API/finch-api-kotlin/commit/dbd1c3972eb1c9ade4ab210bedef7b6cfeefb883))
+
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#394](https://github.com/Finch-API/finch-api-kotlin/issues/394)) ([f05fed1](https://github.com/Finch-API/finch-api-kotlin/commit/f05fed18f4dd3ffdfb2fb7b48f7726eef4213fe3))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.1.0...v4.2.0)

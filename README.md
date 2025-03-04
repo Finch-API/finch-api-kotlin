@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.3.0)
 
 <!-- x-release-please-end -->
 
@@ -10,7 +10,7 @@ The Finch Kotlin SDK provides convenient access to the Finch REST API from appli
 
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
 
@@ -21,7 +21,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:4.2.0")
+implementation("com.tryfinch.api:finch-kotlin:4.3.0")
 ```
 
 ### Maven
@@ -30,7 +30,7 @@ implementation("com.tryfinch.api:finch-kotlin:4.2.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>4.2.0</version>
+    <version>4.3.0</version>
 </dependency>
 ```
 
