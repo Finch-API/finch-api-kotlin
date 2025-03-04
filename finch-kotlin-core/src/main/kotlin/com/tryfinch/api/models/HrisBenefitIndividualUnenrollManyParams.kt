@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -119,12 +120,8 @@ private constructor(
             /** Array of individual_ids to unenroll. */
             fun addIndividualId(individualId: String) = apply {
                 individualIds =
-                    (individualIds ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(individualId)
+                    (individualIds ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("individualIds", it).add(individualId)
                     }
             }
 

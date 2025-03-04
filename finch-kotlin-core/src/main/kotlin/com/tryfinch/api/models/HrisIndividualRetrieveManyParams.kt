@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -118,12 +119,8 @@ private constructor(
 
             fun addRequest(request: Request) = apply {
                 requests =
-                    (requests ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(request)
+                    (requests ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("requests", it).add(request)
                     }
             }
 
@@ -388,12 +385,8 @@ private constructor(
 
             fun addInclude(include: String) = apply {
                 this.include =
-                    (this.include ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(include)
+                    (this.include ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("include", it).add(include)
                     }
             }
 

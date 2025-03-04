@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
@@ -340,12 +341,8 @@ private constructor(
 
         fun addAuthenticationMethod(authenticationMethod: AuthenticationMethod) = apply {
             authenticationMethods =
-                (authenticationMethods ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(authenticationMethod)
+                (authenticationMethods ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("authenticationMethods", it).add(authenticationMethod)
                 }
         }
 
@@ -488,12 +485,8 @@ private constructor(
         /** An array of the authorized products associated with the `access_token`. */
         fun addProduct(product: String) = apply {
             products =
-                (products ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(product)
+                (products ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("products", it).add(product)
                 }
         }
 
@@ -645,12 +638,8 @@ private constructor(
             /** An array of the authorized products associated with the `access_token`. */
             fun addProduct(product: String) = apply {
                 products =
-                    (products ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(product)
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
                     }
             }
 
