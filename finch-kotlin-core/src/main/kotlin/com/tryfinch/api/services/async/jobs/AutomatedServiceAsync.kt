@@ -2,7 +2,9 @@
 
 package com.tryfinch.api.services.async.jobs
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
@@ -11,6 +13,11 @@ import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
 interface AutomatedServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /**
      * Enqueue an automated job.
@@ -73,4 +80,60 @@ interface AutomatedServiceAsync {
      */
     suspend fun list(requestOptions: RequestOptions): JobAutomatedListPageAsync =
         list(JobAutomatedListParams.none(), requestOptions)
+
+    /**
+     * A view of [AutomatedServiceAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.create].
+         */
+        @MustBeClosed
+        suspend fun create(
+            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedCreateResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.create].
+         */
+        @MustBeClosed
+        suspend fun create(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<AutomatedCreateResponse> =
+            create(JobAutomatedCreateParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same
+         * as [AutomatedServiceAsync.retrieve].
+         */
+        @MustBeClosed
+        suspend fun retrieve(
+            params: JobAutomatedRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedAsyncJob>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.list].
+         */
+        @MustBeClosed
+        suspend fun list(
+            params: JobAutomatedListParams = JobAutomatedListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<JobAutomatedListPageAsync>
+
+        /**
+         * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
+         * [AutomatedServiceAsync.list].
+         */
+        @MustBeClosed
+        suspend fun list(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<JobAutomatedListPageAsync> =
+            list(JobAutomatedListParams.none(), requestOptions)
+    }
 }

@@ -10,6 +10,8 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.json
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
@@ -19,32 +21,50 @@ import com.tryfinch.api.models.CreateAccessTokenResponse
 class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     AccessTokenServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: AccessTokenServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val createHandler: Handler<CreateAccessTokenResponse> =
-        jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): AccessTokenServiceAsync.WithRawResponse = withRawResponse
 
-    /** Exchange the authorization code for an access token */
     override suspend fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions,
-    ): CreateAccessTokenResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("auth", "token")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-        return response
-            .use { createHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
+    ): CreateAccessTokenResponse =
+        // post /auth/token
+        withRawResponse().create(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AccessTokenServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+
+        private val createHandler: Handler<CreateAccessTokenResponse> =
+            jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override suspend fun create(
+            params: AccessTokenCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<CreateAccessTokenResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("auth", "token")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
+        }
     }
 }

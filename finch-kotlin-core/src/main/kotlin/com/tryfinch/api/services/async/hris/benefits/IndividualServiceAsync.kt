@@ -2,7 +2,9 @@
 
 package com.tryfinch.api.services.async.hris.benefits
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -11,6 +13,11 @@ import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
 
 interface IndividualServiceAsync {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     /** Lists individuals currently enrolled in a given deduction. */
     suspend fun enrolledIds(
@@ -29,4 +36,41 @@ interface IndividualServiceAsync {
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualUnenrollManyPageAsync
+
+    /**
+     * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
+     * method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is
+         * otherwise the same as [IndividualServiceAsync.enrolledIds].
+         */
+        @MustBeClosed
+        suspend fun enrolledIds(
+            params: HrisBenefitIndividualEnrolledIdsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<IndividualEnrolledIdsResponse>
+
+        /**
+         * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/individuals`, but is
+         * otherwise the same as [IndividualServiceAsync.retrieveManyBenefits].
+         */
+        @MustBeClosed
+        suspend fun retrieveManyBenefits(
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
+
+        /**
+         * Returns a raw HTTP response for `delete /employer/benefits/{benefit_id}/individuals`, but
+         * is otherwise the same as [IndividualServiceAsync.unenrollMany].
+         */
+        @MustBeClosed
+        suspend fun unenrollMany(
+            params: HrisBenefitIndividualUnenrollManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisBenefitIndividualUnenrollManyPageAsync>
+    }
 }
