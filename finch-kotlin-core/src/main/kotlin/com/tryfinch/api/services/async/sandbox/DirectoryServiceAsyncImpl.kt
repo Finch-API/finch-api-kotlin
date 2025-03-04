@@ -36,6 +36,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                 .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                 .build()
                 .prepareAsync(clientOptions, params)
+        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
         val response = clientOptions.httpClient.executeAsync(request, requestOptions)
         return response.use { createHandler.handle(it) }
     }
