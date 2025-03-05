@@ -50,6 +50,10 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
 
     private val sync: FinchClient by lazy { FinchClientImpl(clientOptions) }
 
+    private val withRawResponse: FinchClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val accessTokens: AccessTokenServiceAsync by lazy {
         AccessTokenServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -90,6 +94,8 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         jsonHandler<GetAccessTokenResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
     override fun sync(): FinchClient = sync
+
+    override fun withRawResponse(): FinchClientAsync.WithRawResponse = withRawResponse
 
     override fun accessTokens(): AccessTokenServiceAsync = accessTokens
 
@@ -192,4 +198,63 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
         @JsonProperty("products") val products: List<String>,
         @JsonProperty("provider_id") val providerId: String,
     )
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        FinchClientAsync.WithRawResponse {
+
+        private val accessTokens: AccessTokenServiceAsync.WithRawResponse by lazy {
+            AccessTokenServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val hris: HrisServiceAsync.WithRawResponse by lazy {
+            HrisServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val providers: ProviderServiceAsync.WithRawResponse by lazy {
+            ProviderServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val account: AccountServiceAsync.WithRawResponse by lazy {
+            AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val requestForwarding: RequestForwardingServiceAsync.WithRawResponse by lazy {
+            RequestForwardingServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val jobs: JobServiceAsync.WithRawResponse by lazy {
+            JobServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val sandbox: SandboxServiceAsync.WithRawResponse by lazy {
+            SandboxServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val payroll: PayrollServiceAsync.WithRawResponse by lazy {
+            PayrollServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val connect: ConnectServiceAsync.WithRawResponse by lazy {
+            ConnectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun accessTokens(): AccessTokenServiceAsync.WithRawResponse = accessTokens
+
+        override fun hris(): HrisServiceAsync.WithRawResponse = hris
+
+        override fun providers(): ProviderServiceAsync.WithRawResponse = providers
+
+        override fun account(): AccountServiceAsync.WithRawResponse = account
+
+        override fun requestForwarding(): RequestForwardingServiceAsync.WithRawResponse =
+            requestForwarding
+
+        override fun jobs(): JobServiceAsync.WithRawResponse = jobs
+
+        override fun sandbox(): SandboxServiceAsync.WithRawResponse = sandbox
+
+        override fun payroll(): PayrollServiceAsync.WithRawResponse = payroll
+
+        override fun connect(): ConnectServiceAsync.WithRawResponse = connect
+    }
 }
