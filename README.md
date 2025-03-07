@@ -3,6 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.2.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/4.2.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/4.2.0)
 
 <!-- x-release-please-end -->
 
@@ -12,7 +13,7 @@ The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/4.2.0).
 
 ## Installation
 
