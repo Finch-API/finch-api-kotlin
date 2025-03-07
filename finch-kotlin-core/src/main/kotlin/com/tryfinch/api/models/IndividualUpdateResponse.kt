@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
@@ -180,6 +181,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [IndividualUpdateResponse]. */
         fun builder() = Builder()
     }
 
@@ -236,12 +238,8 @@ private constructor(
 
         fun addEmail(email: Email) = apply {
             emails =
-                (emails ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(email)
+                (emails ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("emails", it).add(email)
                 }
         }
 
@@ -300,12 +298,8 @@ private constructor(
 
         fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
             phoneNumbers =
-                (phoneNumbers ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(phoneNumber)
+                (phoneNumbers ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("phoneNumbers", it).add(phoneNumber)
                 }
         }
 
@@ -414,6 +408,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Email]. */
             fun builder() = Builder()
         }
 
@@ -862,6 +857,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PhoneNumber]. */
             fun builder() = Builder()
         }
 

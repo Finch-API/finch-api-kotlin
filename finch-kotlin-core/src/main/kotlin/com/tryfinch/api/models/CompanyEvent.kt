@@ -114,6 +114,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CompanyEvent].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -236,6 +245,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Data]. */
             fun builder() = Builder()
         }
 

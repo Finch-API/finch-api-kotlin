@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -90,6 +91,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             fun builder() = Builder()
         }
 
@@ -118,12 +120,8 @@ private constructor(
 
             fun addRequest(request: Request) = apply {
                 requests =
-                    (requests ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(request)
+                    (requests ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("requests", it).add(request)
                     }
             }
 
@@ -178,6 +176,10 @@ private constructor(
 
         fun none(): HrisIndividualRetrieveManyParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisIndividualRetrieveManyParams].
+         */
         fun builder() = Builder()
     }
 
@@ -366,6 +368,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Options]. */
             fun builder() = Builder()
         }
 
@@ -388,12 +391,8 @@ private constructor(
 
             fun addInclude(include: String) = apply {
                 this.include =
-                    (this.include ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(include)
+                    (this.include ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("include", it).add(include)
                     }
             }
 
@@ -477,6 +476,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Request]. */
             fun builder() = Builder()
         }
 

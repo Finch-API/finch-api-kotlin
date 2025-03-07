@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -143,6 +144,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .connectionId()
+             * ```
+             */
             fun builder() = Builder()
         }
 
@@ -204,12 +213,8 @@ private constructor(
             /** The products to request access to (optional for reauthentication) */
             fun addProduct(product: ConnectProducts) = apply {
                 products =
-                    (products ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(product)
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
                     }
             }
 
@@ -272,6 +277,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [ConnectSessionReauthenticateParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .connectionId()
+         * ```
+         */
         fun builder() = Builder()
     }
 

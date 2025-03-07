@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -392,6 +393,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [EmploymentWithoutId]. */
             fun builder() = Builder()
         }
 
@@ -467,12 +469,8 @@ private constructor(
              */
             fun addCustomField(customField: CustomField) = apply {
                 customFields =
-                    (customFields ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(customField)
+                    (customFields ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("customFields", it).add(customField)
                     }
             }
 
@@ -537,12 +535,8 @@ private constructor(
             /** The array of income history. */
             fun addIncomeHistory(incomeHistory: Income) = apply {
                 this.incomeHistory =
-                    (this.incomeHistory ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(incomeHistory)
+                    (this.incomeHistory ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("incomeHistory", it).add(incomeHistory)
                     }
             }
 
@@ -665,6 +659,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxEmploymentUpdateParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .individualId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -991,6 +994,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [CustomField]. */
             fun builder() = Builder()
         }
 
@@ -1090,6 +1094,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             fun builder() = Builder()
         }
 
@@ -1201,6 +1206,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Employment]. */
             fun builder() = Builder()
         }
 
@@ -1670,6 +1676,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             fun builder() = Builder()
         }
 

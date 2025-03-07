@@ -47,6 +47,7 @@ private constructor(
 
         fun none(): JobAutomatedListParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [JobAutomatedListParams]. */
         fun builder() = Builder()
     }
 

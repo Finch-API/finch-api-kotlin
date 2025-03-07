@@ -114,6 +114,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AccountUpdateEvent].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .companyId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -257,6 +266,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Data].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .authenticationMethod()
+             * .status()
+             * ```
+             */
             fun builder() = Builder()
         }
 
@@ -380,6 +398,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [AuthenticationMethod].
+                 */
                 fun builder() = Builder()
             }
 
@@ -557,6 +578,9 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of [SupportedFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -779,6 +803,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedCompanyFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -977,6 +1005,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Accounts].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1131,6 +1162,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Departments].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1221,6 +1256,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Parent].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -1349,6 +1388,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Entity].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1505,6 +1547,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Locations].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1675,6 +1721,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedDirectoryFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1830,6 +1880,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Individuals].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1971,6 +2025,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Manager].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -2101,6 +2159,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Paging].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -2381,6 +2442,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedEmploymentFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -2607,6 +2672,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Department].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -2716,6 +2785,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Employment].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -2843,6 +2916,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Income].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -3005,6 +3081,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Location].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -3146,6 +3225,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Manager].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -3376,6 +3458,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedIndividualFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -3572,6 +3658,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Emails].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -3684,6 +3773,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [PhoneNumbers].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -3839,6 +3932,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Residence].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -4025,6 +4122,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPayGroupFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -4167,6 +4268,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPayStatementFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -4275,6 +4380,15 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Paging].
+                             *
+                             * The following fields are required:
+                             * ```kotlin
+                             * .count()
+                             * .offset()
+                             * ```
+                             */
                             fun builder() = Builder()
                         }
 
@@ -4479,6 +4593,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [PayStatements].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -4681,6 +4799,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Earnings].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -4852,6 +4974,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [EmployeeDeductions].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -5012,6 +5138,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [EmployerContributions].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -5178,6 +5308,10 @@ private constructor(
 
                             companion object {
 
+                                /**
+                                 * Returns a mutable builder for constructing an instance of
+                                 * [Taxes].
+                                 */
                                 fun builder() = Builder()
                             }
 
@@ -5459,6 +5593,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [SupportedPaymentFields].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -5656,6 +5794,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [PayPeriod].
+                             */
                             fun builder() = Builder()
                         }
 
