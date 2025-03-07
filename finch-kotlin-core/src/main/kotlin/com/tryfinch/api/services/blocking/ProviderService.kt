@@ -21,7 +21,7 @@ interface ProviderService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPage
 
-    /** Return details on all available payroll and HR systems. */
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): ProviderListPage =
         list(ProviderListParams.none(), requestOptions)
 
@@ -38,10 +38,7 @@ interface ProviderService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
-         * [ProviderService.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
             list(ProviderListParams.none(), requestOptions)

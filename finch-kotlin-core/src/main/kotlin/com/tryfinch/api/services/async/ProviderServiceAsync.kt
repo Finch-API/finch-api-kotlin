@@ -21,7 +21,7 @@ interface ProviderServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPageAsync
 
-    /** Return details on all available payroll and HR systems. */
+    /** @see [list] */
     suspend fun list(requestOptions: RequestOptions): ProviderListPageAsync =
         list(ProviderListParams.none(), requestOptions)
 
@@ -40,10 +40,7 @@ interface ProviderServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /providers`, but is otherwise the same as
-         * [ProviderServiceAsync.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPageAsync> =
             list(ProviderListParams.none(), requestOptions)

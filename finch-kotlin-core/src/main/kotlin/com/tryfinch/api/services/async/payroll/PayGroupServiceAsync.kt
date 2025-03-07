@@ -29,7 +29,7 @@ interface PayGroupServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPageAsync
 
-    /** Read company pay groups and frequencies */
+    /** @see [list] */
     suspend fun list(requestOptions: RequestOptions): PayrollPayGroupListPageAsync =
         list(PayrollPayGroupListParams.none(), requestOptions)
 
@@ -58,10 +58,7 @@ interface PayGroupServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayrollPayGroupListPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
-         * [PayGroupServiceAsync.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         suspend fun list(
             requestOptions: RequestOptions

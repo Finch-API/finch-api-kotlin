@@ -21,7 +21,7 @@ interface PaymentService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PaymentCreateResponse
 
-    /** Add a new sandbox payment */
+    /** @see [create] */
     fun create(requestOptions: RequestOptions): PaymentCreateResponse =
         create(SandboxPaymentCreateParams.none(), requestOptions)
 
@@ -38,10 +38,7 @@ interface PaymentService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PaymentCreateResponse>
 
-        /**
-         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
-         * [PaymentService.create].
-         */
+        /** @see [create] */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
             create(SandboxPaymentCreateParams.none(), requestOptions)
