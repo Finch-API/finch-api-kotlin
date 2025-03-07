@@ -2,15 +2,12 @@
 
 package com.tryfinch.api.services.async
 
+import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.models.WebhookEvent
+
 interface WebhookServiceAsync {
 
-    /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
-     */
-    fun withRawResponse(): WithRawResponse
+    suspend fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent
 
-    /**
-     * A view of [WebhookServiceAsync] that provides access to raw HTTP responses for each method.
-     */
-    interface WithRawResponse
+    suspend fun verifySignature(payload: String, headers: Headers, secret: String?)
 }

@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.client
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.services.async.AccessTokenServiceAsync
 import com.tryfinch.api.services.async.AccountServiceAsync
 import com.tryfinch.api.services.async.ConnectServiceAsync
@@ -75,6 +76,37 @@ interface FinchClientAsync {
      */
     fun close()
 
+    // auth helpers:
+    /** @deprecated use client.accessTokens().create instead */
+    @Deprecated("use client.accessTokens().create instead", ReplaceWith("accessTokens().create()"))
+    suspend fun getAccessToken(
+        clientId: String,
+        clientSecret: String,
+        code: String,
+        redirectUri: String?,
+    ): String
+
+    suspend fun getAuthUrl(products: String, redirectUri: String, sandbox: Boolean): String
+
+    suspend fun withAccessToken(accessToken: String): FinchClientAsync
+
+    private data class GetAccessTokenParams(
+        @JsonProperty("client_id") val clientId: String,
+        @JsonProperty("client_secret") val clientSecret: String,
+        @JsonProperty("code") val code: String,
+        @JsonProperty("redirect_uri") val redirectUri: String?,
+    )
+
+    private data class GetAccessTokenResponse(
+        @JsonProperty("access_token") val accessToken: String,
+        @JsonProperty("account_id") val accountId: String,
+        @JsonProperty("client_type") val clientType: String,
+        @JsonProperty("company_id") val companyId: String,
+        @JsonProperty("connection_type") val connectionType: String,
+        @JsonProperty("products") val products: List<String>,
+        @JsonProperty("provider_id") val providerId: String,
+    )
+
     /** A view of [FinchClientAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -85,8 +117,6 @@ interface FinchClientAsync {
         fun providers(): ProviderServiceAsync.WithRawResponse
 
         fun account(): AccountServiceAsync.WithRawResponse
-
-        fun webhooks(): WebhookServiceAsync.WithRawResponse
 
         fun requestForwarding(): RequestForwardingServiceAsync.WithRawResponse
 
