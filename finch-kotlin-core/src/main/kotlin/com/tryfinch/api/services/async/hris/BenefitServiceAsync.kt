@@ -35,10 +35,7 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
 
-    /**
-     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
-     * view available types for each provider.
-     */
+    /** @see [create] */
     suspend fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
         create(HrisBenefitCreateParams.none(), requestOptions)
 
@@ -60,7 +57,7 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPageAsync
 
-    /** List all company-wide deductions and contributions. */
+    /** @see [list] */
     suspend fun list(requestOptions: RequestOptions): HrisBenefitListPageAsync =
         list(HrisBenefitListParams.none(), requestOptions)
 
@@ -71,7 +68,7 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPageAsync
 
-    /** Get deductions metadata */
+    /** @see [listSupportedBenefits] */
     suspend fun listSupportedBenefits(
         requestOptions: RequestOptions
     ): HrisBenefitListSupportedBenefitsPageAsync =
@@ -94,10 +91,7 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CreateCompanyBenefitsResponse>
 
-        /**
-         * Returns a raw HTTP response for `post /employer/benefits`, but is otherwise the same as
-         * [BenefitServiceAsync.create].
-         */
+        /** @see [create] */
         @MustBeClosed
         suspend fun create(
             requestOptions: RequestOptions
@@ -134,10 +128,7 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
-         * [BenefitServiceAsync.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         suspend fun list(
             requestOptions: RequestOptions
@@ -155,10 +146,7 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
-         * as [BenefitServiceAsync.listSupportedBenefits].
-         */
+        /** @see [listSupportedBenefits] */
         @MustBeClosed
         suspend fun listSupportedBenefits(
             requestOptions: RequestOptions

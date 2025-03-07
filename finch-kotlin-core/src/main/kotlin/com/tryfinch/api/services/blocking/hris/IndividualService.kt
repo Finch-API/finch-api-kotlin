@@ -21,7 +21,7 @@ interface IndividualService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPage
 
-    /** Read individual data, excluding income and employment data */
+    /** @see [retrieveMany] */
     fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
         retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
@@ -38,10 +38,7 @@ interface IndividualService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPage>
 
-        /**
-         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise the same as
-         * [IndividualService.retrieveMany].
-         */
+        /** @see [retrieveMany] */
         @MustBeClosed
         fun retrieveMany(
             requestOptions: RequestOptions

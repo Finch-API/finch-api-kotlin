@@ -35,10 +35,7 @@ interface BenefitService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
 
-    /**
-     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
-     * view available types for each provider.
-     */
+    /** @see [create] */
     fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
         create(HrisBenefitCreateParams.none(), requestOptions)
 
@@ -60,7 +57,7 @@ interface BenefitService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPage
 
-    /** List all company-wide deductions and contributions. */
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): HrisBenefitListPage =
         list(HrisBenefitListParams.none(), requestOptions)
 
@@ -71,7 +68,7 @@ interface BenefitService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPage
 
-    /** Get deductions metadata */
+    /** @see [listSupportedBenefits] */
     fun listSupportedBenefits(
         requestOptions: RequestOptions
     ): HrisBenefitListSupportedBenefitsPage =
@@ -92,10 +89,7 @@ interface BenefitService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CreateCompanyBenefitsResponse>
 
-        /**
-         * Returns a raw HTTP response for `post /employer/benefits`, but is otherwise the same as
-         * [BenefitService.create].
-         */
+        /** @see [create] */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<CreateCompanyBenefitsResponse> =
             create(HrisBenefitCreateParams.none(), requestOptions)
@@ -130,10 +124,7 @@ interface BenefitService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListPage>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
-         * [BenefitService.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisBenefitListPage> =
             list(HrisBenefitListParams.none(), requestOptions)
@@ -149,10 +140,7 @@ interface BenefitService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPage>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
-         * as [BenefitService.listSupportedBenefits].
-         */
+        /** @see [listSupportedBenefits] */
         @MustBeClosed
         fun listSupportedBenefits(
             requestOptions: RequestOptions

@@ -21,7 +21,7 @@ interface DirectoryServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<JsonValue>
 
-    /** Add new individuals to a sandbox company */
+    /** @see [create] */
     suspend fun create(requestOptions: RequestOptions): List<JsonValue> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -40,10 +40,7 @@ interface DirectoryServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<JsonValue>>
 
-        /**
-         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
-         * [DirectoryServiceAsync.create].
-         */
+        /** @see [create] */
         @MustBeClosed
         suspend fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)

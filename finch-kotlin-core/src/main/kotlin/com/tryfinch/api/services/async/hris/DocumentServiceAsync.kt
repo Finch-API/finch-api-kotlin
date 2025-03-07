@@ -25,9 +25,7 @@ interface DocumentServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
 
-    /**
-     * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
-     */
+    /** @see [list] */
     suspend fun list(requestOptions: RequestOptions): DocumentListResponse =
         list(HrisDocumentListParams.none(), requestOptions)
 
@@ -55,10 +53,7 @@ interface DocumentServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/documents`, but is otherwise the same as
-         * [DocumentServiceAsync.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
             list(HrisDocumentListParams.none(), requestOptions)

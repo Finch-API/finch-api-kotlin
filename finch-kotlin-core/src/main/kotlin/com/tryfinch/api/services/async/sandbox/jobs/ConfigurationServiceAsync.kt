@@ -23,7 +23,7 @@ interface ConfigurationServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<SandboxJobConfiguration>
 
-    /** Get configurations for sandbox jobs */
+    /** @see [retrieve] */
     suspend fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
@@ -50,10 +50,7 @@ interface ConfigurationServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<SandboxJobConfiguration>>
 
-        /**
-         * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
-         * same as [ConfigurationServiceAsync.retrieve].
-         */
+        /** @see [retrieve] */
         @MustBeClosed
         suspend fun retrieve(
             requestOptions: RequestOptions

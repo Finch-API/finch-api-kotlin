@@ -32,10 +32,7 @@ interface AccountServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 
-    /**
-     * Update an existing sandbox account. Change the connection status to understand how the Finch
-     * API responds.
-     */
+    /** @see [update] */
     suspend fun update(requestOptions: RequestOptions): AccountUpdateResponse =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -65,10 +62,7 @@ interface AccountServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AccountUpdateResponse>
 
-        /**
-         * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
-         * same as [AccountServiceAsync.update].
-         */
+        /** @see [update] */
         @MustBeClosed
         suspend fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
             update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
