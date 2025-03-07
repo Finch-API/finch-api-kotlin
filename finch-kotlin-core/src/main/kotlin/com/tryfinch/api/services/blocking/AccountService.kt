@@ -23,7 +23,7 @@ interface AccountService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
-    /** Disconnect one or more `access_token`s from your application. */
+    /** @see [disconnect] */
     fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
         disconnect(AccountDisconnectParams.none(), requestOptions)
 
@@ -33,7 +33,7 @@ interface AccountService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
 
-    /** Read account information associated with an `access_token` */
+    /** @see [introspect] */
     fun introspect(requestOptions: RequestOptions): Introspection =
         introspect(AccountIntrospectParams.none(), requestOptions)
 
@@ -50,10 +50,7 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DisconnectResponse>
 
-        /**
-         * Returns a raw HTTP response for `post /disconnect`, but is otherwise the same as
-         * [AccountService.disconnect].
-         */
+        /** @see [disconnect] */
         @MustBeClosed
         fun disconnect(requestOptions: RequestOptions): HttpResponseFor<DisconnectResponse> =
             disconnect(AccountDisconnectParams.none(), requestOptions)
@@ -68,10 +65,7 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Introspection>
 
-        /**
-         * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
-         * [AccountService.introspect].
-         */
+        /** @see [introspect] */
         @MustBeClosed
         fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> =
             introspect(AccountIntrospectParams.none(), requestOptions)

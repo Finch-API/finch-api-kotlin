@@ -21,7 +21,7 @@ interface CompanyService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 
-    /** Read basic company data */
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): Company =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
@@ -38,10 +38,7 @@ interface CompanyService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
-         * [CompanyService.retrieve].
-         */
+        /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
             retrieve(HrisCompanyRetrieveParams.none(), requestOptions)

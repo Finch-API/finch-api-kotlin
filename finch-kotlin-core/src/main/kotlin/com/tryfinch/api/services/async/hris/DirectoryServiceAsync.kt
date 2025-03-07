@@ -23,7 +23,7 @@ interface DirectoryServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListPageAsync
 
-    /** Read company directory and organization structure */
+    /** @see [list] */
     suspend fun list(requestOptions: RequestOptions): HrisDirectoryListPageAsync =
         list(HrisDirectoryListParams.none(), requestOptions)
 
@@ -34,7 +34,7 @@ interface DirectoryServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisDirectoryListIndividualsPageAsync
 
-    /** Read company directory and organization structure */
+    /** @see [listIndividuals] */
     @Deprecated("use `list` instead")
     suspend fun listIndividuals(
         requestOptions: RequestOptions
@@ -56,10 +56,7 @@ interface DirectoryServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisDirectoryListPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
-         * [DirectoryServiceAsync.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         suspend fun list(
             requestOptions: RequestOptions
@@ -77,10 +74,7 @@ interface DirectoryServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisDirectoryListIndividualsPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
-         * [DirectoryServiceAsync.listIndividuals].
-         */
+        /** @see [listIndividuals] */
         @Deprecated("use `list` instead")
         @MustBeClosed
         suspend fun listIndividuals(

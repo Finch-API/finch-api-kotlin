@@ -35,6 +35,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /employer/directory
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("use `list` instead")
     override suspend fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions,
@@ -86,6 +87,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
+        @Deprecated("use `list` instead")
         override suspend fun listIndividuals(
             params: HrisDirectoryListIndividualsParams,
             requestOptions: RequestOptions,

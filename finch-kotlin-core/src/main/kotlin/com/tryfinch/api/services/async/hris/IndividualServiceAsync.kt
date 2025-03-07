@@ -21,7 +21,7 @@ interface IndividualServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPageAsync
 
-    /** Read individual data, excluding income and employment data */
+    /** @see [retrieveMany] */
     suspend fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPageAsync =
         retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
@@ -41,10 +41,7 @@ interface IndividualServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPageAsync>
 
-        /**
-         * Returns a raw HTTP response for `post /employer/individual`, but is otherwise the same as
-         * [IndividualServiceAsync.retrieveMany].
-         */
+        /** @see [retrieveMany] */
         @MustBeClosed
         suspend fun retrieveMany(
             requestOptions: RequestOptions

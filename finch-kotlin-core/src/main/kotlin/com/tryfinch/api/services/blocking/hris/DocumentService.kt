@@ -25,9 +25,7 @@ interface DocumentService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
 
-    /**
-     * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
-     */
+    /** @see [list] */
     fun list(requestOptions: RequestOptions): DocumentListResponse =
         list(HrisDocumentListParams.none(), requestOptions)
 
@@ -53,10 +51,7 @@ interface DocumentService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
 
-        /**
-         * Returns a raw HTTP response for `get /employer/documents`, but is otherwise the same as
-         * [DocumentService.list].
-         */
+        /** @see [list] */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
             list(HrisDocumentListParams.none(), requestOptions)
