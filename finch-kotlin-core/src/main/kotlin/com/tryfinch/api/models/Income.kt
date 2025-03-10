@@ -91,6 +91,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Income]. */
         fun builder() = Builder()
     }
 

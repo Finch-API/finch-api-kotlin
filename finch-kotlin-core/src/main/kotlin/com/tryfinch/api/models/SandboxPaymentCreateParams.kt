@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.immutableEmptyMap
@@ -108,6 +109,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             fun builder() = Builder()
         }
 
@@ -139,12 +141,8 @@ private constructor(
 
             fun addPayStatement(payStatement: PayStatement) = apply {
                 payStatements =
-                    (payStatements ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(payStatement)
+                    (payStatements ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("payStatements", it).add(payStatement)
                     }
             }
 
@@ -204,6 +202,9 @@ private constructor(
 
         fun none(): SandboxPaymentCreateParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxPaymentCreateParams].
+         */
         fun builder() = Builder()
     }
 
@@ -499,6 +500,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [PayStatement]. */
             fun builder() = Builder()
         }
 
@@ -543,12 +545,8 @@ private constructor(
             /** The array of earnings objects associated with this pay statement */
             fun addEarning(earning: Earning) = apply {
                 earnings =
-                    (earnings ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(earning)
+                    (earnings ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("earnings", it).add(earning)
                     }
             }
 
@@ -565,12 +563,8 @@ private constructor(
             /** The array of deductions objects associated with this pay statement. */
             fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
                 employeeDeductions =
-                    (employeeDeductions ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(employeeDeduction)
+                    (employeeDeductions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("employeeDeductions", it).add(employeeDeduction)
                     }
             }
 
@@ -585,12 +579,8 @@ private constructor(
 
             fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
                 employerContributions =
-                    (employerContributions ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(employerContribution)
+                    (employerContributions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("employerContributions", it).add(employerContribution)
                     }
             }
 
@@ -630,12 +620,8 @@ private constructor(
             /** The array of taxes objects associated with this pay statement. */
             fun addTax(tax: Tax) = apply {
                 taxes =
-                    (taxes ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(tax)
+                    (taxes ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("taxes", it).add(tax)
                     }
             }
 
@@ -781,6 +767,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Earning]. */
                 fun builder() = Builder()
             }
 
@@ -927,6 +914,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Attributes]. */
                     fun builder() = Builder()
                 }
 
@@ -1017,6 +1005,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Metadata]. */
                         fun builder() = Builder()
                     }
 
@@ -1106,6 +1095,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1472,6 +1465,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [EmployeeDeduction].
+                 */
                 fun builder() = Builder()
             }
 
@@ -1609,6 +1605,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Attributes]. */
                     fun builder() = Builder()
                 }
 
@@ -1699,6 +1696,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Metadata]. */
                         fun builder() = Builder()
                     }
 
@@ -1788,6 +1786,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1976,6 +1978,9 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [EmployerContribution].
+                 */
                 fun builder() = Builder()
             }
 
@@ -2101,6 +2106,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Attributes]. */
                     fun builder() = Builder()
                 }
 
@@ -2191,6 +2197,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Metadata]. */
                         fun builder() = Builder()
                     }
 
@@ -2280,6 +2287,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -2581,6 +2592,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [Tax]. */
                 fun builder() = Builder()
             }
 
@@ -2718,6 +2730,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Attributes]. */
                     fun builder() = Builder()
                 }
 
@@ -2808,6 +2821,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Metadata]. */
                         fun builder() = Builder()
                     }
 
@@ -2897,6 +2911,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [InnerMetadata].
+                             */
                             fun builder() = Builder()
                         }
 

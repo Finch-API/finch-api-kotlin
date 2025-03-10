@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
@@ -152,6 +153,7 @@ private constructor(
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Provider]. */
         fun builder() = Builder()
     }
 
@@ -203,12 +205,8 @@ private constructor(
         /** The list of authentication methods supported by the provider. */
         fun addAuthenticationMethod(authenticationMethod: AuthenticationMethod) = apply {
             authenticationMethods =
-                (authenticationMethods ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(authenticationMethod)
+                (authenticationMethods ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("authenticationMethods", it).add(authenticationMethod)
                 }
         }
 
@@ -275,12 +273,8 @@ private constructor(
         /** The list of Finch products supported on this payroll provider. */
         fun addProduct(product: String) = apply {
             products =
-                (products ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(product)
+                (products ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("products", it).add(product)
                 }
         }
 
@@ -383,6 +377,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [AuthenticationMethod]. */
             fun builder() = Builder()
         }
 
@@ -557,6 +552,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [SupportedFields]. */
                 fun builder() = Builder()
             }
 
@@ -775,6 +771,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedCompanyFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -969,6 +969,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Accounts]. */
                         fun builder() = Builder()
                     }
 
@@ -1122,6 +1123,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Departments].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1208,6 +1212,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Parent].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -1332,6 +1339,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Entity]. */
                         fun builder() = Builder()
                     }
 
@@ -1479,6 +1487,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Locations].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1644,6 +1655,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedDirectoryFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -1796,6 +1811,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Individuals].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -1931,6 +1949,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Manager].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -2055,6 +2076,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Paging]. */
                         fun builder() = Builder()
                     }
 
@@ -2332,6 +2354,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedEmploymentFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -2548,6 +2574,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Department].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -2655,6 +2684,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Employment].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -2778,6 +2810,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Income]. */
                         fun builder() = Builder()
                     }
 
@@ -2933,6 +2966,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Location]. */
                         fun builder() = Builder()
                     }
 
@@ -3070,6 +3104,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Manager]. */
                         fun builder() = Builder()
                     }
 
@@ -3296,6 +3331,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedIndividualFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -3488,6 +3527,7 @@ private constructor(
 
                     companion object {
 
+                        /** Returns a mutable builder for constructing an instance of [Emails]. */
                         fun builder() = Builder()
                     }
 
@@ -3598,6 +3638,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [PhoneNumbers].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -3745,6 +3788,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Residence].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -3928,6 +3974,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedPayGroupFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -4065,6 +4115,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedPayStatementFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -4168,6 +4222,15 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [Paging].
+                         *
+                         * The following fields are required:
+                         * ```kotlin
+                         * .count()
+                         * .offset()
+                         * ```
+                         */
                         fun builder() = Builder()
                     }
 
@@ -4368,6 +4431,10 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [PayStatements].
+                         */
                         fun builder() = Builder()
                     }
 
@@ -4563,6 +4630,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Earnings].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -4725,6 +4795,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [EmployeeDeductions].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -4877,6 +4951,10 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [EmployerContributions].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -5034,6 +5112,9 @@ private constructor(
 
                         companion object {
 
+                            /**
+                             * Returns a mutable builder for constructing an instance of [Taxes].
+                             */
                             fun builder() = Builder()
                         }
 
@@ -5310,6 +5391,10 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [SupportedPaymentFields].
+                     */
                     fun builder() = Builder()
                 }
 
@@ -5502,6 +5587,9 @@ private constructor(
 
                     companion object {
 
+                        /**
+                         * Returns a mutable builder for constructing an instance of [PayPeriod].
+                         */
                         fun builder() = Builder()
                     }
 

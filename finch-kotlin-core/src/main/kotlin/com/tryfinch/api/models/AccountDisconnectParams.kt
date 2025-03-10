@@ -36,6 +36,7 @@ private constructor(
 
         fun none(): AccountDisconnectParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [AccountDisconnectParams]. */
         fun builder() = Builder()
     }
 

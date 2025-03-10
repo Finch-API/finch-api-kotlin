@@ -110,6 +110,10 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [HrisBenefitIndividualUnenrollManyPage].
+             */
             fun builder() = Builder()
         }
 

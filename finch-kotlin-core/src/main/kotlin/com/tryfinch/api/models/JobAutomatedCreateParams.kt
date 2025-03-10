@@ -243,6 +243,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [DataSyncAll].
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .type()
+                 * ```
+                 */
                 fun builder() = Builder()
             }
 
@@ -447,6 +455,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [W4FormEmployeeSync].
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .params()
+                 * .type()
+                 * ```
+                 */
                 fun builder() = Builder()
             }
 
@@ -541,6 +558,14 @@ private constructor(
 
                 companion object {
 
+                    /**
+                     * Returns a mutable builder for constructing an instance of [Params].
+                     *
+                     * The following fields are required:
+                     * ```kotlin
+                     * .individualId()
+                     * ```
+                     */
                     fun builder() = Builder()
                 }
 
@@ -732,6 +757,7 @@ private constructor(
 
         fun none(): JobAutomatedCreateParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams]. */
         fun builder() = Builder()
     }
 

@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
@@ -110,6 +111,18 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [AccountUpdateResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .accountId()
+         * .authenticationType()
+         * .companyId()
+         * .products()
+         * .providerId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -165,12 +178,8 @@ private constructor(
 
         fun addProduct(product: String) = apply {
             products =
-                (products ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(product)
+                (products ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("products", it).add(product)
                 }
         }
 

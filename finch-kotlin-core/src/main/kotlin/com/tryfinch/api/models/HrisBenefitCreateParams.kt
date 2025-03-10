@@ -127,6 +127,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             fun builder() = Builder()
         }
 
@@ -220,6 +221,7 @@ private constructor(
 
         fun none(): HrisBenefitCreateParams = builder().build()
 
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams]. */
         fun builder() = Builder()
     }
 

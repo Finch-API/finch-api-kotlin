@@ -44,6 +44,10 @@ private constructor(
 
         fun none(): HrisDirectoryListIndividualsParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisDirectoryListIndividualsParams].
+         */
         fun builder() = Builder()
     }
 
