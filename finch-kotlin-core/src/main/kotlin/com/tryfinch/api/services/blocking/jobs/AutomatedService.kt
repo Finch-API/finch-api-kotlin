@@ -7,8 +7,8 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.AutomatedAsyncJob
 import com.tryfinch.api.models.AutomatedCreateResponse
+import com.tryfinch.api.models.AutomatedListResponse
 import com.tryfinch.api.models.JobAutomatedCreateParams
-import com.tryfinch.api.models.JobAutomatedListPage
 import com.tryfinch.api.models.JobAutomatedListParams
 import com.tryfinch.api.models.JobAutomatedRetrieveParams
 
@@ -57,10 +57,10 @@ interface AutomatedService {
     fun list(
         params: JobAutomatedListParams = JobAutomatedListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): JobAutomatedListPage
+    ): AutomatedListResponse
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): JobAutomatedListPage =
+    fun list(requestOptions: RequestOptions): AutomatedListResponse =
         list(JobAutomatedListParams.none(), requestOptions)
 
     /** A view of [AutomatedService] that provides access to raw HTTP responses for each method. */
@@ -99,11 +99,11 @@ interface AutomatedService {
         fun list(
             params: JobAutomatedListParams = JobAutomatedListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<JobAutomatedListPage>
+        ): HttpResponseFor<AutomatedListResponse>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<JobAutomatedListPage> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<AutomatedListResponse> =
             list(JobAutomatedListParams.none(), requestOptions)
     }
 }
