@@ -9,12 +9,9 @@ class PagingTest {
 
     @Test
     fun createPaging() {
-      val paging = Paging.builder()
-          .count(0L)
-          .offset(0L)
-          .build()
-      assertThat(paging).isNotNull
-      assertThat(paging.count()).isEqualTo(0L)
-      assertThat(paging.offset()).isEqualTo(0L)
+        val paging = Paging.builder().count(0L).offset(0L).build()
+        assertThat(paging).isNotNull
+        assertThat(paging.count()).isEqualTo(0L)
+        assertThat(paging.offset()).isEqualTo(0L)
     }
 }

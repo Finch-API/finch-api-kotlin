@@ -11,25 +11,30 @@ import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 interface EmploymentServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read individual employment and income data */
-    suspend fun retrieveMany(params: HrisEmploymentRetrieveManyParams, requestOptions: RequestOptions = RequestOptions.none()): HrisEmploymentRetrieveManyPageAsync
+    suspend fun retrieveMany(
+        params: HrisEmploymentRetrieveManyParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): HrisEmploymentRetrieveManyPageAsync
 
     /**
-     * A view of [EmploymentServiceAsync] that provides access to raw HTTP responses
-     * for each method.
+     * A view of [EmploymentServiceAsync] that provides access to raw HTTP responses for each
+     * method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /employer/employment`, but is otherwise
-         * the same as [EmploymentServiceAsync.retrieveMany].
+         * Returns a raw HTTP response for `post /employer/employment`, but is otherwise the same as
+         * [EmploymentServiceAsync.retrieveMany].
          */
         @MustBeClosed
-        suspend fun retrieveMany(params: HrisEmploymentRetrieveManyParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<HrisEmploymentRetrieveManyPageAsync>
+        suspend fun retrieveMany(
+            params: HrisEmploymentRetrieveManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisEmploymentRetrieveManyPageAsync>
     }
 }

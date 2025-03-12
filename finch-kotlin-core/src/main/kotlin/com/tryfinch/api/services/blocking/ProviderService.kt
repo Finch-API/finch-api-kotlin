@@ -11,21 +11,21 @@ import com.tryfinch.api.models.ProviderListParams
 interface ProviderService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Return details on all available payroll and HR systems. */
-    fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): ProviderListPage
+    fun list(
+        params: ProviderListParams = ProviderListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ProviderListPage
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): ProviderListPage = list(ProviderListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): ProviderListPage =
+        list(ProviderListParams.none(), requestOptions)
 
-    /**
-     * A view of [ProviderService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [ProviderService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -33,10 +33,14 @@ interface ProviderService {
          * [ProviderService.list].
          */
         @MustBeClosed
-        fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<ProviderListPage>
+        fun list(
+            params: ProviderListParams = ProviderListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ProviderListPage>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> = list(ProviderListParams.none(), requestOptions)
+        fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
+            list(ProviderListParams.none(), requestOptions)
     }
 }

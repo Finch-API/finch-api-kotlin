@@ -4,8 +4,6 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
-import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
-import com.tryfinch.api.models.HrisDirectoryListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -14,27 +12,29 @@ class DirectoryServiceAsyncTest {
 
     @Test
     suspend fun list() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val directoryServiceAsync = client.hris().directory()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val directoryServiceAsync = client.hris().directory()
 
-      val page = directoryServiceAsync.list()
+        val page = directoryServiceAsync.list()
 
-      page.response().validate()
+        page.response().validate()
     }
 
     @Test
     suspend fun listIndividuals() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val directoryServiceAsync = client.hris().directory()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val directoryServiceAsync = client.hris().directory()
 
-      val page = directoryServiceAsync.listIndividuals()
+        val page = directoryServiceAsync.listIndividuals()
 
-      page.response().validate()
+        page.response().validate()
     }
 }

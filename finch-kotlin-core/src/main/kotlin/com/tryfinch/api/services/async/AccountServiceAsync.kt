@@ -13,26 +13,32 @@ import com.tryfinch.api.models.Introspection
 interface AccountServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Disconnect one or more `access_token`s from your application. */
-    suspend fun disconnect(params: AccountDisconnectParams = AccountDisconnectParams.none(), requestOptions: RequestOptions = RequestOptions.none()): DisconnectResponse
+    suspend fun disconnect(
+        params: AccountDisconnectParams = AccountDisconnectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DisconnectResponse
 
     /** @see [disconnect] */
-    suspend fun disconnect(requestOptions: RequestOptions): DisconnectResponse = disconnect(AccountDisconnectParams.none(), requestOptions)
+    suspend fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
+        disconnect(AccountDisconnectParams.none(), requestOptions)
 
     /** Read account information associated with an `access_token` */
-    suspend fun introspect(params: AccountIntrospectParams = AccountIntrospectParams.none(), requestOptions: RequestOptions = RequestOptions.none()): Introspection
+    suspend fun introspect(
+        params: AccountIntrospectParams = AccountIntrospectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Introspection
 
     /** @see [introspect] */
-    suspend fun introspect(requestOptions: RequestOptions): Introspection = introspect(AccountIntrospectParams.none(), requestOptions)
+    suspend fun introspect(requestOptions: RequestOptions): Introspection =
+        introspect(AccountIntrospectParams.none(), requestOptions)
 
     /**
-     * A view of [AccountServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [AccountServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
@@ -41,21 +47,31 @@ interface AccountServiceAsync {
          * [AccountServiceAsync.disconnect].
          */
         @MustBeClosed
-        suspend fun disconnect(params: AccountDisconnectParams = AccountDisconnectParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<DisconnectResponse>
+        suspend fun disconnect(
+            params: AccountDisconnectParams = AccountDisconnectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DisconnectResponse>
 
         /** @see [disconnect] */
         @MustBeClosed
-        suspend fun disconnect(requestOptions: RequestOptions): HttpResponseFor<DisconnectResponse> = disconnect(AccountDisconnectParams.none(), requestOptions)
+        suspend fun disconnect(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<DisconnectResponse> =
+            disconnect(AccountDisconnectParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as
          * [AccountServiceAsync.introspect].
          */
         @MustBeClosed
-        suspend fun introspect(params: AccountIntrospectParams = AccountIntrospectParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<Introspection>
+        suspend fun introspect(
+            params: AccountIntrospectParams = AccountIntrospectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Introspection>
 
         /** @see [introspect] */
         @MustBeClosed
-        suspend fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> = introspect(AccountIntrospectParams.none(), requestOptions)
+        suspend fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> =
+            introspect(AccountIntrospectParams.none(), requestOptions)
     }
 }

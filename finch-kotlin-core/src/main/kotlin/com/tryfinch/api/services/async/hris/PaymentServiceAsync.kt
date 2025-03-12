@@ -11,25 +11,29 @@ import com.tryfinch.api.models.HrisPaymentListParams
 interface PaymentServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read payroll and contractor related payments by the company. */
-    suspend fun list(params: HrisPaymentListParams, requestOptions: RequestOptions = RequestOptions.none()): HrisPaymentListPageAsync
+    suspend fun list(
+        params: HrisPaymentListParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): HrisPaymentListPageAsync
 
     /**
-     * A view of [PaymentServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [PaymentServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `get /employer/payment`, but is otherwise the
-         * same as [PaymentServiceAsync.list].
+         * Returns a raw HTTP response for `get /employer/payment`, but is otherwise the same as
+         * [PaymentServiceAsync.list].
          */
         @MustBeClosed
-        suspend fun list(params: HrisPaymentListParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<HrisPaymentListPageAsync>
+        suspend fun list(
+            params: HrisPaymentListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisPaymentListPageAsync>
     }
 }

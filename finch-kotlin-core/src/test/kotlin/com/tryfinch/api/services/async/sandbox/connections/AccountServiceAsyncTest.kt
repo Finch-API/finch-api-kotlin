@@ -15,34 +15,44 @@ class AccountServiceAsyncTest {
 
     @Test
     suspend fun create() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val accountServiceAsync = client.sandbox().connections().accounts()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val accountServiceAsync = client.sandbox().connections().accounts()
 
-      val account = accountServiceAsync.create(SandboxConnectionAccountCreateParams.builder()
-          .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-          .providerId("provider_id")
-          .authenticationType(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-          .addProduct("string")
-          .build())
+        val account =
+            accountServiceAsync.create(
+                SandboxConnectionAccountCreateParams.builder()
+                    .companyId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .providerId("provider_id")
+                    .authenticationType(
+                        SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL
+                    )
+                    .addProduct("string")
+                    .build()
+            )
 
-      account.validate()
+        account.validate()
     }
 
     @Test
     suspend fun update() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val accountServiceAsync = client.sandbox().connections().accounts()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val accountServiceAsync = client.sandbox().connections().accounts()
 
-      val account = accountServiceAsync.update(SandboxConnectionAccountUpdateParams.builder()
-          .connectionStatus(ConnectionStatusType.PENDING)
-          .build())
+        val account =
+            accountServiceAsync.update(
+                SandboxConnectionAccountUpdateParams.builder()
+                    .connectionStatus(ConnectionStatusType.PENDING)
+                    .build()
+            )
 
-      account.validate()
+        account.validate()
     }
 }

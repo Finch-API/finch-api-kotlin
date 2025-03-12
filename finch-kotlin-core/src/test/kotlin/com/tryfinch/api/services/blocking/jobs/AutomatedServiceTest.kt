@@ -15,49 +15,54 @@ class AutomatedServiceTest {
 
     @Test
     fun create() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val automatedService = client.jobs().automated()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val automatedService = client.jobs().automated()
 
-      val automated = automatedService.create(JobAutomatedCreateParams.builder()
-          .body(JobAutomatedCreateParams.Body.DataSyncAll.builder()
-              .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
-              .build())
-          .build())
+        val automated =
+            automatedService.create(
+                JobAutomatedCreateParams.builder()
+                    .body(
+                        JobAutomatedCreateParams.Body.DataSyncAll.builder()
+                            .type(JobAutomatedCreateParams.Body.DataSyncAll.Type.DATA_SYNC_ALL)
+                            .build()
+                    )
+                    .build()
+            )
 
-      automated.validate()
+        automated.validate()
     }
 
     @Test
     fun retrieve() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val automatedService = client.jobs().automated()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val automatedService = client.jobs().automated()
 
-      val automatedAsyncJob = automatedService.retrieve(JobAutomatedRetrieveParams.builder()
-          .jobId("job_id")
-          .build())
+        val automatedAsyncJob =
+            automatedService.retrieve(JobAutomatedRetrieveParams.builder().jobId("job_id").build())
 
-      automatedAsyncJob.validate()
+        automatedAsyncJob.validate()
     }
 
     @Test
     fun list() {
-      val client = FinchOkHttpClient.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val automatedService = client.jobs().automated()
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val automatedService = client.jobs().automated()
 
-      val automated = automatedService.list(JobAutomatedListParams.builder()
-          .limit(0L)
-          .offset(0L)
-          .build())
+        val automated =
+            automatedService.list(JobAutomatedListParams.builder().limit(0L).offset(0L).build())
 
-      automated.validate()
+        automated.validate()
     }
 }
