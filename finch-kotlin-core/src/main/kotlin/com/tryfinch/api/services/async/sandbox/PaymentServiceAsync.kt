@@ -11,38 +11,32 @@ import com.tryfinch.api.models.SandboxPaymentCreateParams
 interface PaymentServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Add a new sandbox payment */
-    suspend fun create(
-        params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): PaymentCreateResponse
+    suspend fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): PaymentCreateResponse
 
     /** @see [create] */
-    suspend fun create(requestOptions: RequestOptions): PaymentCreateResponse =
-        create(SandboxPaymentCreateParams.none(), requestOptions)
+    suspend fun create(requestOptions: RequestOptions): PaymentCreateResponse = create(SandboxPaymentCreateParams.none(), requestOptions)
 
     /**
-     * A view of [PaymentServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [PaymentServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the same as
-         * [PaymentServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/payment`, but is otherwise the
+         * same as [PaymentServiceAsync.create].
          */
         @MustBeClosed
-        suspend fun create(
-            params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PaymentCreateResponse>
+        suspend fun create(params: SandboxPaymentCreateParams = SandboxPaymentCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<PaymentCreateResponse>
 
         /** @see [create] */
         @MustBeClosed
-        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
-            create(SandboxPaymentCreateParams.none(), requestOptions)
+        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> = create(SandboxPaymentCreateParams.none(), requestOptions)
     }
 }

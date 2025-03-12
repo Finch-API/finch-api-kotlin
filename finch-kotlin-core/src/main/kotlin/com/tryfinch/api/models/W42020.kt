@@ -18,17 +18,16 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 /**
- * A 2020 version of the W-4 tax form containing information on an individual's filing status,
- * dependents, and withholding details.
+ * A 2020 version of the W-4 tax form containing information on an individual's
+ * filing status, dependents, and withholding details.
  */
 @NoAutoDetect
-class W42020
-@JsonCreator
-private constructor(
+class W42020 @JsonCreator private constructor(
     @JsonProperty("data") @ExcludeMissing private val data: JsonField<Data> = JsonMissing.of(),
     @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
     @JsonProperty("year") @ExcludeMissing private val year: JsonField<Double> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** Detailed information specific to the 2020 W4 form. */
@@ -41,13 +40,19 @@ private constructor(
     fun year(): Double? = year.getNullable("year")
 
     /** Detailed information specific to the 2020 W4 form. */
-    @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
+    @JsonProperty("data")
+    @ExcludeMissing
+    fun _data(): JsonField<Data> = data
 
     /** Specifies the form type, indicating that this document is a 2020 W4 form. */
-    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+    @JsonProperty("type")
+    @ExcludeMissing
+    fun _type(): JsonField<Type> = type
 
     /** The tax year this W4 document applies to. */
-    @JsonProperty("year") @ExcludeMissing fun _year(): JsonField<Double> = year
+    @JsonProperty("year")
+    @ExcludeMissing
+    fun _year(): JsonField<Double> = year
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -55,16 +60,17 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): W42020 = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): W42020 =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        data()?.validate()
-        type()
-        year()
-        validated = true
-    }
+            data()?.validate()
+            type()
+            year()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
@@ -82,24 +88,31 @@ private constructor(
         private var year: JsonField<Double> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(w42020: W42020) = apply {
-            data = w42020.data
-            type = w42020.type
-            year = w42020.year
-            additionalProperties = w42020.additionalProperties.toMutableMap()
-        }
+        internal fun from(w42020: W42020) =
+            apply {
+                data = w42020.data
+                type = w42020.type
+                year = w42020.year
+                additionalProperties = w42020.additionalProperties.toMutableMap()
+            }
 
         /** Detailed information specific to the 2020 W4 form. */
         fun data(data: Data) = data(JsonField.of(data))
 
         /** Detailed information specific to the 2020 W4 form. */
-        fun data(data: JsonField<Data>) = apply { this.data = data }
+        fun data(data: JsonField<Data>) =
+            apply {
+                this.data = data
+            }
 
         /** Specifies the form type, indicating that this document is a 2020 W4 form. */
         fun type(type: Type) = type(JsonField.of(type))
 
         /** Specifies the form type, indicating that this document is a 2020 W4 form. */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
+        fun type(type: JsonField<Type>) =
+            apply {
+                this.type = type
+            }
 
         /** The tax year this W4 document applies to. */
         fun year(year: Double?) = year(JsonField.ofNullable(year))
@@ -108,72 +121,69 @@ private constructor(
         fun year(year: Double) = year(year as Double?)
 
         /** The tax year this W4 document applies to. */
-        fun year(year: JsonField<Double>) = apply { this.year = year }
+        fun year(year: JsonField<Double>) =
+            apply {
+                this.year = year
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
-        fun build(): W42020 = W42020(data, type, year, additionalProperties.toImmutable())
+        fun build(): W42020 =
+            W42020(
+              data,
+              type,
+              year,
+              additionalProperties.toImmutable(),
+            )
     }
 
     /** Detailed information specific to the 2020 W4 form. */
     @NoAutoDetect
-    class Data
-    @JsonCreator
-    private constructor(
-        @JsonProperty("amount_for_other_dependents")
-        @ExcludeMissing
-        private val amountForOtherDependents: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("amount_for_qualifying_children_under_17")
-        @ExcludeMissing
-        private val amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("deductions")
-        @ExcludeMissing
-        private val deductions: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("extra_withholding")
-        @ExcludeMissing
-        private val extraWithholding: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("filing_status")
-        @ExcludeMissing
-        private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("other_income")
-        @ExcludeMissing
-        private val otherIncome: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("total_claim_dependent_and_other_credits")
-        @ExcludeMissing
-        private val totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Data @JsonCreator private constructor(
+        @JsonProperty("amount_for_other_dependents") @ExcludeMissing private val amountForOtherDependents: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("amount_for_qualifying_children_under_17") @ExcludeMissing private val amountForQualifyingChildrenUnder17: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("deductions") @ExcludeMissing private val deductions: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("extra_withholding") @ExcludeMissing private val extraWithholding: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("filing_status") @ExcludeMissing private val filingStatus: JsonField<FilingStatus> = JsonMissing.of(),
+        @JsonProperty("individual_id") @ExcludeMissing private val individualId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("other_income") @ExcludeMissing private val otherIncome: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("total_claim_dependent_and_other_credits") @ExcludeMissing private val totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
-        /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-        fun amountForOtherDependents(): Long? =
-            amountForOtherDependents.getNullable("amount_for_other_dependents")
+        /**
+         * Amount claimed for dependents other than qualifying children under 17 (in
+         * cents).
+         */
+        fun amountForOtherDependents(): Long? = amountForOtherDependents.getNullable("amount_for_other_dependents")
 
         /** Amount claimed for dependents under 17 years old (in cents). */
-        fun amountForQualifyingChildrenUnder17(): Long? =
-            amountForQualifyingChildrenUnder17.getNullable(
-                "amount_for_qualifying_children_under_17"
-            )
+        fun amountForQualifyingChildrenUnder17(): Long? = amountForQualifyingChildrenUnder17.getNullable("amount_for_qualifying_children_under_17")
 
         /** Deductible expenses (in cents). */
         fun deductions(): Long? = deductions.getNullable("deductions")
@@ -191,12 +201,12 @@ private constructor(
         fun otherIncome(): Long? = otherIncome.getNullable("other_income")
 
         /** Total amount claimed for dependents and other credits (in cents). */
-        fun totalClaimDependentAndOtherCredits(): Long? =
-            totalClaimDependentAndOtherCredits.getNullable(
-                "total_claim_dependent_and_other_credits"
-            )
+        fun totalClaimDependentAndOtherCredits(): Long? = totalClaimDependentAndOtherCredits.getNullable("total_claim_dependent_and_other_credits")
 
-        /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
+        /**
+         * Amount claimed for dependents other than qualifying children under 17 (in
+         * cents).
+         */
         @JsonProperty("amount_for_other_dependents")
         @ExcludeMissing
         fun _amountForOtherDependents(): JsonField<Long> = amountForOtherDependents
@@ -204,11 +214,12 @@ private constructor(
         /** Amount claimed for dependents under 17 years old (in cents). */
         @JsonProperty("amount_for_qualifying_children_under_17")
         @ExcludeMissing
-        fun _amountForQualifyingChildrenUnder17(): JsonField<Long> =
-            amountForQualifyingChildrenUnder17
+        fun _amountForQualifyingChildrenUnder17(): JsonField<Long> = amountForQualifyingChildrenUnder17
 
         /** Deductible expenses (in cents). */
-        @JsonProperty("deductions") @ExcludeMissing fun _deductions(): JsonField<Long> = deductions
+        @JsonProperty("deductions")
+        @ExcludeMissing
+        fun _deductions(): JsonField<Long> = deductions
 
         /** Additional withholding amount (in cents). */
         @JsonProperty("extra_withholding")
@@ -233,8 +244,7 @@ private constructor(
         /** Total amount claimed for dependents and other credits (in cents). */
         @JsonProperty("total_claim_dependent_and_other_credits")
         @ExcludeMissing
-        fun _totalClaimDependentAndOtherCredits(): JsonField<Long> =
-            totalClaimDependentAndOtherCredits
+        fun _totalClaimDependentAndOtherCredits(): JsonField<Long> = totalClaimDependentAndOtherCredits
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -242,21 +252,22 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Data = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Data =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            amountForOtherDependents()
-            amountForQualifyingChildrenUnder17()
-            deductions()
-            extraWithholding()
-            filingStatus()
-            individualId()
-            otherIncome()
-            totalClaimDependentAndOtherCredits()
-            validated = true
-        }
+                amountForOtherDependents()
+                amountForQualifyingChildrenUnder17()
+                deductions()
+                extraWithholding()
+                filingStatus()
+                individualId()
+                otherIncome()
+                totalClaimDependentAndOtherCredits()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -279,47 +290,51 @@ private constructor(
             private var totalClaimDependentAndOtherCredits: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(data: Data) = apply {
-                amountForOtherDependents = data.amountForOtherDependents
-                amountForQualifyingChildrenUnder17 = data.amountForQualifyingChildrenUnder17
-                deductions = data.deductions
-                extraWithholding = data.extraWithholding
-                filingStatus = data.filingStatus
-                individualId = data.individualId
-                otherIncome = data.otherIncome
-                totalClaimDependentAndOtherCredits = data.totalClaimDependentAndOtherCredits
-                additionalProperties = data.additionalProperties.toMutableMap()
-            }
+            internal fun from(data: Data) =
+                apply {
+                    amountForOtherDependents = data.amountForOtherDependents
+                    amountForQualifyingChildrenUnder17 = data.amountForQualifyingChildrenUnder17
+                    deductions = data.deductions
+                    extraWithholding = data.extraWithholding
+                    filingStatus = data.filingStatus
+                    individualId = data.individualId
+                    otherIncome = data.otherIncome
+                    totalClaimDependentAndOtherCredits = data.totalClaimDependentAndOtherCredits
+                    additionalProperties = data.additionalProperties.toMutableMap()
+                }
 
-            /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-            fun amountForOtherDependents(amountForOtherDependents: Long?) =
-                amountForOtherDependents(JsonField.ofNullable(amountForOtherDependents))
+            /**
+             * Amount claimed for dependents other than qualifying children under 17 (in
+             * cents).
+             */
+            fun amountForOtherDependents(amountForOtherDependents: Long?) = amountForOtherDependents(JsonField.ofNullable(amountForOtherDependents))
 
-            /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-            fun amountForOtherDependents(amountForOtherDependents: Long) =
-                amountForOtherDependents(amountForOtherDependents as Long?)
+            /**
+             * Amount claimed for dependents other than qualifying children under 17 (in
+             * cents).
+             */
+            fun amountForOtherDependents(amountForOtherDependents: Long) = amountForOtherDependents(amountForOtherDependents as Long?)
 
-            /** Amount claimed for dependents other than qualifying children under 17 (in cents). */
-            fun amountForOtherDependents(amountForOtherDependents: JsonField<Long>) = apply {
-                this.amountForOtherDependents = amountForOtherDependents
-            }
+            /**
+             * Amount claimed for dependents other than qualifying children under 17 (in
+             * cents).
+             */
+            fun amountForOtherDependents(amountForOtherDependents: JsonField<Long>) =
+                apply {
+                    this.amountForOtherDependents = amountForOtherDependents
+                }
 
             /** Amount claimed for dependents under 17 years old (in cents). */
-            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long?) =
-                amountForQualifyingChildrenUnder17(
-                    JsonField.ofNullable(amountForQualifyingChildrenUnder17)
-                )
+            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long?) = amountForQualifyingChildrenUnder17(JsonField.ofNullable(amountForQualifyingChildrenUnder17))
 
             /** Amount claimed for dependents under 17 years old (in cents). */
-            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long) =
-                amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17 as Long?)
+            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: Long) = amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17 as Long?)
 
             /** Amount claimed for dependents under 17 years old (in cents). */
-            fun amountForQualifyingChildrenUnder17(
-                amountForQualifyingChildrenUnder17: JsonField<Long>
-            ) = apply {
-                this.amountForQualifyingChildrenUnder17 = amountForQualifyingChildrenUnder17
-            }
+            fun amountForQualifyingChildrenUnder17(amountForQualifyingChildrenUnder17: JsonField<Long>) =
+                apply {
+                    this.amountForQualifyingChildrenUnder17 = amountForQualifyingChildrenUnder17
+                }
 
             /** Deductible expenses (in cents). */
             fun deductions(deductions: Long?) = deductions(JsonField.ofNullable(deductions))
@@ -328,37 +343,40 @@ private constructor(
             fun deductions(deductions: Long) = deductions(deductions as Long?)
 
             /** Deductible expenses (in cents). */
-            fun deductions(deductions: JsonField<Long>) = apply { this.deductions = deductions }
+            fun deductions(deductions: JsonField<Long>) =
+                apply {
+                    this.deductions = deductions
+                }
 
             /** Additional withholding amount (in cents). */
-            fun extraWithholding(extraWithholding: Long?) =
-                extraWithholding(JsonField.ofNullable(extraWithholding))
+            fun extraWithholding(extraWithholding: Long?) = extraWithholding(JsonField.ofNullable(extraWithholding))
 
             /** Additional withholding amount (in cents). */
-            fun extraWithholding(extraWithholding: Long) =
-                extraWithholding(extraWithholding as Long?)
+            fun extraWithholding(extraWithholding: Long) = extraWithholding(extraWithholding as Long?)
 
             /** Additional withholding amount (in cents). */
-            fun extraWithholding(extraWithholding: JsonField<Long>) = apply {
-                this.extraWithholding = extraWithholding
-            }
+            fun extraWithholding(extraWithholding: JsonField<Long>) =
+                apply {
+                    this.extraWithholding = extraWithholding
+                }
 
             /** The individual's filing status for tax purposes. */
-            fun filingStatus(filingStatus: FilingStatus?) =
-                filingStatus(JsonField.ofNullable(filingStatus))
+            fun filingStatus(filingStatus: FilingStatus?) = filingStatus(JsonField.ofNullable(filingStatus))
 
             /** The individual's filing status for tax purposes. */
-            fun filingStatus(filingStatus: JsonField<FilingStatus>) = apply {
-                this.filingStatus = filingStatus
-            }
+            fun filingStatus(filingStatus: JsonField<FilingStatus>) =
+                apply {
+                    this.filingStatus = filingStatus
+                }
 
             /** The unique identifier for the individual associated with this document. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /** The unique identifier for the individual associated with this document. */
-            fun individualId(individualId: JsonField<String>) = apply {
-                this.individualId = individualId
-            }
+            fun individualId(individualId: JsonField<String>) =
+                apply {
+                    this.individualId = individualId
+                }
 
             /** Additional income from sources outside of primary employment (in cents). */
             fun otherIncome(otherIncome: Long?) = otherIncome(JsonField.ofNullable(otherIncome))
@@ -367,78 +385,85 @@ private constructor(
             fun otherIncome(otherIncome: Long) = otherIncome(otherIncome as Long?)
 
             /** Additional income from sources outside of primary employment (in cents). */
-            fun otherIncome(otherIncome: JsonField<Long>) = apply { this.otherIncome = otherIncome }
+            fun otherIncome(otherIncome: JsonField<Long>) =
+                apply {
+                    this.otherIncome = otherIncome
+                }
 
             /** Total amount claimed for dependents and other credits (in cents). */
-            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long?) =
-                totalClaimDependentAndOtherCredits(
-                    JsonField.ofNullable(totalClaimDependentAndOtherCredits)
-                )
+            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long?) = totalClaimDependentAndOtherCredits(JsonField.ofNullable(totalClaimDependentAndOtherCredits))
 
             /** Total amount claimed for dependents and other credits (in cents). */
-            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long) =
-                totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits as Long?)
+            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long) = totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits as Long?)
 
             /** Total amount claimed for dependents and other credits (in cents). */
-            fun totalClaimDependentAndOtherCredits(
-                totalClaimDependentAndOtherCredits: JsonField<Long>
-            ) = apply {
-                this.totalClaimDependentAndOtherCredits = totalClaimDependentAndOtherCredits
-            }
+            fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: JsonField<Long>) =
+                apply {
+                    this.totalClaimDependentAndOtherCredits = totalClaimDependentAndOtherCredits
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Data =
                 Data(
-                    amountForOtherDependents,
-                    amountForQualifyingChildrenUnder17,
-                    deductions,
-                    extraWithholding,
-                    filingStatus,
-                    individualId,
-                    otherIncome,
-                    totalClaimDependentAndOtherCredits,
-                    additionalProperties.toImmutable(),
+                  amountForOtherDependents,
+                  amountForQualifyingChildrenUnder17,
+                  deductions,
+                  extraWithholding,
+                  filingStatus,
+                  individualId,
+                  otherIncome,
+                  totalClaimDependentAndOtherCredits,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         /** The individual's filing status for tax purposes. */
-        class FilingStatus @JsonCreator private constructor(private val value: JsonField<String>) :
-            Enum {
+        class FilingStatus @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
                 val HEAD_OF_HOUSEHOLD = of("head_of_household")
 
-                val MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE =
-                    of("married_filing_jointly_or_qualifying_surviving_spouse")
+                val MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE = of("married_filing_jointly_or_qualifying_surviving_spouse")
 
                 val SINGLE_OR_MARRIED_FILING_SEPARATELY = of("single_or_married_filing_separately")
 
@@ -453,12 +478,15 @@ private constructor(
             }
 
             /**
-             * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN] member.
+             * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN]
+             * member.
              *
              * An instance of [FilingStatus] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -476,14 +504,13 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
                     HEAD_OF_HOUSEHOLD -> Value.HEAD_OF_HOUSEHOLD
-                    MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE ->
-                        Value.MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE
+                    MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE -> Value.MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE
                     SINGLE_OR_MARRIED_FILING_SEPARATELY -> Value.SINGLE_OR_MARRIED_FILING_SEPARATELY
                     else -> Value._UNKNOWN
                 }
@@ -494,14 +521,13 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
                     HEAD_OF_HOUSEHOLD -> Known.HEAD_OF_HOUSEHOLD
-                    MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE ->
-                        Known.MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE
+                    MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE -> Known.MARRIED_FILING_JOINTLY_OR_QUALIFYING_SURVIVING_SPOUSE
                     SINGLE_OR_MARRIED_FILING_SEPARATELY -> Known.SINGLE_OR_MARRIED_FILING_SEPARATELY
                     else -> throw FinchInvalidDataException("Unknown FilingStatus: $value")
                 }
@@ -512,18 +538,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+            fun asString(): String = _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is FilingStatus && value == other.value /* spotless:on */
+              return /* spotless:off */ other is FilingStatus && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -532,11 +557,11 @@ private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Data && amountForOtherDependents == other.amountForOtherDependents && amountForQualifyingChildrenUnder17 == other.amountForQualifyingChildrenUnder17 && deductions == other.deductions && extraWithholding == other.extraWithholding && filingStatus == other.filingStatus && individualId == other.individualId && otherIncome == other.otherIncome && totalClaimDependentAndOtherCredits == other.totalClaimDependentAndOtherCredits && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Data && amountForOtherDependents == other.amountForOtherDependents && amountForQualifyingChildrenUnder17 == other.amountForQualifyingChildrenUnder17 && deductions == other.deductions && extraWithholding == other.extraWithholding && filingStatus == other.filingStatus && individualId == other.individualId && otherIncome == other.otherIncome && totalClaimDependentAndOtherCredits == other.totalClaimDependentAndOtherCredits && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -545,22 +570,25 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Data{amountForOtherDependents=$amountForOtherDependents, amountForQualifyingChildrenUnder17=$amountForQualifyingChildrenUnder17, deductions=$deductions, extraWithholding=$extraWithholding, filingStatus=$filingStatus, individualId=$individualId, otherIncome=$otherIncome, totalClaimDependentAndOtherCredits=$totalClaimDependentAndOtherCredits, additionalProperties=$additionalProperties}"
+        override fun toString() = "Data{amountForOtherDependents=$amountForOtherDependents, amountForQualifyingChildrenUnder17=$amountForQualifyingChildrenUnder17, deductions=$deductions, extraWithholding=$extraWithholding, filingStatus=$filingStatus, individualId=$individualId, otherIncome=$otherIncome, totalClaimDependentAndOtherCredits=$totalClaimDependentAndOtherCredits, additionalProperties=$additionalProperties}"
     }
 
     /** Specifies the form type, indicating that this document is a 2020 W4 form. */
-    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+    class Type @JsonCreator private constructor(
+        private val value: JsonField<String>,
+
+    ) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
+         * This is usually only useful if this instance was deserialized from data that
+         * doesn't match any known member, and you want to know that value. For example, if
+         * the SDK is on an older version than the API, then the API may respond with new
+         * members that the SDK is unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue
+        fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -571,16 +599,18 @@ private constructor(
 
         /** An enum containing [Type]'s known values. */
         enum class Known {
-            W4_2020
+            W4_2020,
         }
 
         /**
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
+         *
+         * - It was deserialized from data that doesn't match any known member. For
+         *   example, if the SDK is on an older version than the API, then the API may
+         *   respond with new members that the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -590,11 +620,11 @@ private constructor(
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or
+         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if
+         * you want to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -605,10 +635,11 @@ private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and
+         * don't want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a
+         * known member.
          */
         fun known(): Known =
             when (this) {
@@ -619,21 +650,20 @@ private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for
+         * debugging and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have
+         * the expected primitive type.
          */
-        fun asString(): String =
-            _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+        fun asString(): String = _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+          return /* spotless:off */ other is Type && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -642,11 +672,11 @@ private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is W42020 && data == other.data && type == other.type && year == other.year && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is W42020 && data == other.data && type == other.type && year == other.year && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -655,6 +685,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "W42020{data=$data, type=$type, year=$year, additionalProperties=$additionalProperties}"
+    override fun toString() = "W42020{data=$data, type=$type, year=$year, additionalProperties=$additionalProperties}"
 }

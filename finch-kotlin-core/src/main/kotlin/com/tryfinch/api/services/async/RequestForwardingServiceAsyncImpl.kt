@@ -18,53 +18,50 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.RequestForwardingForwardParams
 import com.tryfinch.api.models.RequestForwardingForwardResponse
 
-class RequestForwardingServiceAsyncImpl
-internal constructor(private val clientOptions: ClientOptions) : RequestForwardingServiceAsync {
+class RequestForwardingServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: RequestForwardingServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : RequestForwardingServiceAsync {
+
+    private val withRawResponse: RequestForwardingServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): RequestForwardingServiceAsync.WithRawResponse = withRawResponse
 
-    override suspend fun forward(
-        params: RequestForwardingForwardParams,
-        requestOptions: RequestOptions,
-    ): RequestForwardingForwardResponse =
+    override suspend fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions): RequestForwardingForwardResponse =
         // post /forward
         withRawResponse().forward(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        RequestForwardingServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : RequestForwardingServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val forwardHandler: Handler<RequestForwardingForwardResponse> =
-            jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val forwardHandler: Handler<RequestForwardingForwardResponse> = jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override suspend fun forward(
-            params: RequestForwardingForwardParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<RequestForwardingForwardResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("forward")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { forwardHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override suspend fun forward(params: RequestForwardingForwardParams, requestOptions: RequestOptions): HttpResponseFor<RequestForwardingForwardResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("forward")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.executeAsync(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  forwardHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

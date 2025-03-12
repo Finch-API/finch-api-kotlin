@@ -15,13 +15,16 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
 import java.util.Objects
+import java.util.Optional
+import java.util.stream.Stream
+import java.util.stream.StreamSupport
 
 /** Read company pay groups and frequencies */
-class PayrollPayGroupListPage
-private constructor(
+class PayrollPayGroupListPage private constructor(
     private val payGroupsService: PayGroupService,
     private val params: PayrollPayGroupListParams,
     private val response: Response,
+
 ) {
 
     fun response(): Response = response
@@ -29,54 +32,54 @@ private constructor(
     fun items(): List<PayGroupListResponse> = response().items()
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is PayrollPayGroupListPage && payGroupsService == other.payGroupsService && params == other.params && response == other.response /* spotless:on */
+      return /* spotless:off */ other is PayrollPayGroupListPage && payGroupsService == other.payGroupsService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(payGroupsService, params, response) /* spotless:on */
 
-    override fun toString() =
-        "PayrollPayGroupListPage{payGroupsService=$payGroupsService, params=$params, response=$response}"
+    override fun toString() = "PayrollPayGroupListPage{payGroupsService=$payGroupsService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-        return !items().isEmpty()
+      return !items().isEmpty()
     }
 
     fun getNextPageParams(): PayrollPayGroupListParams? {
-        return null
+      return null
     }
 
     fun getNextPage(): PayrollPayGroupListPage? {
-        return getNextPageParams()?.let { payGroupsService.list(it) }
+      return getNextPageParams()?.let {
+          payGroupsService.list(it)
+      }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
     companion object {
 
-        fun of(
-            payGroupsService: PayGroupService,
-            params: PayrollPayGroupListParams,
-            response: Response,
-        ) = PayrollPayGroupListPage(payGroupsService, params, response)
+        fun of(payGroupsService: PayGroupService, params: PayrollPayGroupListParams, response: Response) =
+            PayrollPayGroupListPage(
+              payGroupsService,
+              params,
+              response,
+            )
     }
 
     @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<PayGroupListResponse>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response @JsonCreator constructor(
+        @JsonProperty("items") private val items: JsonField<List<PayGroupListResponse>> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         fun items(): List<PayGroupListResponse> = items.getNullable("items") ?: listOf()
 
-        @JsonProperty("items") fun _items(): JsonField<List<PayGroupListResponse>>? = items
+        @JsonProperty("items")
+        fun _items(): JsonField<List<PayGroupListResponse>>? = items
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -84,34 +87,35 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Response =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            items().map { it.validate() }
-            validated = true
-        }
+                items().map { it.validate() }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
 
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
+        override fun toString() = "Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [PayrollPayGroupListPage].
+             * Returns a mutable builder for constructing an instance of
+             * [PayrollPayGroupListPage].
              */
             fun builder() = Builder()
         }
@@ -121,36 +125,44 @@ private constructor(
             private var items: JsonField<List<PayGroupListResponse>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
+            internal fun from(page: Response) =
+                apply {
+                    this.items = page.items
+                    this.additionalProperties.putAll(page.additionalProperties)
+                }
 
             fun items(items: List<PayGroupListResponse>) = items(JsonField.of(items))
 
             fun items(items: JsonField<List<PayGroupListResponse>>) = apply { this.items = items }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    this.additionalProperties.put(key, value)
+                }
 
-            fun build() = Response(items, additionalProperties.toImmutable())
+            fun build() =
+                Response(
+                  items, additionalProperties.toImmutable()
+                )
         }
     }
 
-    class AutoPager(private val firstPage: PayrollPayGroupListPage) :
-        Sequence<PayGroupListResponse> {
+    class AutoPager(
+        private val firstPage: PayrollPayGroupListPage,
 
-        override fun iterator(): Iterator<PayGroupListResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
+    ) : Sequence<PayGroupListResponse> {
+
+        override fun iterator(): Iterator<PayGroupListResponse> =
+            iterator {
+                var page = firstPage
+                var index = 0
+                while (true) {
+                  while (index < page.items().size) {
                     yield(page.items()[index++])
+                  }
+                  page = page.getNextPage() ?: break
+                  index = 0
                 }
-                page = page.getNextPage() ?: break
-                index = 0
             }
-        }
     }
 }

@@ -13,58 +13,45 @@ import com.tryfinch.api.models.SandboxConnectionAccountUpdateParams
 interface AccountServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Create a new account for an existing connection (company/provider pair) */
-    suspend fun create(
-        params: SandboxConnectionAccountCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountCreateResponse
+    suspend fun create(params: SandboxConnectionAccountCreateParams, requestOptions: RequestOptions = RequestOptions.none()): AccountCreateResponse
 
     /**
-     * Update an existing sandbox account. Change the connection status to understand how the Finch
-     * API responds.
+     * Update an existing sandbox account. Change the connection status to understand
+     * how the Finch API responds.
      */
-    suspend fun update(
-        params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountUpdateResponse
+    suspend fun update(params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): AccountUpdateResponse
 
     /** @see [update] */
-    suspend fun update(requestOptions: RequestOptions): AccountUpdateResponse =
-        update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
+    suspend fun update(requestOptions: RequestOptions): AccountUpdateResponse = update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
     /**
-     * A view of [AccountServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [AccountServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is otherwise
-         * the same as [AccountServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/connections/accounts`, but is
+         * otherwise the same as [AccountServiceAsync.create].
          */
         @MustBeClosed
-        suspend fun create(
-            params: SandboxConnectionAccountCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountCreateResponse>
+        suspend fun create(params: SandboxConnectionAccountCreateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<AccountCreateResponse>
 
         /**
-         * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is otherwise the
-         * same as [AccountServiceAsync.update].
+         * Returns a raw HTTP response for `put /sandbox/connections/accounts`, but is
+         * otherwise the same as [AccountServiceAsync.update].
          */
         @MustBeClosed
-        suspend fun update(
-            params: SandboxConnectionAccountUpdateParams =
-                SandboxConnectionAccountUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountUpdateResponse>
+        suspend fun update(params: SandboxConnectionAccountUpdateParams = SandboxConnectionAccountUpdateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<AccountUpdateResponse>
 
         /** @see [update] */
         @MustBeClosed
-        suspend fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
-            update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
+        suspend fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> = update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
     }
 }

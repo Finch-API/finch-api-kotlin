@@ -13,23 +13,19 @@ class ConnectionServiceAsyncTest {
 
     @Test
     suspend fun create() {
-        val client =
-            FinchOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val connectionServiceAsync = client.sandbox().connections()
+      val client = FinchOkHttpClientAsync.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val connectionServiceAsync = client.sandbox().connections()
 
-        val connection =
-            connectionServiceAsync.create(
-                SandboxConnectionCreateParams.builder()
-                    .providerId("provider_id")
-                    .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
-                    .employeeSize(0L)
-                    .addProduct("string")
-                    .build()
-            )
+      val connection = connectionServiceAsync.create(SandboxConnectionCreateParams.builder()
+          .providerId("provider_id")
+          .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
+          .employeeSize(0L)
+          .addProduct("string")
+          .build())
 
-        connection.validate()
+      connection.validate()
     }
 }

@@ -16,14 +16,11 @@ import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 @NoAutoDetect
-class Money
-@JsonCreator
-private constructor(
+class Money @JsonCreator private constructor(
     @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency")
-    @ExcludeMissing
-    private val currency: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("currency") @ExcludeMissing private val currency: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** Amount for money object (in cents) */
@@ -32,9 +29,13 @@ private constructor(
     fun currency(): String? = currency.getNullable("currency")
 
     /** Amount for money object (in cents) */
-    @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+    @JsonProperty("amount")
+    @ExcludeMissing
+    fun _amount(): JsonField<Long> = amount
 
-    @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+    @JsonProperty("currency")
+    @ExcludeMissing
+    fun _currency(): JsonField<String> = currency
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -42,15 +43,16 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Money = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): Money =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        amount()
-        currency()
-        validated = true
-    }
+            amount()
+            currency()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
@@ -67,11 +69,12 @@ private constructor(
         private var currency: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(money: Money) = apply {
-            amount = money.amount
-            currency = money.currency
-            additionalProperties = money.additionalProperties.toMutableMap()
-        }
+        internal fun from(money: Money) =
+            apply {
+                amount = money.amount
+                currency = money.currency
+                additionalProperties = money.additionalProperties.toMutableMap()
+            }
 
         /** Amount for money object (in cents) */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
@@ -80,40 +83,58 @@ private constructor(
         fun amount(amount: Long) = amount(amount as Long?)
 
         /** Amount for money object (in cents) */
-        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+        fun amount(amount: JsonField<Long>) =
+            apply {
+                this.amount = amount
+            }
 
         fun currency(currency: String) = currency(JsonField.of(currency))
 
-        fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+        fun currency(currency: JsonField<String>) =
+            apply {
+                this.currency = currency
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
-        fun build(): Money = Money(amount, currency, additionalProperties.toImmutable())
+        fun build(): Money =
+            Money(
+              amount,
+              currency,
+              additionalProperties.toImmutable(),
+            )
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is Money && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is Money && amount == other.amount && currency == other.currency && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -122,6 +143,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "Money{amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
+    override fun toString() = "Money{amount=$amount, currency=$currency, additionalProperties=$additionalProperties}"
 }
