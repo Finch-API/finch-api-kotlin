@@ -1,7 +1,7 @@
 package com.tryfinch.api.core.http
 
-import java.lang.AutoCloseable
 import com.tryfinch.api.core.RequestOptions
+import java.lang.AutoCloseable
 
 interface HttpClient : AutoCloseable {
 

@@ -14,34 +14,40 @@ class DocumentServiceAsyncTest {
 
     @Test
     suspend fun list() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val documentServiceAsync = client.hris().documents()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val documentServiceAsync = client.hris().documents()
 
-      val document = documentServiceAsync.list(HrisDocumentListParams.builder()
-          .addIndividualId("string")
-          .limit(0L)
-          .offset(0L)
-          .addType(HrisDocumentListParams.Type.W4_2020)
-          .build())
+        val document =
+            documentServiceAsync.list(
+                HrisDocumentListParams.builder()
+                    .addIndividualId("string")
+                    .limit(0L)
+                    .offset(0L)
+                    .addType(HrisDocumentListParams.Type.W4_2020)
+                    .build()
+            )
 
-      document.validate()
+        document.validate()
     }
 
     @Test
     suspend fun retreive() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val documentServiceAsync = client.hris().documents()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val documentServiceAsync = client.hris().documents()
 
-      val response = documentServiceAsync.retreive(HrisDocumentRetreiveParams.builder()
-          .documentId("document_id")
-          .build())
+        val response =
+            documentServiceAsync.retreive(
+                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
+            )
 
-      response.validate()
+        response.validate()
     }
 }

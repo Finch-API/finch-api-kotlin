@@ -15,19 +15,15 @@ import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.ProviderServiceAsync
 import java.util.Objects
-import java.util.Optional
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executor
-import java.util.function.Predicate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
 /** Return details on all available payroll and HR systems. */
-class ProviderListPageAsync private constructor(
+class ProviderListPageAsync
+private constructor(
     private val providersService: ProviderServiceAsync,
     private val params: ProviderListParams,
     private val response: Response,
-
 ) {
 
     fun response(): Response = response
@@ -35,54 +31,53 @@ class ProviderListPageAsync private constructor(
     fun items(): List<Provider> = response().items()
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is ProviderListPageAsync && providersService == other.providersService && params == other.params && response == other.response /* spotless:on */
+        return /* spotless:off */ other is ProviderListPageAsync && providersService == other.providersService && params == other.params && response == other.response /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(providersService, params, response) /* spotless:on */
 
-    override fun toString() = "ProviderListPageAsync{providersService=$providersService, params=$params, response=$response}"
+    override fun toString() =
+        "ProviderListPageAsync{providersService=$providersService, params=$params, response=$response}"
 
     fun hasNextPage(): Boolean {
-      return !items().isEmpty()
+        return !items().isEmpty()
     }
 
     fun getNextPageParams(): ProviderListParams? {
-      return null
+        return null
     }
 
     suspend fun getNextPage(): ProviderListPageAsync? {
-      return getNextPageParams()?.let {
-          providersService.list(it)
-      }
+        return getNextPageParams()?.let { providersService.list(it) }
     }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
     companion object {
 
-        fun of(providersService: ProviderServiceAsync, params: ProviderListParams, response: Response) =
-            ProviderListPageAsync(
-              providersService,
-              params,
-              response,
-            )
+        fun of(
+            providersService: ProviderServiceAsync,
+            params: ProviderListParams,
+            response: Response,
+        ) = ProviderListPageAsync(providersService, params, response)
     }
 
     @NoAutoDetect
-    class Response @JsonCreator constructor(
+    class Response
+    @JsonCreator
+    constructor(
         @JsonProperty("items") private val items: JsonField<List<Provider>> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun items(): List<Provider> = items.getNullable("items") ?: listOf()
 
-        @JsonProperty("items")
-        fun _items(): JsonField<List<Provider>>? = items
+        @JsonProperty("items") fun _items(): JsonField<List<Provider>>? = items
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -90,35 +85,34 @@ class ProviderListPageAsync private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Response =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                items().map { it.validate() }
-                validated = true
+        fun validate(): Response = apply {
+            if (validated) {
+                return@apply
             }
+
+            items().map { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
 
-        override fun toString() = "Response{items=$items, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Response{items=$items, additionalProperties=$additionalProperties}"
 
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of
-             * [ProviderListPageAsync].
+             * Returns a mutable builder for constructing an instance of [ProviderListPageAsync].
              */
             fun builder() = Builder()
         }
@@ -128,43 +122,35 @@ class ProviderListPageAsync private constructor(
             private var items: JsonField<List<Provider>> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(page: Response) =
-                apply {
-                    this.items = page.items
-                    this.additionalProperties.putAll(page.additionalProperties)
-                }
+            internal fun from(page: Response) = apply {
+                this.items = page.items
+                this.additionalProperties.putAll(page.additionalProperties)
+            }
 
             fun items(items: List<Provider>) = items(JsonField.of(items))
 
             fun items(items: JsonField<List<Provider>>) = apply { this.items = items }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    this.additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
 
-            fun build() =
-                Response(
-                  items, additionalProperties.toImmutable()
-                )
+            fun build() = Response(items, additionalProperties.toImmutable())
         }
     }
 
-    class AutoPager(
-        private val firstPage: ProviderListPageAsync,
-
-    ) : Flow<Provider> {
+    class AutoPager(private val firstPage: ProviderListPageAsync) : Flow<Provider> {
 
         override suspend fun collect(collector: FlowCollector<Provider>) {
-          var page = firstPage
-          var index = 0
-          while (true) {
-            while (index < page.items().size) {
-              collector.emit(page.items()[index++])
+            var page = firstPage
+            var index = 0
+            while (true) {
+                while (index < page.items().size) {
+                    collector.emit(page.items()[index++])
+                }
+                page = page.getNextPage() ?: break
+                index = 0
             }
-            page = page.getNextPage() ?: break
-            index = 0
-          }
         }
     }
 }

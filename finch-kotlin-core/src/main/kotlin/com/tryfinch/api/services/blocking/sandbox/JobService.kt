@@ -12,29 +12,31 @@ import com.tryfinch.api.services.blocking.sandbox.jobs.ConfigurationService
 interface JobService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     fun configuration(): ConfigurationService
 
     /** Enqueue a new sandbox job */
-    fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions = RequestOptions.none()): JobCreateResponse
+    fun create(
+        params: SandboxJobCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): JobCreateResponse
 
-    /**
-     * A view of [JobService] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [JobService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         fun configuration(): ConfigurationService.WithRawResponse
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same
-         * as [JobService.create].
+         * Returns a raw HTTP response for `post /sandbox/jobs`, but is otherwise the same as
+         * [JobService.create].
          */
         @MustBeClosed
-        fun create(params: SandboxJobCreateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<JobCreateResponse>
+        fun create(
+            params: SandboxJobCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<JobCreateResponse>
     }
 }

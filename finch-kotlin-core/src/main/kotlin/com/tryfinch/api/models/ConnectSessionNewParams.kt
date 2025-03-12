@@ -23,11 +23,11 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 /** Create a new connect session for an employer */
-class ConnectSessionNewParams private constructor(
+class ConnectSessionNewParams
+private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-
 ) : Params {
 
     fun customerId(): String = body.customerId()
@@ -42,10 +42,7 @@ class ConnectSessionNewParams private constructor(
 
     fun manual(): Boolean? = body.manual()
 
-    /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30
-     * days)
-     */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun minutesToExpire(): Double? = body.minutesToExpire()
 
     fun redirectUri(): String? = body.redirectUri()
@@ -64,10 +61,7 @@ class ConnectSessionNewParams private constructor(
 
     fun _manual(): JsonField<Boolean> = body._manual()
 
-    /**
-     * The number of minutes until the session expires (defaults to 43,200, which is 30
-     * days)
-     */
+    /** The number of minutes until the session expires (defaults to 43,200, which is 30 days) */
     fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
 
     fun _redirectUri(): JsonField<String> = body._redirectUri()
@@ -87,18 +81,38 @@ class ConnectSessionNewParams private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class Body @JsonCreator private constructor(
-        @JsonProperty("customer_id") @ExcludeMissing private val customerId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("customer_name") @ExcludeMissing private val customerName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("products") @ExcludeMissing private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
-        @JsonProperty("customer_email") @ExcludeMissing private val customerEmail: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("integration") @ExcludeMissing private val integration: JsonField<Integration> = JsonMissing.of(),
-        @JsonProperty("manual") @ExcludeMissing private val manual: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("minutes_to_expire") @ExcludeMissing private val minutesToExpire: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("redirect_uri") @ExcludeMissing private val redirectUri: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("sandbox") @ExcludeMissing private val sandbox: JsonField<Sandbox> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Body
+    @JsonCreator
+    private constructor(
+        @JsonProperty("customer_id")
+        @ExcludeMissing
+        private val customerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("customer_name")
+        @ExcludeMissing
+        private val customerName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("products")
+        @ExcludeMissing
+        private val products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        private val customerEmail: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("integration")
+        @ExcludeMissing
+        private val integration: JsonField<Integration> = JsonMissing.of(),
+        @JsonProperty("manual")
+        @ExcludeMissing
+        private val manual: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("minutes_to_expire")
+        @ExcludeMissing
+        private val minutesToExpire: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("redirect_uri")
+        @ExcludeMissing
+        private val redirectUri: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("sandbox")
+        @ExcludeMissing
+        private val sandbox: JsonField<Sandbox> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun customerId(): String = customerId.getRequired("customer_id")
@@ -114,8 +128,7 @@ class ConnectSessionNewParams private constructor(
         fun manual(): Boolean? = manual.getNullable("manual")
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(): Double? = minutesToExpire.getNullable("minutes_to_expire")
 
@@ -143,13 +156,10 @@ class ConnectSessionNewParams private constructor(
         @ExcludeMissing
         fun _integration(): JsonField<Integration> = integration
 
-        @JsonProperty("manual")
-        @ExcludeMissing
-        fun _manual(): JsonField<Boolean> = manual
+        @JsonProperty("manual") @ExcludeMissing fun _manual(): JsonField<Boolean> = manual
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
@@ -159,9 +169,7 @@ class ConnectSessionNewParams private constructor(
         @ExcludeMissing
         fun _redirectUri(): JsonField<String> = redirectUri
 
-        @JsonProperty("sandbox")
-        @ExcludeMissing
-        fun _sandbox(): JsonField<Sandbox> = sandbox
+        @JsonProperty("sandbox") @ExcludeMissing fun _sandbox(): JsonField<Sandbox> = sandbox
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -169,23 +177,22 @@ class ConnectSessionNewParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                customerId()
-                customerName()
-                products()
-                customerEmail()
-                integration()?.validate()
-                manual()
-                minutesToExpire()
-                redirectUri()
-                sandbox()
-                validated = true
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
             }
+
+            customerId()
+            customerName()
+            products()
+            customerEmail()
+            integration()?.validate()
+            manual()
+            minutesToExpire()
+            redirectUri()
+            sandbox()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -195,7 +202,6 @@ class ConnectSessionNewParams private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             *
              * ```kotlin
              * .customerId()
              * .customerName()
@@ -219,159 +225,134 @@ class ConnectSessionNewParams private constructor(
             private var sandbox: JsonField<Sandbox> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(body: Body) =
-                apply {
-                    customerId = body.customerId
-                    customerName = body.customerName
-                    products = body.products.map { it.toMutableList() }
-                    customerEmail = body.customerEmail
-                    integration = body.integration
-                    manual = body.manual
-                    minutesToExpire = body.minutesToExpire
-                    redirectUri = body.redirectUri
-                    sandbox = body.sandbox
-                    additionalProperties = body.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                customerId = body.customerId
+                customerName = body.customerName
+                products = body.products.map { it.toMutableList() }
+                customerEmail = body.customerEmail
+                integration = body.integration
+                manual = body.manual
+                minutesToExpire = body.minutesToExpire
+                redirectUri = body.redirectUri
+                sandbox = body.sandbox
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             fun customerId(customerId: String) = customerId(JsonField.of(customerId))
 
-            fun customerId(customerId: JsonField<String>) =
-                apply {
-                    this.customerId = customerId
-                }
+            fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
 
             fun customerName(customerName: String) = customerName(JsonField.of(customerName))
 
-            fun customerName(customerName: JsonField<String>) =
-                apply {
-                    this.customerName = customerName
-                }
+            fun customerName(customerName: JsonField<String>) = apply {
+                this.customerName = customerName
+            }
 
             fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
 
-            fun products(products: JsonField<List<ConnectProducts>>) =
-                apply {
-                    this.products = products.map { it.toMutableList() }
-                }
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
 
-            fun addProduct(product: ConnectProducts) =
-                apply {
-                    products = (products ?: JsonField.of(mutableListOf())).also {
+            fun addProduct(product: ConnectProducts) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
                         checkKnown("products", it).add(product)
                     }
-                }
+            }
 
-            fun customerEmail(customerEmail: String?) = customerEmail(JsonField.ofNullable(customerEmail))
+            fun customerEmail(customerEmail: String?) =
+                customerEmail(JsonField.ofNullable(customerEmail))
 
-            fun customerEmail(customerEmail: JsonField<String>) =
-                apply {
-                    this.customerEmail = customerEmail
-                }
+            fun customerEmail(customerEmail: JsonField<String>) = apply {
+                this.customerEmail = customerEmail
+            }
 
-            fun integration(integration: Integration?) = integration(JsonField.ofNullable(integration))
+            fun integration(integration: Integration?) =
+                integration(JsonField.ofNullable(integration))
 
-            fun integration(integration: JsonField<Integration>) =
-                apply {
-                    this.integration = integration
-                }
+            fun integration(integration: JsonField<Integration>) = apply {
+                this.integration = integration
+            }
 
             fun manual(manual: Boolean?) = manual(JsonField.ofNullable(manual))
 
             fun manual(manual: Boolean) = manual(manual as Boolean?)
 
-            fun manual(manual: JsonField<Boolean>) =
-                apply {
-                    this.manual = manual
-                }
+            fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Double?) = minutesToExpire(JsonField.ofNullable(minutesToExpire))
+            fun minutesToExpire(minutesToExpire: Double?) =
+                minutesToExpire(JsonField.ofNullable(minutesToExpire))
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
+            fun minutesToExpire(minutesToExpire: Double) =
+                minutesToExpire(minutesToExpire as Double?)
 
             /**
              * The number of minutes until the session expires (defaults to 43,200, which is 30
              * days)
              */
-            fun minutesToExpire(minutesToExpire: JsonField<Double>) =
-                apply {
-                    this.minutesToExpire = minutesToExpire
-                }
+            fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
+                this.minutesToExpire = minutesToExpire
+            }
 
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
-            fun redirectUri(redirectUri: JsonField<String>) =
-                apply {
-                    this.redirectUri = redirectUri
-                }
+            fun redirectUri(redirectUri: JsonField<String>) = apply {
+                this.redirectUri = redirectUri
+            }
 
             fun sandbox(sandbox: Sandbox?) = sandbox(JsonField.ofNullable(sandbox))
 
-            fun sandbox(sandbox: JsonField<Sandbox>) =
-                apply {
-                    this.sandbox = sandbox
-                }
+            fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Body =
                 Body(
-                  checkRequired(
-                    "customerId", customerId
-                  ),
-                  checkRequired(
-                    "customerName", customerName
-                  ),
-                  checkRequired(
-                    "products", products
-                  ).map { it.toImmutable() },
-                  customerEmail,
-                  integration,
-                  manual,
-                  minutesToExpire,
-                  redirectUri,
-                  sandbox,
-                  additionalProperties.toImmutable(),
+                    checkRequired("customerId", customerId),
+                    checkRequired("customerName", customerName),
+                    checkRequired("products", products).map { it.toImmutable() },
+                    customerEmail,
+                    integration,
+                    manual,
+                    minutesToExpire,
+                    redirectUri,
+                    sandbox,
+                    additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Body && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && customerId == other.customerId && customerName == other.customerName && products == other.products && customerEmail == other.customerEmail && integration == other.integration && manual == other.manual && minutesToExpire == other.minutesToExpire && redirectUri == other.redirectUri && sandbox == other.sandbox && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -380,7 +361,8 @@ class ConnectSessionNewParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Body{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Body{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -388,11 +370,9 @@ class ConnectSessionNewParams private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [ConnectSessionNewParams].
+         * Returns a mutable builder for constructing an instance of [ConnectSessionNewParams].
          *
          * The following fields are required:
-         *
          * ```kotlin
          * .customerId()
          * .customerName()
@@ -410,299 +390,211 @@ class ConnectSessionNewParams private constructor(
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
-        internal fun from(connectSessionNewParams: ConnectSessionNewParams) =
-            apply {
-                body = connectSessionNewParams.body.toBuilder()
-                additionalHeaders = connectSessionNewParams.additionalHeaders.toBuilder()
-                additionalQueryParams = connectSessionNewParams.additionalQueryParams.toBuilder()
-            }
+        internal fun from(connectSessionNewParams: ConnectSessionNewParams) = apply {
+            body = connectSessionNewParams.body.toBuilder()
+            additionalHeaders = connectSessionNewParams.additionalHeaders.toBuilder()
+            additionalQueryParams = connectSessionNewParams.additionalQueryParams.toBuilder()
+        }
 
-        fun customerId(customerId: String) =
-            apply {
-                body.customerId(customerId)
-            }
+        fun customerId(customerId: String) = apply { body.customerId(customerId) }
 
-        fun customerId(customerId: JsonField<String>) =
-            apply {
-                body.customerId(customerId)
-            }
+        fun customerId(customerId: JsonField<String>) = apply { body.customerId(customerId) }
 
-        fun customerName(customerName: String) =
-            apply {
-                body.customerName(customerName)
-            }
+        fun customerName(customerName: String) = apply { body.customerName(customerName) }
 
-        fun customerName(customerName: JsonField<String>) =
-            apply {
-                body.customerName(customerName)
-            }
+        fun customerName(customerName: JsonField<String>) = apply {
+            body.customerName(customerName)
+        }
 
-        fun products(products: List<ConnectProducts>) =
-            apply {
-                body.products(products)
-            }
+        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
 
-        fun products(products: JsonField<List<ConnectProducts>>) =
-            apply {
-                body.products(products)
-            }
+        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
-        fun addProduct(product: ConnectProducts) =
-            apply {
-                body.addProduct(product)
-            }
+        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
-        fun customerEmail(customerEmail: String?) =
-            apply {
-                body.customerEmail(customerEmail)
-            }
+        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
 
-        fun customerEmail(customerEmail: JsonField<String>) =
-            apply {
-                body.customerEmail(customerEmail)
-            }
+        fun customerEmail(customerEmail: JsonField<String>) = apply {
+            body.customerEmail(customerEmail)
+        }
 
-        fun integration(integration: Integration?) =
-            apply {
-                body.integration(integration)
-            }
+        fun integration(integration: Integration?) = apply { body.integration(integration) }
 
-        fun integration(integration: JsonField<Integration>) =
-            apply {
-                body.integration(integration)
-            }
+        fun integration(integration: JsonField<Integration>) = apply {
+            body.integration(integration)
+        }
 
-        fun manual(manual: Boolean?) =
-            apply {
-                body.manual(manual)
-            }
+        fun manual(manual: Boolean?) = apply { body.manual(manual) }
 
         fun manual(manual: Boolean) = manual(manual as Boolean?)
 
-        fun manual(manual: JsonField<Boolean>) =
-            apply {
-                body.manual(manual)
-            }
+        fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: Double?) =
-            apply {
-                body.minutesToExpire(minutesToExpire)
-            }
+        fun minutesToExpire(minutesToExpire: Double?) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
         fun minutesToExpire(minutesToExpire: Double) = minutesToExpire(minutesToExpire as Double?)
 
         /**
-         * The number of minutes until the session expires (defaults to 43,200, which is 30
-         * days)
+         * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: JsonField<Double>) =
-            apply {
-                body.minutesToExpire(minutesToExpire)
-            }
+        fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
+            body.minutesToExpire(minutesToExpire)
+        }
 
-        fun redirectUri(redirectUri: String?) =
-            apply {
-                body.redirectUri(redirectUri)
-            }
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
-        fun redirectUri(redirectUri: JsonField<String>) =
-            apply {
-                body.redirectUri(redirectUri)
-            }
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
-        fun sandbox(sandbox: Sandbox?) =
-            apply {
-                body.sandbox(sandbox)
-            }
+        fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
 
-        fun sandbox(sandbox: JsonField<Sandbox>) =
-            apply {
-                body.sandbox(sandbox)
-            }
+        fun sandbox(sandbox: JsonField<Sandbox>) = apply { body.sandbox(sandbox) }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.additionalProperties(additionalBodyProperties)
-            }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
-            apply {
-                body.putAdditionalProperty(
-                  key, value
-                )
-            }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) =
-            apply {
-                body.removeAdditionalProperty(key)
-            }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
-            apply {
-                body.removeAllAdditionalProperties(keys)
-            }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
-        fun additionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.clear()
-                putAllAdditionalHeaders(additionalHeaders)
-            }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
 
-        fun putAdditionalHeader(name: String, value: String) =
-            apply {
-                additionalHeaders.put(name, value)
-            }
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.put(name, values)
-            }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.putAll(additionalHeaders)
-            }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
 
-        fun replaceAdditionalHeaders(name: String, value: String) =
-            apply {
-                additionalHeaders.replace(name, value)
-            }
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
-            apply {
-                additionalHeaders.replace(name, values)
-            }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalHeaders.replaceAll(additionalHeaders)
-            }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
 
-        fun removeAdditionalHeaders(name: String) =
-            apply {
-                additionalHeaders.remove(name)
-            }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) =
-            apply {
-                additionalHeaders.removeAll(names)
-            }
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
-            apply {
-                this.additionalQueryParams.clear()
-                putAllAdditionalQueryParams(additionalQueryParams)
-            }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
 
-        fun putAdditionalQueryParam(key: String, value: String) =
-            apply {
-                additionalQueryParams.put(key, value)
-            }
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.put(key, values)
-            }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.putAll(additionalQueryParams)
-            }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) =
-            apply {
-                additionalQueryParams.replace(key, value)
-            }
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
-            apply {
-                additionalQueryParams.replace(key, values)
-            }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
-            apply {
-                this.additionalQueryParams.replaceAll(additionalQueryParams)
-            }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) =
-            apply {
-                additionalQueryParams.remove(key)
-            }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) =
-            apply {
-                additionalQueryParams.removeAll(keys)
-            }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
 
         fun build(): ConnectSessionNewParams =
             ConnectSessionNewParams(
-              body.build(),
-              additionalHeaders.build(),
-              additionalQueryParams.build(),
+                body.build(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
             )
     }
 
     /** The Finch products that can be requested during the Connect flow. */
-    class ConnectProducts @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -738,16 +630,12 @@ class ConnectSessionNewParams private constructor(
         }
 
         /**
-         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN]
-         * member.
+         * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
          *
-         * An instance of [ConnectProducts] can contain an unknown value in a couple of
-         * cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -760,18 +648,18 @@ class ConnectSessionNewParams private constructor(
             BENEFITS,
             SSN,
             /**
-             * An enum member indicating that [ConnectProducts] was instantiated with an
-             * unknown value.
+             * An enum member indicating that [ConnectProducts] was instantiated with an unknown
+             * value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -789,11 +677,10 @@ class ConnectSessionNewParams private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -811,20 +698,21 @@ class ConnectSessionNewParams private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+        fun asString(): String =
+            _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
+            return /* spotless:off */ other is ConnectProducts && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -833,11 +721,17 @@ class ConnectSessionNewParams private constructor(
     }
 
     @NoAutoDetect
-    class Integration @JsonCreator private constructor(
-        @JsonProperty("auth_method") @ExcludeMissing private val authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-        @JsonProperty("provider") @ExcludeMissing private val provider: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-
+    class Integration
+    @JsonCreator
+    private constructor(
+        @JsonProperty("auth_method")
+        @ExcludeMissing
+        private val authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+        @JsonProperty("provider")
+        @ExcludeMissing
+        private val provider: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun authMethod(): AuthMethod? = authMethod.getNullable("auth_method")
@@ -848,9 +742,7 @@ class ConnectSessionNewParams private constructor(
         @ExcludeMissing
         fun _authMethod(): JsonField<AuthMethod> = authMethod
 
-        @JsonProperty("provider")
-        @ExcludeMissing
-        fun _provider(): JsonField<String> = provider
+        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -858,16 +750,15 @@ class ConnectSessionNewParams private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Integration =
-            apply {
-                if (validated) {
-                  return@apply
-                }
-
-                authMethod()
-                provider()
-                validated = true
+        fun validate(): Integration = apply {
+            if (validated) {
+                return@apply
             }
+
+            authMethod()
+            provider()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -884,76 +775,57 @@ class ConnectSessionNewParams private constructor(
             private var provider: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(integration: Integration) =
-                apply {
-                    authMethod = integration.authMethod
-                    provider = integration.provider
-                    additionalProperties = integration.additionalProperties.toMutableMap()
-                }
+            internal fun from(integration: Integration) = apply {
+                authMethod = integration.authMethod
+                provider = integration.provider
+                additionalProperties = integration.additionalProperties.toMutableMap()
+            }
 
             fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
 
-            fun authMethod(authMethod: JsonField<AuthMethod>) =
-                apply {
-                    this.authMethod = authMethod
-                }
+            fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
+                this.authMethod = authMethod
+            }
 
             fun provider(provider: String?) = provider(JsonField.ofNullable(provider))
 
-            fun provider(provider: JsonField<String>) =
-                apply {
-                    this.provider = provider
-                }
+            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) =
-                apply {
-                    additionalProperties.put(key, value)
-                }
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-            fun removeAdditionalProperty(key: String) =
-                apply {
-                    additionalProperties.remove(key)
-                }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) =
-                apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
             fun build(): Integration =
-                Integration(
-                  authMethod,
-                  provider,
-                  additionalProperties.toImmutable(),
-                )
+                Integration(authMethod, provider, additionalProperties.toImmutable())
         }
 
-        class AuthMethod @JsonCreator private constructor(
-            private val value: JsonField<String>,
-
-        ) : Enum {
+        class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that
-             * doesn't match any known member, and you want to know that value. For example, if
-             * the SDK is on an older version than the API, then the API may respond with new
-             * members that the SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -980,11 +852,9 @@ class ConnectSessionNewParams private constructor(
              * An enum containing [AuthMethod]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [AuthMethod] can contain an unknown value in a couple of cases:
-             *
-             * - It was deserialized from data that doesn't match any known member. For
-             *   example, if the SDK is on an older version than the API, then the API may
-             *   respond with new members that the SDK is unaware of.
-             *
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1003,8 +873,8 @@ class ConnectSessionNewParams private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if
-             * you want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -1021,8 +891,8 @@ class ConnectSessionNewParams private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws FinchInvalidDataException if this class instance's value is a not a
-             * known member.
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
              */
             fun known(): Known =
                 when (this) {
@@ -1039,17 +909,18 @@ class ConnectSessionNewParams private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws FinchInvalidDataException if this class instance's value does not have
-             * the expected primitive type.
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
              */
-            fun asString(): String = _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return /* spotless:off */ other is AuthMethod && value == other.value /* spotless:on */
+                return /* spotless:off */ other is AuthMethod && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1058,11 +929,11 @@ class ConnectSessionNewParams private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Integration && authMethod == other.authMethod && provider == other.provider && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Integration && authMethod == other.authMethod && provider == other.provider && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -1071,24 +942,21 @@ class ConnectSessionNewParams private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() = "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
     }
 
-    class Sandbox @JsonCreator private constructor(
-        private val value: JsonField<String>,
-
-    ) : Enum {
+    class Sandbox @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that
-         * doesn't match any known member, and you want to know that value. For example, if
-         * the SDK is on an older version than the API, then the API may respond with new
-         * members that the SDK is unaware of.
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -1109,11 +977,9 @@ class ConnectSessionNewParams private constructor(
          * An enum containing [Sandbox]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Sandbox] can contain an unknown value in a couple of cases:
-         *
-         * - It was deserialized from data that doesn't match any known member. For
-         *   example, if the SDK is on an older version than the API, then the API may
-         *   respond with new members that the SDK is unaware of.
-         *
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1124,11 +990,11 @@ class ConnectSessionNewParams private constructor(
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or
-         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if
-         * you want to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -1140,11 +1006,10 @@ class ConnectSessionNewParams private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and
-         * don't want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
          *
-         * @throws FinchInvalidDataException if this class instance's value is a not a
-         * known member.
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
          */
         fun known(): Known =
             when (this) {
@@ -1156,20 +1021,21 @@ class ConnectSessionNewParams private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for
-         * debugging and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
          *
-         * @throws FinchInvalidDataException if this class instance's value does not have
-         * the expected primitive type.
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
          */
-        fun asString(): String = _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+        fun asString(): String =
+            _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return /* spotless:off */ other is Sandbox && value == other.value /* spotless:on */
+            return /* spotless:off */ other is Sandbox && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -1178,14 +1044,15 @@ class ConnectSessionNewParams private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return /* spotless:off */ other is ConnectSessionNewParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ConnectSessionNewParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() = "ConnectSessionNewParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() =
+        "ConnectSessionNewParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

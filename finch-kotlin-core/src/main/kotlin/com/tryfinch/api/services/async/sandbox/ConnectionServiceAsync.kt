@@ -12,29 +12,34 @@ import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsync
 interface ConnectionServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     fun accounts(): AccountServiceAsync
 
     /** Create a new connection (new company/provider pair) with a new account */
-    suspend fun create(params: SandboxConnectionCreateParams, requestOptions: RequestOptions = RequestOptions.none()): ConnectionCreateResponse
+    suspend fun create(
+        params: SandboxConnectionCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ConnectionCreateResponse
 
     /**
-     * A view of [ConnectionServiceAsync] that provides access to raw HTTP responses
-     * for each method.
+     * A view of [ConnectionServiceAsync] that provides access to raw HTTP responses for each
+     * method.
      */
     interface WithRawResponse {
 
         fun accounts(): AccountServiceAsync.WithRawResponse
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/connections`, but is otherwise
-         * the same as [ConnectionServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/connections`, but is otherwise the same as
+         * [ConnectionServiceAsync.create].
          */
         @MustBeClosed
-        suspend fun create(params: SandboxConnectionCreateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<ConnectionCreateResponse>
+        suspend fun create(
+            params: SandboxConnectionCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ConnectionCreateResponse>
     }
 }

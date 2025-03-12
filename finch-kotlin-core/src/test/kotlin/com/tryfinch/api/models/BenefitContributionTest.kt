@@ -9,12 +9,10 @@ class BenefitContributionTest {
 
     @Test
     fun createBenefitContribution() {
-      val benefitContribution = BenefitContribution.builder()
-          .amount(0L)
-          .type(BenefitContribution.Type.FIXED)
-          .build()
-      assertThat(benefitContribution).isNotNull
-      assertThat(benefitContribution.amount()).isEqualTo(0L)
-      assertThat(benefitContribution.type()).isEqualTo(BenefitContribution.Type.FIXED)
+        val benefitContribution =
+            BenefitContribution.builder().amount(0L).type(BenefitContribution.Type.FIXED).build()
+        assertThat(benefitContribution).isNotNull
+        assertThat(benefitContribution.amount()).isEqualTo(0L)
+        assertThat(benefitContribution.type()).isEqualTo(BenefitContribution.Type.FIXED)
     }
 }

@@ -18,50 +18,53 @@ import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.IndividualUpdateResponse
 import com.tryfinch.api.models.SandboxIndividualUpdateParams
 
-class IndividualServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    IndividualServiceAsync {
 
-) : IndividualServiceAsync {
-
-    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: IndividualServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
-    override suspend fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): IndividualUpdateResponse =
+    override suspend fun update(
+        params: SandboxIndividualUpdateParams,
+        requestOptions: RequestOptions,
+    ): IndividualUpdateResponse =
         // put /sandbox/individual/{individual_id}
         withRawResponse().update(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : IndividualServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val updateHandler: Handler<IndividualUpdateResponse> = jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val updateHandler: Handler<IndividualUpdateResponse> =
+            jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override suspend fun update(params: SandboxIndividualUpdateParams, requestOptions: RequestOptions): HttpResponseFor<IndividualUpdateResponse> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.PUT)
-            .addPathSegments("sandbox", "individual", params.getPathParam(0))
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          val response = clientOptions.httpClient.executeAsync(
-            request, requestOptions
-          )
-          return response.parseable {
-              response.use {
-                  updateHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          }
+        override suspend fun update(
+            params: SandboxIndividualUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<IndividualUpdateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "individual", params.getPathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

@@ -4,7 +4,6 @@ package com.tryfinch.api.services.async
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
-import com.tryfinch.api.models.ProviderListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -13,14 +12,15 @@ class ProviderServiceAsyncTest {
 
     @Test
     suspend fun list() {
-      val client = FinchOkHttpClientAsync.builder()
-          .baseUrl(TestServerExtension.BASE_URL)
-          .accessToken("My Access Token")
-          .build()
-      val providerServiceAsync = client.providers()
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val providerServiceAsync = client.providers()
 
-      val page = providerServiceAsync.list()
+        val page = providerServiceAsync.list()
 
-      page.response().validate()
+        page.response().validate()
     }
 }

@@ -11,32 +11,38 @@ import com.tryfinch.api.models.SandboxDirectoryCreateParams
 interface DirectoryServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Add new individuals to a sandbox company */
-    suspend fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): List<JsonValue>
+    suspend fun create(
+        params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<JsonValue>
 
     /** @see [create] */
-    suspend fun create(requestOptions: RequestOptions): List<JsonValue> = create(SandboxDirectoryCreateParams.none(), requestOptions)
+    suspend fun create(requestOptions: RequestOptions): List<JsonValue> =
+        create(SandboxDirectoryCreateParams.none(), requestOptions)
 
     /**
-     * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the
-         * same as [DirectoryServiceAsync.create].
+         * Returns a raw HTTP response for `post /sandbox/directory`, but is otherwise the same as
+         * [DirectoryServiceAsync.create].
          */
         @MustBeClosed
-        suspend fun create(params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<List<JsonValue>>
+        suspend fun create(
+            params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<JsonValue>>
 
         /** @see [create] */
         @MustBeClosed
-        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> = create(SandboxDirectoryCreateParams.none(), requestOptions)
+        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> =
+            create(SandboxDirectoryCreateParams.none(), requestOptions)
     }
 }
