@@ -9,17 +9,16 @@ class IncomeTest {
 
     @Test
     fun createIncome() {
-        val income =
-            Income.builder()
-                .amount(0L)
-                .currency("currency")
-                .effectiveDate("effective_date")
-                .unit(Income.Unit.YEARLY)
-                .build()
-        assertThat(income).isNotNull
-        assertThat(income.amount()).isEqualTo(0L)
-        assertThat(income.currency()).isEqualTo("currency")
-        assertThat(income.effectiveDate()).isEqualTo("effective_date")
-        assertThat(income.unit()).isEqualTo(Income.Unit.YEARLY)
+      val income = Income.builder()
+          .amount(0L)
+          .currency("currency")
+          .effectiveDate("effective_date")
+          .unit(Income.Unit.YEARLY)
+          .build()
+      assertThat(income).isNotNull
+      assertThat(income.amount()).isEqualTo(0L)
+      assertThat(income.currency()).isEqualTo("currency")
+      assertThat(income.effectiveDate()).isEqualTo("effective_date")
+      assertThat(income.unit()).isEqualTo(Income.Unit.YEARLY)
     }
 }

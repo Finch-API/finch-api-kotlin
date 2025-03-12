@@ -12,59 +12,42 @@ import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 interface ConfigurationServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Get configurations for sandbox jobs */
-    suspend fun retrieve(
-        params: SandboxJobConfigurationRetrieveParams =
-            SandboxJobConfigurationRetrieveParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<SandboxJobConfiguration>
+    suspend fun retrieve(params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none(), requestOptions: RequestOptions = RequestOptions.none()): List<SandboxJobConfiguration>
 
     /** @see [retrieve] */
-    suspend fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
-        retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
+    suspend fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> = retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
     /** Update configurations for sandbox jobs */
-    suspend fun update(
-        params: SandboxJobConfigurationUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): SandboxJobConfiguration
+    suspend fun update(params: SandboxJobConfigurationUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): SandboxJobConfiguration
 
     /**
-     * A view of [ConfigurationServiceAsync] that provides access to raw HTTP responses for each
-     * method.
+     * A view of [ConfigurationServiceAsync] that provides access to raw HTTP responses
+     * for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the
-         * same as [ConfigurationServiceAsync.retrieve].
+         * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is
+         * otherwise the same as [ConfigurationServiceAsync.retrieve].
          */
         @MustBeClosed
-        suspend fun retrieve(
-            params: SandboxJobConfigurationRetrieveParams =
-                SandboxJobConfigurationRetrieveParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<SandboxJobConfiguration>>
+        suspend fun retrieve(params: SandboxJobConfigurationRetrieveParams = SandboxJobConfigurationRetrieveParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<List<SandboxJobConfiguration>>
 
         /** @see [retrieve] */
         @MustBeClosed
-        suspend fun retrieve(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<List<SandboxJobConfiguration>> =
-            retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
+        suspend fun retrieve(requestOptions: RequestOptions): HttpResponseFor<List<SandboxJobConfiguration>> = retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is otherwise the
-         * same as [ConfigurationServiceAsync.update].
+         * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is
+         * otherwise the same as [ConfigurationServiceAsync.update].
          */
         @MustBeClosed
-        suspend fun update(
-            params: SandboxJobConfigurationUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SandboxJobConfiguration>
+        suspend fun update(params: SandboxJobConfigurationUpdateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<SandboxJobConfiguration>
     }
 }

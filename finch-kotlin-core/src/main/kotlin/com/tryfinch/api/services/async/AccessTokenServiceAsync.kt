@@ -11,19 +11,17 @@ import com.tryfinch.api.models.CreateAccessTokenResponse
 interface AccessTokenServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Exchange the authorization code for an access token */
-    suspend fun create(
-        params: AccessTokenCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CreateAccessTokenResponse
+    suspend fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CreateAccessTokenResponse
 
     /**
-     * A view of [AccessTokenServiceAsync] that provides access to raw HTTP responses for each
-     * method.
+     * A view of [AccessTokenServiceAsync] that provides access to raw HTTP responses
+     * for each method.
      */
     interface WithRawResponse {
 
@@ -32,9 +30,6 @@ interface AccessTokenServiceAsync {
          * [AccessTokenServiceAsync.create].
          */
         @MustBeClosed
-        suspend fun create(
-            params: AccessTokenCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<CreateAccessTokenResponse>
+        suspend fun create(params: AccessTokenCreateParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<CreateAccessTokenResponse>
     }
 }

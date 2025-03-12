@@ -11,22 +11,20 @@ import com.tryfinch.api.models.ProviderListParams
 interface ProviderServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Return details on all available payroll and HR systems. */
-    suspend fun list(
-        params: ProviderListParams = ProviderListParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): ProviderListPageAsync
+    suspend fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): ProviderListPageAsync
 
     /** @see [list] */
-    suspend fun list(requestOptions: RequestOptions): ProviderListPageAsync =
-        list(ProviderListParams.none(), requestOptions)
+    suspend fun list(requestOptions: RequestOptions): ProviderListPageAsync = list(ProviderListParams.none(), requestOptions)
 
     /**
-     * A view of [ProviderServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [ProviderServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
@@ -35,14 +33,10 @@ interface ProviderServiceAsync {
          * [ProviderServiceAsync.list].
          */
         @MustBeClosed
-        suspend fun list(
-            params: ProviderListParams = ProviderListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ProviderListPageAsync>
+        suspend fun list(params: ProviderListParams = ProviderListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<ProviderListPageAsync>
 
         /** @see [list] */
         @MustBeClosed
-        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPageAsync> =
-            list(ProviderListParams.none(), requestOptions)
+        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPageAsync> = list(ProviderListParams.none(), requestOptions)
     }
 }

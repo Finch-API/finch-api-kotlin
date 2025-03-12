@@ -13,20 +13,16 @@ class JobServiceAsyncTest {
 
     @Test
     suspend fun create() {
-        val client =
-            FinchOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val jobServiceAsync = client.sandbox().jobs()
+      val client = FinchOkHttpClientAsync.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val jobServiceAsync = client.sandbox().jobs()
 
-        val job =
-            jobServiceAsync.create(
-                SandboxJobCreateParams.builder()
-                    .type(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
-                    .build()
-            )
+      val job = jobServiceAsync.create(SandboxJobCreateParams.builder()
+          .type(SandboxJobCreateParams.Type.DATA_SYNC_ALL)
+          .build())
 
-        job.validate()
+      job.validate()
     }
 }

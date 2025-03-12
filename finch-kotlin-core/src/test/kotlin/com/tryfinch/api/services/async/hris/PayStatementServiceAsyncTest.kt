@@ -13,24 +13,18 @@ class PayStatementServiceAsyncTest {
 
     @Test
     suspend fun retrieveMany() {
-        val client =
-            FinchOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val payStatementServiceAsync = client.hris().payStatements()
+      val client = FinchOkHttpClientAsync.builder()
+          .baseUrl(TestServerExtension.BASE_URL)
+          .accessToken("My Access Token")
+          .build()
+      val payStatementServiceAsync = client.hris().payStatements()
 
-        val page =
-            payStatementServiceAsync.retrieveMany(
-                HrisPayStatementRetrieveManyParams.builder()
-                    .addRequest(
-                        HrisPayStatementRetrieveManyParams.Request.builder()
-                            .paymentId("string")
-                            .build()
-                    )
-                    .build()
-            )
+      val page = payStatementServiceAsync.retrieveMany(HrisPayStatementRetrieveManyParams.builder()
+          .addRequest(HrisPayStatementRetrieveManyParams.Request.builder()
+              .paymentId("string")
+              .build())
+          .build())
 
-        page.response().validate()
+      page.response().validate()
     }
 }

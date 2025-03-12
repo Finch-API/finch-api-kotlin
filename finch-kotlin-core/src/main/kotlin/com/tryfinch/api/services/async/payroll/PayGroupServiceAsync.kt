@@ -13,56 +13,42 @@ import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 interface PayGroupServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Read information from a single pay group */
-    suspend fun retrieve(
-        params: PayrollPayGroupRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): PayGroupRetrieveResponse
+    suspend fun retrieve(params: PayrollPayGroupRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): PayGroupRetrieveResponse
 
     /** Read company pay groups and frequencies */
-    suspend fun list(
-        params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): PayrollPayGroupListPageAsync
+    suspend fun list(params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): PayrollPayGroupListPageAsync
 
     /** @see [list] */
-    suspend fun list(requestOptions: RequestOptions): PayrollPayGroupListPageAsync =
-        list(PayrollPayGroupListParams.none(), requestOptions)
+    suspend fun list(requestOptions: RequestOptions): PayrollPayGroupListPageAsync = list(PayrollPayGroupListParams.none(), requestOptions)
 
     /**
-     * A view of [PayGroupServiceAsync] that provides access to raw HTTP responses for each method.
+     * A view of [PayGroupServiceAsync] that provides access to raw HTTP responses for
+     * each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `get /employer/pay-groups/{pay_group_id}`, but is
-         * otherwise the same as [PayGroupServiceAsync.retrieve].
+         * Returns a raw HTTP response for `get /employer/pay-groups/{pay_group_id}`, but
+         * is otherwise the same as [PayGroupServiceAsync.retrieve].
          */
         @MustBeClosed
-        suspend fun retrieve(
-            params: PayrollPayGroupRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PayGroupRetrieveResponse>
+        suspend fun retrieve(params: PayrollPayGroupRetrieveParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<PayGroupRetrieveResponse>
 
         /**
-         * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
-         * [PayGroupServiceAsync.list].
+         * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the
+         * same as [PayGroupServiceAsync.list].
          */
         @MustBeClosed
-        suspend fun list(
-            params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<PayrollPayGroupListPageAsync>
+        suspend fun list(params: PayrollPayGroupListParams = PayrollPayGroupListParams.none(), requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<PayrollPayGroupListPageAsync>
 
         /** @see [list] */
         @MustBeClosed
-        suspend fun list(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<PayrollPayGroupListPageAsync> =
-            list(PayrollPayGroupListParams.none(), requestOptions)
+        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPageAsync> = list(PayrollPayGroupListParams.none(), requestOptions)
     }
 }

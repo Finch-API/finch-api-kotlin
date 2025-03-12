@@ -20,12 +20,12 @@ import com.tryfinch.api.models.SandboxConnectionCreateParams
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsync
 import com.tryfinch.api.services.async.sandbox.connections.AccountServiceAsyncImpl
 
-class ConnectionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    ConnectionServiceAsync {
+class ConnectionServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: ConnectionServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : ConnectionServiceAsync {
+
+    private val withRawResponse: ConnectionServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     private val accounts: AccountServiceAsync by lazy { AccountServiceAsyncImpl(clientOptions) }
 
@@ -33,50 +33,45 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun accounts(): AccountServiceAsync = accounts
 
-    override suspend fun create(
-        params: SandboxConnectionCreateParams,
-        requestOptions: RequestOptions,
-    ): ConnectionCreateResponse =
+    override suspend fun create(params: SandboxConnectionCreateParams, requestOptions: RequestOptions): ConnectionCreateResponse =
         // post /sandbox/connections
         withRawResponse().create(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        ConnectionServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : ConnectionServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val accounts: AccountServiceAsync.WithRawResponse by lazy {
-            AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
+        private val accounts: AccountServiceAsync.WithRawResponse by lazy { AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
 
         override fun accounts(): AccountServiceAsync.WithRawResponse = accounts
 
-        private val createHandler: Handler<ConnectionCreateResponse> =
-            jsonHandler<ConnectionCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val createHandler: Handler<ConnectionCreateResponse> = jsonHandler<ConnectionCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override suspend fun create(
-            params: SandboxConnectionCreateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<ConnectionCreateResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("sandbox", "connections")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override suspend fun create(params: SandboxConnectionCreateParams, requestOptions: RequestOptions): HttpResponseFor<ConnectionCreateResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("sandbox", "connections")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.executeAsync(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  createHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

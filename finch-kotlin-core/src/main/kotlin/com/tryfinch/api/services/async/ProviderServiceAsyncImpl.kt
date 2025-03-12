@@ -15,61 +15,58 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.Provider
+import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
 
-class ProviderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    ProviderServiceAsync {
+class ProviderServiceAsyncImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: ProviderServiceAsync.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : ProviderServiceAsync {
+
+    private val withRawResponse: ProviderServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): ProviderServiceAsync.WithRawResponse = withRawResponse
 
-    override suspend fun list(
-        params: ProviderListParams,
-        requestOptions: RequestOptions,
-    ): ProviderListPageAsync =
+    override suspend fun list(params: ProviderListParams, requestOptions: RequestOptions): ProviderListPageAsync =
         // get /providers
         withRawResponse().list(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        ProviderServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : ProviderServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<List<Provider>> =
-            jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<Provider>> = jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override suspend fun list(
-            params: ProviderListParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<ProviderListPageAsync> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .addPathSegments("providers")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.forEach { it.validate() }
-                        }
-                    }
-                    .let {
-                        ProviderListPageAsync.of(
-                            ProviderServiceAsyncImpl(clientOptions),
-                            params,
-                            ProviderListPageAsync.Response.builder().items(it).build(),
-                        )
-                    }
-            }
+        override suspend fun list(params: ProviderListParams, requestOptions: RequestOptions): HttpResponseFor<ProviderListPageAsync> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.GET)
+            .addPathSegments("providers")
+            .build()
+            .prepareAsync(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.executeAsync(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  listHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.forEach { it.validate() }
+                  }
+              }
+              .let {
+                  ProviderListPageAsync.of(ProviderServiceAsyncImpl(clientOptions), params, ProviderListPageAsync.Response.builder()
+                      .items(it)
+                      .build())
+              }
+          }
         }
     }
 }
