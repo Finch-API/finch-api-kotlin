@@ -37,35 +37,66 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The income amount in cents. */
+    /**
+     * The income amount in cents.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun amount(): Long? = amount.getNullable("amount")
 
-    /** The currency code. */
+    /**
+     * The currency code.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun currency(): String? = currency.getNullable("currency")
 
-    /** The date the income amount went into effect. */
+    /**
+     * The date the income amount went into effect.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun effectiveDate(): String? = effectiveDate.getNullable("effective_date")
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
      * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun unit(): Unit? = unit.getNullable("unit")
 
-    /** The income amount in cents. */
+    /**
+     * Returns the raw JSON value of [amount].
+     *
+     * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-    /** The currency code. */
+    /**
+     * Returns the raw JSON value of [currency].
+     *
+     * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
-    /** The date the income amount went into effect. */
+    /**
+     * Returns the raw JSON value of [effectiveDate].
+     *
+     * Unlike [effectiveDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("effective_date")
     @ExcludeMissing
     fun _effectiveDate(): JsonField<String> = effectiveDate
 
     /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     * Returns the raw JSON value of [unit].
+     *
+     * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
 
@@ -115,23 +146,43 @@ private constructor(
         /** The income amount in cents. */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-        /** The income amount in cents. */
+        /**
+         * Alias for [Builder.amount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun amount(amount: Long) = amount(amount as Long?)
 
-        /** The income amount in cents. */
+        /**
+         * Sets [Builder.amount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
         fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-        /** The currency code. */
+        /**
+         * Sets [Builder.currency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.currency] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: String?) =
             effectiveDate(JsonField.ofNullable(effectiveDate))
 
-        /** The date the income amount went into effect. */
+        /**
+         * Sets [Builder.effectiveDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.effectiveDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
             this.effectiveDate = effectiveDate
         }
@@ -143,8 +194,10 @@ private constructor(
         fun unit(unit: Unit?) = unit(JsonField.ofNullable(unit))
 
         /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         * Sets [Builder.unit] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.unit] with a well-typed [Unit] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
