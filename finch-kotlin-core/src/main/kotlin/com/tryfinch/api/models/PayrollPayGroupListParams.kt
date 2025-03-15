@@ -42,6 +42,9 @@ private constructor(
 
         fun none(): PayrollPayGroupListParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
+         */
         fun builder() = Builder()
     }
 
@@ -67,6 +70,11 @@ private constructor(
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
         }

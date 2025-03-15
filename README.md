@@ -2,7 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/4.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/5.0.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/5.0.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/5.0.0)
 
 <!-- x-release-please-end -->
 
@@ -10,9 +11,9 @@ The Finch Kotlin SDK provides convenient access to the Finch REST API from appli
 
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found [in the Finch Documentation Center](https://developer.tryfinch.com/).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are also available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/4.2.0).
 
 ## Installation
 
@@ -21,7 +22,7 @@ The REST API documentation can be found [in the Finch Documentation Center](htt
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:4.2.0")
+implementation("com.tryfinch.api:finch-kotlin:5.0.0")
 ```
 
 ### Maven
@@ -30,7 +31,7 @@ implementation("com.tryfinch.api:finch-kotlin:4.2.0")
 <dependency>
     <groupId>com.tryfinch.api</groupId>
     <artifactId>finch-kotlin</artifactId>
-    <version>4.2.0</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -159,6 +160,32 @@ val page: HrisDirectoryListPageAsync = client.hris().directory().list()
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
+
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Kotlin classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```kotlin
+import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.HrisDirectoryListPage
+import com.tryfinch.api.models.HrisDirectoryListParams
+
+val page: HttpResponseFor<HrisDirectoryListPage> = client.hris().directory().withRawResponse().list()
+
+val statusCode: Int = page.statusCode()
+val headers: Headers = page.headers()
+```
+
+You can still deserialize the response into an instance of a Kotlin class if needed:
+
+```kotlin
+import com.tryfinch.api.models.HrisDirectoryListPage
+
+val parsedPage: HrisDirectoryListPage = page.parse()
+```
 
 ## Error handling
 
@@ -352,14 +379,49 @@ val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
     .build()
 ```
 
-These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods. You can also set undocumented parameters on nested headers, query params, or body classes using the `putAdditionalProperty` method. These properties can be accessed on the built object later using the `_additionalProperties()` method.
+These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](finch-kotlin-core/src/main/kotlin/com/tryfinch/api/core/JsonValue.kt) object to its setter:
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](finch-kotlin-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) object to its setter:
 
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
+```
+
+The most straightforward way to create a [`JsonValue`](finch-kotlin-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) is using its `from(...)` method:
+
+```kotlin
+import com.tryfinch.api.core.JsonValue
+
+// Create primitive JSON values
+val nullValue: JsonValue = JsonValue.from(null)
+val booleanValue: JsonValue = JsonValue.from(true)
+val numberValue: JsonValue = JsonValue.from(42)
+val stringValue: JsonValue = JsonValue.from("Hello World!")
+
+// Create a JSON array value equivalent to `["Hello", "World"]`
+val arrayValue: JsonValue = JsonValue.from(listOf(
+  "Hello", "World"
+))
+
+// Create a JSON object value equivalent to `{ "a": 1, "b": 2 }`
+val objectValue: JsonValue = JsonValue.from(mapOf(
+  "a" to 1, "b" to 2
+))
+
+// Create an arbitrarily nested JSON equivalent to:
+// {
+//   "a": [1, 2],
+//   "b": [3, 4]
+// }
+val complexValue: JsonValue = JsonValue.from(mapOf(
+  "a" to listOf(
+    1, 2
+  ), "b" to listOf(
+    3, 4
+  )
+))
 ```
 
 ### Response properties

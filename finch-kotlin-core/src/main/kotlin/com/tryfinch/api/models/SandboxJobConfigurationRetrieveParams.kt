@@ -29,6 +29,10 @@ private constructor(
 
         fun none(): SandboxJobConfigurationRetrieveParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [SandboxJobConfigurationRetrieveParams].
+         */
         fun builder() = Builder()
     }
 

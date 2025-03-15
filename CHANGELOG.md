@@ -1,5 +1,49 @@
 # Changelog
 
+## 5.0.0 (2025-03-15)
+
+Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.2.0...v5.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor multipart formdata impl ([#400](https://github.com/Finch-API/finch-api-kotlin/issues/400))
+
+### Features
+
+* **api:** manual updates ([#403](https://github.com/Finch-API/finch-api-kotlin/issues/403)) ([16d8677](https://github.com/Finch-API/finch-api-kotlin/commit/16d86775312af44b4e3f32d984141a06d5b506bd))
+* **client:** accept `InputStream` and `Path` for file params ([#405](https://github.com/Finch-API/finch-api-kotlin/issues/405)) ([27de5e1](https://github.com/Finch-API/finch-api-kotlin/commit/27de5e15abfc8a9ed7f4642e6b5bbdd6240c54e2))
+* **client:** allow configuring timeouts granularly ([#397](https://github.com/Finch-API/finch-api-kotlin/issues/397)) ([dd98413](https://github.com/Finch-API/finch-api-kotlin/commit/dd9841357f92a8a41601fa346de5f9e025c79fc7))
+* **client:** detect binary incompatible jackson versions ([#406](https://github.com/Finch-API/finch-api-kotlin/issues/406)) ([80916e9](https://github.com/Finch-API/finch-api-kotlin/commit/80916e90f29b2cc87f50d4ac1969d035b53c6980))
+* **client:** support raw response access ([#398](https://github.com/Finch-API/finch-api-kotlin/issues/398)) ([9cca969](https://github.com/Finch-API/finch-api-kotlin/commit/9cca969986582b11a810c356b0f57809928247c2))
+* generate and publish docs ([#407](https://github.com/Finch-API/finch-api-kotlin/issues/407)) ([e256f55](https://github.com/Finch-API/finch-api-kotlin/commit/e256f556908531b4102b38e85ddef40753a32bf9))
+
+
+### Bug Fixes
+
+* compilation error ([639fac5](https://github.com/Finch-API/finch-api-kotlin/commit/639fac536177f907f3061e5202bcd9d4d426f8ae))
+* unused modifiedParams ([bb5c2d4](https://github.com/Finch-API/finch-api-kotlin/commit/bb5c2d4f791b0247ad54d473bf1ab089b43913fd))
+
+
+### Chores
+
+* **client:** refactor multipart formdata impl ([#400](https://github.com/Finch-API/finch-api-kotlin/issues/400)) ([ad325c9](https://github.com/Finch-API/finch-api-kotlin/commit/ad325c95433c8e10a1879b22ea3e20c3c1e30c71))
+* **internal:** add `.kotlin` to `.gitignore` ([#409](https://github.com/Finch-API/finch-api-kotlin/issues/409)) ([bc00379](https://github.com/Finch-API/finch-api-kotlin/commit/bc00379049b13677d643f7ac98b879fd88abd592))
+* **internal:** codegen related update ([df6a44f](https://github.com/Finch-API/finch-api-kotlin/commit/df6a44f8433b212203796c8000663c5e493618f9))
+* **internal:** codegen related update ([#413](https://github.com/Finch-API/finch-api-kotlin/issues/413)) ([9a1d608](https://github.com/Finch-API/finch-api-kotlin/commit/9a1d6088c1427197933d2bf4b7c96ad2de9e06ac))
+* **internal:** codegen related update ([#414](https://github.com/Finch-API/finch-api-kotlin/issues/414)) ([193f840](https://github.com/Finch-API/finch-api-kotlin/commit/193f8402398cf32ea6fb289375201d054e0b64c1))
+* **internal:** reenable warnings as errors ([#410](https://github.com/Finch-API/finch-api-kotlin/issues/410)) ([b358cc6](https://github.com/Finch-API/finch-api-kotlin/commit/b358cc65daa1670b4d2df4e10c0e453eadf37ede))
+* **internal:** refactor `ErrorHandlingTest` ([#396](https://github.com/Finch-API/finch-api-kotlin/issues/396)) ([dbd1c39](https://github.com/Finch-API/finch-api-kotlin/commit/dbd1c3972eb1c9ade4ab210bedef7b6cfeefb883))
+
+
+### Documentation
+
+* add raw response readme documentation ([#401](https://github.com/Finch-API/finch-api-kotlin/issues/401)) ([392a4f5](https://github.com/Finch-API/finch-api-kotlin/commit/392a4f5295ba9054e13cfcf3c40982ff9b818390))
+* deduplicate and refine comments ([#419](https://github.com/Finch-API/finch-api-kotlin/issues/419)) ([323ca8a](https://github.com/Finch-API/finch-api-kotlin/commit/323ca8a79de71d9d1c10028fe2ad7c1fae714304))
+* document `JsonValue` construction in readme ([#412](https://github.com/Finch-API/finch-api-kotlin/issues/412)) ([c4242ea](https://github.com/Finch-API/finch-api-kotlin/commit/c4242eafba90e50a40183ccd6c8a2307e1a0e011))
+* note required fields in `builder` javadoc ([#402](https://github.com/Finch-API/finch-api-kotlin/issues/402)) ([efe6e4a](https://github.com/Finch-API/finch-api-kotlin/commit/efe6e4a95f97c04becba285bcef4d0501ed691d6))
+* revise readme docs about nested params ([#411](https://github.com/Finch-API/finch-api-kotlin/issues/411)) ([f3cd477](https://github.com/Finch-API/finch-api-kotlin/commit/f3cd477d98000d1ece5a1d87d7482b95fb488809))
+* update URLs from stainlessapi.com to stainless.com ([#394](https://github.com/Finch-API/finch-api-kotlin/issues/394)) ([f05fed1](https://github.com/Finch-API/finch-api-kotlin/commit/f05fed18f4dd3ffdfb2fb7b48f7726eef4213fe3))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.1.0...v4.2.0)
