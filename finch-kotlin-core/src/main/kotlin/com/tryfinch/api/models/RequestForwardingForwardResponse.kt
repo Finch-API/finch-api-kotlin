@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -35,6 +36,9 @@ private constructor(
      * A string representation of the HTTP response body of the forwarded request’s response
      * received from the underlying integration’s API. This field may be null in the case where the
      * upstream system’s response is empty.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun data(): String? = data.getNullable("data")
 
@@ -46,30 +50,39 @@ private constructor(
 
     /**
      * An object containing details of your original forwarded request, for your ease of reference.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun request(): Request = request.getRequired("request")
 
     /**
      * The HTTP status code of the forwarded request’s response, exactly received from the
      * underlying integration’s API. This value will be returned as an integer.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun statusCode(): Long = statusCode.getRequired("statusCode")
 
     /**
-     * A string representation of the HTTP response body of the forwarded request’s response
-     * received from the underlying integration’s API. This field may be null in the case where the
-     * upstream system’s response is empty.
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
     /**
-     * An object containing details of your original forwarded request, for your ease of reference.
+     * Returns the raw JSON value of [request].
+     *
+     * Unlike [request], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("request") @ExcludeMissing fun _request(): JsonField<Request> = request
 
     /**
-     * The HTTP status code of the forwarded request’s response, exactly received from the
-     * underlying integration’s API. This value will be returned as an integer.
+     * Returns the raw JSON value of [statusCode].
+     *
+     * Unlike [statusCode], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("statusCode") @ExcludeMissing fun _statusCode(): JsonField<Long> = statusCode
 
@@ -136,9 +149,10 @@ private constructor(
         fun data(data: String?) = data(JsonField.ofNullable(data))
 
         /**
-         * A string representation of the HTTP response body of the forwarded request’s response
-         * received from the underlying integration’s API. This field may be null in the case where
-         * the upstream system’s response is empty.
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun data(data: JsonField<String>) = apply { this.data = data }
 
@@ -155,8 +169,10 @@ private constructor(
         fun request(request: Request) = request(JsonField.of(request))
 
         /**
-         * An object containing details of your original forwarded request, for your ease of
-         * reference.
+         * Sets [Builder.request] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.request] with a well-typed [Request] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun request(request: JsonField<Request>) = apply { this.request = request }
 
@@ -167,8 +183,10 @@ private constructor(
         fun statusCode(statusCode: Long) = statusCode(JsonField.of(statusCode))
 
         /**
-         * The HTTP status code of the forwarded request’s response, exactly received from the
-         * underlying integration’s API. This value will be returned as an integer.
+         * Sets [Builder.statusCode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.statusCode] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun statusCode(statusCode: JsonField<Long>) = apply { this.statusCode = statusCode }
 
@@ -227,6 +245,9 @@ private constructor(
          * The body that was specified for the forwarded request. If a value was not specified in
          * the original request, this value will be returned as null ; otherwise, this value will
          * always be returned as a string.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun data(): String? = data.getNullable("data")
 
@@ -239,6 +260,9 @@ private constructor(
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
          * , `POST` , `PUT` , `DELETE` , and `PATCH`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun method(): String = method.getRequired("method")
 
@@ -248,23 +272,33 @@ private constructor(
          */
         @JsonProperty("params") @ExcludeMissing fun _params(): JsonValue = params
 
-        /** The URL route path that was specified for the forwarded request. */
+        /**
+         * The URL route path that was specified for the forwarded request.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun route(): String = route.getRequired("route")
 
         /**
-         * The body that was specified for the forwarded request. If a value was not specified in
-         * the original request, this value will be returned as null ; otherwise, this value will
-         * always be returned as a string.
+         * Returns the raw JSON value of [data].
+         *
+         * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
         /**
-         * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
-         * , `POST` , `PUT` , `DELETE` , and `PATCH`.
+         * Returns the raw JSON value of [method].
+         *
+         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
 
-        /** The URL route path that was specified for the forwarded request. */
+        /**
+         * Returns the raw JSON value of [route].
+         *
+         * Unlike [route], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("route") @ExcludeMissing fun _route(): JsonField<String> = route
 
         @JsonAnyGetter
@@ -330,9 +364,11 @@ private constructor(
             fun data(data: String?) = data(JsonField.ofNullable(data))
 
             /**
-             * The body that was specified for the forwarded request. If a value was not specified
-             * in the original request, this value will be returned as null ; otherwise, this value
-             * will always be returned as a string.
+             * Sets [Builder.data] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.data] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun data(data: JsonField<String>) = apply { this.data = data }
 
@@ -349,8 +385,11 @@ private constructor(
             fun method(method: String) = method(JsonField.of(method))
 
             /**
-             * The HTTP method that was specified for the forwarded request. Valid values include:
-             * `GET` , `POST` , `PUT` , `DELETE` , and `PATCH`.
+             * Sets [Builder.method] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.method] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun method(method: JsonField<String>) = apply { this.method = method }
 
@@ -363,7 +402,13 @@ private constructor(
             /** The URL route path that was specified for the forwarded request. */
             fun route(route: String) = route(JsonField.of(route))
 
-            /** The URL route path that was specified for the forwarded request. */
+            /**
+             * Sets [Builder.route] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.route] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun route(route: JsonField<String>) = apply { this.route = route }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

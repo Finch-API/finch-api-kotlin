@@ -94,8 +94,9 @@ private constructor(
         }
 
         /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addIndividualId(individualId: String) = apply {
             individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
@@ -104,19 +105,31 @@ private constructor(
         /** Number of documents to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of documents to return (defaults to all) */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
+        /**
+         * Adds a single [Type] to [types].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
