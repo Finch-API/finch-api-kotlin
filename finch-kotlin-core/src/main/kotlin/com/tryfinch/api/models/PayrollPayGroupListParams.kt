@@ -70,6 +70,11 @@ private constructor(
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
         }

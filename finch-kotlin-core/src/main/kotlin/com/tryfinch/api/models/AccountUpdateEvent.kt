@@ -41,25 +41,45 @@ private constructor(
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
      * `connection_id` instead to identify the connection associated with this event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
      * `connection_id` instead to identify the connection associated with this event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
     @Deprecated("deprecated") fun companyId(): String = companyId.getRequired("company_id")
 
-    /** Unique Finch ID of the connection associated with the webhook event. */
+    /**
+     * Unique Finch ID of the connection associated with the webhook event.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun data(): Data? = data.getNullable("data")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun eventType(): EventType? = eventType.getNullable("event_type")
 
     /**
-     * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-     * `connection_id` instead to identify the connection associated with this event.
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("account_id")
@@ -67,21 +87,36 @@ private constructor(
     fun _accountId(): JsonField<String> = accountId
 
     /**
-     * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-     * `connection_id` instead to identify the connection associated with this event.
+     * Returns the raw JSON value of [companyId].
+     *
+     * Unlike [companyId], this method doesn't throw if the JSON field has an unexpected type.
      */
     @Deprecated("deprecated")
     @JsonProperty("company_id")
     @ExcludeMissing
     fun _companyId(): JsonField<String> = companyId
 
-    /** Unique Finch ID of the connection associated with the webhook event. */
+    /**
+     * Returns the raw JSON value of [connectionId].
+     *
+     * Unlike [connectionId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
 
+    /**
+     * Returns the raw JSON value of [data].
+     *
+     * Unlike [data], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Data> = data
 
+    /**
+     * Returns the raw JSON value of [eventType].
+     *
+     * Unlike [eventType], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("event_type") @ExcludeMissing fun _eventType(): JsonField<EventType> = eventType
 
     @JsonAnyGetter
@@ -153,8 +188,11 @@ private constructor(
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
-         * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
-         * `connection_id` instead to identify the connection associated with this event.
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
@@ -167,8 +205,11 @@ private constructor(
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
 
         /**
-         * [DEPRECATED] Unique Finch ID of the company for which data has been updated. Use
-         * `connection_id` instead to identify the connection associated with this event.
+         * Sets [Builder.companyId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         @Deprecated("deprecated")
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
@@ -176,17 +217,36 @@ private constructor(
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
-        /** Unique Finch ID of the connection associated with the webhook event. */
+        /**
+         * Sets [Builder.connectionId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.connectionId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun connectionId(connectionId: JsonField<String>) = apply {
             this.connectionId = connectionId
         }
 
         fun data(data: Data) = data(JsonField.of(data))
 
+        /**
+         * Sets [Builder.data] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.data] with a well-typed [Data] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun data(data: JsonField<Data>) = apply { this.data = data }
 
         fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
 
+        /**
+         * Sets [Builder.eventType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.eventType] with a well-typed [EventType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -233,15 +293,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun authenticationMethod(): AuthenticationMethod =
             authenticationMethod.getRequired("authentication_method")
 
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun status(): ConnectionStatusType = status.getRequired("status")
 
+        /**
+         * Returns the raw JSON value of [authenticationMethod].
+         *
+         * Unlike [authenticationMethod], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("authentication_method")
         @ExcludeMissing
         fun _authenticationMethod(): JsonField<AuthenticationMethod> = authenticationMethod
 
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("status")
         @ExcludeMissing
         fun _status(): JsonField<ConnectionStatusType> = status
@@ -294,6 +373,13 @@ private constructor(
             fun authenticationMethod(authenticationMethod: AuthenticationMethod) =
                 authenticationMethod(JsonField.of(authenticationMethod))
 
+            /**
+             * Sets [Builder.authenticationMethod] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.authenticationMethod] with a well-typed
+             * [AuthenticationMethod] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
             fun authenticationMethod(authenticationMethod: JsonField<AuthenticationMethod>) =
                 apply {
                     this.authenticationMethod = authenticationMethod
@@ -301,6 +387,13 @@ private constructor(
 
             fun status(status: ConnectionStatusType) = status(JsonField.of(status))
 
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [ConnectionStatusType]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -350,31 +443,55 @@ private constructor(
             /**
              * Each benefit type and their supported features. If the benefit type is not supported,
              * the property will be null
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
              */
             fun benefitsSupport(): BenefitsSupport? =
                 benefitsSupport.getNullable("benefits_support")
 
-            /** The supported data fields returned by our HR and payroll endpoints */
+            /**
+             * The supported data fields returned by our HR and payroll endpoints
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun supportedFields(): SupportedFields? =
                 supportedFields.getNullable("supported_fields")
 
-            /** The type of authentication method. */
+            /**
+             * The type of authentication method.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun type(): Type? = type.getNullable("type")
 
             /**
-             * Each benefit type and their supported features. If the benefit type is not supported,
-             * the property will be null
+             * Returns the raw JSON value of [benefitsSupport].
+             *
+             * Unlike [benefitsSupport], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("benefits_support")
             @ExcludeMissing
             fun _benefitsSupport(): JsonField<BenefitsSupport> = benefitsSupport
 
-            /** The supported data fields returned by our HR and payroll endpoints */
+            /**
+             * Returns the raw JSON value of [supportedFields].
+             *
+             * Unlike [supportedFields], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("supported_fields")
             @ExcludeMissing
             fun _supportedFields(): JsonField<SupportedFields> = supportedFields
 
-            /** The type of authentication method. */
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             @JsonAnyGetter
@@ -427,8 +544,11 @@ private constructor(
                     benefitsSupport(JsonField.ofNullable(benefitsSupport))
 
                 /**
-                 * Each benefit type and their supported features. If the benefit type is not
-                 * supported, the property will be null
+                 * Sets [Builder.benefitsSupport] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.benefitsSupport] with a well-typed
+                 * [BenefitsSupport] value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
                  */
                 fun benefitsSupport(benefitsSupport: JsonField<BenefitsSupport>) = apply {
                     this.benefitsSupport = benefitsSupport
@@ -438,7 +558,13 @@ private constructor(
                 fun supportedFields(supportedFields: SupportedFields?) =
                     supportedFields(JsonField.ofNullable(supportedFields))
 
-                /** The supported data fields returned by our HR and payroll endpoints */
+                /**
+                 * Sets [Builder.supportedFields] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.supportedFields] with a well-typed
+                 * [SupportedFields] value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
+                 */
                 fun supportedFields(supportedFields: JsonField<SupportedFields>) = apply {
                     this.supportedFields = supportedFields
                 }
@@ -446,7 +572,13 @@ private constructor(
                 /** The type of authentication method. */
                 fun type(type: Type) = type(JsonField.of(type))
 
-                /** The type of authentication method. */
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -510,45 +642,115 @@ private constructor(
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun company(): SupportedCompanyFields? = company.getNullable("company")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun directory(): SupportedDirectoryFields? = directory.getNullable("directory")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun employment(): SupportedEmploymentFields? = employment.getNullable("employment")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun individual(): SupportedIndividualFields? = individual.getNullable("individual")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun payGroup(): SupportedPayGroupFields? = payGroup.getNullable("pay_group")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun payStatement(): SupportedPayStatementFields? =
                     payStatement.getNullable("pay_statement")
 
+                /**
+                 * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
+                 *   if the server responded with an unexpected value).
+                 */
                 fun payment(): SupportedPaymentFields? = payment.getNullable("payment")
 
+                /**
+                 * Returns the raw JSON value of [company].
+                 *
+                 * Unlike [company], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("company")
                 @ExcludeMissing
                 fun _company(): JsonField<SupportedCompanyFields> = company
 
+                /**
+                 * Returns the raw JSON value of [directory].
+                 *
+                 * Unlike [directory], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("directory")
                 @ExcludeMissing
                 fun _directory(): JsonField<SupportedDirectoryFields> = directory
 
+                /**
+                 * Returns the raw JSON value of [employment].
+                 *
+                 * Unlike [employment], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("employment")
                 @ExcludeMissing
                 fun _employment(): JsonField<SupportedEmploymentFields> = employment
 
+                /**
+                 * Returns the raw JSON value of [individual].
+                 *
+                 * Unlike [individual], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("individual")
                 @ExcludeMissing
                 fun _individual(): JsonField<SupportedIndividualFields> = individual
 
+                /**
+                 * Returns the raw JSON value of [payGroup].
+                 *
+                 * Unlike [payGroup], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("pay_group")
                 @ExcludeMissing
                 fun _payGroup(): JsonField<SupportedPayGroupFields> = payGroup
 
+                /**
+                 * Returns the raw JSON value of [payStatement].
+                 *
+                 * Unlike [payStatement], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("pay_statement")
                 @ExcludeMissing
                 fun _payStatement(): JsonField<SupportedPayStatementFields> = payStatement
 
+                /**
+                 * Returns the raw JSON value of [payment].
+                 *
+                 * Unlike [payment], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("payment")
                 @ExcludeMissing
                 fun _payment(): JsonField<SupportedPaymentFields> = payment
@@ -610,6 +812,13 @@ private constructor(
 
                     fun company(company: SupportedCompanyFields) = company(JsonField.of(company))
 
+                    /**
+                     * Sets [Builder.company] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.company] with a well-typed
+                     * [SupportedCompanyFields] value instead. This method is primarily for setting
+                     * the field to an undocumented or not yet supported value.
+                     */
                     fun company(company: JsonField<SupportedCompanyFields>) = apply {
                         this.company = company
                     }
@@ -617,6 +826,13 @@ private constructor(
                     fun directory(directory: SupportedDirectoryFields) =
                         directory(JsonField.of(directory))
 
+                    /**
+                     * Sets [Builder.directory] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.directory] with a well-typed
+                     * [SupportedDirectoryFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
                     fun directory(directory: JsonField<SupportedDirectoryFields>) = apply {
                         this.directory = directory
                     }
@@ -624,6 +840,13 @@ private constructor(
                     fun employment(employment: SupportedEmploymentFields) =
                         employment(JsonField.of(employment))
 
+                    /**
+                     * Sets [Builder.employment] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.employment] with a well-typed
+                     * [SupportedEmploymentFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
                     fun employment(employment: JsonField<SupportedEmploymentFields>) = apply {
                         this.employment = employment
                     }
@@ -631,6 +854,13 @@ private constructor(
                     fun individual(individual: SupportedIndividualFields) =
                         individual(JsonField.of(individual))
 
+                    /**
+                     * Sets [Builder.individual] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.individual] with a well-typed
+                     * [SupportedIndividualFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
                     fun individual(individual: JsonField<SupportedIndividualFields>) = apply {
                         this.individual = individual
                     }
@@ -638,6 +868,13 @@ private constructor(
                     fun payGroup(payGroup: SupportedPayGroupFields) =
                         payGroup(JsonField.of(payGroup))
 
+                    /**
+                     * Sets [Builder.payGroup] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.payGroup] with a well-typed
+                     * [SupportedPayGroupFields] value instead. This method is primarily for setting
+                     * the field to an undocumented or not yet supported value.
+                     */
                     fun payGroup(payGroup: JsonField<SupportedPayGroupFields>) = apply {
                         this.payGroup = payGroup
                     }
@@ -645,12 +882,26 @@ private constructor(
                     fun payStatement(payStatement: SupportedPayStatementFields) =
                         payStatement(JsonField.of(payStatement))
 
+                    /**
+                     * Sets [Builder.payStatement] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.payStatement] with a well-typed
+                     * [SupportedPayStatementFields] value instead. This method is primarily for
+                     * setting the field to an undocumented or not yet supported value.
+                     */
                     fun payStatement(payStatement: JsonField<SupportedPayStatementFields>) = apply {
                         this.payStatement = payStatement
                     }
 
                     fun payment(payment: SupportedPaymentFields) = payment(JsonField.of(payment))
 
+                    /**
+                     * Sets [Builder.payment] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.payment] with a well-typed
+                     * [SupportedPaymentFields] value instead. This method is primarily for setting
+                     * the field to an undocumented or not yet supported value.
+                     */
                     fun payment(payment: JsonField<SupportedPaymentFields>) = apply {
                         this.payment = payment
                     }
@@ -725,53 +976,143 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun id(): Boolean? = id.getNullable("id")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun accounts(): Accounts? = accounts.getNullable("accounts")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun departments(): Departments? = departments.getNullable("departments")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun ein(): Boolean? = ein.getNullable("ein")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun entity(): Entity? = entity.getNullable("entity")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun legalName(): Boolean? = legalName.getNullable("legal_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun locations(): Locations? = locations.getNullable("locations")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun primaryEmail(): Boolean? = primaryEmail.getNullable("primary_email")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun primaryPhoneNumber(): Boolean? =
                         primaryPhoneNumber.getNullable("primary_phone_number")
 
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                    /**
+                     * Returns the raw JSON value of [accounts].
+                     *
+                     * Unlike [accounts], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("accounts")
                     @ExcludeMissing
                     fun _accounts(): JsonField<Accounts> = accounts
 
+                    /**
+                     * Returns the raw JSON value of [departments].
+                     *
+                     * Unlike [departments], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("departments")
                     @ExcludeMissing
                     fun _departments(): JsonField<Departments> = departments
 
+                    /**
+                     * Returns the raw JSON value of [ein].
+                     *
+                     * Unlike [ein], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("ein") @ExcludeMissing fun _ein(): JsonField<Boolean> = ein
 
+                    /**
+                     * Returns the raw JSON value of [entity].
+                     *
+                     * Unlike [entity], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("entity")
                     @ExcludeMissing
                     fun _entity(): JsonField<Entity> = entity
 
+                    /**
+                     * Returns the raw JSON value of [legalName].
+                     *
+                     * Unlike [legalName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("legal_name")
                     @ExcludeMissing
                     fun _legalName(): JsonField<Boolean> = legalName
 
+                    /**
+                     * Returns the raw JSON value of [locations].
+                     *
+                     * Unlike [locations], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("locations")
                     @ExcludeMissing
                     fun _locations(): JsonField<Locations> = locations
 
+                    /**
+                     * Returns the raw JSON value of [primaryEmail].
+                     *
+                     * Unlike [primaryEmail], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("primary_email")
                     @ExcludeMissing
                     fun _primaryEmail(): JsonField<Boolean> = primaryEmail
 
+                    /**
+                     * Returns the raw JSON value of [primaryPhoneNumber].
+                     *
+                     * Unlike [primaryPhoneNumber], this method doesn't throw if the JSON field has
+                     * an unexpected type.
+                     */
                     @JsonProperty("primary_phone_number")
                     @ExcludeMissing
                     fun _primaryPhoneNumber(): JsonField<Boolean> = primaryPhoneNumber
@@ -841,10 +1182,24 @@ private constructor(
 
                         fun id(id: Boolean) = id(JsonField.of(id))
 
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun accounts(accounts: Accounts) = accounts(JsonField.of(accounts))
 
+                        /**
+                         * Sets [Builder.accounts] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.accounts] with a well-typed [Accounts]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun accounts(accounts: JsonField<Accounts>) = apply {
                             this.accounts = accounts
                         }
@@ -852,26 +1207,61 @@ private constructor(
                         fun departments(departments: Departments) =
                             departments(JsonField.of(departments))
 
+                        /**
+                         * Sets [Builder.departments] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.departments] with a well-typed
+                         * [Departments] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun departments(departments: JsonField<Departments>) = apply {
                             this.departments = departments
                         }
 
                         fun ein(ein: Boolean) = ein(JsonField.of(ein))
 
+                        /**
+                         * Sets [Builder.ein] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.ein] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun ein(ein: JsonField<Boolean>) = apply { this.ein = ein }
 
                         fun entity(entity: Entity) = entity(JsonField.of(entity))
 
+                        /**
+                         * Sets [Builder.entity] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.entity] with a well-typed [Entity] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
                         fun legalName(legalName: Boolean) = legalName(JsonField.of(legalName))
 
+                        /**
+                         * Sets [Builder.legalName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.legalName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun legalName(legalName: JsonField<Boolean>) = apply {
                             this.legalName = legalName
                         }
 
                         fun locations(locations: Locations) = locations(JsonField.of(locations))
 
+                        /**
+                         * Sets [Builder.locations] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.locations] with a well-typed [Locations]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun locations(locations: JsonField<Locations>) = apply {
                             this.locations = locations
                         }
@@ -879,6 +1269,13 @@ private constructor(
                         fun primaryEmail(primaryEmail: Boolean) =
                             primaryEmail(JsonField.of(primaryEmail))
 
+                        /**
+                         * Sets [Builder.primaryEmail] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.primaryEmail] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun primaryEmail(primaryEmail: JsonField<Boolean>) = apply {
                             this.primaryEmail = primaryEmail
                         }
@@ -886,6 +1283,13 @@ private constructor(
                         fun primaryPhoneNumber(primaryPhoneNumber: Boolean) =
                             primaryPhoneNumber(JsonField.of(primaryPhoneNumber))
 
+                        /**
+                         * Sets [Builder.primaryPhoneNumber] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.primaryPhoneNumber] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun primaryPhoneNumber(primaryPhoneNumber: JsonField<Boolean>) = apply {
                             this.primaryPhoneNumber = primaryPhoneNumber
                         }
@@ -951,33 +1355,83 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun accountName(): Boolean? = accountName.getNullable("account_name")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun accountNumber(): Boolean? = accountNumber.getNullable("account_number")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun accountType(): Boolean? = accountType.getNullable("account_type")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun institutionName(): Boolean? =
                             institutionName.getNullable("institution_name")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun routingNumber(): Boolean? = routingNumber.getNullable("routing_number")
 
+                        /**
+                         * Returns the raw JSON value of [accountName].
+                         *
+                         * Unlike [accountName], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("account_name")
                         @ExcludeMissing
                         fun _accountName(): JsonField<Boolean> = accountName
 
+                        /**
+                         * Returns the raw JSON value of [accountNumber].
+                         *
+                         * Unlike [accountNumber], this method doesn't throw if the JSON field has
+                         * an unexpected type.
+                         */
                         @JsonProperty("account_number")
                         @ExcludeMissing
                         fun _accountNumber(): JsonField<Boolean> = accountNumber
 
+                        /**
+                         * Returns the raw JSON value of [accountType].
+                         *
+                         * Unlike [accountType], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("account_type")
                         @ExcludeMissing
                         fun _accountType(): JsonField<Boolean> = accountType
 
+                        /**
+                         * Returns the raw JSON value of [institutionName].
+                         *
+                         * Unlike [institutionName], this method doesn't throw if the JSON field has
+                         * an unexpected type.
+                         */
                         @JsonProperty("institution_name")
                         @ExcludeMissing
                         fun _institutionName(): JsonField<Boolean> = institutionName
 
+                        /**
+                         * Returns the raw JSON value of [routingNumber].
+                         *
+                         * Unlike [routingNumber], this method doesn't throw if the JSON field has
+                         * an unexpected type.
+                         */
                         @JsonProperty("routing_number")
                         @ExcludeMissing
                         fun _routingNumber(): JsonField<Boolean> = routingNumber
@@ -1034,6 +1488,13 @@ private constructor(
                             fun accountName(accountName: Boolean) =
                                 accountName(JsonField.of(accountName))
 
+                            /**
+                             * Sets [Builder.accountName] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.accountName] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun accountName(accountName: JsonField<Boolean>) = apply {
                                 this.accountName = accountName
                             }
@@ -1041,6 +1502,13 @@ private constructor(
                             fun accountNumber(accountNumber: Boolean) =
                                 accountNumber(JsonField.of(accountNumber))
 
+                            /**
+                             * Sets [Builder.accountNumber] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.accountNumber] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun accountNumber(accountNumber: JsonField<Boolean>) = apply {
                                 this.accountNumber = accountNumber
                             }
@@ -1048,6 +1516,13 @@ private constructor(
                             fun accountType(accountType: Boolean) =
                                 accountType(JsonField.of(accountType))
 
+                            /**
+                             * Sets [Builder.accountType] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.accountType] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun accountType(accountType: JsonField<Boolean>) = apply {
                                 this.accountType = accountType
                             }
@@ -1055,6 +1530,13 @@ private constructor(
                             fun institutionName(institutionName: Boolean) =
                                 institutionName(JsonField.of(institutionName))
 
+                            /**
+                             * Sets [Builder.institutionName] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.institutionName] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun institutionName(institutionName: JsonField<Boolean>) = apply {
                                 this.institutionName = institutionName
                             }
@@ -1062,6 +1544,13 @@ private constructor(
                             fun routingNumber(routingNumber: Boolean) =
                                 routingNumber(JsonField.of(routingNumber))
 
+                            /**
+                             * Sets [Builder.routingNumber] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.routingNumber] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun routingNumber(routingNumber: JsonField<Boolean>) = apply {
                                 this.routingNumber = routingNumber
                             }
@@ -1132,12 +1621,32 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun name(): Boolean? = name.getNullable("name")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun parent(): Parent? = parent.getNullable("parent")
 
+                        /**
+                         * Returns the raw JSON value of [name].
+                         *
+                         * Unlike [name], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
+                        /**
+                         * Returns the raw JSON value of [parent].
+                         *
+                         * Unlike [parent], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("parent")
                         @ExcludeMissing
                         fun _parent(): JsonField<Parent> = parent
@@ -1186,10 +1695,24 @@ private constructor(
 
                             fun name(name: Boolean) = name(JsonField.of(name))
 
+                            /**
+                             * Sets [Builder.name] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.name] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                             fun parent(parent: Parent) = parent(JsonField.of(parent))
 
+                            /**
+                             * Sets [Builder.parent] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.parent] with a well-typed [Parent]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1230,8 +1753,18 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun name(): Boolean? = name.getNullable("name")
 
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("name")
                             @ExcludeMissing
                             fun _name(): JsonField<Boolean> = name
@@ -1278,6 +1811,13 @@ private constructor(
 
                                 fun name(name: Boolean) = name(JsonField.of(name))
 
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun additionalProperties(
@@ -1358,14 +1898,34 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun subtype(): Boolean? = subtype.getNullable("subtype")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun type(): Boolean? = type.getNullable("type")
 
+                        /**
+                         * Returns the raw JSON value of [subtype].
+                         *
+                         * Unlike [subtype], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("subtype")
                         @ExcludeMissing
                         fun _subtype(): JsonField<Boolean> = subtype
 
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
@@ -1410,12 +1970,26 @@ private constructor(
 
                             fun subtype(subtype: Boolean) = subtype(JsonField.of(subtype))
 
+                            /**
+                             * Sets [Builder.subtype] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.subtype] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun subtype(subtype: JsonField<Boolean>) = apply {
                                 this.subtype = subtype
                             }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1489,36 +2063,96 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun city(): Boolean? = city.getNullable("city")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun country(): Boolean? = country.getNullable("country")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line1(): Boolean? = line1.getNullable("line1")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line2(): Boolean? = line2.getNullable("line2")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun state(): Boolean? = state.getNullable("state")
 
+                        /**
+                         * Returns the raw JSON value of [city].
+                         *
+                         * Unlike [city], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
+                        /**
+                         * Returns the raw JSON value of [country].
+                         *
+                         * Unlike [country], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("country")
                         @ExcludeMissing
                         fun _country(): JsonField<Boolean> = country
 
+                        /**
+                         * Returns the raw JSON value of [line1].
+                         *
+                         * Unlike [line1], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line1")
                         @ExcludeMissing
                         fun _line1(): JsonField<Boolean> = line1
 
+                        /**
+                         * Returns the raw JSON value of [line2].
+                         *
+                         * Unlike [line2], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line2")
                         @ExcludeMissing
                         fun _line2(): JsonField<Boolean> = line2
 
+                        /**
+                         * Returns the raw JSON value of [postalCode].
+                         *
+                         * Unlike [postalCode], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("postal_code")
                         @ExcludeMissing
                         fun _postalCode(): JsonField<Boolean> = postalCode
 
+                        /**
+                         * Returns the raw JSON value of [state].
+                         *
+                         * Unlike [state], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("state")
                         @ExcludeMissing
                         fun _state(): JsonField<Boolean> = state
@@ -1578,31 +2212,73 @@ private constructor(
 
                             fun city(city: Boolean) = city(JsonField.of(city))
 
+                            /**
+                             * Sets [Builder.city] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.city] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
+                            /**
+                             * Sets [Builder.country] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.country] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun country(country: JsonField<Boolean>) = apply {
                                 this.country = country
                             }
 
                             fun line1(line1: Boolean) = line1(JsonField.of(line1))
 
+                            /**
+                             * Sets [Builder.line1] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line1] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
+                            /**
+                             * Sets [Builder.line2] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line2] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
 
+                            /**
+                             * Sets [Builder.postalCode] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.postalCode] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun postalCode(postalCode: JsonField<Boolean>) = apply {
                                 this.postalCode = postalCode
                             }
 
                             fun state(state: Boolean) = state(JsonField.of(state))
 
+                            /**
+                             * Sets [Builder.state] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.state] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1689,14 +2365,34 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun individuals(): Individuals? = individuals.getNullable("individuals")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun paging(): Paging? = paging.getNullable("paging")
 
+                    /**
+                     * Returns the raw JSON value of [individuals].
+                     *
+                     * Unlike [individuals], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("individuals")
                     @ExcludeMissing
                     fun _individuals(): JsonField<Individuals> = individuals
 
+                    /**
+                     * Returns the raw JSON value of [paging].
+                     *
+                     * Unlike [paging], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("paging")
                     @ExcludeMissing
                     fun _paging(): JsonField<Paging> = paging
@@ -1747,12 +2443,26 @@ private constructor(
                         fun individuals(individuals: Individuals) =
                             individuals(JsonField.of(individuals))
 
+                        /**
+                         * Sets [Builder.individuals] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.individuals] with a well-typed
+                         * [Individuals] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun individuals(individuals: JsonField<Individuals>) = apply {
                             this.individuals = individuals
                         }
 
                         fun paging(paging: Paging) = paging(JsonField.of(paging))
 
+                        /**
+                         * Sets [Builder.paging] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.paging] with a well-typed [Paging] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1815,42 +2525,112 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun id(): Boolean? = id.getNullable("id")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun department(): Boolean? = department.getNullable("department")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun firstName(): Boolean? = firstName.getNullable("first_name")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun isActive(): Boolean? = isActive.getNullable("is_active")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun lastName(): Boolean? = lastName.getNullable("last_name")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun manager(): Manager? = manager.getNullable("manager")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun middleName(): Boolean? = middleName.getNullable("middle_name")
 
+                        /**
+                         * Returns the raw JSON value of [id].
+                         *
+                         * Unlike [id], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                        /**
+                         * Returns the raw JSON value of [department].
+                         *
+                         * Unlike [department], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("department")
                         @ExcludeMissing
                         fun _department(): JsonField<Boolean> = department
 
+                        /**
+                         * Returns the raw JSON value of [firstName].
+                         *
+                         * Unlike [firstName], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("first_name")
                         @ExcludeMissing
                         fun _firstName(): JsonField<Boolean> = firstName
 
+                        /**
+                         * Returns the raw JSON value of [isActive].
+                         *
+                         * Unlike [isActive], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("is_active")
                         @ExcludeMissing
                         fun _isActive(): JsonField<Boolean> = isActive
 
+                        /**
+                         * Returns the raw JSON value of [lastName].
+                         *
+                         * Unlike [lastName], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("last_name")
                         @ExcludeMissing
                         fun _lastName(): JsonField<Boolean> = lastName
 
+                        /**
+                         * Returns the raw JSON value of [manager].
+                         *
+                         * Unlike [manager], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("manager")
                         @ExcludeMissing
                         fun _manager(): JsonField<Manager> = manager
 
+                        /**
+                         * Returns the raw JSON value of [middleName].
+                         *
+                         * Unlike [middleName], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("middle_name")
                         @ExcludeMissing
                         fun _middleName(): JsonField<Boolean> = middleName
@@ -1914,35 +2694,77 @@ private constructor(
 
                             fun id(id: Boolean) = id(JsonField.of(id))
 
+                            /**
+                             * Sets [Builder.id] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.id] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                             fun department(department: Boolean) =
                                 department(JsonField.of(department))
 
+                            /**
+                             * Sets [Builder.department] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.department] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun department(department: JsonField<Boolean>) = apply {
                                 this.department = department
                             }
 
                             fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
+                            /**
+                             * Sets [Builder.firstName] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.firstName] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun firstName(firstName: JsonField<Boolean>) = apply {
                                 this.firstName = firstName
                             }
 
                             fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
 
+                            /**
+                             * Sets [Builder.isActive] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.isActive] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun isActive(isActive: JsonField<Boolean>) = apply {
                                 this.isActive = isActive
                             }
 
                             fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
 
+                            /**
+                             * Sets [Builder.lastName] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.lastName] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun lastName(lastName: JsonField<Boolean>) = apply {
                                 this.lastName = lastName
                             }
 
                             fun manager(manager: Manager) = manager(JsonField.of(manager))
 
+                            /**
+                             * Sets [Builder.manager] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.manager] with a well-typed [Manager]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun manager(manager: JsonField<Manager>) = apply {
                                 this.manager = manager
                             }
@@ -1950,6 +2772,13 @@ private constructor(
                             fun middleName(middleName: Boolean) =
                                 middleName(JsonField.of(middleName))
 
+                            /**
+                             * Sets [Builder.middleName] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.middleName] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun middleName(middleName: JsonField<Boolean>) = apply {
                                 this.middleName = middleName
                             }
@@ -2001,8 +2830,18 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun id(): Boolean? = id.getNullable("id")
 
+                            /**
+                             * Returns the raw JSON value of [id].
+                             *
+                             * Unlike [id], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                             @JsonAnyGetter
@@ -2047,6 +2886,13 @@ private constructor(
 
                                 fun id(id: Boolean) = id(JsonField.of(id))
 
+                                /**
+                                 * Sets [Builder.id] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.id] with a well-typed [Boolean]
+                                 * value instead. This method is primarily for setting the field to
+                                 * an undocumented or not yet supported value.
+                                 */
                                 fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                                 fun additionalProperties(
@@ -2127,14 +2973,34 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun count(): Boolean? = count.getNullable("count")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun offset(): Boolean? = offset.getNullable("offset")
 
+                        /**
+                         * Returns the raw JSON value of [count].
+                         *
+                         * Unlike [count], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("count")
                         @ExcludeMissing
                         fun _count(): JsonField<Boolean> = count
 
+                        /**
+                         * Returns the raw JSON value of [offset].
+                         *
+                         * Unlike [offset], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("offset")
                         @ExcludeMissing
                         fun _offset(): JsonField<Boolean> = offset
@@ -2181,10 +3047,24 @@ private constructor(
 
                             fun count(count: Boolean) = count(JsonField.of(count))
 
+                            /**
+                             * Sets [Builder.count] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.count] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun count(count: JsonField<Boolean>) = apply { this.count = count }
 
                             fun offset(offset: Boolean) = offset(JsonField.of(offset))
 
+                            /**
+                             * Sets [Builder.offset] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.offset] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun offset(offset: JsonField<Boolean>) = apply { this.offset = offset }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2308,103 +3188,273 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun id(): Boolean? = id.getNullable("id")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun classCode(): Boolean? = classCode.getNullable("class_code")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun customFields(): Boolean? = customFields.getNullable("custom_fields")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun department(): Department? = department.getNullable("department")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun employment(): Employment? = employment.getNullable("employment")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun employmentStatus(): Boolean? =
                         employmentStatus.getNullable("employment_status")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun endDate(): Boolean? = endDate.getNullable("end_date")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun firstName(): Boolean? = firstName.getNullable("first_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun income(): Income? = income.getNullable("income")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun incomeHistory(): Boolean? = incomeHistory.getNullable("income_history")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun isActive(): Boolean? = isActive.getNullable("is_active")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun lastName(): Boolean? = lastName.getNullable("last_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun location(): Location? = location.getNullable("location")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun manager(): Manager? = manager.getNullable("manager")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun middleName(): Boolean? = middleName.getNullable("middle_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun startDate(): Boolean? = startDate.getNullable("start_date")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun title(): Boolean? = title.getNullable("title")
 
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                    /**
+                     * Returns the raw JSON value of [classCode].
+                     *
+                     * Unlike [classCode], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("class_code")
                     @ExcludeMissing
                     fun _classCode(): JsonField<Boolean> = classCode
 
+                    /**
+                     * Returns the raw JSON value of [customFields].
+                     *
+                     * Unlike [customFields], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("custom_fields")
                     @ExcludeMissing
                     fun _customFields(): JsonField<Boolean> = customFields
 
+                    /**
+                     * Returns the raw JSON value of [department].
+                     *
+                     * Unlike [department], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("department")
                     @ExcludeMissing
                     fun _department(): JsonField<Department> = department
 
+                    /**
+                     * Returns the raw JSON value of [employment].
+                     *
+                     * Unlike [employment], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("employment")
                     @ExcludeMissing
                     fun _employment(): JsonField<Employment> = employment
 
+                    /**
+                     * Returns the raw JSON value of [employmentStatus].
+                     *
+                     * Unlike [employmentStatus], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("employment_status")
                     @ExcludeMissing
                     fun _employmentStatus(): JsonField<Boolean> = employmentStatus
 
+                    /**
+                     * Returns the raw JSON value of [endDate].
+                     *
+                     * Unlike [endDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("end_date")
                     @ExcludeMissing
                     fun _endDate(): JsonField<Boolean> = endDate
 
+                    /**
+                     * Returns the raw JSON value of [firstName].
+                     *
+                     * Unlike [firstName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("first_name")
                     @ExcludeMissing
                     fun _firstName(): JsonField<Boolean> = firstName
 
+                    /**
+                     * Returns the raw JSON value of [income].
+                     *
+                     * Unlike [income], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("income")
                     @ExcludeMissing
                     fun _income(): JsonField<Income> = income
 
+                    /**
+                     * Returns the raw JSON value of [incomeHistory].
+                     *
+                     * Unlike [incomeHistory], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("income_history")
                     @ExcludeMissing
                     fun _incomeHistory(): JsonField<Boolean> = incomeHistory
 
+                    /**
+                     * Returns the raw JSON value of [isActive].
+                     *
+                     * Unlike [isActive], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("is_active")
                     @ExcludeMissing
                     fun _isActive(): JsonField<Boolean> = isActive
 
+                    /**
+                     * Returns the raw JSON value of [lastName].
+                     *
+                     * Unlike [lastName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("last_name")
                     @ExcludeMissing
                     fun _lastName(): JsonField<Boolean> = lastName
 
+                    /**
+                     * Returns the raw JSON value of [location].
+                     *
+                     * Unlike [location], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("location")
                     @ExcludeMissing
                     fun _location(): JsonField<Location> = location
 
+                    /**
+                     * Returns the raw JSON value of [manager].
+                     *
+                     * Unlike [manager], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("manager")
                     @ExcludeMissing
                     fun _manager(): JsonField<Manager> = manager
 
+                    /**
+                     * Returns the raw JSON value of [middleName].
+                     *
+                     * Unlike [middleName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("middle_name")
                     @ExcludeMissing
                     fun _middleName(): JsonField<Boolean> = middleName
 
+                    /**
+                     * Returns the raw JSON value of [startDate].
+                     *
+                     * Unlike [startDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("start_date")
                     @ExcludeMissing
                     fun _startDate(): JsonField<Boolean> = startDate
 
+                    /**
+                     * Returns the raw JSON value of [title].
+                     *
+                     * Unlike [title], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<Boolean> = title
 
                     @JsonAnyGetter
@@ -2497,10 +3547,24 @@ private constructor(
 
                         fun id(id: Boolean) = id(JsonField.of(id))
 
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun classCode(classCode: Boolean) = classCode(JsonField.of(classCode))
 
+                        /**
+                         * Sets [Builder.classCode] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.classCode] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun classCode(classCode: JsonField<Boolean>) = apply {
                             this.classCode = classCode
                         }
@@ -2508,6 +3572,13 @@ private constructor(
                         fun customFields(customFields: Boolean) =
                             customFields(JsonField.of(customFields))
 
+                        /**
+                         * Sets [Builder.customFields] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.customFields] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun customFields(customFields: JsonField<Boolean>) = apply {
                             this.customFields = customFields
                         }
@@ -2515,6 +3586,13 @@ private constructor(
                         fun department(department: Department) =
                             department(JsonField.of(department))
 
+                        /**
+                         * Sets [Builder.department] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.department] with a well-typed
+                         * [Department] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun department(department: JsonField<Department>) = apply {
                             this.department = department
                         }
@@ -2522,6 +3600,13 @@ private constructor(
                         fun employment(employment: Employment) =
                             employment(JsonField.of(employment))
 
+                        /**
+                         * Sets [Builder.employment] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.employment] with a well-typed
+                         * [Employment] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun employment(employment: JsonField<Employment>) = apply {
                             this.employment = employment
                         }
@@ -2529,67 +3614,151 @@ private constructor(
                         fun employmentStatus(employmentStatus: Boolean) =
                             employmentStatus(JsonField.of(employmentStatus))
 
+                        /**
+                         * Sets [Builder.employmentStatus] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.employmentStatus] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun employmentStatus(employmentStatus: JsonField<Boolean>) = apply {
                             this.employmentStatus = employmentStatus
                         }
 
                         fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
 
+                        /**
+                         * Sets [Builder.endDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.endDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun endDate(endDate: JsonField<Boolean>) = apply { this.endDate = endDate }
 
                         fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
+                        /**
+                         * Sets [Builder.firstName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.firstName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun firstName(firstName: JsonField<Boolean>) = apply {
                             this.firstName = firstName
                         }
 
                         fun income(income: Income) = income(JsonField.of(income))
 
+                        /**
+                         * Sets [Builder.income] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.income] with a well-typed [Income] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun income(income: JsonField<Income>) = apply { this.income = income }
 
                         fun incomeHistory(incomeHistory: Boolean) =
                             incomeHistory(JsonField.of(incomeHistory))
 
+                        /**
+                         * Sets [Builder.incomeHistory] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.incomeHistory] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun incomeHistory(incomeHistory: JsonField<Boolean>) = apply {
                             this.incomeHistory = incomeHistory
                         }
 
                         fun isActive(isActive: Boolean) = isActive(JsonField.of(isActive))
 
+                        /**
+                         * Sets [Builder.isActive] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.isActive] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun isActive(isActive: JsonField<Boolean>) = apply {
                             this.isActive = isActive
                         }
 
                         fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
 
+                        /**
+                         * Sets [Builder.lastName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.lastName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun lastName(lastName: JsonField<Boolean>) = apply {
                             this.lastName = lastName
                         }
 
                         fun location(location: Location) = location(JsonField.of(location))
 
+                        /**
+                         * Sets [Builder.location] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.location] with a well-typed [Location]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun location(location: JsonField<Location>) = apply {
                             this.location = location
                         }
 
                         fun manager(manager: Manager) = manager(JsonField.of(manager))
 
+                        /**
+                         * Sets [Builder.manager] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.manager] with a well-typed [Manager]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
                         fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
 
+                        /**
+                         * Sets [Builder.middleName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.middleName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun middleName(middleName: JsonField<Boolean>) = apply {
                             this.middleName = middleName
                         }
 
                         fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
 
+                        /**
+                         * Sets [Builder.startDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.startDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun startDate(startDate: JsonField<Boolean>) = apply {
                             this.startDate = startDate
                         }
 
                         fun title(title: Boolean) = title(JsonField.of(title))
 
+                        /**
+                         * Sets [Builder.title] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.title] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun title(title: JsonField<Boolean>) = apply { this.title = title }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2649,8 +3818,18 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun name(): Boolean? = name.getNullable("name")
 
+                        /**
+                         * Returns the raw JSON value of [name].
+                         *
+                         * Unlike [name], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
                         @JsonAnyGetter
@@ -2694,6 +3873,13 @@ private constructor(
 
                             fun name(name: Boolean) = name(JsonField.of(name))
 
+                            /**
+                             * Sets [Builder.name] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.name] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2755,14 +3941,34 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun subtype(): Boolean? = subtype.getNullable("subtype")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun type(): Boolean? = type.getNullable("type")
 
+                        /**
+                         * Returns the raw JSON value of [subtype].
+                         *
+                         * Unlike [subtype], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("subtype")
                         @ExcludeMissing
                         fun _subtype(): JsonField<Boolean> = subtype
 
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
@@ -2809,12 +4015,26 @@ private constructor(
 
                             fun subtype(subtype: Boolean) = subtype(JsonField.of(subtype))
 
+                            /**
+                             * Sets [Builder.subtype] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.subtype] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun subtype(subtype: JsonField<Boolean>) = apply {
                                 this.subtype = subtype
                             }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2879,20 +4099,50 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun amount(): Boolean? = amount.getNullable("amount")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun currency(): Boolean? = currency.getNullable("currency")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun unit(): Boolean? = unit.getNullable("unit")
 
+                        /**
+                         * Returns the raw JSON value of [amount].
+                         *
+                         * Unlike [amount], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("amount")
                         @ExcludeMissing
                         fun _amount(): JsonField<Boolean> = amount
 
+                        /**
+                         * Returns the raw JSON value of [currency].
+                         *
+                         * Unlike [currency], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("currency")
                         @ExcludeMissing
                         fun _currency(): JsonField<Boolean> = currency
 
+                        /**
+                         * Returns the raw JSON value of [unit].
+                         *
+                         * Unlike [unit], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Boolean> = unit
 
                         @JsonAnyGetter
@@ -2940,16 +4190,37 @@ private constructor(
 
                             fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
+                            /**
+                             * Sets [Builder.amount] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.amount] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun amount(amount: JsonField<Boolean>) = apply { this.amount = amount }
 
                             fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
+                            /**
+                             * Sets [Builder.currency] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.currency] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun currency(currency: JsonField<Boolean>) = apply {
                                 this.currency = currency
                             }
 
                             fun unit(unit: Boolean) = unit(JsonField.of(unit))
 
+                            /**
+                             * Sets [Builder.unit] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.unit] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun unit(unit: JsonField<Boolean>) = apply { this.unit = unit }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3023,36 +4294,96 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun city(): Boolean? = city.getNullable("city")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun country(): Boolean? = country.getNullable("country")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line1(): Boolean? = line1.getNullable("line1")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line2(): Boolean? = line2.getNullable("line2")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun state(): Boolean? = state.getNullable("state")
 
+                        /**
+                         * Returns the raw JSON value of [city].
+                         *
+                         * Unlike [city], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
+                        /**
+                         * Returns the raw JSON value of [country].
+                         *
+                         * Unlike [country], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("country")
                         @ExcludeMissing
                         fun _country(): JsonField<Boolean> = country
 
+                        /**
+                         * Returns the raw JSON value of [line1].
+                         *
+                         * Unlike [line1], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line1")
                         @ExcludeMissing
                         fun _line1(): JsonField<Boolean> = line1
 
+                        /**
+                         * Returns the raw JSON value of [line2].
+                         *
+                         * Unlike [line2], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line2")
                         @ExcludeMissing
                         fun _line2(): JsonField<Boolean> = line2
 
+                        /**
+                         * Returns the raw JSON value of [postalCode].
+                         *
+                         * Unlike [postalCode], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("postal_code")
                         @ExcludeMissing
                         fun _postalCode(): JsonField<Boolean> = postalCode
 
+                        /**
+                         * Returns the raw JSON value of [state].
+                         *
+                         * Unlike [state], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("state")
                         @ExcludeMissing
                         fun _state(): JsonField<Boolean> = state
@@ -3111,31 +4442,73 @@ private constructor(
 
                             fun city(city: Boolean) = city(JsonField.of(city))
 
+                            /**
+                             * Sets [Builder.city] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.city] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
+                            /**
+                             * Sets [Builder.country] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.country] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun country(country: JsonField<Boolean>) = apply {
                                 this.country = country
                             }
 
                             fun line1(line1: Boolean) = line1(JsonField.of(line1))
 
+                            /**
+                             * Sets [Builder.line1] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line1] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
+                            /**
+                             * Sets [Builder.line2] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line2] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
 
+                            /**
+                             * Sets [Builder.postalCode] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.postalCode] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun postalCode(postalCode: JsonField<Boolean>) = apply {
                                 this.postalCode = postalCode
                             }
 
                             fun state(state: Boolean) = state(JsonField.of(state))
 
+                            /**
+                             * Sets [Builder.state] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.state] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3202,8 +4575,18 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun id(): Boolean? = id.getNullable("id")
 
+                        /**
+                         * Returns the raw JSON value of [id].
+                         *
+                         * Unlike [id], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
                         @JsonAnyGetter
@@ -3245,6 +4628,13 @@ private constructor(
 
                             fun id(id: Boolean) = id(JsonField.of(id))
 
+                            /**
+                             * Sets [Builder.id] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.id] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3355,76 +4745,206 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun id(): Boolean? = id.getNullable("id")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun dob(): Boolean? = dob.getNullable("dob")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun emails(): Emails? = emails.getNullable("emails")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun encryptedSsn(): Boolean? = encryptedSsn.getNullable("encrypted_ssn")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun ethnicity(): Boolean? = ethnicity.getNullable("ethnicity")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun firstName(): Boolean? = firstName.getNullable("first_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun gender(): Boolean? = gender.getNullable("gender")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun lastName(): Boolean? = lastName.getNullable("last_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun middleName(): Boolean? = middleName.getNullable("middle_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun phoneNumbers(): PhoneNumbers? = phoneNumbers.getNullable("phone_numbers")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun preferredName(): Boolean? = preferredName.getNullable("preferred_name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun residence(): Residence? = residence.getNullable("residence")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun ssn(): Boolean? = ssn.getNullable("ssn")
 
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                    /**
+                     * Returns the raw JSON value of [dob].
+                     *
+                     * Unlike [dob], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("dob") @ExcludeMissing fun _dob(): JsonField<Boolean> = dob
 
+                    /**
+                     * Returns the raw JSON value of [emails].
+                     *
+                     * Unlike [emails], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("emails")
                     @ExcludeMissing
                     fun _emails(): JsonField<Emails> = emails
 
+                    /**
+                     * Returns the raw JSON value of [encryptedSsn].
+                     *
+                     * Unlike [encryptedSsn], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("encrypted_ssn")
                     @ExcludeMissing
                     fun _encryptedSsn(): JsonField<Boolean> = encryptedSsn
 
+                    /**
+                     * Returns the raw JSON value of [ethnicity].
+                     *
+                     * Unlike [ethnicity], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("ethnicity")
                     @ExcludeMissing
                     fun _ethnicity(): JsonField<Boolean> = ethnicity
 
+                    /**
+                     * Returns the raw JSON value of [firstName].
+                     *
+                     * Unlike [firstName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("first_name")
                     @ExcludeMissing
                     fun _firstName(): JsonField<Boolean> = firstName
 
+                    /**
+                     * Returns the raw JSON value of [gender].
+                     *
+                     * Unlike [gender], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("gender")
                     @ExcludeMissing
                     fun _gender(): JsonField<Boolean> = gender
 
+                    /**
+                     * Returns the raw JSON value of [lastName].
+                     *
+                     * Unlike [lastName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("last_name")
                     @ExcludeMissing
                     fun _lastName(): JsonField<Boolean> = lastName
 
+                    /**
+                     * Returns the raw JSON value of [middleName].
+                     *
+                     * Unlike [middleName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("middle_name")
                     @ExcludeMissing
                     fun _middleName(): JsonField<Boolean> = middleName
 
+                    /**
+                     * Returns the raw JSON value of [phoneNumbers].
+                     *
+                     * Unlike [phoneNumbers], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("phone_numbers")
                     @ExcludeMissing
                     fun _phoneNumbers(): JsonField<PhoneNumbers> = phoneNumbers
 
+                    /**
+                     * Returns the raw JSON value of [preferredName].
+                     *
+                     * Unlike [preferredName], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("preferred_name")
                     @ExcludeMissing
                     fun _preferredName(): JsonField<Boolean> = preferredName
 
+                    /**
+                     * Returns the raw JSON value of [residence].
+                     *
+                     * Unlike [residence], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("residence")
                     @ExcludeMissing
                     fun _residence(): JsonField<Residence> = residence
 
+                    /**
+                     * Returns the raw JSON value of [ssn].
+                     *
+                     * Unlike [ssn], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("ssn") @ExcludeMissing fun _ssn(): JsonField<Boolean> = ssn
 
                     @JsonAnyGetter
@@ -3505,47 +5025,110 @@ private constructor(
 
                         fun id(id: Boolean) = id(JsonField.of(id))
 
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun dob(dob: Boolean) = dob(JsonField.of(dob))
 
+                        /**
+                         * Sets [Builder.dob] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.dob] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun dob(dob: JsonField<Boolean>) = apply { this.dob = dob }
 
                         fun emails(emails: Emails) = emails(JsonField.of(emails))
 
+                        /**
+                         * Sets [Builder.emails] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.emails] with a well-typed [Emails] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun emails(emails: JsonField<Emails>) = apply { this.emails = emails }
 
                         fun encryptedSsn(encryptedSsn: Boolean) =
                             encryptedSsn(JsonField.of(encryptedSsn))
 
+                        /**
+                         * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.encryptedSsn] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun encryptedSsn(encryptedSsn: JsonField<Boolean>) = apply {
                             this.encryptedSsn = encryptedSsn
                         }
 
                         fun ethnicity(ethnicity: Boolean) = ethnicity(JsonField.of(ethnicity))
 
+                        /**
+                         * Sets [Builder.ethnicity] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.ethnicity] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun ethnicity(ethnicity: JsonField<Boolean>) = apply {
                             this.ethnicity = ethnicity
                         }
 
                         fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
+                        /**
+                         * Sets [Builder.firstName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.firstName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun firstName(firstName: JsonField<Boolean>) = apply {
                             this.firstName = firstName
                         }
 
                         fun gender(gender: Boolean) = gender(JsonField.of(gender))
 
+                        /**
+                         * Sets [Builder.gender] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.gender] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun gender(gender: JsonField<Boolean>) = apply { this.gender = gender }
 
                         fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
 
+                        /**
+                         * Sets [Builder.lastName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.lastName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun lastName(lastName: JsonField<Boolean>) = apply {
                             this.lastName = lastName
                         }
 
                         fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
 
+                        /**
+                         * Sets [Builder.middleName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.middleName] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun middleName(middleName: JsonField<Boolean>) = apply {
                             this.middleName = middleName
                         }
@@ -3553,6 +5136,13 @@ private constructor(
                         fun phoneNumbers(phoneNumbers: PhoneNumbers) =
                             phoneNumbers(JsonField.of(phoneNumbers))
 
+                        /**
+                         * Sets [Builder.phoneNumbers] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.phoneNumbers] with a well-typed
+                         * [PhoneNumbers] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun phoneNumbers(phoneNumbers: JsonField<PhoneNumbers>) = apply {
                             this.phoneNumbers = phoneNumbers
                         }
@@ -3560,18 +5150,39 @@ private constructor(
                         fun preferredName(preferredName: Boolean) =
                             preferredName(JsonField.of(preferredName))
 
+                        /**
+                         * Sets [Builder.preferredName] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.preferredName] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun preferredName(preferredName: JsonField<Boolean>) = apply {
                             this.preferredName = preferredName
                         }
 
                         fun residence(residence: Residence) = residence(JsonField.of(residence))
 
+                        /**
+                         * Sets [Builder.residence] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.residence] with a well-typed [Residence]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun residence(residence: JsonField<Residence>) = apply {
                             this.residence = residence
                         }
 
                         fun ssn(ssn: Boolean) = ssn(JsonField.of(ssn))
 
+                        /**
+                         * Sets [Builder.ssn] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.ssn] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3630,12 +5241,32 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun data(): Boolean? = data.getNullable("data")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun type(): Boolean? = type.getNullable("type")
 
+                        /**
+                         * Returns the raw JSON value of [data].
+                         *
+                         * Unlike [data], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Boolean> = data
 
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
@@ -3680,10 +5311,24 @@ private constructor(
 
                             fun data(data: Boolean) = data(JsonField.of(data))
 
+                            /**
+                             * Sets [Builder.data] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.data] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun data(data: JsonField<Boolean>) = apply { this.data = data }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3745,12 +5390,32 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun data(): Boolean? = data.getNullable("data")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun type(): Boolean? = type.getNullable("type")
 
+                        /**
+                         * Returns the raw JSON value of [data].
+                         *
+                         * Unlike [data], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<Boolean> = data
 
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
@@ -3797,10 +5462,24 @@ private constructor(
 
                             fun data(data: Boolean) = data(JsonField.of(data))
 
+                            /**
+                             * Sets [Builder.data] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.data] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun data(data: JsonField<Boolean>) = apply { this.data = data }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -3874,36 +5553,96 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun city(): Boolean? = city.getNullable("city")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun country(): Boolean? = country.getNullable("country")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line1(): Boolean? = line1.getNullable("line1")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun line2(): Boolean? = line2.getNullable("line2")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun postalCode(): Boolean? = postalCode.getNullable("postal_code")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun state(): Boolean? = state.getNullable("state")
 
+                        /**
+                         * Returns the raw JSON value of [city].
+                         *
+                         * Unlike [city], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("city") @ExcludeMissing fun _city(): JsonField<Boolean> = city
 
+                        /**
+                         * Returns the raw JSON value of [country].
+                         *
+                         * Unlike [country], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("country")
                         @ExcludeMissing
                         fun _country(): JsonField<Boolean> = country
 
+                        /**
+                         * Returns the raw JSON value of [line1].
+                         *
+                         * Unlike [line1], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line1")
                         @ExcludeMissing
                         fun _line1(): JsonField<Boolean> = line1
 
+                        /**
+                         * Returns the raw JSON value of [line2].
+                         *
+                         * Unlike [line2], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("line2")
                         @ExcludeMissing
                         fun _line2(): JsonField<Boolean> = line2
 
+                        /**
+                         * Returns the raw JSON value of [postalCode].
+                         *
+                         * Unlike [postalCode], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("postal_code")
                         @ExcludeMissing
                         fun _postalCode(): JsonField<Boolean> = postalCode
 
+                        /**
+                         * Returns the raw JSON value of [state].
+                         *
+                         * Unlike [state], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("state")
                         @ExcludeMissing
                         fun _state(): JsonField<Boolean> = state
@@ -3963,31 +5702,73 @@ private constructor(
 
                             fun city(city: Boolean) = city(JsonField.of(city))
 
+                            /**
+                             * Sets [Builder.city] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.city] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
+                            /**
+                             * Sets [Builder.country] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.country] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun country(country: JsonField<Boolean>) = apply {
                                 this.country = country
                             }
 
                             fun line1(line1: Boolean) = line1(JsonField.of(line1))
 
+                            /**
+                             * Sets [Builder.line1] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line1] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
+                            /**
+                             * Sets [Builder.line2] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.line2] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
 
+                            /**
+                             * Sets [Builder.postalCode] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.postalCode] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun postalCode(postalCode: JsonField<Boolean>) = apply {
                                 this.postalCode = postalCode
                             }
 
                             fun state(state: Boolean) = state(JsonField.of(state))
 
+                            /**
+                             * Sets [Builder.state] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.state] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -4080,22 +5861,62 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun id(): Boolean? = id.getNullable("id")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun name(): Boolean? = name.getNullable("name")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payFrequencies(): Boolean? = payFrequencies.getNullable("pay_frequencies")
 
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                    /**
+                     * Returns the raw JSON value of [individualIds].
+                     *
+                     * Unlike [individualIds], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
                     fun _individualIds(): JsonField<Boolean> = individualIds
 
+                    /**
+                     * Returns the raw JSON value of [name].
+                     *
+                     * Unlike [name], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<Boolean> = name
 
+                    /**
+                     * Returns the raw JSON value of [payFrequencies].
+                     *
+                     * Unlike [payFrequencies], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     fun _payFrequencies(): JsonField<Boolean> = payFrequencies
@@ -4151,22 +5972,50 @@ private constructor(
 
                         fun id(id: Boolean) = id(JsonField.of(id))
 
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun individualIds(individualIds: Boolean) =
                             individualIds(JsonField.of(individualIds))
 
+                        /**
+                         * Sets [Builder.individualIds] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.individualIds] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun individualIds(individualIds: JsonField<Boolean>) = apply {
                             this.individualIds = individualIds
                         }
 
                         fun name(name: Boolean) = name(JsonField.of(name))
 
+                        /**
+                         * Sets [Builder.name] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.name] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                         fun payFrequencies(payFrequencies: Boolean) =
                             payFrequencies(JsonField.of(payFrequencies))
 
+                        /**
+                         * Sets [Builder.payFrequencies] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payFrequencies] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
                             this.payFrequencies = payFrequencies
                         }
@@ -4235,15 +6084,35 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun paging(): Paging? = paging.getNullable("paging")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payStatements(): PayStatements? =
                         payStatements.getNullable("pay_statements")
 
+                    /**
+                     * Returns the raw JSON value of [paging].
+                     *
+                     * Unlike [paging], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("paging")
                     @ExcludeMissing
                     fun _paging(): JsonField<Paging> = paging
 
+                    /**
+                     * Returns the raw JSON value of [payStatements].
+                     *
+                     * Unlike [payStatements], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_statements")
                     @ExcludeMissing
                     fun _payStatements(): JsonField<PayStatements> = payStatements
@@ -4294,11 +6163,25 @@ private constructor(
 
                         fun paging(paging: Paging) = paging(JsonField.of(paging))
 
+                        /**
+                         * Sets [Builder.paging] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.paging] with a well-typed [Paging] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun payStatements(payStatements: PayStatements) =
                             payStatements(JsonField.of(payStatements))
 
+                        /**
+                         * Sets [Builder.payStatements] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payStatements] with a well-typed
+                         * [PayStatements] value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
                         fun payStatements(payStatements: JsonField<PayStatements>) = apply {
                             this.payStatements = payStatements
                         }
@@ -4348,14 +6231,36 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type or is unexpectedly missing or null (e.g. if the server responded
+                         *   with an unexpected value).
+                         */
                         fun count(): Boolean = count.getRequired("count")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type or is unexpectedly missing or null (e.g. if the server responded
+                         *   with an unexpected value).
+                         */
                         fun offset(): Boolean = offset.getRequired("offset")
 
+                        /**
+                         * Returns the raw JSON value of [count].
+                         *
+                         * Unlike [count], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("count")
                         @ExcludeMissing
                         fun _count(): JsonField<Boolean> = count
 
+                        /**
+                         * Returns the raw JSON value of [offset].
+                         *
+                         * Unlike [offset], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("offset")
                         @ExcludeMissing
                         fun _offset(): JsonField<Boolean> = offset
@@ -4408,10 +6313,24 @@ private constructor(
 
                             fun count(count: Boolean) = count(JsonField.of(count))
 
+                            /**
+                             * Sets [Builder.count] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.count] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun count(count: JsonField<Boolean>) = apply { this.count = count }
 
                             fun offset(offset: Boolean) = offset(JsonField.of(offset))
 
+                            /**
+                             * Sets [Builder.offset] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.offset] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun offset(offset: JsonField<Boolean>) = apply { this.offset = offset }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -4503,66 +6422,166 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun earnings(): Earnings? = earnings.getNullable("earnings")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun employeeDeductions(): EmployeeDeductions? =
                             employeeDeductions.getNullable("employee_deductions")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun employerContributions(): EmployerContributions? =
                             employerContributions.getNullable("employer_contributions")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun individualId(): Boolean? = individualId.getNullable("individual_id")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun netPay(): Boolean? = netPay.getNullable("net_pay")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun paymentMethod(): Boolean? = paymentMethod.getNullable("payment_method")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun taxes(): Taxes? = taxes.getNullable("taxes")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun totalHours(): Boolean? = totalHours.getNullable("total_hours")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun type(): Boolean? = type.getNullable("type")
 
+                        /**
+                         * Returns the raw JSON value of [earnings].
+                         *
+                         * Unlike [earnings], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("earnings")
                         @ExcludeMissing
                         fun _earnings(): JsonField<Earnings> = earnings
 
+                        /**
+                         * Returns the raw JSON value of [employeeDeductions].
+                         *
+                         * Unlike [employeeDeductions], this method doesn't throw if the JSON field
+                         * has an unexpected type.
+                         */
                         @JsonProperty("employee_deductions")
                         @ExcludeMissing
                         fun _employeeDeductions(): JsonField<EmployeeDeductions> =
                             employeeDeductions
 
+                        /**
+                         * Returns the raw JSON value of [employerContributions].
+                         *
+                         * Unlike [employerContributions], this method doesn't throw if the JSON
+                         * field has an unexpected type.
+                         */
                         @JsonProperty("employer_contributions")
                         @ExcludeMissing
                         fun _employerContributions(): JsonField<EmployerContributions> =
                             employerContributions
 
+                        /**
+                         * Returns the raw JSON value of [grossPay].
+                         *
+                         * Unlike [grossPay], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("gross_pay")
                         @ExcludeMissing
                         fun _grossPay(): JsonField<Boolean> = grossPay
 
+                        /**
+                         * Returns the raw JSON value of [individualId].
+                         *
+                         * Unlike [individualId], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("individual_id")
                         @ExcludeMissing
                         fun _individualId(): JsonField<Boolean> = individualId
 
+                        /**
+                         * Returns the raw JSON value of [netPay].
+                         *
+                         * Unlike [netPay], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("net_pay")
                         @ExcludeMissing
                         fun _netPay(): JsonField<Boolean> = netPay
 
+                        /**
+                         * Returns the raw JSON value of [paymentMethod].
+                         *
+                         * Unlike [paymentMethod], this method doesn't throw if the JSON field has
+                         * an unexpected type.
+                         */
                         @JsonProperty("payment_method")
                         @ExcludeMissing
                         fun _paymentMethod(): JsonField<Boolean> = paymentMethod
 
+                        /**
+                         * Returns the raw JSON value of [taxes].
+                         *
+                         * Unlike [taxes], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("taxes")
                         @ExcludeMissing
                         fun _taxes(): JsonField<Taxes> = taxes
 
+                        /**
+                         * Returns the raw JSON value of [totalHours].
+                         *
+                         * Unlike [totalHours], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("total_hours")
                         @ExcludeMissing
                         fun _totalHours(): JsonField<Boolean> = totalHours
 
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Boolean> = type
 
                         @JsonAnyGetter
@@ -4635,6 +6654,13 @@ private constructor(
 
                             fun earnings(earnings: Earnings) = earnings(JsonField.of(earnings))
 
+                            /**
+                             * Sets [Builder.earnings] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.earnings] with a well-typed
+                             * [Earnings] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun earnings(earnings: JsonField<Earnings>) = apply {
                                 this.earnings = earnings
                             }
@@ -4642,6 +6668,14 @@ private constructor(
                             fun employeeDeductions(employeeDeductions: EmployeeDeductions) =
                                 employeeDeductions(JsonField.of(employeeDeductions))
 
+                            /**
+                             * Sets [Builder.employeeDeductions] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.employeeDeductions] with a
+                             * well-typed [EmployeeDeductions] value instead. This method is
+                             * primarily for setting the field to an undocumented or not yet
+                             * supported value.
+                             */
                             fun employeeDeductions(
                                 employeeDeductions: JsonField<EmployeeDeductions>
                             ) = apply { this.employeeDeductions = employeeDeductions }
@@ -4650,12 +6684,27 @@ private constructor(
                                 employerContributions: EmployerContributions
                             ) = employerContributions(JsonField.of(employerContributions))
 
+                            /**
+                             * Sets [Builder.employerContributions] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.employerContributions] with a
+                             * well-typed [EmployerContributions] value instead. This method is
+                             * primarily for setting the field to an undocumented or not yet
+                             * supported value.
+                             */
                             fun employerContributions(
                                 employerContributions: JsonField<EmployerContributions>
                             ) = apply { this.employerContributions = employerContributions }
 
                             fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
 
+                            /**
+                             * Sets [Builder.grossPay] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.grossPay] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun grossPay(grossPay: JsonField<Boolean>) = apply {
                                 this.grossPay = grossPay
                             }
@@ -4663,34 +6712,76 @@ private constructor(
                             fun individualId(individualId: Boolean) =
                                 individualId(JsonField.of(individualId))
 
+                            /**
+                             * Sets [Builder.individualId] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.individualId] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun individualId(individualId: JsonField<Boolean>) = apply {
                                 this.individualId = individualId
                             }
 
                             fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
 
+                            /**
+                             * Sets [Builder.netPay] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.netPay] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
 
                             fun paymentMethod(paymentMethod: Boolean) =
                                 paymentMethod(JsonField.of(paymentMethod))
 
+                            /**
+                             * Sets [Builder.paymentMethod] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.paymentMethod] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun paymentMethod(paymentMethod: JsonField<Boolean>) = apply {
                                 this.paymentMethod = paymentMethod
                             }
 
                             fun taxes(taxes: Taxes) = taxes(JsonField.of(taxes))
 
+                            /**
+                             * Sets [Builder.taxes] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.taxes] with a well-typed [Taxes]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun taxes(taxes: JsonField<Taxes>) = apply { this.taxes = taxes }
 
                             fun totalHours(totalHours: Boolean) =
                                 totalHours(JsonField.of(totalHours))
 
+                            /**
+                             * Sets [Builder.totalHours] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.totalHours] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun totalHours(totalHours: JsonField<Boolean>) = apply {
                                 this.totalHours = totalHours
                             }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -4752,26 +6843,66 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun amount(): Boolean? = amount.getNullable("amount")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun currency(): Boolean? = currency.getNullable("currency")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun name(): Boolean? = name.getNullable("name")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun type(): Boolean? = type.getNullable("type")
 
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("amount")
                             @ExcludeMissing
                             fun _amount(): JsonField<Boolean> = amount
 
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("currency")
                             @ExcludeMissing
                             fun _currency(): JsonField<Boolean> = currency
 
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("name")
                             @ExcludeMissing
                             fun _name(): JsonField<Boolean> = name
 
+                            /**
+                             * Returns the raw JSON value of [type].
+                             *
+                             * Unlike [type], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("type")
                             @ExcludeMissing
                             fun _type(): JsonField<Boolean> = type
@@ -4827,22 +6958,50 @@ private constructor(
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun amount(amount: JsonField<Boolean>) = apply {
                                     this.amount = amount
                                 }
 
                                 fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
 
                                 fun name(name: Boolean) = name(JsonField.of(name))
 
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun type(type: Boolean) = type(JsonField.of(type))
 
+                                /**
+                                 * Sets [Builder.type] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.type] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
@@ -4920,32 +7079,82 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun amount(): Boolean? = amount.getNullable("amount")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun currency(): Boolean? = currency.getNullable("currency")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun name(): Boolean? = name.getNullable("name")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun preTax(): Boolean? = preTax.getNullable("pre_tax")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun type(): Boolean? = type.getNullable("type")
 
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("amount")
                             @ExcludeMissing
                             fun _amount(): JsonField<Boolean> = amount
 
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("currency")
                             @ExcludeMissing
                             fun _currency(): JsonField<Boolean> = currency
 
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("name")
                             @ExcludeMissing
                             fun _name(): JsonField<Boolean> = name
 
+                            /**
+                             * Returns the raw JSON value of [preTax].
+                             *
+                             * Unlike [preTax], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("pre_tax")
                             @ExcludeMissing
                             fun _preTax(): JsonField<Boolean> = preTax
 
+                            /**
+                             * Returns the raw JSON value of [type].
+                             *
+                             * Unlike [type], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("type")
                             @ExcludeMissing
                             fun _type(): JsonField<Boolean> = type
@@ -5004,28 +7213,63 @@ private constructor(
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun amount(amount: JsonField<Boolean>) = apply {
                                     this.amount = amount
                                 }
 
                                 fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
 
                                 fun name(name: Boolean) = name(JsonField.of(name))
 
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun preTax(preTax: Boolean) = preTax(JsonField.of(preTax))
 
+                                /**
+                                 * Sets [Builder.preTax] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.preTax] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun preTax(preTax: JsonField<Boolean>) = apply {
                                     this.preTax = preTax
                                 }
 
                                 fun type(type: Boolean) = type(JsonField.of(type))
 
+                                /**
+                                 * Sets [Builder.type] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.type] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
@@ -5098,20 +7342,50 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun amount(): Boolean? = amount.getNullable("amount")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun currency(): Boolean? = currency.getNullable("currency")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun name(): Boolean? = name.getNullable("name")
 
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("amount")
                             @ExcludeMissing
                             fun _amount(): JsonField<Boolean> = amount
 
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("currency")
                             @ExcludeMissing
                             fun _currency(): JsonField<Boolean> = currency
 
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("name")
                             @ExcludeMissing
                             fun _name(): JsonField<Boolean> = name
@@ -5166,18 +7440,39 @@ private constructor(
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun amount(amount: JsonField<Boolean>) = apply {
                                     this.amount = amount
                                 }
 
                                 fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
 
                                 fun name(name: Boolean) = name(JsonField.of(name))
 
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun additionalProperties(
@@ -5254,32 +7549,82 @@ private constructor(
                                 immutableEmptyMap(),
                         ) {
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun amount(): Boolean? = amount.getNullable("amount")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun currency(): Boolean? = currency.getNullable("currency")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun employer(): Boolean? = employer.getNullable("employer")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun name(): Boolean? = name.getNullable("name")
 
+                            /**
+                             * @throws FinchInvalidDataException if the JSON field has an unexpected
+                             *   type (e.g. if the server responded with an unexpected value).
+                             */
                             fun type(): Boolean? = type.getNullable("type")
 
+                            /**
+                             * Returns the raw JSON value of [amount].
+                             *
+                             * Unlike [amount], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("amount")
                             @ExcludeMissing
                             fun _amount(): JsonField<Boolean> = amount
 
+                            /**
+                             * Returns the raw JSON value of [currency].
+                             *
+                             * Unlike [currency], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("currency")
                             @ExcludeMissing
                             fun _currency(): JsonField<Boolean> = currency
 
+                            /**
+                             * Returns the raw JSON value of [employer].
+                             *
+                             * Unlike [employer], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("employer")
                             @ExcludeMissing
                             fun _employer(): JsonField<Boolean> = employer
 
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("name")
                             @ExcludeMissing
                             fun _name(): JsonField<Boolean> = name
 
+                            /**
+                             * Returns the raw JSON value of [type].
+                             *
+                             * Unlike [type], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
                             @JsonProperty("type")
                             @ExcludeMissing
                             fun _type(): JsonField<Boolean> = type
@@ -5337,28 +7682,63 @@ private constructor(
 
                                 fun amount(amount: Boolean) = amount(JsonField.of(amount))
 
+                                /**
+                                 * Sets [Builder.amount] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.amount] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun amount(amount: JsonField<Boolean>) = apply {
                                     this.amount = amount
                                 }
 
                                 fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
+                                /**
+                                 * Sets [Builder.currency] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.currency] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun currency(currency: JsonField<Boolean>) = apply {
                                     this.currency = currency
                                 }
 
                                 fun employer(employer: Boolean) = employer(JsonField.of(employer))
 
+                                /**
+                                 * Sets [Builder.employer] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.employer] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun employer(employer: JsonField<Boolean>) = apply {
                                     this.employer = employer
                                 }
 
                                 fun name(name: Boolean) = name(JsonField.of(name))
 
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun type(type: Boolean) = type(JsonField.of(type))
 
+                                /**
+                                 * Sets [Builder.type] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.type] with a well-typed
+                                 * [Boolean] value instead. This method is primarily for setting the
+                                 * field to an undocumented or not yet supported value.
+                                 */
                                 fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
@@ -5493,72 +7873,192 @@ private constructor(
                     private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
                 ) {
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun id(): Boolean? = id.getNullable("id")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun companyDebit(): Boolean? = companyDebit.getNullable("company_debit")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun debitDate(): Boolean? = debitDate.getNullable("debit_date")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun employeeTaxes(): Boolean? = employeeTaxes.getNullable("employee_taxes")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun employerTaxes(): Boolean? = employerTaxes.getNullable("employer_taxes")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun grossPay(): Boolean? = grossPay.getNullable("gross_pay")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun individualIds(): Boolean? = individualIds.getNullable("individual_ids")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun netPay(): Boolean? = netPay.getNullable("net_pay")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payDate(): Boolean? = payDate.getNullable("pay_date")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payFrequencies(): Boolean? = payFrequencies.getNullable("pay_frequencies")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payGroupIds(): Boolean? = payGroupIds.getNullable("pay_group_ids")
 
+                    /**
+                     * @throws FinchInvalidDataException if the JSON field has an unexpected type
+                     *   (e.g. if the server responded with an unexpected value).
+                     */
                     fun payPeriod(): PayPeriod? = payPeriod.getNullable("pay_period")
 
+                    /**
+                     * Returns the raw JSON value of [id].
+                     *
+                     * Unlike [id], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
                     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<Boolean> = id
 
+                    /**
+                     * Returns the raw JSON value of [companyDebit].
+                     *
+                     * Unlike [companyDebit], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("company_debit")
                     @ExcludeMissing
                     fun _companyDebit(): JsonField<Boolean> = companyDebit
 
+                    /**
+                     * Returns the raw JSON value of [debitDate].
+                     *
+                     * Unlike [debitDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("debit_date")
                     @ExcludeMissing
                     fun _debitDate(): JsonField<Boolean> = debitDate
 
+                    /**
+                     * Returns the raw JSON value of [employeeTaxes].
+                     *
+                     * Unlike [employeeTaxes], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("employee_taxes")
                     @ExcludeMissing
                     fun _employeeTaxes(): JsonField<Boolean> = employeeTaxes
 
+                    /**
+                     * Returns the raw JSON value of [employerTaxes].
+                     *
+                     * Unlike [employerTaxes], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("employer_taxes")
                     @ExcludeMissing
                     fun _employerTaxes(): JsonField<Boolean> = employerTaxes
 
+                    /**
+                     * Returns the raw JSON value of [grossPay].
+                     *
+                     * Unlike [grossPay], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("gross_pay")
                     @ExcludeMissing
                     fun _grossPay(): JsonField<Boolean> = grossPay
 
+                    /**
+                     * Returns the raw JSON value of [individualIds].
+                     *
+                     * Unlike [individualIds], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("individual_ids")
                     @ExcludeMissing
                     fun _individualIds(): JsonField<Boolean> = individualIds
 
+                    /**
+                     * Returns the raw JSON value of [netPay].
+                     *
+                     * Unlike [netPay], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("net_pay")
                     @ExcludeMissing
                     fun _netPay(): JsonField<Boolean> = netPay
 
+                    /**
+                     * Returns the raw JSON value of [payDate].
+                     *
+                     * Unlike [payDate], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_date")
                     @ExcludeMissing
                     fun _payDate(): JsonField<Boolean> = payDate
 
+                    /**
+                     * Returns the raw JSON value of [payFrequencies].
+                     *
+                     * Unlike [payFrequencies], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_frequencies")
                     @ExcludeMissing
                     fun _payFrequencies(): JsonField<Boolean> = payFrequencies
 
+                    /**
+                     * Returns the raw JSON value of [payGroupIds].
+                     *
+                     * Unlike [payGroupIds], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_group_ids")
                     @ExcludeMissing
                     fun _payGroupIds(): JsonField<Boolean> = payGroupIds
 
+                    /**
+                     * Returns the raw JSON value of [payPeriod].
+                     *
+                     * Unlike [payPeriod], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
                     @JsonProperty("pay_period")
                     @ExcludeMissing
                     fun _payPeriod(): JsonField<PayPeriod> = payPeriod
@@ -5637,17 +8137,38 @@ private constructor(
 
                         fun id(id: Boolean) = id(JsonField.of(id))
 
+                        /**
+                         * Sets [Builder.id] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.id] with a well-typed [Boolean] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun companyDebit(companyDebit: Boolean) =
                             companyDebit(JsonField.of(companyDebit))
 
+                        /**
+                         * Sets [Builder.companyDebit] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.companyDebit] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun companyDebit(companyDebit: JsonField<Boolean>) = apply {
                             this.companyDebit = companyDebit
                         }
 
                         fun debitDate(debitDate: Boolean) = debitDate(JsonField.of(debitDate))
 
+                        /**
+                         * Sets [Builder.debitDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.debitDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun debitDate(debitDate: JsonField<Boolean>) = apply {
                             this.debitDate = debitDate
                         }
@@ -5655,6 +8176,13 @@ private constructor(
                         fun employeeTaxes(employeeTaxes: Boolean) =
                             employeeTaxes(JsonField.of(employeeTaxes))
 
+                        /**
+                         * Sets [Builder.employeeTaxes] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.employeeTaxes] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun employeeTaxes(employeeTaxes: JsonField<Boolean>) = apply {
                             this.employeeTaxes = employeeTaxes
                         }
@@ -5662,12 +8190,26 @@ private constructor(
                         fun employerTaxes(employerTaxes: Boolean) =
                             employerTaxes(JsonField.of(employerTaxes))
 
+                        /**
+                         * Sets [Builder.employerTaxes] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.employerTaxes] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun employerTaxes(employerTaxes: JsonField<Boolean>) = apply {
                             this.employerTaxes = employerTaxes
                         }
 
                         fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
 
+                        /**
+                         * Sets [Builder.grossPay] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.grossPay] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun grossPay(grossPay: JsonField<Boolean>) = apply {
                             this.grossPay = grossPay
                         }
@@ -5675,21 +8217,49 @@ private constructor(
                         fun individualIds(individualIds: Boolean) =
                             individualIds(JsonField.of(individualIds))
 
+                        /**
+                         * Sets [Builder.individualIds] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.individualIds] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun individualIds(individualIds: JsonField<Boolean>) = apply {
                             this.individualIds = individualIds
                         }
 
                         fun netPay(netPay: Boolean) = netPay(JsonField.of(netPay))
 
+                        /**
+                         * Sets [Builder.netPay] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.netPay] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
 
                         fun payDate(payDate: Boolean) = payDate(JsonField.of(payDate))
 
+                        /**
+                         * Sets [Builder.payDate] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payDate] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun payDate(payDate: JsonField<Boolean>) = apply { this.payDate = payDate }
 
                         fun payFrequencies(payFrequencies: Boolean) =
                             payFrequencies(JsonField.of(payFrequencies))
 
+                        /**
+                         * Sets [Builder.payFrequencies] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payFrequencies] with a well-typed
+                         * [Boolean] value instead. This method is primarily for setting the field
+                         * to an undocumented or not yet supported value.
+                         */
                         fun payFrequencies(payFrequencies: JsonField<Boolean>) = apply {
                             this.payFrequencies = payFrequencies
                         }
@@ -5697,12 +8267,26 @@ private constructor(
                         fun payGroupIds(payGroupIds: Boolean) =
                             payGroupIds(JsonField.of(payGroupIds))
 
+                        /**
+                         * Sets [Builder.payGroupIds] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payGroupIds] with a well-typed [Boolean]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun payGroupIds(payGroupIds: JsonField<Boolean>) = apply {
                             this.payGroupIds = payGroupIds
                         }
 
                         fun payPeriod(payPeriod: PayPeriod) = payPeriod(JsonField.of(payPeriod))
 
+                        /**
+                         * Sets [Builder.payPeriod] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.payPeriod] with a well-typed [PayPeriod]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
                         fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply {
                             this.payPeriod = payPeriod
                         }
@@ -5762,14 +8346,34 @@ private constructor(
                             immutableEmptyMap(),
                     ) {
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun endDate(): Boolean? = endDate.getNullable("end_date")
 
+                        /**
+                         * @throws FinchInvalidDataException if the JSON field has an unexpected
+                         *   type (e.g. if the server responded with an unexpected value).
+                         */
                         fun startDate(): Boolean? = startDate.getNullable("start_date")
 
+                        /**
+                         * Returns the raw JSON value of [endDate].
+                         *
+                         * Unlike [endDate], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("end_date")
                         @ExcludeMissing
                         fun _endDate(): JsonField<Boolean> = endDate
 
+                        /**
+                         * Returns the raw JSON value of [startDate].
+                         *
+                         * Unlike [startDate], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
                         @JsonProperty("start_date")
                         @ExcludeMissing
                         fun _startDate(): JsonField<Boolean> = startDate
@@ -5817,12 +8421,26 @@ private constructor(
 
                             fun endDate(endDate: Boolean) = endDate(JsonField.of(endDate))
 
+                            /**
+                             * Sets [Builder.endDate] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.endDate] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
                             fun endDate(endDate: JsonField<Boolean>) = apply {
                                 this.endDate = endDate
                             }
 
                             fun startDate(startDate: Boolean) = startDate(JsonField.of(startDate))
 
+                            /**
+                             * Sets [Builder.startDate] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.startDate] with a well-typed
+                             * [Boolean] value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
                             fun startDate(startDate: JsonField<Boolean>) = apply {
                                 this.startDate = startDate
                             }

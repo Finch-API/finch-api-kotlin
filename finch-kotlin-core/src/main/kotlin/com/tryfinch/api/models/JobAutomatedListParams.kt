@@ -70,13 +70,21 @@ private constructor(
         /** Number of items to return */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of items to return */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

@@ -14,6 +14,7 @@ import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -35,24 +36,60 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): String? = description.getNullable("description")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun frequency(): BenefitFrequency? = frequency.getNullable("frequency")
 
-    /** Type of benefit. */
+    /**
+     * Type of benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): BenefitType? = type.getNullable("type")
 
+    /**
+     * Returns the raw JSON value of [benefitId].
+     *
+     * Unlike [benefitId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
+    /**
+     * Returns the raw JSON value of [frequency].
+     *
+     * Unlike [frequency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("frequency")
     @ExcludeMissing
     fun _frequency(): JsonField<BenefitFrequency> = frequency
 
-    /** Type of benefit. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
 
     @JsonAnyGetter
@@ -110,20 +147,47 @@ private constructor(
 
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
+        /**
+         * Sets [Builder.benefitId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.benefitId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
+        /**
+         * Sets [Builder.frequency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.frequency] with a well-typed [BenefitFrequency] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { this.frequency = frequency }
 
         /** Type of benefit. */
         fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
 
-        /** Type of benefit. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
