@@ -191,6 +191,18 @@ private constructor(
             System.getenv("FINCH_WEBHOOK_SECRET")?.let { webhookSecret(it) }
         }
 
+        /**
+         * Returns an immutable instance of [ClientOptions].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .httpClient()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ClientOptions {
             val httpClient = checkRequired("httpClient", httpClient)
 

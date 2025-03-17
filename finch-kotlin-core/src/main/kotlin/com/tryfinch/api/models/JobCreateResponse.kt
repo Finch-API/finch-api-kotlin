@@ -224,6 +224,21 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [JobCreateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .allowedRefreshes()
+         * .jobId()
+         * .jobUrl()
+         * .remainingRefreshes()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): JobCreateResponse =
             JobCreateResponse(
                 checkRequired("allowedRefreshes", allowedRefreshes),
