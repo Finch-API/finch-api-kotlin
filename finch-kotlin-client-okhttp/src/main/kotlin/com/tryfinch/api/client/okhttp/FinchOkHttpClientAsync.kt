@@ -154,6 +154,11 @@ class FinchOkHttpClientAsync private constructor() {
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
+        /**
+         * Returns an immutable instance of [FinchClientAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): FinchClientAsync =
             FinchClientAsyncImpl(
                 clientOptions

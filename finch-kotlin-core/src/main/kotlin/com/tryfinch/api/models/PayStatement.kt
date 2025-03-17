@@ -472,6 +472,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [PayStatement].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayStatement =
             PayStatement(
                 (earnings ?: JsonMissing.of()).map { it.toImmutable() },
@@ -761,6 +766,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Earning].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Earning =
                 Earning(
                     amount,
@@ -867,6 +877,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Attributes].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Attributes = Attributes(metadata, additionalProperties.toImmutable())
             }
 
@@ -975,6 +990,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Metadata].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
                 }
 
@@ -1048,6 +1068,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [InnerMetadata].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): InnerMetadata =
                             InnerMetadata(additionalProperties.toImmutable())
                     }
@@ -1560,6 +1585,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [EmployeeDeduction].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): EmployeeDeduction =
                 EmployeeDeduction(
                     amount,
@@ -1666,6 +1696,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Attributes].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Attributes = Attributes(metadata, additionalProperties.toImmutable())
             }
 
@@ -1774,6 +1809,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Metadata].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
                 }
 
@@ -1847,6 +1887,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [InnerMetadata].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): InnerMetadata =
                             InnerMetadata(additionalProperties.toImmutable())
                     }
@@ -2154,6 +2199,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [EmployerContribution].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): EmployerContribution =
                 EmployerContribution(
                     amount,
@@ -2259,6 +2309,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Attributes].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Attributes = Attributes(metadata, additionalProperties.toImmutable())
             }
 
@@ -2367,6 +2422,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Metadata].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
                 }
 
@@ -2440,6 +2500,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [InnerMetadata].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): InnerMetadata =
                             InnerMetadata(additionalProperties.toImmutable())
                     }
@@ -2887,6 +2952,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Tax].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Tax =
                 Tax(
                     amount,
@@ -2993,6 +3063,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Attributes].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): Attributes = Attributes(metadata, additionalProperties.toImmutable())
             }
 
@@ -3101,6 +3176,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Metadata].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Metadata = Metadata(metadata, additionalProperties.toImmutable())
                 }
 
@@ -3174,6 +3254,11 @@ private constructor(
                             keys.forEach(::removeAdditionalProperty)
                         }
 
+                        /**
+                         * Returns an immutable instance of [InnerMetadata].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         */
                         fun build(): InnerMetadata =
                             InnerMetadata(additionalProperties.toImmutable())
                     }
