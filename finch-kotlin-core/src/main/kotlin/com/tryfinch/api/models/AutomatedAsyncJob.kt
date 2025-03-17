@@ -400,6 +400,26 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [AutomatedAsyncJob].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .completedAt()
+         * .createdAt()
+         * .jobId()
+         * .jobUrl()
+         * .params()
+         * .scheduledAt()
+         * .startedAt()
+         * .status()
+         * .type()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
                 checkRequired("completedAt", completedAt),
@@ -512,6 +532,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Params].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Params = Params(individualId, additionalProperties.toImmutable())
         }
 
