@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class IndividualInDirectoryTest {
 
     @Test
-    fun createIndividualInDirectory() {
+    fun create() {
         val individualInDirectory =
             IndividualInDirectory.builder()
                 .id("id")
@@ -19,7 +19,7 @@ internal class IndividualInDirectoryTest {
                 .manager(IndividualInDirectory.Manager.builder().id("id").build())
                 .middleName("middle_name")
                 .build()
-        assertThat(individualInDirectory).isNotNull
+
         assertThat(individualInDirectory.id()).isEqualTo("id")
         assertThat(individualInDirectory.department())
             .isEqualTo(IndividualInDirectory.Department.builder().name("name").build())

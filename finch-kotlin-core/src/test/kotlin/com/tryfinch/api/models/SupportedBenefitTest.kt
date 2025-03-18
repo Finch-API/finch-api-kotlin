@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class SupportedBenefitTest {
 
     @Test
-    fun createSupportedBenefit() {
+    fun create() {
         val supportedBenefit =
             SupportedBenefit.builder()
                 .annualMaximum(true)
@@ -20,7 +20,7 @@ internal class SupportedBenefitTest {
                 .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                 .type(BenefitType._401K)
                 .build()
-        assertThat(supportedBenefit).isNotNull
+
         assertThat(supportedBenefit.annualMaximum()).isEqualTo(true)
         assertThat(supportedBenefit.catchUp()).isEqualTo(true)
         assertThat(supportedBenefit.companyContribution())

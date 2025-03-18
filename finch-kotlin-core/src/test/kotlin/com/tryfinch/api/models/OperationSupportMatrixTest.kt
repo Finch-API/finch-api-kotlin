@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class OperationSupportMatrixTest {
 
     @Test
-    fun createOperationSupportMatrix() {
+    fun create() {
         val operationSupportMatrix =
             OperationSupportMatrix.builder()
                 .create(OperationSupport.SUPPORTED)
@@ -16,7 +16,7 @@ internal class OperationSupportMatrixTest {
                 .read(OperationSupport.SUPPORTED)
                 .update(OperationSupport.SUPPORTED)
                 .build()
-        assertThat(operationSupportMatrix).isNotNull
+
         assertThat(operationSupportMatrix.create()).isEqualTo(OperationSupport.SUPPORTED)
         assertThat(operationSupportMatrix.delete()).isEqualTo(OperationSupport.SUPPORTED)
         assertThat(operationSupportMatrix.read()).isEqualTo(OperationSupport.SUPPORTED)
