@@ -1,0 +1,29 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.tryfinch.api.models
+
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class JobCompletionEventTest {
+
+    @Test
+    fun create() {
+        val jobCompletionEvent =
+            JobCompletionEvent.builder()
+                .accountId("account_id")
+                .companyId("company_id")
+                .connectionId("connection_id")
+                .data(JobCompletionEvent.Data.builder().jobId("job_id").jobUrl("job_url").build())
+                .eventType(JobCompletionEvent.EventType.JOB_BENEFIT_CREATE_COMPLETED)
+                .build()
+
+        assertThat(jobCompletionEvent.accountId()).isEqualTo("account_id")
+        assertThat(jobCompletionEvent.companyId()).isEqualTo("company_id")
+        assertThat(jobCompletionEvent.connectionId()).isEqualTo("connection_id")
+        assertThat(jobCompletionEvent.data())
+            .isEqualTo(JobCompletionEvent.Data.builder().jobId("job_id").jobUrl("job_url").build())
+        assertThat(jobCompletionEvent.eventType())
+            .isEqualTo(JobCompletionEvent.EventType.JOB_BENEFIT_CREATE_COMPLETED)
+    }
+}

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class ProviderTest {
 
     @Test
-    fun createProvider() {
+    fun create() {
         val provider =
             Provider.builder()
                 .id("id")
@@ -923,7 +923,7 @@ internal class ProviderTest {
                 .primaryColor("primary_color")
                 .addProduct("string")
                 .build()
-        assertThat(provider).isNotNull
+
         assertThat(provider.id()).isEqualTo("id")
         assertThat(provider.authenticationMethods())
             .containsExactly(

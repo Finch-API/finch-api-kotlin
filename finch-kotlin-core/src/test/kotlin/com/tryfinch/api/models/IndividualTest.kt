@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class IndividualTest {
 
     @Test
-    fun createIndividual() {
+    fun create() {
         val individual =
             Individual.builder()
                 .id("id")
@@ -43,7 +43,7 @@ internal class IndividualTest {
                 )
                 .ssn("ssn")
                 .build()
-        assertThat(individual).isNotNull
+
         assertThat(individual.id()).isEqualTo("id")
         assertThat(individual.dob()).isEqualTo("dob")
         assertThat(individual.emails())
