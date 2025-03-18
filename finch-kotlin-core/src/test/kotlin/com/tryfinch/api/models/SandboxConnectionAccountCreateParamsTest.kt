@@ -37,7 +37,7 @@ internal class SandboxConnectionAccountCreateParamsTest {
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
             .isEqualTo(SandboxConnectionAccountCreateParams.AuthenticationType.CREDENTIAL)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+        assertThat(body.products()).containsExactly("string")
     }
 
     @Test

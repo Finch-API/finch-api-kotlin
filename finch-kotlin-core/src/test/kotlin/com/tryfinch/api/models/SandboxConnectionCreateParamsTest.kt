@@ -35,7 +35,7 @@ internal class SandboxConnectionCreateParamsTest {
         assertThat(body.authenticationType())
             .isEqualTo(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.employeeSize()).isEqualTo(0L)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+        assertThat(body.products()).containsExactly("string")
     }
 
     @Test

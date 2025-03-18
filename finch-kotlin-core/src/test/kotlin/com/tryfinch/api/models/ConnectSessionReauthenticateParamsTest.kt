@@ -34,7 +34,7 @@ internal class ConnectSessionReauthenticateParamsTest {
         assertThat(body.connectionId()).isEqualTo("connection_id")
         assertThat(body.minutesToExpire()).isEqualTo(0L)
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 
