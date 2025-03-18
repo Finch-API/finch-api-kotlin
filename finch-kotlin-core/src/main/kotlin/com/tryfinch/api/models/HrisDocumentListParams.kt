@@ -51,7 +51,7 @@ private constructor(
                 individualIds?.forEach { put("individual_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
-                types?.forEach { put("types[]", it.asString()) }
+                types?.forEach { put("types[]", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()
