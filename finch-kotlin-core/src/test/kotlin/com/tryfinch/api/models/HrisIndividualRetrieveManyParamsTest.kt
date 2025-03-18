@@ -44,12 +44,10 @@ internal class HrisIndividualRetrieveManyParamsTest {
                 HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
         assertThat(body.requests())
-            .isEqualTo(
-                listOf(
-                    HrisIndividualRetrieveManyParams.Request.builder()
-                        .individualId("individual_id")
-                        .build()
-                )
+            .containsExactly(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
             )
     }
 
