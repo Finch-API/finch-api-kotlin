@@ -3,9 +3,9 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.DirectoryCreateResponse
 import com.tryfinch.api.models.SandboxDirectoryCreateParams
 
 interface DirectoryServiceAsync {
@@ -19,10 +19,10 @@ interface DirectoryServiceAsync {
     suspend fun create(
         params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<JsonValue>
+    ): List<DirectoryCreateResponse>
 
     /** @see [create] */
-    suspend fun create(requestOptions: RequestOptions): List<JsonValue> =
+    suspend fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
     /**
@@ -38,11 +38,13 @@ interface DirectoryServiceAsync {
         suspend fun create(
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<JsonValue>>
+        ): HttpResponseFor<List<DirectoryCreateResponse>>
 
         /** @see [create] */
         @MustBeClosed
-        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<List<JsonValue>> =
+        suspend fun create(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<List<DirectoryCreateResponse>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)
     }
 }
