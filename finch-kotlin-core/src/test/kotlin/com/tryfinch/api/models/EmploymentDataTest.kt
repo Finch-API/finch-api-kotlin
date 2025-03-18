@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class EmploymentDataTest {
 
     @Test
-    fun createEmploymentData() {
+    fun create() {
         val employmentData =
             EmploymentData.builder()
                 .id("id")
@@ -68,7 +68,7 @@ internal class EmploymentDataTest {
                 .title("title")
                 .workId("work_id")
                 .build()
-        assertThat(employmentData).isNotNull
+
         assertThat(employmentData.id()).isEqualTo("id")
         assertThat(employmentData.classCode()).isEqualTo("class_code")
         assertThat(employmentData.customFields())
