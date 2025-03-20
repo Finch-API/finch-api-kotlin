@@ -5,10 +5,7 @@ package com.tryfinch.api.services.async
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.getRequiredHeader
-import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.http.Headers
-import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.errors.FinchException
 import com.tryfinch.api.models.WebhookEvent
 import java.security.MessageDigest
@@ -20,8 +17,6 @@ import javax.crypto.spec.SecretKeySpec
 
 class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookServiceAsync {
-
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
 
     override suspend fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)
