@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -312,7 +311,6 @@ internal class SandboxPaymentCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.payStatements())
             .containsExactly(
@@ -463,7 +461,5 @@ internal class SandboxPaymentCreateParamsTest {
         val params = SandboxPaymentCreateParams.builder().build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
