@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -38,7 +37,6 @@ internal class HrisIndividualRetrieveManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.options())
             .isEqualTo(
                 HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
@@ -56,7 +54,5 @@ internal class HrisIndividualRetrieveManyParamsTest {
         val params = HrisIndividualRetrieveManyParams.builder().build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }
