@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Finch Kotlin SDK provides convenient access to the Finch REST API from applications written in Kotlin.
+The Finch Kotlin SDK provides convenient access to the [Finch REST API](https://developer.tryfinch.com/) from applications written in Kotlin.
 
 The Finch Kotlin SDK is similar to the Finch Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
 
@@ -33,9 +33,9 @@ implementation("com.tryfinch.api:finch-kotlin:4.2.0")
 
 ```xml
 <dependency>
-    <groupId>com.tryfinch.api</groupId>
-    <artifactId>finch-kotlin</artifactId>
-    <version>4.2.0</version>
+  <groupId>com.tryfinch.api</groupId>
+  <artifactId>finch-kotlin</artifactId>
+  <version>4.2.0</version>
 </dependency>
 ```
 
