@@ -10,22 +10,22 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class Money
-@JsonCreator
 private constructor(
-    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency")
-    @ExcludeMissing
-    private val currency: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val amount: JsonField<Long>,
+    private val currency: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
+    ) : this(amount, currency, mutableMapOf())
 
     /**
      * Amount for money object (in cents)
@@ -55,21 +55,15 @@ private constructor(
      */
     @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Money = apply {
-        if (validated) {
-            return@apply
-        }
-
-        amount()
-        currency()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -144,7 +138,19 @@ private constructor(
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): Money = Money(amount, currency, additionalProperties.toImmutable())
+        fun build(): Money = Money(amount, currency, additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): Money = apply {
+        if (validated) {
+            return@apply
+        }
+
+        amount()
+        currency()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

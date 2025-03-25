@@ -10,10 +10,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
+import java.util.Collections
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -81,16 +79,18 @@ private constructor(
         ) = HrisDirectoryListIndividualsPageAsync(directoryService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("individuals")
-        private val individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
-        @JsonProperty("paging") private val paging: JsonField<Paging> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val individuals: JsonField<List<IndividualInDirectory>>,
+        private val paging: JsonField<Paging>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individuals")
+            individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
+            @JsonProperty("paging") paging: JsonField<Paging> = JsonMissing.of(),
+        ) : this(individuals, paging, mutableMapOf())
 
         fun individuals(): List<IndividualInDirectory> =
             individuals.getNullable("individuals") ?: listOf()
@@ -102,9 +102,15 @@ private constructor(
 
         @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -175,7 +181,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Response =
-                Response(individuals, paging, additionalProperties.toImmutable())
+                Response(individuals, paging, additionalProperties.toMutableMap())
         }
     }
 
