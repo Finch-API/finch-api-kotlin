@@ -10,24 +10,27 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class AutomatedListResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("data")
-    @ExcludeMissing
-    private val data: JsonField<List<AutomatedAsyncJob>> = JsonMissing.of(),
-    @JsonProperty("meta") @ExcludeMissing private val meta: JsonField<Meta> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val data: JsonField<List<AutomatedAsyncJob>>,
+    private val meta: JsonField<Meta>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("data")
+        @ExcludeMissing
+        data: JsonField<List<AutomatedAsyncJob>> = JsonMissing.of(),
+        @JsonProperty("meta") @ExcludeMissing meta: JsonField<Meta> = JsonMissing.of(),
+    ) : this(data, meta, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -55,21 +58,15 @@ private constructor(
      */
     @JsonProperty("meta") @ExcludeMissing fun _meta(): JsonField<Meta> = meta
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): AutomatedListResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        data().forEach { it.validate() }
-        meta().validate()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -171,20 +168,32 @@ private constructor(
             AutomatedListResponse(
                 checkRequired("data", data).map { it.toImmutable() },
                 checkRequired("meta", meta),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): AutomatedListResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        data().forEach { it.validate() }
+        meta().validate()
+        validated = true
+    }
+
     class Meta
-    @JsonCreator
     private constructor(
-        @JsonProperty("quotas")
-        @ExcludeMissing
-        private val quotas: JsonField<Quotas> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val quotas: JsonField<Quotas>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("quotas") @ExcludeMissing quotas: JsonField<Quotas> = JsonMissing.of()
+        ) : this(quotas, mutableMapOf())
 
         /**
          * Information about remaining quotas for this connection. Only applicable for customers
@@ -203,20 +212,15 @@ private constructor(
          */
         @JsonProperty("quotas") @ExcludeMissing fun _quotas(): JsonField<Quotas> = quotas
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Meta = apply {
-            if (validated) {
-                return@apply
-            }
-
-            quotas()?.validate()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -277,7 +281,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Meta = Meta(quotas, additionalProperties.toImmutable())
+            fun build(): Meta = Meta(quotas, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Meta = apply {
+            if (validated) {
+                return@apply
+            }
+
+            quotas()?.validate()
+            validated = true
         }
 
         /**
@@ -285,16 +300,18 @@ private constructor(
          * opted in to use Finch's Data Sync Refresh endpoint (`POST /jobs/automated`). Please
          * contact a Finch representative for more details.
          */
-        @NoAutoDetect
         class Quotas
-        @JsonCreator
         private constructor(
-            @JsonProperty("data_sync_all")
-            @ExcludeMissing
-            private val dataSyncAll: JsonField<DataSyncAll> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val dataSyncAll: JsonField<DataSyncAll>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("data_sync_all")
+                @ExcludeMissing
+                dataSyncAll: JsonField<DataSyncAll> = JsonMissing.of()
+            ) : this(dataSyncAll, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -312,20 +329,15 @@ private constructor(
             @ExcludeMissing
             fun _dataSyncAll(): JsonField<DataSyncAll> = dataSyncAll
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Quotas = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                dataSyncAll()?.validate()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -386,22 +398,36 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Quotas = Quotas(dataSyncAll, additionalProperties.toImmutable())
+                fun build(): Quotas = Quotas(dataSyncAll, additionalProperties.toMutableMap())
             }
 
-            @NoAutoDetect
+            private var validated: Boolean = false
+
+            fun validate(): Quotas = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                dataSyncAll()?.validate()
+                validated = true
+            }
+
             class DataSyncAll
-            @JsonCreator
             private constructor(
-                @JsonProperty("allowed_refreshes")
-                @ExcludeMissing
-                private val allowedRefreshes: JsonField<Long> = JsonMissing.of(),
-                @JsonProperty("remaining_refreshes")
-                @ExcludeMissing
-                private val remainingRefreshes: JsonField<Long> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val allowedRefreshes: JsonField<Long>,
+                private val remainingRefreshes: JsonField<Long>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("allowed_refreshes")
+                    @ExcludeMissing
+                    allowedRefreshes: JsonField<Long> = JsonMissing.of(),
+                    @JsonProperty("remaining_refreshes")
+                    @ExcludeMissing
+                    remainingRefreshes: JsonField<Long> = JsonMissing.of(),
+                ) : this(allowedRefreshes, remainingRefreshes, mutableMapOf())
 
                 /**
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.
@@ -436,21 +462,15 @@ private constructor(
                 @ExcludeMissing
                 fun _remainingRefreshes(): JsonField<Long> = remainingRefreshes
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): DataSyncAll = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    allowedRefreshes()
-                    remainingRefreshes()
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -532,8 +552,20 @@ private constructor(
                         DataSyncAll(
                             allowedRefreshes,
                             remainingRefreshes,
-                            additionalProperties.toImmutable(),
+                            additionalProperties.toMutableMap(),
                         )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): DataSyncAll = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    allowedRefreshes()
+                    remainingRefreshes()
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {

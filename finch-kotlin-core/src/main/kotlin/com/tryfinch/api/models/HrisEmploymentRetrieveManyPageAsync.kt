@@ -10,10 +10,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
+import java.util.Collections
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -66,15 +64,16 @@ private constructor(
         ) = HrisEmploymentRetrieveManyPageAsync(employmentsService, params, response)
     }
 
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("responses")
-        private val responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Response(
+        private val responses: JsonField<List<EmploymentDataResponse>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("responses")
+            responses: JsonField<List<EmploymentDataResponse>> = JsonMissing.of()
+        ) : this(responses, mutableMapOf())
 
         fun responses(): List<EmploymentDataResponse> =
             responses.getNullable("responses") ?: listOf()
@@ -82,9 +81,15 @@ private constructor(
         @JsonProperty("responses")
         fun _responses(): JsonField<List<EmploymentDataResponse>>? = responses
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         private var validated: Boolean = false
 
@@ -147,7 +152,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Response = Response(responses, additionalProperties.toImmutable())
+            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
         }
     }
 
