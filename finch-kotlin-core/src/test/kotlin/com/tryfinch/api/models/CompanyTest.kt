@@ -11,7 +11,7 @@ internal class CompanyTest {
     fun create() {
         val company =
             Company.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addAccount(
                     Company.Account.builder()
                         .accountName("account_name")
@@ -47,11 +47,11 @@ internal class CompanyTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
-        assertThat(company.id()).isEqualTo("id")
+        assertThat(company.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(company.accounts())
             .containsExactly(
                 Company.Account.builder()
@@ -91,7 +91,7 @@ internal class CompanyTest {
                     .state("state")
                     .build()
             )
-        assertThat(company.primaryEmail()).isEqualTo("primary_email")
+        assertThat(company.primaryEmail()).isEqualTo("dev@stainless.com")
         assertThat(company.primaryPhoneNumber()).isEqualTo("primary_phone_number")
     }
 }
