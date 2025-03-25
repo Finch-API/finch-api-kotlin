@@ -48,7 +48,7 @@ internal class CompanyUpdateResponseTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
@@ -91,7 +91,7 @@ internal class CompanyUpdateResponseTest {
                     .state("state")
                     .build()
             )
-        assertThat(companyUpdateResponse.primaryEmail()).isEqualTo("primary_email")
+        assertThat(companyUpdateResponse.primaryEmail()).isEqualTo("dev@stainless.com")
         assertThat(companyUpdateResponse.primaryPhoneNumber()).isEqualTo("primary_phone_number")
     }
 }
