@@ -2716,7 +2716,7 @@ private constructor(
                     additionalProperties = phoneNumber.additionalProperties.toMutableMap()
                 }
 
-                fun data(data: String) = data(JsonField.of(data))
+                fun data(data: String?) = data(JsonField.ofNullable(data))
 
                 /**
                  * Sets [Builder.data] to an arbitrary JSON value.
