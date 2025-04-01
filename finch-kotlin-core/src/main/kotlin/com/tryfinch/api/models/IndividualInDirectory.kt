@@ -42,7 +42,7 @@ private constructor(
     ) : this(id, department, firstName, isActive, lastName, manager, middleName, mutableMapOf())
 
     /**
-     * A stable Finch id (UUID v4) for an individual in the company.
+     * A stable Finch `id` (UUID v4) for an individual in the company.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -189,7 +189,7 @@ private constructor(
             additionalProperties = individualInDirectory.additionalProperties.toMutableMap()
         }
 
-        /** A stable Finch id (UUID v4) for an individual in the company. */
+        /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: String) = id(JsonField.of(id))
 
         /**

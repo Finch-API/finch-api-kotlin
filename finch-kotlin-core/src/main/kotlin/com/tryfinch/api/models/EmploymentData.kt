@@ -103,7 +103,7 @@ private constructor(
     )
 
     /**
-     * string A stable Finch `id` (UUID v4) for an individual in the company.
+     * A stable Finch `id` (UUID v4) for an individual in the company.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -482,7 +482,7 @@ private constructor(
             additionalProperties = employmentData.additionalProperties.toMutableMap()
         }
 
-        /** string A stable Finch `id` (UUID v4) for an individual in the company. */
+        /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: String) = id(JsonField.of(id))
 
         /**

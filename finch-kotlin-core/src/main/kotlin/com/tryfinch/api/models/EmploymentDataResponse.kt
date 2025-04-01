@@ -44,6 +44,8 @@ private constructor(
     fun code(): Long? = code.getNullable("code")
 
     /**
+     * A stable Finch `id` (UUID v4) for an individual in the company.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -126,6 +128,7 @@ private constructor(
          */
         fun code(code: JsonField<Long>) = apply { this.code = code }
 
+        /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
         /**

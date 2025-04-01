@@ -88,7 +88,7 @@ internal class SandboxDirectoryCreateParamsTest {
                     )
                     .manager(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
-                            .id("id")
+                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
                     )
                     .middleName("middle_name")
@@ -210,7 +210,7 @@ internal class SandboxDirectoryCreateParamsTest {
                         )
                         .manager(
                             SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
-                                .id("id")
+                                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                 .build()
                         )
                         .middleName("middle_name")
@@ -326,7 +326,7 @@ internal class SandboxDirectoryCreateParamsTest {
                     )
                     .manager(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.Manager.builder()
-                            .id("id")
+                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .build()
                     )
                     .middleName("middle_name")
