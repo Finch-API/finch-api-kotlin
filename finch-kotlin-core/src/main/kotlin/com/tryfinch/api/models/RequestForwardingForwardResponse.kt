@@ -240,6 +240,24 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (data.asKnown() == null) 0 else 1) +
+            (request.asKnown()?.validity() ?: 0) +
+            (if (statusCode.asKnown() == null) 0 else 1)
+
     /**
      * An object containing details of your original forwarded request, for your ease of reference.
      */
@@ -483,6 +501,25 @@ private constructor(
             route()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (data.asKnown() == null) 0 else 1) +
+                (if (method.asKnown() == null) 0 else 1) +
+                (if (route.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

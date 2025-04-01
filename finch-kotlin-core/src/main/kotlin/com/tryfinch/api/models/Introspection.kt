@@ -797,11 +797,11 @@ private constructor(
         accountId()
         authenticationMethods().forEach { it.validate() }
         clientId()
-        clientType()
+        clientType().validate()
         companyId()
         connectionId()
         connectionStatus().validate()
-        connectionType()
+        connectionType().validate()
         customerEmail()
         customerId()
         customerName()
@@ -812,6 +812,37 @@ private constructor(
         username()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (accountId.asKnown() == null) 0 else 1) +
+            (authenticationMethods.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (clientId.asKnown() == null) 0 else 1) +
+            (clientType.asKnown()?.validity() ?: 0) +
+            (if (companyId.asKnown() == null) 0 else 1) +
+            (if (connectionId.asKnown() == null) 0 else 1) +
+            (connectionStatus.asKnown()?.validity() ?: 0) +
+            (connectionType.asKnown()?.validity() ?: 0) +
+            (if (customerEmail.asKnown() == null) 0 else 1) +
+            (if (customerId.asKnown() == null) 0 else 1) +
+            (if (customerName.asKnown() == null) 0 else 1) +
+            (if (manual.asKnown() == null) 0 else 1) +
+            (if (payrollProviderId.asKnown() == null) 0 else 1) +
+            (products.asKnown()?.size ?: 0) +
+            (if (providerId.asKnown() == null) 0 else 1) +
+            (if (username.asKnown() == null) 0 else 1)
 
     class AuthenticationMethod
     private constructor(
@@ -1008,9 +1039,28 @@ private constructor(
 
             connectionStatus()?.validate()
             products()
-            type()
+            type()?.validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (connectionStatus.asKnown()?.validity() ?: 0) +
+                (products.asKnown()?.size ?: 0) +
+                (type.asKnown()?.validity() ?: 0)
 
         class ConnectionStatus
         private constructor(
@@ -1149,9 +1199,26 @@ private constructor(
                 }
 
                 message()
-                status()
+                status()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (message.asKnown() == null) 0 else 1) + (status.asKnown()?.validity() ?: 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1274,6 +1341,33 @@ private constructor(
              */
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1398,6 +1492,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): ClientType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1590,9 +1711,28 @@ private constructor(
 
             lastSuccessfulSync()
             message()
-            status()
+            status()?.validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (lastSuccessfulSync.asKnown() == null) 0 else 1) +
+                (if (message.asKnown() == null) 0 else 1) +
+                (status.asKnown()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1704,6 +1844,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

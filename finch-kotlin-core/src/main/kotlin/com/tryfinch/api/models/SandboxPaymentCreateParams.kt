@@ -471,6 +471,25 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (endDate.asKnown() == null) 0 else 1) +
+                (payStatements.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (startDate.asKnown() == null) 0 else 1)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -997,12 +1016,38 @@ private constructor(
             grossPay()?.validate()
             individualId()
             netPay()?.validate()
-            paymentMethod()
+            paymentMethod()?.validate()
             taxes()?.forEach { it?.validate() }
             totalHours()
-            type()
+            type()?.validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (earnings.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (employeeDeductions.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (employerContributions.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (grossPay.asKnown()?.validity() ?: 0) +
+                (if (individualId.asKnown() == null) 0 else 1) +
+                (netPay.asKnown()?.validity() ?: 0) +
+                (paymentMethod.asKnown()?.validity() ?: 0) +
+                (taxes.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (if (totalHours.asKnown() == null) 0 else 1) +
+                (type.asKnown()?.validity() ?: 0)
 
         class Earning
         private constructor(
@@ -1303,9 +1348,31 @@ private constructor(
                 currency()
                 hours()
                 name()
-                type()
+                type()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (attributes.asKnown()?.validity() ?: 0) +
+                    (if (currency.asKnown() == null) 0 else 1) +
+                    (if (hours.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
 
             class Attributes
             private constructor(
@@ -1417,6 +1484,22 @@ private constructor(
                     metadata()?.validate()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
 
                 class Metadata
                 private constructor(
@@ -1541,6 +1624,22 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
+
                     /**
                      * The metadata to be attached to the entity by existing rules. It is a
                      * key-value pairs where the values can be of any type (string, number, boolean,
@@ -1620,6 +1719,25 @@ private constructor(
 
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        internal fun validity(): Int =
+                            additionalProperties.count { (_, value) ->
+                                !value.isNull() && !value.isMissing()
+                            }
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -1829,6 +1947,33 @@ private constructor(
                  */
                 fun asString(): String =
                     _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -2162,9 +2307,31 @@ private constructor(
                 currency()
                 name()
                 preTax()
-                type()
+                type()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (attributes.asKnown()?.validity() ?: 0) +
+                    (if (currency.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (if (preTax.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
 
             class Attributes
             private constructor(
@@ -2276,6 +2443,22 @@ private constructor(
                     metadata()?.validate()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
 
                 class Metadata
                 private constructor(
@@ -2400,6 +2583,22 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
+
                     /**
                      * The metadata to be attached to the entity by existing rules. It is a
                      * key-value pairs where the values can be of any type (string, number, boolean,
@@ -2479,6 +2678,25 @@ private constructor(
 
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        internal fun validity(): Int =
+                            additionalProperties.count { (_, value) ->
+                                !value.isNull() && !value.isMissing()
+                            }
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -2811,9 +3029,30 @@ private constructor(
                 attributes()?.validate()
                 currency()
                 name()
-                type()
+                type()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (attributes.asKnown()?.validity() ?: 0) +
+                    (if (currency.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
 
             class Attributes
             private constructor(
@@ -2925,6 +3164,22 @@ private constructor(
                     metadata()?.validate()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
 
                 class Metadata
                 private constructor(
@@ -3049,6 +3304,22 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
+
                     /**
                      * The metadata to be attached to the entity by existing rules. It is a
                      * key-value pairs where the values can be of any type (string, number, boolean,
@@ -3128,6 +3399,25 @@ private constructor(
 
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        internal fun validity(): Int =
+                            additionalProperties.count { (_, value) ->
+                                !value.isNull() && !value.isMissing()
+                            }
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -3290,6 +3580,33 @@ private constructor(
              */
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): PaymentMethod = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -3602,9 +3919,31 @@ private constructor(
                 currency()
                 employer()
                 name()
-                type()
+                type()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (attributes.asKnown()?.validity() ?: 0) +
+                    (if (currency.asKnown() == null) 0 else 1) +
+                    (if (employer.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
 
             class Attributes
             private constructor(
@@ -3716,6 +4055,22 @@ private constructor(
                     metadata()?.validate()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
 
                 class Metadata
                 private constructor(
@@ -3840,6 +4195,22 @@ private constructor(
                         validated = true
                     }
 
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: FinchInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    internal fun validity(): Int = (metadata.asKnown()?.validity() ?: 0)
+
                     /**
                      * The metadata to be attached to the entity by existing rules. It is a
                      * key-value pairs where the values can be of any type (string, number, boolean,
@@ -3919,6 +4290,25 @@ private constructor(
 
                             validated = true
                         }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: FinchInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        internal fun validity(): Int =
+                            additionalProperties.count { (_, value) ->
+                                !value.isNull() && !value.isMissing()
+                            }
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -4075,6 +4465,33 @@ private constructor(
                 fun asString(): String =
                     _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
@@ -4197,6 +4614,33 @@ private constructor(
              */
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

@@ -233,9 +233,28 @@ private constructor(
         amount()
         currency()
         effectiveDate()
-        unit()
+        unit()?.validate()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (amount.asKnown() == null) 0 else 1) +
+            (if (currency.asKnown() == null) 0 else 1) +
+            (if (effectiveDate.asKnown() == null) 0 else 1) +
+            (unit.asKnown()?.validity() ?: 0)
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
@@ -366,6 +385,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): Unit = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

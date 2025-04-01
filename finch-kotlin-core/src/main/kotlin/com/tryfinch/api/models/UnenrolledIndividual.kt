@@ -182,6 +182,24 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (body.asKnown()?.validity() ?: 0) +
+            (if (code.asKnown() == null) 0 else 1) +
+            (if (individualId.asKnown() == null) 0 else 1)
+
     class Body
     private constructor(
         private val finchCode: JsonField<String>,
@@ -352,6 +370,25 @@ private constructor(
             name()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (finchCode.asKnown() == null) 0 else 1) +
+                (if (message.asKnown() == null) 0 else 1) +
+                (if (name.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

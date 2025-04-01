@@ -277,12 +277,31 @@ private constructor(
             return@apply
         }
 
-        create()
-        delete()
-        read()
-        update()
+        create()?.validate()
+        delete()?.validate()
+        read()?.validate()
+        update()?.validate()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (create.asKnown()?.validity() ?: 0) +
+            (delete.asKnown()?.validity() ?: 0) +
+            (read.asKnown()?.validity() ?: 0) +
+            (update.asKnown()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
