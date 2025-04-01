@@ -12,7 +12,7 @@ internal class EmploymentUpdateResponseTest {
     fun create() {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
@@ -61,14 +61,18 @@ internal class EmploymentUpdateResponseTest {
                         .state("state")
                         .build()
                 )
-                .manager(EmploymentUpdateResponse.Manager.builder().id("id").build())
+                .manager(
+                    EmploymentUpdateResponse.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
                 .build()
 
-        assertThat(employmentUpdateResponse.id()).isEqualTo("id")
+        assertThat(employmentUpdateResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(employmentUpdateResponse.classCode()).isEqualTo("class_code")
         assertThat(employmentUpdateResponse.customFields())
             .containsExactly(
@@ -125,7 +129,11 @@ internal class EmploymentUpdateResponseTest {
                     .build()
             )
         assertThat(employmentUpdateResponse.manager())
-            .isEqualTo(EmploymentUpdateResponse.Manager.builder().id("id").build())
+            .isEqualTo(
+                EmploymentUpdateResponse.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
         assertThat(employmentUpdateResponse.middleName()).isEqualTo("middle_name")
         assertThat(employmentUpdateResponse.sourceId()).isEqualTo("source_id")
         assertThat(employmentUpdateResponse.startDate()).isEqualTo("start_date")

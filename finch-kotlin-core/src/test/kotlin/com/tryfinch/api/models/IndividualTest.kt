@@ -11,7 +11,7 @@ internal class IndividualTest {
     fun create() {
         val individual =
             Individual.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
                 .addEmail(
                     Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
@@ -44,7 +44,7 @@ internal class IndividualTest {
                 .ssn("ssn")
                 .build()
 
-        assertThat(individual.id()).isEqualTo("id")
+        assertThat(individual.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(individual.dob()).isEqualTo("dob")
         assertThat(individual.emails())
             .containsExactly(
