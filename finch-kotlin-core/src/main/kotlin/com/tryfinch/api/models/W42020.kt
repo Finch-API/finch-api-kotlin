@@ -187,10 +187,28 @@ private constructor(
         }
 
         data()?.validate()
-        type()
+        type()?.validate()
         year()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (data.asKnown()?.validity() ?: 0) +
+            (type.asKnown()?.validity() ?: 0) +
+            (if (year.asKnown() == null) 0 else 1)
 
     /** Detailed information specific to the 2020 W4 form. */
     class Data
@@ -652,12 +670,36 @@ private constructor(
             amountForQualifyingChildrenUnder17()
             deductions()
             extraWithholding()
-            filingStatus()
+            filingStatus()?.validate()
             individualId()
             otherIncome()
             totalClaimDependentAndOtherCredits()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (amountForOtherDependents.asKnown() == null) 0 else 1) +
+                (if (amountForQualifyingChildrenUnder17.asKnown() == null) 0 else 1) +
+                (if (deductions.asKnown() == null) 0 else 1) +
+                (if (extraWithholding.asKnown() == null) 0 else 1) +
+                (filingStatus.asKnown()?.validity() ?: 0) +
+                (if (individualId.asKnown() == null) 0 else 1) +
+                (if (otherIncome.asKnown() == null) 0 else 1) +
+                (if (totalClaimDependentAndOtherCredits.asKnown() == null) 0 else 1)
 
         /** The individual's filing status for tax purposes. */
         class FilingStatus @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -757,6 +799,33 @@ private constructor(
              */
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): FilingStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -867,6 +936,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

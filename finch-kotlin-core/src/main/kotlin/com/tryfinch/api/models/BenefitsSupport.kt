@@ -548,6 +548,33 @@ private constructor(
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (commuter.asKnown()?.validity() ?: 0) +
+            (customPostTax.asKnown()?.validity() ?: 0) +
+            (customPreTax.asKnown()?.validity() ?: 0) +
+            (fsaDependentCare.asKnown()?.validity() ?: 0) +
+            (fsaMedical.asKnown()?.validity() ?: 0) +
+            (hsaPost.asKnown()?.validity() ?: 0) +
+            (hsaPre.asKnown()?.validity() ?: 0) +
+            (s125Dental.asKnown()?.validity() ?: 0) +
+            (s125Medical.asKnown()?.validity() ?: 0) +
+            (s125Vision.asKnown()?.validity() ?: 0) +
+            (simple.asKnown()?.validity() ?: 0) +
+            (simpleIra.asKnown()?.validity() ?: 0)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true

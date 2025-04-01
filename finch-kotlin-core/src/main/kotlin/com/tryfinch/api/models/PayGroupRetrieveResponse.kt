@@ -274,9 +274,28 @@ private constructor(
         id()
         individualIds()
         name()
-        payFrequencies()
+        payFrequencies().forEach { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (id.asKnown() == null) 0 else 1) +
+            (individualIds.asKnown()?.size ?: 0) +
+            (if (name.asKnown() == null) 0 else 1) +
+            (payFrequencies.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -406,6 +425,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): PayFrequency = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

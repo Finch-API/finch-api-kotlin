@@ -550,11 +550,38 @@ private constructor(
         individualIds()
         netPay()?.validate()
         payDate()
-        payFrequencies()
+        payFrequencies()?.forEach { it.validate() }
         payGroupIds()
         payPeriod()?.validate()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (id.asKnown() == null) 0 else 1) +
+            (companyDebit.asKnown()?.validity() ?: 0) +
+            (if (debitDate.asKnown() == null) 0 else 1) +
+            (employeeTaxes.asKnown()?.validity() ?: 0) +
+            (employerTaxes.asKnown()?.validity() ?: 0) +
+            (grossPay.asKnown()?.validity() ?: 0) +
+            (individualIds.asKnown()?.size ?: 0) +
+            (netPay.asKnown()?.validity() ?: 0) +
+            (if (payDate.asKnown() == null) 0 else 1) +
+            (payFrequencies.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+            (payGroupIds.asKnown()?.size ?: 0) +
+            (payPeriod.asKnown()?.validity() ?: 0)
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -684,6 +711,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): PayFrequency = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -832,6 +886,23 @@ private constructor(
             startDate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (endDate.asKnown() == null) 0 else 1) + (if (startDate.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
