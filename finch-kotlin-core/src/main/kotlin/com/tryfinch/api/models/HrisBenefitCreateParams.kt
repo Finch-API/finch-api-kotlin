@@ -454,10 +454,29 @@ private constructor(
             }
 
             description()
-            frequency()
-            type()
+            frequency()?.validate()
+            type()?.validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (description.asKnown() == null) 0 else 1) +
+                (frequency.asKnown()?.validity() ?: 0) +
+                (type.asKnown()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

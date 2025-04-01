@@ -1503,7 +1503,7 @@ private constructor(
             customFields()?.forEach { it.validate() }
             department()?.validate()
             employment()?.validate()
-            employmentStatus()
+            employmentStatus()?.validate()
             endDate()
             firstName()
             income()?.validate()
@@ -1519,6 +1519,40 @@ private constructor(
             title()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (classCode.asKnown() == null) 0 else 1) +
+                (customFields.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (department.asKnown()?.validity() ?: 0) +
+                (employment.asKnown()?.validity() ?: 0) +
+                (employmentStatus.asKnown()?.validity() ?: 0) +
+                (if (endDate.asKnown() == null) 0 else 1) +
+                (if (firstName.asKnown() == null) 0 else 1) +
+                (income.asKnown()?.validity() ?: 0) +
+                (incomeHistory.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (if (isActive.asKnown() == null) 0 else 1) +
+                (if (lastName.asKnown() == null) 0 else 1) +
+                (if (latestRehireDate.asKnown() == null) 0 else 1) +
+                (location.asKnown()?.validity() ?: 0) +
+                (manager.asKnown()?.validity() ?: 0) +
+                (if (middleName.asKnown() == null) 0 else 1) +
+                (if (sourceId.asKnown() == null) 0 else 1) +
+                (if (startDate.asKnown() == null) 0 else 1) +
+                (if (title.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1648,6 +1682,22 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = (if (name.asKnown() == null) 0 else 1)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1771,6 +1821,22 @@ private constructor(
             name()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = (if (name.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1927,10 +1993,27 @@ private constructor(
                 return@apply
             }
 
-            subtype()
-            type()
+            subtype()?.validate()
+            type()?.validate()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (subtype.asKnown()?.validity() ?: 0) + (type.asKnown()?.validity() ?: 0)
 
         /**
          * The secondary employment type of the individual. Options: `full_time`, `part_time`,
@@ -2048,6 +2131,33 @@ private constructor(
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
+            private var validated: Boolean = false
+
+            fun validate(): Subtype = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -2146,6 +2256,33 @@ private constructor(
              */
             fun asString(): String =
                 _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -2297,6 +2434,33 @@ private constructor(
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
 
+        private var validated: Boolean = false
+
+        fun validate(): EmploymentStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -2415,6 +2579,22 @@ private constructor(
             id()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = (if (id.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

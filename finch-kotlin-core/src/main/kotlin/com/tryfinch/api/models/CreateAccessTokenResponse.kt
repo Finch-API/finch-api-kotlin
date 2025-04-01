@@ -518,16 +518,41 @@ private constructor(
 
         accessToken()
         accountId()
-        clientType()
+        clientType().validate()
         companyId()
         connectionId()
-        connectionType()
+        connectionType().validate()
         products()
         providerId()
         customerId()
         tokenType()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (accessToken.asKnown() == null) 0 else 1) +
+            (if (accountId.asKnown() == null) 0 else 1) +
+            (clientType.asKnown()?.validity() ?: 0) +
+            (if (companyId.asKnown() == null) 0 else 1) +
+            (if (connectionId.asKnown() == null) 0 else 1) +
+            (connectionType.asKnown()?.validity() ?: 0) +
+            (products.asKnown()?.size ?: 0) +
+            (if (providerId.asKnown() == null) 0 else 1) +
+            (if (customerId.asKnown() == null) 0 else 1) +
+            (if (tokenType.asKnown() == null) 0 else 1)
 
     /** The type of application associated with a token. */
     class ClientType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -621,6 +646,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): ClientType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -727,6 +779,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): ConnectionType = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
