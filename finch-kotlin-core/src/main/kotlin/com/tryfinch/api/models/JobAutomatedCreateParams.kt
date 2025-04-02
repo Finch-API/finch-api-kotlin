@@ -215,7 +215,7 @@ private constructor(
             JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
     }
 
-    internal fun _body(): Body? = body
+    fun _body(): Body? = body
 
     override fun _headers(): Headers = additionalHeaders
 
