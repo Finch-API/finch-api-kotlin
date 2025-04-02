@@ -184,6 +184,20 @@ private constructor(
             additionalQueryParams = connectSessionNewParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [customerId]
+         * - [customerName]
+         * - [products]
+         * - [customerEmail]
+         * - [integration]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         fun customerId(customerId: String) = apply { body.customerId(customerId) }
 
         /**
@@ -454,7 +468,7 @@ private constructor(
             )
     }
 
-    internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 

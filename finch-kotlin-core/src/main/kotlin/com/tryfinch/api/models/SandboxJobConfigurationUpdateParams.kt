@@ -180,7 +180,7 @@ private constructor(
             )
     }
 
-    internal fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
+    fun _body(): SandboxJobConfiguration = sandboxJobConfiguration
 
     override fun _headers(): Headers = additionalHeaders
 

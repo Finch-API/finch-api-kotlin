@@ -189,6 +189,20 @@ private constructor(
             additionalQueryParams = sandboxCompanyUpdateParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [accounts]
+         * - [departments]
+         * - [ein]
+         * - [entity]
+         * - [legalName]
+         * - etc.
+         */
+        fun body(body: CompanyWithoutId) = apply { this.body = body.toBuilder() }
+
         /** An array of bank account objects associated with the payroll/HRIS system. */
         fun accounts(accounts: List<Account>?) = apply { body.accounts(accounts) }
 
@@ -455,7 +469,7 @@ private constructor(
             )
     }
 
-    internal fun _body(): CompanyWithoutId = body
+    fun _body(): CompanyWithoutId = body
 
     override fun _headers(): Headers = additionalHeaders
 

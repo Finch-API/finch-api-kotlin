@@ -189,7 +189,7 @@ private constructor(
             )
     }
 
-    internal fun _body(): List<IndividualOrEmployment>? = body
+    fun _body(): List<IndividualOrEmployment>? = body
 
     override fun _headers(): Headers = additionalHeaders
 

@@ -247,6 +247,20 @@ private constructor(
 
         fun individualId(individualId: String) = apply { this.individualId = individualId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [dob]
+         * - [emails]
+         * - [encryptedSsn]
+         * - [ethnicity]
+         * - [firstName]
+         * - etc.
+         */
+        fun body(body: IndividualWithoutId) = apply { this.body = body.toBuilder() }
+
         fun dob(dob: String?) = apply { body.dob(dob) }
 
         /**
@@ -551,7 +565,7 @@ private constructor(
             )
     }
 
-    internal fun _body(): IndividualWithoutId = body
+    fun _body(): IndividualWithoutId = body
 
     fun _pathParam(index: Int): String =
         when (index) {
