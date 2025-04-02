@@ -219,7 +219,7 @@ private constructor(
         ) : this(finchCode, message, name, mutableMapOf())
 
         /**
-         * A descriptive identifier for the response
+         * A descriptive identifier for the response.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -296,7 +296,7 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** A descriptive identifier for the response */
+            /** A descriptive identifier for the response. */
             fun finchCode(finchCode: String?) = finchCode(JsonField.ofNullable(finchCode))
 
             /**

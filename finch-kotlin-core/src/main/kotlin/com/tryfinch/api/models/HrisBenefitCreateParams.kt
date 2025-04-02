@@ -38,6 +38,8 @@ private constructor(
     fun description(): String? = body.description()
 
     /**
+     * The frequency of the benefit deduction/contribution.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -116,6 +118,7 @@ private constructor(
          */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
+        /** The frequency of the benefit deduction/contribution. */
         fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
         /**
@@ -304,6 +307,8 @@ private constructor(
         fun description(): String? = description.getNullable("description")
 
         /**
+         * The frequency of the benefit deduction/contribution.
+         *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -393,6 +398,7 @@ private constructor(
                 this.description = description
             }
 
+            /** The frequency of the benefit deduction/contribution. */
             fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
 
             /**
