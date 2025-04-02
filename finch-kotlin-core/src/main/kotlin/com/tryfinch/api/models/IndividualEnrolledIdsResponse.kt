@@ -33,6 +33,8 @@ private constructor(
     ) : this(benefitId, individualIds, mutableMapOf())
 
     /**
+     * The id of the benefit.
+     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -100,6 +102,7 @@ private constructor(
             additionalProperties = individualEnrolledIdsResponse.additionalProperties.toMutableMap()
         }
 
+        /** The id of the benefit. */
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
         /**
