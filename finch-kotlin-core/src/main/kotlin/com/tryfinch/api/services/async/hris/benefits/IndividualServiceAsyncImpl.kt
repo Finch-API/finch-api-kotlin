@@ -22,7 +22,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
-import com.tryfinch.api.models.IndividualUnenrollManyResponse
+import com.tryfinch.api.models.UnenrolledIndividual
 
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualServiceAsync {
@@ -122,8 +122,8 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             }
         }
 
-        private val unenrollManyHandler: Handler<List<IndividualUnenrollManyResponse>> =
-            jsonHandler<List<IndividualUnenrollManyResponse>>(clientOptions.jsonMapper)
+        private val unenrollManyHandler: Handler<List<UnenrolledIndividual>> =
+            jsonHandler<List<UnenrolledIndividual>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override suspend fun unenrollMany(
