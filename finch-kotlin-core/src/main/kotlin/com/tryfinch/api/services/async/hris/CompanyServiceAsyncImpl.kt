@@ -16,6 +16,8 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
+import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsyncImpl
 
 class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyServiceAsync {
@@ -24,7 +26,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         WithRawResponseImpl(clientOptions)
     }
 
+    private val payStatementItem: PayStatementItemServiceAsync by lazy {
+        PayStatementItemServiceAsyncImpl(clientOptions)
+    }
+
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
+
+    override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
     override suspend fun retrieve(
         params: HrisCompanyRetrieveParams,
@@ -37,6 +45,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         CompanyServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
+            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
+            payStatementItem
 
         private val retrieveHandler: Handler<Company> =
             jsonHandler<Company>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
