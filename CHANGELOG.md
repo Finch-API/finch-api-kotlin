@@ -1,5 +1,104 @@
 # Changelog
 
+## 5.0.0 (2025-04-08)
+
+Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.2.0...v5.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor exception structure and methods ([#430](https://github.com/Finch-API/finch-api-kotlin/issues/430))
+* **client:** refactor multipart formdata impl ([#400](https://github.com/Finch-API/finch-api-kotlin/issues/400))
+
+### Features
+
+* **api:** add new endpoints for pay statement items ([#450](https://github.com/Finch-API/finch-api-kotlin/issues/450)) ([18109bd](https://github.com/Finch-API/finch-api-kotlin/commit/18109bd5ee744769adc48d223347918afd094b4f))
+* **api:** api update ([#437](https://github.com/Finch-API/finch-api-kotlin/issues/437)) ([99154d5](https://github.com/Finch-API/finch-api-kotlin/commit/99154d513450d225170362cc6e34b46ad868215f))
+* **api:** api update ([#439](https://github.com/Finch-API/finch-api-kotlin/issues/439)) ([7152af1](https://github.com/Finch-API/finch-api-kotlin/commit/7152af1c58e53d26dbf1a93f701dfca4a77e2758))
+* **api:** api update ([#441](https://github.com/Finch-API/finch-api-kotlin/issues/441)) ([4058cf3](https://github.com/Finch-API/finch-api-kotlin/commit/4058cf3828b14df64b368921dd618310a50ec225))
+* **api:** api update ([#444](https://github.com/Finch-API/finch-api-kotlin/issues/444)) ([7388c11](https://github.com/Finch-API/finch-api-kotlin/commit/7388c11571063d668b4df403e29b2d3827ae6bc4))
+* **api:** api update ([#447](https://github.com/Finch-API/finch-api-kotlin/issues/447)) ([5b1c47b](https://github.com/Finch-API/finch-api-kotlin/commit/5b1c47b41ea27930df019b0c04c9cefaefb66cb9))
+* **api:** manual updates ([#403](https://github.com/Finch-API/finch-api-kotlin/issues/403)) ([16d8677](https://github.com/Finch-API/finch-api-kotlin/commit/16d86775312af44b4e3f32d984141a06d5b506bd))
+* **api:** manual updates ([#451](https://github.com/Finch-API/finch-api-kotlin/issues/451)) ([a586472](https://github.com/Finch-API/finch-api-kotlin/commit/a58647294d2e349144aeed99c49590f6e247e3a2))
+* **client:** accept `InputStream` and `Path` for file params ([#405](https://github.com/Finch-API/finch-api-kotlin/issues/405)) ([27de5e1](https://github.com/Finch-API/finch-api-kotlin/commit/27de5e15abfc8a9ed7f4642e6b5bbdd6240c54e2))
+* **client:** add enum validation method ([c6ea987](https://github.com/Finch-API/finch-api-kotlin/commit/c6ea987c88a98b8d4cf259fb8643b787ab3bbeba))
+* **client:** allow configuring timeouts granularly ([#397](https://github.com/Finch-API/finch-api-kotlin/issues/397)) ([dd98413](https://github.com/Finch-API/finch-api-kotlin/commit/dd9841357f92a8a41601fa346de5f9e025c79fc7))
+* **client:** detect binary incompatible jackson versions ([#406](https://github.com/Finch-API/finch-api-kotlin/issues/406)) ([80916e9](https://github.com/Finch-API/finch-api-kotlin/commit/80916e90f29b2cc87f50d4ac1969d035b53c6980))
+* **client:** expose request body setter and getter ([#448](https://github.com/Finch-API/finch-api-kotlin/issues/448)) ([cc2ab06](https://github.com/Finch-API/finch-api-kotlin/commit/cc2ab061ce95c367292b87801b939d1b9deff588))
+* **client:** make union deserialization more robust ([#445](https://github.com/Finch-API/finch-api-kotlin/issues/445)) ([c6ea987](https://github.com/Finch-API/finch-api-kotlin/commit/c6ea987c88a98b8d4cf259fb8643b787ab3bbeba))
+* **client:** support a lower jackson version ([#436](https://github.com/Finch-API/finch-api-kotlin/issues/436)) ([fcb4a7e](https://github.com/Finch-API/finch-api-kotlin/commit/fcb4a7e29e6a7e3de4e10f4a1679c32b31345b9c))
+* **client:** support raw response access ([#398](https://github.com/Finch-API/finch-api-kotlin/issues/398)) ([9cca969](https://github.com/Finch-API/finch-api-kotlin/commit/9cca969986582b11a810c356b0f57809928247c2))
+* **client:** throw on incompatible jackson version ([fcb4a7e](https://github.com/Finch-API/finch-api-kotlin/commit/fcb4a7e29e6a7e3de4e10f4a1679c32b31345b9c))
+* generate and publish docs ([#407](https://github.com/Finch-API/finch-api-kotlin/issues/407)) ([e256f55](https://github.com/Finch-API/finch-api-kotlin/commit/e256f556908531b4102b38e85ddef40753a32bf9))
+
+
+### Bug Fixes
+
+* **client:** don't call `validate()` during deserialization if we don't have to ([#440](https://github.com/Finch-API/finch-api-kotlin/issues/440)) ([18c1d6d](https://github.com/Finch-API/finch-api-kotlin/commit/18c1d6d46a6cce04ecd220fdb2f37fde083addd5))
+* **client:** limit json deserialization coercion ([#442](https://github.com/Finch-API/finch-api-kotlin/issues/442)) ([db26eeb](https://github.com/Finch-API/finch-api-kotlin/commit/db26eeb0666c62e0cb25ac0eb218f8610fb9df8d))
+* **client:** map deserialization bug ([a4c911e](https://github.com/Finch-API/finch-api-kotlin/commit/a4c911eb53c95532e77e29e9e9d77d69fbe01180))
+* **client:** support kotlin 1.8 runtime ([#427](https://github.com/Finch-API/finch-api-kotlin/issues/427)) ([04f13dc](https://github.com/Finch-API/finch-api-kotlin/commit/04f13dcec720d30c0755e156d2a5933219c56701))
+* compilation error ([639fac5](https://github.com/Finch-API/finch-api-kotlin/commit/639fac536177f907f3061e5202bcd9d4d426f8ae))
+* pluralize `list` response variables ([#443](https://github.com/Finch-API/finch-api-kotlin/issues/443)) ([f48fb0c](https://github.com/Finch-API/finch-api-kotlin/commit/f48fb0cbe3e8274eebb30fdd9142b9deb8b35322))
+* **tests:** fix jackson attributes ([a311953](https://github.com/Finch-API/finch-api-kotlin/commit/a311953b6223b775272fbb4fc3e7846303931fcc))
+* **tests:** use async client for async test ([8b0dad1](https://github.com/Finch-API/finch-api-kotlin/commit/8b0dad165462d3cc5e6f386c45ca0c4637bf8c7d))
+* unused modifiedParams ([bb5c2d4](https://github.com/Finch-API/finch-api-kotlin/commit/bb5c2d4f791b0247ad54d473bf1ab089b43913fd))
+
+
+### Performance Improvements
+
+* **client:** cached parsed type in `HttpResponseFor` ([#449](https://github.com/Finch-API/finch-api-kotlin/issues/449)) ([6e18e69](https://github.com/Finch-API/finch-api-kotlin/commit/6e18e698b319feeb92713f9b4603a9ee4805469a))
+
+
+### Chores
+
+* **client:** refactor exception structure and methods ([#430](https://github.com/Finch-API/finch-api-kotlin/issues/430)) ([eb7edcc](https://github.com/Finch-API/finch-api-kotlin/commit/eb7edcc79064ca532393b9ae4a90d0798813062a))
+* **client:** refactor multipart formdata impl ([#400](https://github.com/Finch-API/finch-api-kotlin/issues/400)) ([ad325c9](https://github.com/Finch-API/finch-api-kotlin/commit/ad325c95433c8e10a1879b22ea3e20c3c1e30c71))
+* **client:** remove unnecessary json state from some query param classes ([c6ea987](https://github.com/Finch-API/finch-api-kotlin/commit/c6ea987c88a98b8d4cf259fb8643b787ab3bbeba))
+* **internal:** add `.kotlin` to `.gitignore` ([#409](https://github.com/Finch-API/finch-api-kotlin/issues/409)) ([bc00379](https://github.com/Finch-API/finch-api-kotlin/commit/bc00379049b13677d643f7ac98b879fd88abd592))
+* **internal:** add generated comment ([#421](https://github.com/Finch-API/finch-api-kotlin/issues/421)) ([1050bfe](https://github.com/Finch-API/finch-api-kotlin/commit/1050bfe6c4c6c73350eb24604ce3026441f07846))
+* **internal:** add invalid json deserialization tests ([c6ea987](https://github.com/Finch-API/finch-api-kotlin/commit/c6ea987c88a98b8d4cf259fb8643b787ab3bbeba))
+* **internal:** add json roundtripping tests ([c6ea987](https://github.com/Finch-API/finch-api-kotlin/commit/c6ea987c88a98b8d4cf259fb8643b787ab3bbeba))
+* **internal:** add missing release please block ([#429](https://github.com/Finch-API/finch-api-kotlin/issues/429)) ([ff8c836](https://github.com/Finch-API/finch-api-kotlin/commit/ff8c8365cc17dd74dcd0ba6720179dc9ef659dcf))
+* **internal:** add some tests for union classes ([#426](https://github.com/Finch-API/finch-api-kotlin/issues/426)) ([6ed7c3f](https://github.com/Finch-API/finch-api-kotlin/commit/6ed7c3f79de02ff1f16da473f8ac008fa173a0e3))
+* **internal:** codegen related update ([df6a44f](https://github.com/Finch-API/finch-api-kotlin/commit/df6a44f8433b212203796c8000663c5e493618f9))
+* **internal:** codegen related update ([#413](https://github.com/Finch-API/finch-api-kotlin/issues/413)) ([9a1d608](https://github.com/Finch-API/finch-api-kotlin/commit/9a1d6088c1427197933d2bf4b7c96ad2de9e06ac))
+* **internal:** codegen related update ([#414](https://github.com/Finch-API/finch-api-kotlin/issues/414)) ([193f840](https://github.com/Finch-API/finch-api-kotlin/commit/193f8402398cf32ea6fb289375201d054e0b64c1))
+* **internal:** codegen related update ([#446](https://github.com/Finch-API/finch-api-kotlin/issues/446)) ([612ff7b](https://github.com/Finch-API/finch-api-kotlin/commit/612ff7b7a47588725d5263c7bff26c5f977b1934))
+* **internal:** codegen related update ([#454](https://github.com/Finch-API/finch-api-kotlin/issues/454)) ([8837358](https://github.com/Finch-API/finch-api-kotlin/commit/8837358329abb7d5cdf831af768fb180e1d0b7e0))
+* **internal:** delete duplicate tests ([45333d4](https://github.com/Finch-API/finch-api-kotlin/commit/45333d43f575b991aa96c00030acb07050f060e7))
+* **internal:** delete unused methods and annotations ([#438](https://github.com/Finch-API/finch-api-kotlin/issues/438)) ([a4c911e](https://github.com/Finch-API/finch-api-kotlin/commit/a4c911eb53c95532e77e29e9e9d77d69fbe01180))
+* **internal:** generate more tests ([fdfdaef](https://github.com/Finch-API/finch-api-kotlin/commit/fdfdaef3f4a632cc877d098f1e3bdc0f2438bca0))
+* **internal:** make multipart assertions more robust ([c231421](https://github.com/Finch-API/finch-api-kotlin/commit/c23142182506f3170ae93bbdaff5b76d59324d46))
+* **internal:** make test classes internal ([#420](https://github.com/Finch-API/finch-api-kotlin/issues/420)) ([669c377](https://github.com/Finch-API/finch-api-kotlin/commit/669c37744f08cc62cecb7fedc6c68617e6c3348a))
+* **internal:** reenable warnings as errors ([#410](https://github.com/Finch-API/finch-api-kotlin/issues/410)) ([b358cc6](https://github.com/Finch-API/finch-api-kotlin/commit/b358cc65daa1670b4d2df4e10c0e453eadf37ede))
+* **internal:** refactor `ErrorHandlingTest` ([#396](https://github.com/Finch-API/finch-api-kotlin/issues/396)) ([dbd1c39](https://github.com/Finch-API/finch-api-kotlin/commit/dbd1c3972eb1c9ade4ab210bedef7b6cfeefb883))
+* **internal:** refactor enum query param serialization ([#428](https://github.com/Finch-API/finch-api-kotlin/issues/428)) ([a624b4c](https://github.com/Finch-API/finch-api-kotlin/commit/a624b4c1dd1a31d4e1e1be181f5cc0f1488c9d77))
+* **internal:** refactor query param serialization impl and tests ([#423](https://github.com/Finch-API/finch-api-kotlin/issues/423)) ([7af80e8](https://github.com/Finch-API/finch-api-kotlin/commit/7af80e87f9d4e1dfec4c6e8bb6585903256b3a3e))
+* **internal:** refactor some test assertions ([45333d4](https://github.com/Finch-API/finch-api-kotlin/commit/45333d43f575b991aa96c00030acb07050f060e7))
+* **internal:** reformat some tests ([#425](https://github.com/Finch-API/finch-api-kotlin/issues/425)) ([fdfdaef](https://github.com/Finch-API/finch-api-kotlin/commit/fdfdaef3f4a632cc877d098f1e3bdc0f2438bca0))
+* **internal:** remove unnecessary `assertNotNull` calls ([c231421](https://github.com/Finch-API/finch-api-kotlin/commit/c23142182506f3170ae93bbdaff5b76d59324d46))
+* **internal:** remove unnecessary import ([#433](https://github.com/Finch-API/finch-api-kotlin/issues/433)) ([939c3f0](https://github.com/Finch-API/finch-api-kotlin/commit/939c3f0377eb5cf1c8db2a1373f79bda96277953))
+* **internal:** rename `getPathParam` ([#424](https://github.com/Finch-API/finch-api-kotlin/issues/424)) ([45333d4](https://github.com/Finch-API/finch-api-kotlin/commit/45333d43f575b991aa96c00030acb07050f060e7))
+* **internal:** reorder some params methodsc ([45333d4](https://github.com/Finch-API/finch-api-kotlin/commit/45333d43f575b991aa96c00030acb07050f060e7))
+* **tests:** improve enum examples ([#455](https://github.com/Finch-API/finch-api-kotlin/issues/455)) ([1d739be](https://github.com/Finch-API/finch-api-kotlin/commit/1d739be9cc76b6b162a46538084f7c71f44e89b2))
+
+
+### Documentation
+
+* add `build` method comments ([#422](https://github.com/Finch-API/finch-api-kotlin/issues/422)) ([b5e44c1](https://github.com/Finch-API/finch-api-kotlin/commit/b5e44c1fb6f77195ea259c1f56ea2d28222209e3))
+* add comments to `JsonField` classes ([#452](https://github.com/Finch-API/finch-api-kotlin/issues/452)) ([e1b86ee](https://github.com/Finch-API/finch-api-kotlin/commit/e1b86ee903e38bb24607bbba8876039af7cdc148))
+* add raw response readme documentation ([#401](https://github.com/Finch-API/finch-api-kotlin/issues/401)) ([392a4f5](https://github.com/Finch-API/finch-api-kotlin/commit/392a4f5295ba9054e13cfcf3c40982ff9b818390))
+* deduplicate and refine comments ([#419](https://github.com/Finch-API/finch-api-kotlin/issues/419)) ([323ca8a](https://github.com/Finch-API/finch-api-kotlin/commit/323ca8a79de71d9d1c10028fe2ad7c1fae714304))
+* document `JsonValue` construction in readme ([#412](https://github.com/Finch-API/finch-api-kotlin/issues/412)) ([c4242ea](https://github.com/Finch-API/finch-api-kotlin/commit/c4242eafba90e50a40183ccd6c8a2307e1a0e011))
+* document how to forcibly omit required field ([d5806a9](https://github.com/Finch-API/finch-api-kotlin/commit/d5806a99518c0cd5322d36b71a795eb30db0193d))
+* minor readme tweak ([#435](https://github.com/Finch-API/finch-api-kotlin/issues/435)) ([06e8f5d](https://github.com/Finch-API/finch-api-kotlin/commit/06e8f5d7e2f76aa18cbd8fa434bc23100ba439f0))
+* note required fields in `builder` javadoc ([#402](https://github.com/Finch-API/finch-api-kotlin/issues/402)) ([efe6e4a](https://github.com/Finch-API/finch-api-kotlin/commit/efe6e4a95f97c04becba285bcef4d0501ed691d6))
+* refine comments on multipart params ([#432](https://github.com/Finch-API/finch-api-kotlin/issues/432)) ([c231421](https://github.com/Finch-API/finch-api-kotlin/commit/c23142182506f3170ae93bbdaff5b76d59324d46))
+* revise readme docs about nested params ([#411](https://github.com/Finch-API/finch-api-kotlin/issues/411)) ([f3cd477](https://github.com/Finch-API/finch-api-kotlin/commit/f3cd477d98000d1ece5a1d87d7482b95fb488809))
+* swap examples used in readme ([#453](https://github.com/Finch-API/finch-api-kotlin/issues/453)) ([d5806a9](https://github.com/Finch-API/finch-api-kotlin/commit/d5806a99518c0cd5322d36b71a795eb30db0193d))
+* update readme exception docs ([#434](https://github.com/Finch-API/finch-api-kotlin/issues/434)) ([10e359d](https://github.com/Finch-API/finch-api-kotlin/commit/10e359d984ae1393fc085df20328551bf76992f4))
+* update URLs from stainlessapi.com to stainless.com ([#394](https://github.com/Finch-API/finch-api-kotlin/issues/394)) ([f05fed1](https://github.com/Finch-API/finch-api-kotlin/commit/f05fed18f4dd3ffdfb2fb7b48f7726eef4213fe3))
+
 ## 4.2.0 (2025-02-27)
 
 Full Changelog: [v4.1.0...v4.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.1.0...v4.2.0)
