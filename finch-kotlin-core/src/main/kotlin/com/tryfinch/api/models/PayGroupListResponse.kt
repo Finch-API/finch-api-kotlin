@@ -11,65 +11,91 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class PayGroupListResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("pay_frequencies")
-    @ExcludeMissing
-    private val payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val name: JsonField<String>,
+    private val payFrequencies: JsonField<List<PayFrequency>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** Finch id (uuidv4) for the pay group */
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("pay_frequencies")
+        @ExcludeMissing
+        payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
+    ) : this(id, name, payFrequencies, mutableMapOf())
+
+    /**
+     * Finch id (uuidv4) for the pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): String? = id.getNullable("id")
 
-    /** Name of the pay group */
+    /**
+     * Name of the pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): String? = name.getNullable("name")
 
-    /** List of pay frequencies associated with this pay group */
+    /**
+     * List of pay frequencies associated with this pay group
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payFrequencies(): List<PayFrequency>? = payFrequencies.getNullable("pay_frequencies")
 
-    /** Finch id (uuidv4) for the pay group */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** Name of the pay group */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** List of pay frequencies associated with this pay group */
+    /**
+     * Returns the raw JSON value of [payFrequencies].
+     *
+     * Unlike [payFrequencies], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("pay_frequencies")
     @ExcludeMissing
     fun _payFrequencies(): JsonField<List<PayFrequency>> = payFrequencies
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PayGroupListResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        name()
-        payFrequencies()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PayGroupListResponse]. */
         fun builder() = Builder()
     }
 
@@ -91,33 +117,49 @@ private constructor(
         /** Finch id (uuidv4) for the pay group */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** Finch id (uuidv4) for the pay group */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** Name of the pay group */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: List<PayFrequency>) =
             payFrequencies(JsonField.of(payFrequencies))
 
-        /** List of pay frequencies associated with this pay group */
+        /**
+         * Sets [Builder.payFrequencies] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payFrequencies] with a well-typed `List<PayFrequency>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun payFrequencies(payFrequencies: JsonField<List<PayFrequency>>) = apply {
             this.payFrequencies = payFrequencies.map { it.toMutableList() }
         }
 
-        /** List of pay frequencies associated with this pay group */
+        /**
+         * Adds a single [PayFrequency] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: PayFrequency) = apply {
             payFrequencies =
-                (payFrequencies ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(payFrequency)
+                (payFrequencies ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("payFrequencies", it).add(payFrequency)
                 }
         }
 
@@ -140,14 +182,50 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [PayGroupListResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayGroupListResponse =
             PayGroupListResponse(
                 id,
                 name,
                 (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): PayGroupListResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        name()
+        payFrequencies()?.forEach { it.validate() }
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (id.asKnown() == null) 0 else 1) +
+            (if (name.asKnown() == null) 0 else 1) +
+            (payFrequencies.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
 
     class PayFrequency @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -277,6 +355,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): PayFrequency = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

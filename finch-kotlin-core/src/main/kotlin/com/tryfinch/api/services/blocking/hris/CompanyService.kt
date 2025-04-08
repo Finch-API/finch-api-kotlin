@@ -2,11 +2,21 @@
 
 package com.tryfinch.api.services.blocking.hris
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
+import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 
 interface CompanyService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
+    fun payStatementItem(): PayStatementItemService
 
     /** Read basic company data */
     fun retrieve(
@@ -14,7 +24,28 @@ interface CompanyService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
 
-    /** Read basic company data */
+    /** @see [retrieve] */
     fun retrieve(requestOptions: RequestOptions): Company =
         retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+
+    /** A view of [CompanyService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        fun payStatementItem(): PayStatementItemService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as
+         * [CompanyService.retrieve].
+         */
+        @MustBeClosed
+        fun retrieve(
+            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Company>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
+            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+    }
 }

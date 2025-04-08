@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisBenefitIndividualUnenrollManyParamsTest {
+internal class HrisBenefitIndividualUnenrollManyParamsTest {
 
     @Test
     fun create() {
@@ -14,6 +13,16 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
             .benefitId("benefit_id")
             .addIndividualId("string")
             .build()
+    }
+
+    @Test
+    fun pathParams() {
+        val params =
+            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("benefit_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
     }
 
     @Test
@@ -26,8 +35,7 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.individualIds()).isEqualTo(listOf("string"))
+        assertThat(body.individualIds()).containsExactly("string")
     }
 
     @Test
@@ -36,18 +44,5 @@ class HrisBenefitIndividualUnenrollManyParamsTest {
             HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
-        assertThat(params).isNotNull
-        // path param "benefitId"
-        assertThat(params.getPathParam(0)).isEqualTo("benefit_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

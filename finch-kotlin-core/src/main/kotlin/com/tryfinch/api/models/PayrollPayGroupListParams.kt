@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
@@ -26,27 +25,19 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualId?.let { queryParams.put("individual_id", listOf(it.toString())) }
-        this.payFrequencies?.let { queryParams.put("pay_frequencies[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         fun none(): PayrollPayGroupListParams = builder().build()
 
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [PayrollPayGroupListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var individualId: String? = null
@@ -67,6 +58,11 @@ private constructor(
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
         }
@@ -169,6 +165,11 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [PayrollPayGroupListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
                 individualId,
@@ -177,6 +178,17 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                individualId?.let { put("individual_id", it) }
+                payFrequencies?.forEach { put("pay_frequencies[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

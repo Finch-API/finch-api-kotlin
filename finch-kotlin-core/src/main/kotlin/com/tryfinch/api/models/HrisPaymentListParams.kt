@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
@@ -29,25 +28,23 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.endDate.let { queryParams.put("end_date", listOf(it.toString())) }
-        this.startDate.let { queryParams.put("start_date", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisPaymentListParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .endDate()
+         * .startDate()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [HrisPaymentListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
@@ -166,6 +163,19 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisPaymentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .endDate()
+         * .startDate()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
                 checkRequired("endDate", endDate),
@@ -174,6 +184,17 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("end_date", endDate.toString())
+                put("start_date", startDate.toString())
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

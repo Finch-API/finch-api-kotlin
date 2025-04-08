@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxIndividualUpdateParamsTest {
+internal class SandboxIndividualUpdateParamsTest {
 
     @Test
     fun create() {
@@ -46,6 +45,15 @@ class SandboxIndividualUpdateParamsTest {
             )
             .ssn("ssn")
             .build()
+    }
+
+    @Test
+    fun pathParams() {
+        val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("individual_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
     }
 
     @Test
@@ -90,16 +98,13 @@ class SandboxIndividualUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.dob()).isEqualTo("dob")
         assertThat(body.emails())
-            .isEqualTo(
-                listOf(
-                    SandboxIndividualUpdateParams.Email.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.Email.Type.WORK)
-                        .build()
-                )
+            .containsExactly(
+                SandboxIndividualUpdateParams.Email.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.Email.Type.WORK)
+                    .build()
             )
         assertThat(body.encryptedSsn()).isEqualTo("encrypted_ssn")
         assertThat(body.ethnicity()).isEqualTo(SandboxIndividualUpdateParams.Ethnicity.ASIAN)
@@ -108,13 +113,11 @@ class SandboxIndividualUpdateParamsTest {
         assertThat(body.lastName()).isEqualTo("last_name")
         assertThat(body.middleName()).isEqualTo("middle_name")
         assertThat(body.phoneNumbers())
-            .isEqualTo(
-                listOf(
-                    SandboxIndividualUpdateParams.PhoneNumber.builder()
-                        .data("data")
-                        .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
-                        .build()
-                )
+            .containsExactly(
+                SandboxIndividualUpdateParams.PhoneNumber.builder()
+                    .data("data")
+                    .type(SandboxIndividualUpdateParams.PhoneNumber.Type.WORK)
+                    .build()
             )
         assertThat(body.preferredName()).isEqualTo("preferred_name")
         assertThat(body.residence())
@@ -138,17 +141,5 @@ class SandboxIndividualUpdateParamsTest {
         val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params = SandboxIndividualUpdateParams.builder().individualId("individual_id").build()
-        assertThat(params).isNotNull
-        // path param "individualId"
-        assertThat(params.getPathParam(0)).isEqualTo("individual_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

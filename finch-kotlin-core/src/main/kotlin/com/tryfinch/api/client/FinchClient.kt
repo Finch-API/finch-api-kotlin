@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.client
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.tryfinch.api.services.blocking.AccessTokenService
 import com.tryfinch.api.services.blocking.AccountService
 import com.tryfinch.api.services.blocking.ConnectService
@@ -37,6 +36,11 @@ interface FinchClient {
      * this client.
      */
     fun async(): FinchClientAsync
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
 
     fun accessTokens(): AccessTokenService
 
@@ -85,20 +89,25 @@ interface FinchClient {
 
     fun withAccessToken(accessToken: String): FinchClient
 
-    private data class GetAccessTokenParams(
-        @JsonProperty("client_id") val clientId: String,
-        @JsonProperty("client_secret") val clientSecret: String,
-        @JsonProperty("code") val code: String,
-        @JsonProperty("redirect_uri") val redirectUri: String?,
-    )
+    /** A view of [FinchClient] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
 
-    private data class GetAccessTokenResponse(
-        @JsonProperty("access_token") val accessToken: String,
-        @JsonProperty("account_id") val accountId: String,
-        @JsonProperty("client_type") val clientType: String,
-        @JsonProperty("company_id") val companyId: String,
-        @JsonProperty("connection_type") val connectionType: String,
-        @JsonProperty("products") val products: List<String>,
-        @JsonProperty("provider_id") val providerId: String,
-    )
+        fun accessTokens(): AccessTokenService.WithRawResponse
+
+        fun hris(): HrisService.WithRawResponse
+
+        fun providers(): ProviderService.WithRawResponse
+
+        fun account(): AccountService.WithRawResponse
+
+        fun requestForwarding(): RequestForwardingService.WithRawResponse
+
+        fun jobs(): JobService.WithRawResponse
+
+        fun sandbox(): SandboxService.WithRawResponse
+
+        fun payroll(): PayrollService.WithRawResponse
+
+        fun connect(): ConnectService.WithRawResponse
+    }
 }

@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConnectSessionReauthenticateParamsTest {
+internal class ConnectSessionReauthenticateParamsTest {
 
     @Test
     fun create() {
@@ -30,11 +29,10 @@ class ConnectSessionReauthenticateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.connectionId()).isEqualTo("connection_id")
         assertThat(body.minutesToExpire()).isEqualTo(0L)
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 
@@ -45,7 +43,6 @@ class ConnectSessionReauthenticateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.connectionId()).isEqualTo("connection_id")
     }
 }

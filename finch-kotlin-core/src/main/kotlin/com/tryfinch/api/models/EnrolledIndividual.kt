@@ -11,61 +11,85 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class EnrolledIndividual
-@JsonCreator
 private constructor(
-    @JsonProperty("body") @ExcludeMissing private val body: JsonField<Body> = JsonMissing.of(),
-    @JsonProperty("code") @ExcludeMissing private val code: JsonField<Code> = JsonMissing.of(),
-    @JsonProperty("individual_id")
-    @ExcludeMissing
-    private val individualId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val body: JsonField<Body>,
+    private val code: JsonField<Code>,
+    private val individualId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
+    @JsonCreator
+    private constructor(
+        @JsonProperty("body") @ExcludeMissing body: JsonField<Body> = JsonMissing.of(),
+        @JsonProperty("code") @ExcludeMissing code: JsonField<Code> = JsonMissing.of(),
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        individualId: JsonField<String> = JsonMissing.of(),
+    ) : this(body, code, individualId, mutableMapOf())
+
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun body(): Body? = body.getNullable("body")
 
-    /** HTTP status code. Either 201 or 200 */
+    /**
+     * HTTP status code. Either 201 or 200
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun code(): Code? = code.getNullable("code")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualId(): String? = individualId.getNullable("individual_id")
 
+    /**
+     * Returns the raw JSON value of [body].
+     *
+     * Unlike [body], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("body") @ExcludeMissing fun _body(): JsonField<Body> = body
 
-    /** HTTP status code. Either 201 or 200 */
+    /**
+     * Returns the raw JSON value of [code].
+     *
+     * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<Code> = code
 
+    /**
+     * Returns the raw JSON value of [individualId].
+     *
+     * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_id")
     @ExcludeMissing
     fun _individualId(): JsonField<String> = individualId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): EnrolledIndividual = apply {
-        if (validated) {
-            return@apply
-        }
-
-        body()?.validate()
-        code()
-        individualId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [EnrolledIndividual]. */
         fun builder() = Builder()
     }
 
@@ -86,16 +110,34 @@ private constructor(
 
         fun body(body: Body) = body(JsonField.of(body))
 
+        /**
+         * Sets [Builder.body] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.body] with a well-typed [Body] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
         /** HTTP status code. Either 201 or 200 */
         fun code(code: Code) = code(JsonField.of(code))
 
-        /** HTTP status code. Either 201 or 200 */
+        /**
+         * Sets [Builder.code] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.code] with a well-typed [Code] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun code(code: JsonField<Code>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
+        /**
+         * Sets [Builder.individualId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun individualId(individualId: JsonField<String>) = apply {
             this.individualId = individualId
         }
@@ -119,66 +161,123 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [EnrolledIndividual].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): EnrolledIndividual =
-            EnrolledIndividual(body, code, individualId, additionalProperties.toImmutable())
+            EnrolledIndividual(body, code, individualId, additionalProperties.toMutableMap())
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): EnrolledIndividual = apply {
+        if (validated) {
+            return@apply
+        }
+
+        body()?.validate()
+        code()?.validate()
+        individualId()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (body.asKnown()?.validity() ?: 0) +
+            (code.asKnown()?.validity() ?: 0) +
+            (if (individualId.asKnown() == null) 0 else 1)
+
     class Body
-    @JsonCreator
     private constructor(
-        @JsonProperty("finch_code")
-        @ExcludeMissing
-        private val finchCode: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("message")
-        @ExcludeMissing
-        private val message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val finchCode: JsonField<String>,
+        private val message: JsonField<String>,
+        private val name: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** A descriptive identifier for the response */
+        @JsonCreator
+        private constructor(
+            @JsonProperty("finch_code")
+            @ExcludeMissing
+            finchCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        ) : this(finchCode, message, name, mutableMapOf())
+
+        /**
+         * A descriptive identifier for the response.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun finchCode(): String? = finchCode.getNullable("finch_code")
 
-        /** Short description in English that provides more information about the response. */
+        /**
+         * Short description in English that provides more information about the response.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun message(): String? = message.getNullable("message")
 
-        /** Identifier indicating whether the benefit was newly enrolled or updated. */
+        /**
+         * Identifier indicating whether the benefit was newly enrolled or updated.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): String? = name.getNullable("name")
 
-        /** A descriptive identifier for the response */
+        /**
+         * Returns the raw JSON value of [finchCode].
+         *
+         * Unlike [finchCode], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("finch_code") @ExcludeMissing fun _finchCode(): JsonField<String> = finchCode
 
-        /** Short description in English that provides more information about the response. */
+        /**
+         * Returns the raw JSON value of [message].
+         *
+         * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
-        /** Identifier indicating whether the benefit was newly enrolled or updated. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            finchCode()
-            message()
-            name()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             fun builder() = Builder()
         }
 
@@ -197,22 +296,40 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** A descriptive identifier for the response */
+            /** A descriptive identifier for the response. */
             fun finchCode(finchCode: String?) = finchCode(JsonField.ofNullable(finchCode))
 
-            /** A descriptive identifier for the response */
+            /**
+             * Sets [Builder.finchCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.finchCode] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
 
             /** Short description in English that provides more information about the response. */
             fun message(message: String?) = message(JsonField.ofNullable(message))
 
-            /** Short description in English that provides more information about the response. */
+            /**
+             * Sets [Builder.message] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.message] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun message(message: JsonField<String>) = apply { this.message = message }
 
             /** Identifier indicating whether the benefit was newly enrolled or updated. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** Identifier indicating whether the benefit was newly enrolled or updated. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -234,8 +351,45 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Body = Body(finchCode, message, name, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Body = Body(finchCode, message, name, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            finchCode()
+            message()
+            name()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (finchCode.asKnown() == null) 0 else 1) +
+                (if (message.asKnown() == null) 0 else 1) +
+                (if (name.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -349,6 +503,33 @@ private constructor(
         fun asLong(): Long =
             _value().asNumber()?.let { if (it.toDouble() % 1 == 0.0) it.toLong() else null }
                 ?: throw FinchInvalidDataException("Value is not a Long")
+
+        private var validated: Boolean = false
+
+        fun validate(): Code = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

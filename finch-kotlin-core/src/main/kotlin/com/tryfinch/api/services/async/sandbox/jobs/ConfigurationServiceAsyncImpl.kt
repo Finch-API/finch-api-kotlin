@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.sandbox.jobs
 
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -10,9 +11,10 @@ import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.core.json
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.json
+import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.errors.FinchError
 import com.tryfinch.api.models.SandboxJobConfiguration
 import com.tryfinch.api.models.SandboxJobConfigurationRetrieveParams
 import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
@@ -20,56 +22,84 @@ import com.tryfinch.api.models.SandboxJobConfigurationUpdateParams
 class ConfigurationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ConfigurationServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: ConfigurationServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val retrieveHandler: Handler<List<SandboxJobConfiguration>> =
-        jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): ConfigurationServiceAsync.WithRawResponse = withRawResponse
 
-    /** Get configurations for sandbox jobs */
     override suspend fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
         requestOptions: RequestOptions,
-    ): List<SandboxJobConfiguration> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("sandbox", "jobs", "configuration")
-                .build()
-                .prepareAsync(clientOptions, params)
-        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-        return response
-            .use { retrieveHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                    it.forEach { it.validate() }
-                }
-            }
-    }
+    ): List<SandboxJobConfiguration> =
+        // get /sandbox/jobs/configuration
+        withRawResponse().retrieve(params, requestOptions).parse()
 
-    private val updateHandler: Handler<SandboxJobConfiguration> =
-        jsonHandler<SandboxJobConfiguration>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Update configurations for sandbox jobs */
     override suspend fun update(
         params: SandboxJobConfigurationUpdateParams,
         requestOptions: RequestOptions,
-    ): SandboxJobConfiguration {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.PUT)
-                .addPathSegments("sandbox", "jobs", "configuration")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-        return response
-            .use { updateHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                    it.validate()
-                }
+    ): SandboxJobConfiguration =
+        // put /sandbox/jobs/configuration
+        withRawResponse().update(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        ConfigurationServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        private val retrieveHandler: Handler<List<SandboxJobConfiguration>> =
+            jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override suspend fun retrieve(
+            params: SandboxJobConfigurationRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<List<SandboxJobConfiguration>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("sandbox", "jobs", "configuration")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
             }
+        }
+
+        private val updateHandler: Handler<SandboxJobConfiguration> =
+            jsonHandler<SandboxJobConfiguration>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override suspend fun update(
+            params: SandboxJobConfigurationUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SandboxJobConfiguration> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("sandbox", "jobs", "configuration")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }

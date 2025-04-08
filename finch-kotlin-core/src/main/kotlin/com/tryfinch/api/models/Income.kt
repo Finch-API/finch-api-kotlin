@@ -11,10 +11,8 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
 /**
@@ -22,75 +20,103 @@ import java.util.Objects
  * may be in units of bi-weekly, semi-monthly, daily, etc, depending on what information the
  * provider returns.
  */
-@NoAutoDetect
 class Income
-@JsonCreator
 private constructor(
-    @JsonProperty("amount") @ExcludeMissing private val amount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("currency")
-    @ExcludeMissing
-    private val currency: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("effective_date")
-    @ExcludeMissing
-    private val effectiveDate: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("unit") @ExcludeMissing private val unit: JsonField<Unit> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val amount: JsonField<Long>,
+    private val currency: JsonField<String>,
+    private val effectiveDate: JsonField<String>,
+    private val unit: JsonField<Unit>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** The income amount in cents. */
+    @JsonCreator
+    private constructor(
+        @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("effective_date")
+        @ExcludeMissing
+        effectiveDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
+    ) : this(amount, currency, effectiveDate, unit, mutableMapOf())
+
+    /**
+     * The income amount in cents.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun amount(): Long? = amount.getNullable("amount")
 
-    /** The currency code. */
+    /**
+     * The currency code.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun currency(): String? = currency.getNullable("currency")
 
-    /** The date the income amount went into effect. */
+    /**
+     * The date the income amount went into effect.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun effectiveDate(): String? = effectiveDate.getNullable("effective_date")
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
      * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun unit(): Unit? = unit.getNullable("unit")
 
-    /** The income amount in cents. */
+    /**
+     * Returns the raw JSON value of [amount].
+     *
+     * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-    /** The currency code. */
+    /**
+     * Returns the raw JSON value of [currency].
+     *
+     * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
 
-    /** The date the income amount went into effect. */
+    /**
+     * Returns the raw JSON value of [effectiveDate].
+     *
+     * Unlike [effectiveDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("effective_date")
     @ExcludeMissing
     fun _effectiveDate(): JsonField<String> = effectiveDate
 
     /**
-     * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-     * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+     * Returns the raw JSON value of [unit].
+     *
+     * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Income = apply {
-        if (validated) {
-            return@apply
-        }
-
-        amount()
-        currency()
-        effectiveDate()
-        unit()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [Income]. */
         fun builder() = Builder()
     }
 
@@ -114,23 +140,43 @@ private constructor(
         /** The income amount in cents. */
         fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
 
-        /** The income amount in cents. */
+        /**
+         * Alias for [Builder.amount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun amount(amount: Long) = amount(amount as Long?)
 
-        /** The income amount in cents. */
+        /**
+         * Sets [Builder.amount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
         fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
 
-        /** The currency code. */
+        /**
+         * Sets [Builder.currency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.currency] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: String?) =
             effectiveDate(JsonField.ofNullable(effectiveDate))
 
-        /** The date the income amount went into effect. */
+        /**
+         * Sets [Builder.effectiveDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.effectiveDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun effectiveDate(effectiveDate: JsonField<String>) = apply {
             this.effectiveDate = effectiveDate
         }
@@ -142,8 +188,10 @@ private constructor(
         fun unit(unit: Unit?) = unit(JsonField.ofNullable(unit))
 
         /**
-         * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
-         * `bi_weekly`, `weekly`, `daily`, `hourly`, and `fixed`.
+         * Sets [Builder.unit] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.unit] with a well-typed [Unit] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
@@ -166,9 +214,47 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Income].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): Income =
-            Income(amount, currency, effectiveDate, unit, additionalProperties.toImmutable())
+            Income(amount, currency, effectiveDate, unit, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): Income = apply {
+        if (validated) {
+            return@apply
+        }
+
+        amount()
+        currency()
+        effectiveDate()
+        unit()?.validate()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (amount.asKnown() == null) 0 else 1) +
+            (if (currency.asKnown() == null) 0 else 1) +
+            (if (effectiveDate.asKnown() == null) 0 else 1) +
+            (unit.asKnown()?.validity() ?: 0)
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
@@ -299,6 +385,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): Unit = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

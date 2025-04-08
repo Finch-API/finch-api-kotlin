@@ -10,57 +10,74 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class SupportPerBenefitType
-@JsonCreator
 private constructor(
-    @JsonProperty("company_benefits")
-    @ExcludeMissing
-    private val companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
-    @JsonProperty("individual_benefits")
-    @ExcludeMissing
-    private val individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val companyBenefits: JsonField<OperationSupportMatrix>,
+    private val individualBenefits: JsonField<OperationSupportMatrix>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
+    @JsonCreator
+    private constructor(
+        @JsonProperty("company_benefits")
+        @ExcludeMissing
+        companyBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+        @JsonProperty("individual_benefits")
+        @ExcludeMissing
+        individualBenefits: JsonField<OperationSupportMatrix> = JsonMissing.of(),
+    ) : this(companyBenefits, individualBenefits, mutableMapOf())
+
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun companyBenefits(): OperationSupportMatrix? = companyBenefits.getNullable("company_benefits")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun individualBenefits(): OperationSupportMatrix? =
         individualBenefits.getNullable("individual_benefits")
 
+    /**
+     * Returns the raw JSON value of [companyBenefits].
+     *
+     * Unlike [companyBenefits], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("company_benefits")
     @ExcludeMissing
     fun _companyBenefits(): JsonField<OperationSupportMatrix> = companyBenefits
 
+    /**
+     * Returns the raw JSON value of [individualBenefits].
+     *
+     * Unlike [individualBenefits], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("individual_benefits")
     @ExcludeMissing
     fun _individualBenefits(): JsonField<OperationSupportMatrix> = individualBenefits
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): SupportPerBenefitType = apply {
-        if (validated) {
-            return@apply
-        }
-
-        companyBenefits()?.validate()
-        individualBenefits()?.validate()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [SupportPerBenefitType]. */
         fun builder() = Builder()
     }
 
@@ -80,6 +97,13 @@ private constructor(
         fun companyBenefits(companyBenefits: OperationSupportMatrix) =
             companyBenefits(JsonField.of(companyBenefits))
 
+        /**
+         * Sets [Builder.companyBenefits] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyBenefits] with a well-typed
+         * [OperationSupportMatrix] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun companyBenefits(companyBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.companyBenefits = companyBenefits
         }
@@ -87,6 +111,13 @@ private constructor(
         fun individualBenefits(individualBenefits: OperationSupportMatrix) =
             individualBenefits(JsonField.of(individualBenefits))
 
+        /**
+         * Sets [Builder.individualBenefits] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualBenefits] with a well-typed
+         * [OperationSupportMatrix] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun individualBenefits(individualBenefits: JsonField<OperationSupportMatrix>) = apply {
             this.individualBenefits = individualBenefits
         }
@@ -110,13 +141,47 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [SupportPerBenefitType].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): SupportPerBenefitType =
             SupportPerBenefitType(
                 companyBenefits,
                 individualBenefits,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): SupportPerBenefitType = apply {
+        if (validated) {
+            return@apply
+        }
+
+        companyBenefits()?.validate()
+        individualBenefits()?.validate()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (companyBenefits.asKnown()?.validity() ?: 0) +
+            (individualBenefits.asKnown()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

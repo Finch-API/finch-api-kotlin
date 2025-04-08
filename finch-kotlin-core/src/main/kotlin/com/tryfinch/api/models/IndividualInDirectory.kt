@@ -10,106 +10,159 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class IndividualInDirectory
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("department")
-    @ExcludeMissing
-    private val department: JsonField<Department> = JsonMissing.of(),
-    @JsonProperty("first_name")
-    @ExcludeMissing
-    private val firstName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("is_active")
-    @ExcludeMissing
-    private val isActive: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("last_name")
-    @ExcludeMissing
-    private val lastName: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("manager")
-    @ExcludeMissing
-    private val manager: JsonField<Manager> = JsonMissing.of(),
-    @JsonProperty("middle_name")
-    @ExcludeMissing
-    private val middleName: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val department: JsonField<Department>,
+    private val firstName: JsonField<String>,
+    private val isActive: JsonField<Boolean>,
+    private val lastName: JsonField<String>,
+    private val manager: JsonField<Manager>,
+    private val middleName: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** A stable Finch id (UUID v4) for an individual in the company. */
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("department")
+        @ExcludeMissing
+        department: JsonField<Department> = JsonMissing.of(),
+        @JsonProperty("first_name") @ExcludeMissing firstName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("is_active") @ExcludeMissing isActive: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("last_name") @ExcludeMissing lastName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("manager") @ExcludeMissing manager: JsonField<Manager> = JsonMissing.of(),
+        @JsonProperty("middle_name")
+        @ExcludeMissing
+        middleName: JsonField<String> = JsonMissing.of(),
+    ) : this(id, department, firstName, isActive, lastName, manager, middleName, mutableMapOf())
+
+    /**
+     * A stable Finch `id` (UUID v4) for an individual in the company.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): String? = id.getNullable("id")
 
-    /** The department object. */
+    /**
+     * The department object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun department(): Department? = department.getNullable("department")
 
-    /** The legal first name of the individual. */
+    /**
+     * The legal first name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun firstName(): String? = firstName.getNullable("first_name")
 
-    /** `true` if the individual is an active employee or contractor at the company. */
+    /**
+     * `true` if the individual is an active employee or contractor at the company.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun isActive(): Boolean? = isActive.getNullable("is_active")
 
-    /** The legal last name of the individual. */
+    /**
+     * The legal last name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun lastName(): String? = lastName.getNullable("last_name")
 
-    /** The manager object. */
+    /**
+     * The manager object.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun manager(): Manager? = manager.getNullable("manager")
 
-    /** The legal middle name of the individual. */
+    /**
+     * The legal middle name of the individual.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun middleName(): String? = middleName.getNullable("middle_name")
 
-    /** A stable Finch id (UUID v4) for an individual in the company. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** The department object. */
+    /**
+     * Returns the raw JSON value of [department].
+     *
+     * Unlike [department], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("department")
     @ExcludeMissing
     fun _department(): JsonField<Department> = department
 
-    /** The legal first name of the individual. */
+    /**
+     * Returns the raw JSON value of [firstName].
+     *
+     * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
-    /** `true` if the individual is an active employee or contractor at the company. */
+    /**
+     * Returns the raw JSON value of [isActive].
+     *
+     * Unlike [isActive], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("is_active") @ExcludeMissing fun _isActive(): JsonField<Boolean> = isActive
 
-    /** The legal last name of the individual. */
+    /**
+     * Returns the raw JSON value of [lastName].
+     *
+     * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("last_name") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
 
-    /** The manager object. */
+    /**
+     * Returns the raw JSON value of [manager].
+     *
+     * Unlike [manager], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("manager") @ExcludeMissing fun _manager(): JsonField<Manager> = manager
 
-    /** The legal middle name of the individual. */
+    /**
+     * Returns the raw JSON value of [middleName].
+     *
+     * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("middle_name") @ExcludeMissing fun _middleName(): JsonField<String> = middleName
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): IndividualInDirectory = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        department()?.validate()
-        firstName()
-        isActive()
-        lastName()
-        manager()?.validate()
-        middleName()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [IndividualInDirectory]. */
         fun builder() = Builder()
     }
 
@@ -136,49 +189,92 @@ private constructor(
             additionalProperties = individualInDirectory.additionalProperties.toMutableMap()
         }
 
-        /** A stable Finch id (UUID v4) for an individual in the company. */
+        /** A stable Finch `id` (UUID v4) for an individual in the company. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A stable Finch id (UUID v4) for an individual in the company. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The department object. */
         fun department(department: Department?) = department(JsonField.ofNullable(department))
 
-        /** The department object. */
+        /**
+         * Sets [Builder.department] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.department] with a well-typed [Department] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun department(department: JsonField<Department>) = apply { this.department = department }
 
         /** The legal first name of the individual. */
         fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
 
-        /** The legal first name of the individual. */
+        /**
+         * Sets [Builder.firstName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.firstName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** `true` if the individual is an active employee or contractor at the company. */
         fun isActive(isActive: Boolean?) = isActive(JsonField.ofNullable(isActive))
 
-        /** `true` if the individual is an active employee or contractor at the company. */
+        /**
+         * Alias for [Builder.isActive].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
 
-        /** `true` if the individual is an active employee or contractor at the company. */
+        /**
+         * Sets [Builder.isActive] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isActive] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
 
-        /** The legal last name of the individual. */
+        /**
+         * Sets [Builder.lastName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.lastName] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The manager object. */
         fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
 
-        /** The manager object. */
+        /**
+         * Sets [Builder.manager] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.manager] with a well-typed [Manager] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
-        /** The legal middle name of the individual. */
+        /**
+         * Sets [Builder.middleName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.middleName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -200,6 +296,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualInDirectory].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): IndividualInDirectory =
             IndividualInDirectory(
                 id,
@@ -209,47 +310,91 @@ private constructor(
                 lastName,
                 manager,
                 middleName,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): IndividualInDirectory = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        department()?.validate()
+        firstName()
+        isActive()
+        lastName()
+        manager()?.validate()
+        middleName()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (id.asKnown() == null) 0 else 1) +
+            (department.asKnown()?.validity() ?: 0) +
+            (if (firstName.asKnown() == null) 0 else 1) +
+            (if (isActive.asKnown() == null) 0 else 1) +
+            (if (lastName.asKnown() == null) 0 else 1) +
+            (manager.asKnown()?.validity() ?: 0) +
+            (if (middleName.asKnown() == null) 0 else 1)
+
     /** The department object. */
-    @NoAutoDetect
     class Department
-    @JsonCreator
     private constructor(
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val name: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** The name of the department. */
+        @JsonCreator
+        private constructor(
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
+        ) : this(name, mutableMapOf())
+
+        /**
+         * The name of the department.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun name(): String? = name.getNullable("name")
 
-        /** The name of the department. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Department = apply {
-            if (validated) {
-                return@apply
-            }
-
-            name()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Department]. */
             fun builder() = Builder()
         }
 
@@ -267,7 +412,13 @@ private constructor(
             /** The name of the department. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
-            /** The name of the department. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -289,8 +440,40 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Department = Department(name, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Department].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Department = Department(name, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Department = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = (if (name.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -311,40 +494,47 @@ private constructor(
     }
 
     /** The manager object. */
-    @NoAutoDetect
     class Manager
-    @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val id: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company. */
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of()
+        ) : this(id, mutableMapOf())
+
+        /**
+         * A stable Finch `id` (UUID v4) for an individual in the company.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun id(): String? = id.getNullable("id")
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company. */
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Manager = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Manager]. */
             fun builder() = Builder()
         }
 
@@ -362,7 +552,13 @@ private constructor(
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
             fun id(id: String) = id(JsonField.of(id))
 
-            /** A stable Finch `id` (UUID v4) for an individual in the company. */
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -384,8 +580,40 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Manager = Manager(id, additionalProperties.toImmutable())
+            /**
+             * Returns an immutable instance of [Manager].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Manager = Manager(id, additionalProperties.toMutableMap())
         }
+
+        private var validated: Boolean = false
+
+        fun validate(): Manager = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = (if (id.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

@@ -2,13 +2,15 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SupportedBenefitTest {
+internal class SupportedBenefitTest {
 
     @Test
-    fun createSupportedBenefit() {
+    fun create() {
         val supportedBenefit =
             SupportedBenefit.builder()
                 .annualMaximum(true)
@@ -20,7 +22,7 @@ class SupportedBenefitTest {
                 .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
                 .type(BenefitType._401K)
                 .build()
-        assertThat(supportedBenefit).isNotNull
+
         assertThat(supportedBenefit.annualMaximum()).isEqualTo(true)
         assertThat(supportedBenefit.catchUp()).isEqualTo(true)
         assertThat(supportedBenefit.companyContribution())
@@ -32,5 +34,29 @@ class SupportedBenefitTest {
         assertThat(supportedBenefit.hsaContributionLimit())
             .containsExactly(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
         assertThat(supportedBenefit.type()).isEqualTo(BenefitType._401K)
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val supportedBenefit =
+            SupportedBenefit.builder()
+                .annualMaximum(true)
+                .catchUp(true)
+                .addCompanyContribution(SupportedBenefit.CompanyContribution.FIXED)
+                .description("description")
+                .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
+                .addFrequency(BenefitFrequency.ONE_TIME)
+                .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
+                .type(BenefitType._401K)
+                .build()
+
+        val roundtrippedSupportedBenefit =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(supportedBenefit),
+                jacksonTypeRef<SupportedBenefit>(),
+            )
+
+        assertThat(roundtrippedSupportedBenefit).isEqualTo(supportedBenefit)
     }
 }

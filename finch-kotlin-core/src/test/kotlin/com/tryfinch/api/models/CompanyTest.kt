@@ -2,16 +2,18 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class CompanyTest {
+internal class CompanyTest {
 
     @Test
-    fun createCompany() {
+    fun create() {
         val company =
             Company.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addAccount(
                     Company.Account.builder()
                         .accountName("account_name")
@@ -47,11 +49,11 @@ class CompanyTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
-        assertThat(company).isNotNull
-        assertThat(company.id()).isEqualTo("id")
+
+        assertThat(company.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(company.accounts())
             .containsExactly(
                 Company.Account.builder()
@@ -91,7 +93,58 @@ class CompanyTest {
                     .state("state")
                     .build()
             )
-        assertThat(company.primaryEmail()).isEqualTo("primary_email")
+        assertThat(company.primaryEmail()).isEqualTo("dev@stainless.com")
         assertThat(company.primaryPhoneNumber()).isEqualTo("primary_phone_number")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val company =
+            Company.builder()
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addAccount(
+                    Company.Account.builder()
+                        .accountName("account_name")
+                        .accountNumber("account_number")
+                        .accountType(Company.Account.AccountType.CHECKING)
+                        .institutionName("institution_name")
+                        .routingNumber("routing_number")
+                        .build()
+                )
+                .addDepartment(
+                    Company.Department.builder()
+                        .name("name")
+                        .parent(Company.Department.Parent.builder().name("name").build())
+                        .build()
+                )
+                .ein("ein")
+                .entity(
+                    Company.Entity.builder()
+                        .subtype(Company.Entity.Subtype.S_CORPORATION)
+                        .type(Company.Entity.Type.LLC)
+                        .build()
+                )
+                .legalName("legal_name")
+                .addLocation(
+                    Location.builder()
+                        .city("city")
+                        .country("country")
+                        .line1("line1")
+                        .line2("line2")
+                        .name("name")
+                        .postalCode("postal_code")
+                        .sourceId("source_id")
+                        .state("state")
+                        .build()
+                )
+                .primaryEmail("dev@stainless.com")
+                .primaryPhoneNumber("primary_phone_number")
+                .build()
+
+        val roundtrippedCompany =
+            jsonMapper.readValue(jsonMapper.writeValueAsString(company), jacksonTypeRef<Company>())
+
+        assertThat(roundtrippedCompany).isEqualTo(company)
     }
 }

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DocumentServiceAsyncTest {
+internal class DocumentServiceAsyncTest {
 
     @Test
     suspend fun list() {
@@ -21,7 +21,7 @@ class DocumentServiceAsyncTest {
                 .build()
         val documentServiceAsync = client.hris().documents()
 
-        val document =
+        val documents =
             documentServiceAsync.list(
                 HrisDocumentListParams.builder()
                     .addIndividualId("string")
@@ -31,7 +31,7 @@ class DocumentServiceAsyncTest {
                     .build()
             )
 
-        document.validate()
+        documents.validate()
     }
 
     @Test

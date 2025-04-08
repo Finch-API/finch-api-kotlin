@@ -3,11 +3,10 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxEmploymentUpdateParamsTest {
+internal class SandboxEmploymentUpdateParamsTest {
 
     @Test
     fun create() {
@@ -61,12 +60,25 @@ class SandboxEmploymentUpdateParamsTest {
                     .state("state")
                     .build()
             )
-            .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+            .manager(
+                SandboxEmploymentUpdateParams.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
             .middleName("middle_name")
             .sourceId("source_id")
             .startDate("start_date")
             .title("title")
             .build()
+    }
+
+    @Test
+    fun pathParams() {
+        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
+
+        assertThat(params._pathParam(0)).isEqualTo("individual_id")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
     }
 
     @Test
@@ -122,7 +134,11 @@ class SandboxEmploymentUpdateParamsTest {
                         .state("state")
                         .build()
                 )
-                .manager(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+                .manager(
+                    SandboxEmploymentUpdateParams.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
@@ -131,16 +147,13 @@ class SandboxEmploymentUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.classCode()).isEqualTo("class_code")
         assertThat(body.customFields())
-            .isEqualTo(
-                listOf(
-                    SandboxEmploymentUpdateParams.CustomField.builder()
-                        .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
-                        .build()
-                )
+            .containsExactly(
+                SandboxEmploymentUpdateParams.CustomField.builder()
+                    .name("name")
+                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .build()
             )
         assertThat(body.department())
             .isEqualTo(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
@@ -165,15 +178,13 @@ class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
         assertThat(body.incomeHistory())
-            .isEqualTo(
-                listOf(
-                    Income.builder()
-                        .amount(0L)
-                        .currency("currency")
-                        .effectiveDate("effective_date")
-                        .unit(Income.Unit.YEARLY)
-                        .build()
-                )
+            .containsExactly(
+                Income.builder()
+                    .amount(0L)
+                    .currency("currency")
+                    .effectiveDate("effective_date")
+                    .unit(Income.Unit.YEARLY)
+                    .build()
             )
         assertThat(body.isActive()).isEqualTo(true)
         assertThat(body.lastName()).isEqualTo("last_name")
@@ -192,7 +203,11 @@ class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
         assertThat(body.manager())
-            .isEqualTo(SandboxEmploymentUpdateParams.Manager.builder().id("id").build())
+            .isEqualTo(
+                SandboxEmploymentUpdateParams.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
         assertThat(body.middleName()).isEqualTo("middle_name")
         assertThat(body.sourceId()).isEqualTo("source_id")
         assertThat(body.startDate()).isEqualTo("start_date")
@@ -204,17 +219,5 @@ class SandboxEmploymentUpdateParamsTest {
         val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
 
         val body = params._body()
-
-        assertNotNull(body)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params = SandboxEmploymentUpdateParams.builder().individualId("individual_id").build()
-        assertThat(params).isNotNull
-        // path param "individualId"
-        assertThat(params.getPathParam(0)).isEqualTo("individual_id")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

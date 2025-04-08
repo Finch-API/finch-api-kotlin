@@ -2,11 +2,10 @@
 
 package com.tryfinch.api.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxCompanyUpdateParamsTest {
+internal class SandboxCompanyUpdateParamsTest {
 
     @Test
     fun create() {
@@ -48,7 +47,7 @@ class SandboxCompanyUpdateParamsTest {
                     .state("state")
                     .build()
             )
-            .primaryEmail("primary_email")
+            .primaryEmail("dev@stainless.com")
             .primaryPhoneNumber("primary_phone_number")
             .build()
     }
@@ -96,37 +95,30 @@ class SandboxCompanyUpdateParamsTest {
                         .state("state")
                         .build()
                 )
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.accounts())
-            .isEqualTo(
-                listOf(
-                    SandboxCompanyUpdateParams.Account.builder()
-                        .accountName("account_name")
-                        .accountNumber("account_number")
-                        .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
-                        .institutionName("institution_name")
-                        .routingNumber("routing_number")
-                        .build()
-                )
+            .containsExactly(
+                SandboxCompanyUpdateParams.Account.builder()
+                    .accountName("account_name")
+                    .accountNumber("account_number")
+                    .accountType(SandboxCompanyUpdateParams.Account.AccountType.CHECKING)
+                    .institutionName("institution_name")
+                    .routingNumber("routing_number")
+                    .build()
             )
         assertThat(body.departments())
-            .isEqualTo(
-                listOf(
-                    SandboxCompanyUpdateParams.Department.builder()
-                        .name("name")
-                        .parent(
-                            SandboxCompanyUpdateParams.Department.Parent.builder()
-                                .name("name")
-                                .build()
-                        )
-                        .build()
-                )
+            .containsExactly(
+                SandboxCompanyUpdateParams.Department.builder()
+                    .name("name")
+                    .parent(
+                        SandboxCompanyUpdateParams.Department.Parent.builder().name("name").build()
+                    )
+                    .build()
             )
         assertThat(body.ein()).isEqualTo("ein")
         assertThat(body.entity())
@@ -138,21 +130,19 @@ class SandboxCompanyUpdateParamsTest {
             )
         assertThat(body.legalName()).isEqualTo("legal_name")
         assertThat(body.locations())
-            .isEqualTo(
-                listOf(
-                    Location.builder()
-                        .city("city")
-                        .country("country")
-                        .line1("line1")
-                        .line2("line2")
-                        .name("name")
-                        .postalCode("postal_code")
-                        .sourceId("source_id")
-                        .state("state")
-                        .build()
-                )
+            .containsExactly(
+                Location.builder()
+                    .city("city")
+                    .country("country")
+                    .line1("line1")
+                    .line2("line2")
+                    .name("name")
+                    .postalCode("postal_code")
+                    .sourceId("source_id")
+                    .state("state")
+                    .build()
             )
-        assertThat(body.primaryEmail()).isEqualTo("primary_email")
+        assertThat(body.primaryEmail()).isEqualTo("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).isEqualTo("primary_phone_number")
     }
 
@@ -166,22 +156,21 @@ class SandboxCompanyUpdateParamsTest {
                 .entity(SandboxCompanyUpdateParams.Entity.builder().build())
                 .legalName("legal_name")
                 .addLocation(Location.builder().build())
-                .primaryEmail("primary_email")
+                .primaryEmail("dev@stainless.com")
                 .primaryPhoneNumber("primary_phone_number")
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.accounts())
-            .isEqualTo(listOf(SandboxCompanyUpdateParams.Account.builder().build()))
+            .containsExactly(SandboxCompanyUpdateParams.Account.builder().build())
         assertThat(body.departments())
-            .isEqualTo(listOf(SandboxCompanyUpdateParams.Department.builder().build()))
+            .containsExactly(SandboxCompanyUpdateParams.Department.builder().build())
         assertThat(body.ein()).isEqualTo("ein")
         assertThat(body.entity()).isEqualTo(SandboxCompanyUpdateParams.Entity.builder().build())
         assertThat(body.legalName()).isEqualTo("legal_name")
-        assertThat(body.locations()).isEqualTo(listOf(Location.builder().build()))
-        assertThat(body.primaryEmail()).isEqualTo("primary_email")
+        assertThat(body.locations()).containsExactly(Location.builder().build())
+        assertThat(body.primaryEmail()).isEqualTo("dev@stainless.com")
         assertThat(body.primaryPhoneNumber()).isEqualTo("primary_phone_number")
     }
 }
