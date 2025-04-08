@@ -49,7 +49,7 @@ internal class AccountServiceAsyncTest {
         val account =
             accountServiceAsync.update(
                 SandboxConnectionAccountUpdateParams.builder()
-                    .connectionStatus(ConnectionStatusType.PENDING)
+                    .connectionStatus(ConnectionStatusType.REAUTH)
                     .build()
             )
 
