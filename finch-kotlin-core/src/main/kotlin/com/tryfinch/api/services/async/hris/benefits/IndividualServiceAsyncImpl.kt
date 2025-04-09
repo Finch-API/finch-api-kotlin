@@ -21,7 +21,7 @@ import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualBenefit
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
-import com.tryfinch.api.models.IndividualUnenrollManyResponse
+import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 
 class IndividualServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     IndividualServiceAsync {
@@ -49,7 +49,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
     override suspend fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions,
-    ): IndividualUnenrollManyResponse =
+    ): UnenrolledIndividualBenefitResponse =
         // delete /employer/benefits/{benefit_id}/individuals
         withRawResponse().unenrollMany(params, requestOptions).parse()
 
@@ -119,14 +119,14 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             }
         }
 
-        private val unenrollManyHandler: Handler<IndividualUnenrollManyResponse> =
-            jsonHandler<IndividualUnenrollManyResponse>(clientOptions.jsonMapper)
+        private val unenrollManyHandler: Handler<UnenrolledIndividualBenefitResponse> =
+            jsonHandler<UnenrolledIndividualBenefitResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override suspend fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<IndividualUnenrollManyResponse> {
+        ): HttpResponseFor<UnenrolledIndividualBenefitResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
