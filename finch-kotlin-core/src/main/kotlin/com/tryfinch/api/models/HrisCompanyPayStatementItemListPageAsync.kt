@@ -2,25 +2,19 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Retrieve a list of detailed pay statement items for the access token's
- * connection account.
- */
+/** @see [PayStatementItemServiceAsync.list] */
 class HrisCompanyPayStatementItemListPageAsync
 private constructor(
-    private val payStatementItemService: PayStatementItemServiceAsync,
+    private val service: PayStatementItemServiceAsync,
     private val params: HrisCompanyPayStatementItemListParams,
     private val response: HrisCompanyPayStatementItemListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): HrisCompanyPayStatementItemListPageResponse = response
 
     /**
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
@@ -31,36 +25,84 @@ private constructor(
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getNullable("responses") ?: emptyList()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && payStatementItemService == other.payStatementItemService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementItemService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisCompanyPayStatementItemListPageAsync{payStatementItemService=$payStatementItemService, params=$params, response=$response}"
-
     fun hasNextPage(): Boolean = responses().isNotEmpty()
 
     fun getNextPageParams(): HrisCompanyPayStatementItemListParams? = null
 
-    suspend fun getNextPage(): HrisCompanyPayStatementItemListPageAsync? {
-        return getNextPageParams()?.let { payStatementItemService.list(it) }
-    }
+    suspend fun getNextPage(): HrisCompanyPayStatementItemListPageAsync? =
+        getNextPageParams()?.let { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisCompanyPayStatementItemListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisCompanyPayStatementItemListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            payStatementItemService: PayStatementItemServiceAsync,
-            params: HrisCompanyPayStatementItemListParams,
-            response: HrisCompanyPayStatementItemListPageResponse,
-        ) = HrisCompanyPayStatementItemListPageAsync(payStatementItemService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisCompanyPayStatementItemListPageAsync].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [HrisCompanyPayStatementItemListPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: PayStatementItemServiceAsync? = null
+        private var params: HrisCompanyPayStatementItemListParams? = null
+        private var response: HrisCompanyPayStatementItemListPageResponse? = null
+
+        internal fun from(
+            hrisCompanyPayStatementItemListPageAsync: HrisCompanyPayStatementItemListPageAsync
+        ) = apply {
+            service = hrisCompanyPayStatementItemListPageAsync.service
+            params = hrisCompanyPayStatementItemListPageAsync.params
+            response = hrisCompanyPayStatementItemListPageAsync.response
+        }
+
+        fun service(service: PayStatementItemServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisCompanyPayStatementItemListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisCompanyPayStatementItemListPageResponse) = apply {
+            this.response = response
+        }
+
+        /**
+         * Returns an immutable instance of [HrisCompanyPayStatementItemListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisCompanyPayStatementItemListPageAsync =
+            HrisCompanyPayStatementItemListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPageAsync) :
@@ -78,4 +120,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisCompanyPayStatementItemListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisCompanyPayStatementItemListPageAsync{service=$service, params=$params, response=$response}"
 }

@@ -197,11 +197,11 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         }
                     }
                     .let {
-                        HrisBenefitListPageAsync.of(
-                            BenefitServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisBenefitListPageAsync.builder()
+                            .service(BenefitServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }
@@ -232,11 +232,11 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         }
                     }
                     .let {
-                        HrisBenefitListSupportedBenefitsPageAsync.of(
-                            BenefitServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisBenefitListSupportedBenefitsPageAsync.builder()
+                            .service(BenefitServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }
