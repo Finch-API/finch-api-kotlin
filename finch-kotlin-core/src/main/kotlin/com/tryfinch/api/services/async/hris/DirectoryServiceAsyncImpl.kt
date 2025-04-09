@@ -15,8 +15,10 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPageResponse
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
+import com.tryfinch.api.models.HrisDirectoryListPageResponse
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -48,8 +50,8 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<HrisDirectoryListPageAsync.Response> =
-            jsonHandler<HrisDirectoryListPageAsync.Response>(clientOptions.jsonMapper)
+        private val listHandler: Handler<HrisDirectoryListPageResponse> =
+            jsonHandler<HrisDirectoryListPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override suspend fun list(
@@ -82,9 +84,8 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             }
         }
 
-        private val listIndividualsHandler:
-            Handler<HrisDirectoryListIndividualsPageAsync.Response> =
-            jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
+        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageResponse> =
+            jsonHandler<HrisDirectoryListIndividualsPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         @Deprecated("use `list` instead")

@@ -114,9 +114,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                         HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(
                             IndividualServiceAsyncImpl(clientOptions),
                             params,
-                            HrisBenefitIndividualRetrieveManyBenefitsPageAsync.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }
@@ -151,9 +149,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                         HrisBenefitIndividualUnenrollManyPageAsync.of(
                             IndividualServiceAsyncImpl(clientOptions),
                             params,
-                            HrisBenefitIndividualUnenrollManyPageAsync.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }
