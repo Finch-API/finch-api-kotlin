@@ -46,7 +46,7 @@ internal class IndividualServiceAsyncTest {
                     .build()
             )
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 
     @Test
@@ -63,6 +63,6 @@ internal class IndividualServiceAsyncTest {
                 HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
             )
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }
