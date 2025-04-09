@@ -200,15 +200,15 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         HrisBenefitListPageAsync.of(
                             BenefitServiceAsyncImpl(clientOptions),
                             params,
-                            HrisBenefitListPageAsync.Response.builder().items(it).build(),
+                            it,
                         )
                     }
             }
         }
 
         private val listSupportedBenefitsHandler:
-            Handler<List<BenefitListSupportedBenefitsResponse>> =
-            jsonHandler<List<BenefitListSupportedBenefitsResponse>>(clientOptions.jsonMapper)
+            Handler<List<BenefitListSupportedBenefitsResponse>?> =
+            jsonHandler<List<BenefitListSupportedBenefitsResponse>?>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override suspend fun listSupportedBenefits(
@@ -235,9 +235,7 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         HrisBenefitListSupportedBenefitsPageAsync.of(
                             BenefitServiceAsyncImpl(clientOptions),
                             params,
-                            HrisBenefitListSupportedBenefitsPageAsync.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }

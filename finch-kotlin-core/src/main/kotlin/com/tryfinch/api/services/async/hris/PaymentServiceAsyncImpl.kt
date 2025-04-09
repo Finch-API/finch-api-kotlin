@@ -66,7 +66,7 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         HrisPaymentListPageAsync.of(
                             PaymentServiceAsyncImpl(clientOptions),
                             params,
-                            HrisPaymentListPageAsync.Response.builder().items(it).build(),
+                            it,
                         )
                     }
             }

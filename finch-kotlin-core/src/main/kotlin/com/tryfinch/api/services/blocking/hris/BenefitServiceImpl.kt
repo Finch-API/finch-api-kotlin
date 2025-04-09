@@ -194,19 +194,13 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                             it.forEach { it.validate() }
                         }
                     }
-                    .let {
-                        HrisBenefitListPage.of(
-                            BenefitServiceImpl(clientOptions),
-                            params,
-                            HrisBenefitListPage.Response.builder().items(it).build(),
-                        )
-                    }
+                    .let { HrisBenefitListPage.of(BenefitServiceImpl(clientOptions), params, it) }
             }
         }
 
         private val listSupportedBenefitsHandler:
-            Handler<List<BenefitListSupportedBenefitsResponse>> =
-            jsonHandler<List<BenefitListSupportedBenefitsResponse>>(clientOptions.jsonMapper)
+            Handler<List<BenefitListSupportedBenefitsResponse>?> =
+            jsonHandler<List<BenefitListSupportedBenefitsResponse>?>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun listSupportedBenefits(
@@ -233,9 +227,7 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
                         HrisBenefitListSupportedBenefitsPage.of(
                             BenefitServiceImpl(clientOptions),
                             params,
-                            HrisBenefitListSupportedBenefitsPage.Response.builder()
-                                .items(it)
-                                .build(),
+                            it,
                         )
                     }
             }
