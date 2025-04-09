@@ -66,11 +66,11 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
                         }
                     }
                     .let {
-                        HrisEmploymentRetrieveManyPageAsync.of(
-                            EmploymentServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisEmploymentRetrieveManyPageAsync.builder()
+                            .service(EmploymentServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

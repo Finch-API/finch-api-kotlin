@@ -75,11 +75,11 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                         }
                     }
                     .let {
-                        HrisDirectoryListPageAsync.of(
-                            DirectoryServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisDirectoryListPageAsync.builder()
+                            .service(DirectoryServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
@@ -110,11 +110,11 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                         }
                     }
                     .let {
-                        HrisDirectoryListIndividualsPageAsync.of(
-                            DirectoryServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisDirectoryListIndividualsPageAsync.builder()
+                            .service(DirectoryServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

@@ -2,23 +2,17 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 import java.util.Objects
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Retrieve a list of detailed pay statement items for the access token's
- * connection account.
- */
+/** @see [PayStatementItemService.list] */
 class HrisCompanyPayStatementItemListPage
 private constructor(
-    private val payStatementItemService: PayStatementItemService,
+    private val service: PayStatementItemService,
     private val params: HrisCompanyPayStatementItemListParams,
     private val response: HrisCompanyPayStatementItemListPageResponse,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun response(): HrisCompanyPayStatementItemListPageResponse = response
 
     /**
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
@@ -29,36 +23,84 @@ private constructor(
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getNullable("responses") ?: emptyList()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisCompanyPayStatementItemListPage && payStatementItemService == other.payStatementItemService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(payStatementItemService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisCompanyPayStatementItemListPage{payStatementItemService=$payStatementItemService, params=$params, response=$response}"
-
     fun hasNextPage(): Boolean = responses().isNotEmpty()
 
     fun getNextPageParams(): HrisCompanyPayStatementItemListParams? = null
 
-    fun getNextPage(): HrisCompanyPayStatementItemListPage? {
-        return getNextPageParams()?.let { payStatementItemService.list(it) }
-    }
+    fun getNextPage(): HrisCompanyPayStatementItemListPage? =
+        getNextPageParams()?.let { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisCompanyPayStatementItemListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisCompanyPayStatementItemListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            payStatementItemService: PayStatementItemService,
-            params: HrisCompanyPayStatementItemListParams,
-            response: HrisCompanyPayStatementItemListPageResponse,
-        ) = HrisCompanyPayStatementItemListPage(payStatementItemService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisCompanyPayStatementItemListPage].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [HrisCompanyPayStatementItemListPage]. */
+    class Builder internal constructor() {
+
+        private var service: PayStatementItemService? = null
+        private var params: HrisCompanyPayStatementItemListParams? = null
+        private var response: HrisCompanyPayStatementItemListPageResponse? = null
+
+        internal fun from(
+            hrisCompanyPayStatementItemListPage: HrisCompanyPayStatementItemListPage
+        ) = apply {
+            service = hrisCompanyPayStatementItemListPage.service
+            params = hrisCompanyPayStatementItemListPage.params
+            response = hrisCompanyPayStatementItemListPage.response
+        }
+
+        fun service(service: PayStatementItemService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisCompanyPayStatementItemListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisCompanyPayStatementItemListPageResponse) = apply {
+            this.response = response
+        }
+
+        /**
+         * Returns an immutable instance of [HrisCompanyPayStatementItemListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisCompanyPayStatementItemListPage =
+            HrisCompanyPayStatementItemListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPage) :
@@ -76,4 +118,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisCompanyPayStatementItemListPage && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisCompanyPayStatementItemListPage{service=$service, params=$params, response=$response}"
 }

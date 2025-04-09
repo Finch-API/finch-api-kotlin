@@ -110,11 +110,11 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
                         }
                     }
                     .let {
-                        HrisBenefitIndividualRetrieveManyBenefitsPageAsync.of(
-                            IndividualServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisBenefitIndividualRetrieveManyBenefitsPageAsync.builder()
+                            .service(IndividualServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
                     }
             }
         }

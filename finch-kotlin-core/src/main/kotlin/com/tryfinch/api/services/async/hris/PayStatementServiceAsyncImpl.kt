@@ -66,11 +66,11 @@ class PayStatementServiceAsyncImpl internal constructor(private val clientOption
                         }
                     }
                     .let {
-                        HrisPayStatementRetrieveManyPageAsync.of(
-                            PayStatementServiceAsyncImpl(clientOptions),
-                            params,
-                            it,
-                        )
+                        HrisPayStatementRetrieveManyPageAsync.builder()
+                            .service(PayStatementServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

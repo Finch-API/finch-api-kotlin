@@ -2,50 +2,90 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.ProviderService
 import java.util.Objects
 
-/** Return details on all available payroll and HR systems. */
+/** @see [ProviderService.list] */
 class ProviderListPage
 private constructor(
-    private val providersService: ProviderService,
+    private val service: ProviderService,
     private val params: ProviderListParams,
     private val items: List<Provider>,
 ) {
-
-    /** Returns the response that this page was parsed from. */
-    fun items(): List<Provider> = items
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProviderListPage && providersService == other.providersService && params == other.params && items == other.items /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(providersService, params, items) /* spotless:on */
-
-    override fun toString() =
-        "ProviderListPage{providersService=$providersService, params=$params, items=$items}"
 
     fun hasNextPage(): Boolean = items.isNotEmpty()
 
     fun getNextPageParams(): ProviderListParams? = null
 
-    fun getNextPage(): ProviderListPage? {
-        return getNextPageParams()?.let { providersService.list(it) }
-    }
+    fun getNextPage(): ProviderListPage? = getNextPageParams()?.let { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): ProviderListParams = params
+
+    /** The response that this page was parsed from. */
+    fun items(): List<Provider> = items
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            providersService: ProviderService,
-            params: ProviderListParams,
-            items: List<Provider>,
-        ) = ProviderListPage(providersService, params, items)
+        /**
+         * Returns a mutable builder for constructing an instance of [ProviderListPage].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [ProviderListPage]. */
+    class Builder internal constructor() {
+
+        private var service: ProviderService? = null
+        private var params: ProviderListParams? = null
+        private var items: List<Provider>? = null
+
+        internal fun from(providerListPage: ProviderListPage) = apply {
+            service = providerListPage.service
+            params = providerListPage.params
+            items = providerListPage.items
+        }
+
+        fun service(service: ProviderService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: ProviderListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<Provider>) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [ProviderListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): ProviderListPage =
+            ProviderListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
     }
 
     class AutoPager(private val firstPage: ProviderListPage) : Sequence<Provider> {
@@ -62,4 +102,16 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProviderListPage && service == other.service && params == other.params && items == other.items /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+
+    override fun toString() = "ProviderListPage{service=$service, params=$params, items=$items}"
 }
