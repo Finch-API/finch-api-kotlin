@@ -2,161 +2,99 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
-import java.util.Collections
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
-/** Get enrollment information for the given individuals. */
+/** @see [IndividualServiceAsync.retrieveManyBenefits] */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
-    private val individualsService: IndividualServiceAsync,
+    private val service: IndividualServiceAsync,
     private val params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-    private val response: Response,
+    private val items: List<IndividualBenefit>,
 ) {
 
-    fun response(): Response = response
+    fun hasNextPage(): Boolean = items.isNotEmpty()
 
-    fun items(): List<IndividualBenefit> = response().items()
+    fun getNextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams? = null
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsPageAsync && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitIndividualRetrieveManyBenefitsPageAsync{individualsService=$individualsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams? {
-        return null
-    }
-
-    suspend fun getNextPage(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync? {
-        return getNextPageParams()?.let { individualsService.retrieveManyBenefits(it) }
-    }
+    suspend fun getNextPage(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync? =
+        getNextPageParams()?.let { service.retrieveManyBenefits(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisBenefitIndividualRetrieveManyBenefitsParams = params
+
+    /** The response that this page was parsed from. */
+    fun items(): List<IndividualBenefit> = items
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            individualsService: IndividualServiceAsync,
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
-            response: Response,
-        ) = HrisBenefitIndividualRetrieveManyBenefitsPageAsync(individualsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitIndividualRetrieveManyBenefitsPageAsync].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        fun builder() = Builder()
     }
 
-    class Response(
-        private val items: JsonField<List<IndividualBenefit>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisBenefitIndividualRetrieveManyBenefitsPageAsync]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("items") items: JsonField<List<IndividualBenefit>> = JsonMissing.of()
-        ) : this(items, mutableMapOf())
+        private var service: IndividualServiceAsync? = null
+        private var params: HrisBenefitIndividualRetrieveManyBenefitsParams? = null
+        private var items: List<IndividualBenefit>? = null
 
-        fun items(): List<IndividualBenefit> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items") fun _items(): JsonField<List<IndividualBenefit>>? = items
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        internal fun from(
+            hrisBenefitIndividualRetrieveManyBenefitsPageAsync:
+                HrisBenefitIndividualRetrieveManyBenefitsPageAsync
+        ) = apply {
+            service = hrisBenefitIndividualRetrieveManyBenefitsPageAsync.service
+            params = hrisBenefitIndividualRetrieveManyBenefitsPageAsync.params
+            items = hrisBenefitIndividualRetrieveManyBenefitsPageAsync.items
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: IndividualServiceAsync) = apply { this.service = service }
 
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            items().map { it.validate() }
-            validated = true
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisBenefitIndividualRetrieveManyBenefitsParams) = apply {
+            this.params = params
         }
 
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
+        /** The response that this page was parsed from. */
+        fun items(items: List<IndividualBenefit>) = apply { this.items = items }
 
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisBenefitIndividualRetrieveManyBenefitsPageAsync].
-             */
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<IndividualBenefit>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<IndividualBenefit>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<IndividualBenefit>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(items, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
+            HrisBenefitIndividualRetrieveManyBenefitsPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
     }
 
     class AutoPager(private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPageAsync) :
@@ -174,4 +112,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitIndividualRetrieveManyBenefitsPageAsync && service == other.service && params == other.params && items == other.items /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitIndividualRetrieveManyBenefitsPageAsync{service=$service, params=$params, items=$items}"
 }

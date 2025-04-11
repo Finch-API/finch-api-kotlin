@@ -39,6 +39,6 @@ internal class PayGroupServiceAsyncTest {
 
         val page = payGroupServiceAsync.list()
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }

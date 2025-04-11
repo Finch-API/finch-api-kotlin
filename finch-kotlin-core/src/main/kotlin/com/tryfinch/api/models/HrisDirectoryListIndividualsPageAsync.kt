@@ -2,56 +2,44 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
-import java.util.Collections
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
-/** Read company directory and organization structure */
+/** @see [DirectoryServiceAsync.listIndividuals] */
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsPageAsync
 private constructor(
-    private val directoryService: DirectoryServiceAsync,
+    private val service: DirectoryServiceAsync,
     private val params: HrisDirectoryListIndividualsParams,
-    private val response: Response,
+    private val response: HrisDirectoryListIndividualsPageResponse,
 ) {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
+     *
+     * @see [HrisDirectoryListIndividualsPageResponse.individuals]
+     */
+    fun individuals(): List<IndividualInDirectory> =
+        response._individuals().getNullable("individuals") ?: emptyList()
 
-    fun individuals(): List<IndividualInDirectory> = response().individuals()
-
-    fun paging(): Paging = response().paging()
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisDirectoryListIndividualsPageAsync && directoryService == other.directoryService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(directoryService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisDirectoryListIndividualsPageAsync{directoryService=$directoryService, params=$params, response=$response}"
+    /**
+     * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
+     *
+     * @see [HrisDirectoryListIndividualsPageResponse.paging]
+     */
+    fun paging(): Paging? = response._paging().getNullable("paging")
 
     fun hasNextPage(): Boolean {
         if (individuals().isEmpty()) {
             return false
         }
 
-        return (paging().offset() ?: 0) + individuals().count() <
-            (paging().count() ?: Long.MAX_VALUE)
+        val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
+        val totalCount = paging()?.let { it._count().getNullable("count") } ?: Long.MAX_VALUE
+        return offset + individuals().size < totalCount
     }
 
     fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
@@ -59,139 +47,84 @@ private constructor(
             return null
         }
 
-        return HrisDirectoryListIndividualsParams.builder()
-            .from(params)
-            .offset((paging().offset() ?: 0) + individuals().count())
-            .build()
+        val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
+        return params.toBuilder().offset(offset + individuals().size).build()
     }
 
-    suspend fun getNextPage(): HrisDirectoryListIndividualsPageAsync? {
-        return getNextPageParams()?.let { directoryService.listIndividuals(it) }
-    }
+    suspend fun getNextPage(): HrisDirectoryListIndividualsPageAsync? =
+        getNextPageParams()?.let { service.listIndividuals(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisDirectoryListIndividualsParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisDirectoryListIndividualsPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            directoryService: DirectoryServiceAsync,
-            params: HrisDirectoryListIndividualsParams,
-            response: Response,
-        ) = HrisDirectoryListIndividualsPageAsync(directoryService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisDirectoryListIndividualsPageAsync].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        fun builder() = Builder()
     }
 
-    class Response(
-        private val individuals: JsonField<List<IndividualInDirectory>>,
-        private val paging: JsonField<Paging>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisDirectoryListIndividualsPageAsync]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("individuals")
-            individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
-            @JsonProperty("paging") paging: JsonField<Paging> = JsonMissing.of(),
-        ) : this(individuals, paging, mutableMapOf())
+        private var service: DirectoryServiceAsync? = null
+        private var params: HrisDirectoryListIndividualsParams? = null
+        private var response: HrisDirectoryListIndividualsPageResponse? = null
 
-        fun individuals(): List<IndividualInDirectory> =
-            individuals.getNullable("individuals") ?: listOf()
-
-        fun paging(): Paging = paging.getRequired("paging")
-
-        @JsonProperty("individuals")
-        fun _individuals(): JsonField<List<IndividualInDirectory>>? = individuals
-
-        @JsonProperty("paging") fun _paging(): JsonField<Paging>? = paging
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        internal fun from(
+            hrisDirectoryListIndividualsPageAsync: HrisDirectoryListIndividualsPageAsync
+        ) = apply {
+            service = hrisDirectoryListIndividualsPageAsync.service
+            params = hrisDirectoryListIndividualsPageAsync.params
+            response = hrisDirectoryListIndividualsPageAsync.response
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: DirectoryServiceAsync) = apply { this.service = service }
 
-        private var validated: Boolean = false
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisDirectoryListIndividualsParams) = apply { this.params = params }
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            individuals().map { it.validate() }
-            paging().validate()
-            validated = true
+        /** The response that this page was parsed from. */
+        fun response(response: HrisDirectoryListIndividualsPageResponse) = apply {
+            this.response = response
         }
 
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && individuals == other.individuals && paging == other.paging && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(individuals, paging, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisDirectoryListIndividualsPageAsync].
-             */
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of()
-            private var paging: JsonField<Paging> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.individuals = page.individuals
-                this.paging = page.paging
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun individuals(individuals: List<IndividualInDirectory>) =
-                individuals(JsonField.of(individuals))
-
-            fun individuals(individuals: JsonField<List<IndividualInDirectory>>) = apply {
-                this.individuals = individuals
-            }
-
-            fun paging(paging: Paging) = paging(JsonField.of(paging))
-
-            fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response =
-                Response(individuals, paging, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisDirectoryListIndividualsPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisDirectoryListIndividualsPageAsync =
+            HrisDirectoryListIndividualsPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisDirectoryListIndividualsPageAsync) :
@@ -209,4 +142,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisDirectoryListIndividualsPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisDirectoryListIndividualsPageAsync{service=$service, params=$params, response=$response}"
 }

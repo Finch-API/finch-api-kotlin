@@ -2,167 +2,110 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsync
-import java.util.Collections
 import java.util.Objects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon List all rules of a connection account.
- */
+/** @see [RuleServiceAsync.list] */
 class HrisCompanyPayStatementItemRuleListPageAsync
 private constructor(
-    private val rulesService: RuleServiceAsync,
+    private val service: RuleServiceAsync,
     private val params: HrisCompanyPayStatementItemRuleListParams,
-    private val response: Response,
+    private val response: HrisCompanyPayStatementItemRuleListPageResponse,
 ) {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisCompanyPayStatementItemRuleListPageResponse], but gracefully handles
+     * missing data.
+     *
+     * @see [HrisCompanyPayStatementItemRuleListPageResponse.responses]
+     */
+    fun responses(): List<RuleListResponse> =
+        response._responses().getNullable("responses") ?: emptyList()
 
-    fun responses(): List<RuleListResponse> = response().responses()
+    fun hasNextPage(): Boolean = responses().isNotEmpty()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+    fun getNextPageParams(): HrisCompanyPayStatementItemRuleListParams? = null
 
-        return /* spotless:off */ other is HrisCompanyPayStatementItemRuleListPageAsync && rulesService == other.rulesService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(rulesService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisCompanyPayStatementItemRuleListPageAsync{rulesService=$rulesService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisCompanyPayStatementItemRuleListParams? {
-        return null
-    }
-
-    suspend fun getNextPage(): HrisCompanyPayStatementItemRuleListPageAsync? {
-        return getNextPageParams()?.let { rulesService.list(it) }
-    }
+    suspend fun getNextPage(): HrisCompanyPayStatementItemRuleListPageAsync? =
+        getNextPageParams()?.let { service.list(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisCompanyPayStatementItemRuleListParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisCompanyPayStatementItemRuleListPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            rulesService: RuleServiceAsync,
-            params: HrisCompanyPayStatementItemRuleListParams,
-            response: Response,
-        ) = HrisCompanyPayStatementItemRuleListPageAsync(rulesService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisCompanyPayStatementItemRuleListPageAsync].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        fun builder() = Builder()
     }
 
-    class Response(
-        private val responses: JsonField<List<RuleListResponse>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisCompanyPayStatementItemRuleListPageAsync]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("responses")
-            responses: JsonField<List<RuleListResponse>> = JsonMissing.of()
-        ) : this(responses, mutableMapOf())
+        private var service: RuleServiceAsync? = null
+        private var params: HrisCompanyPayStatementItemRuleListParams? = null
+        private var response: HrisCompanyPayStatementItemRuleListPageResponse? = null
 
-        fun responses(): List<RuleListResponse> = responses.getNullable("responses") ?: listOf()
-
-        @JsonProperty("responses") fun _responses(): JsonField<List<RuleListResponse>>? = responses
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        internal fun from(
+            hrisCompanyPayStatementItemRuleListPageAsync:
+                HrisCompanyPayStatementItemRuleListPageAsync
+        ) = apply {
+            service = hrisCompanyPayStatementItemRuleListPageAsync.service
+            params = hrisCompanyPayStatementItemRuleListPageAsync.params
+            response = hrisCompanyPayStatementItemRuleListPageAsync.response
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: RuleServiceAsync) = apply { this.service = service }
 
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisCompanyPayStatementItemRuleListParams) = apply {
+            this.params = params
         }
 
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
+        /** The response that this page was parsed from. */
+        fun response(response: HrisCompanyPayStatementItemRuleListPageResponse) = apply {
+            this.response = response
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisCompanyPayStatementItemRuleListPageAsync].
-             */
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<RuleListResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<RuleListResponse>) = responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<RuleListResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(responses, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisCompanyPayStatementItemRuleListPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisCompanyPayStatementItemRuleListPageAsync =
+            HrisCompanyPayStatementItemRuleListPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
     }
 
     class AutoPager(private val firstPage: HrisCompanyPayStatementItemRuleListPageAsync) :
@@ -180,4 +123,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisCompanyPayStatementItemRuleListPageAsync && service == other.service && params == other.params && response == other.response /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, response) /* spotless:on */
+
+    override fun toString() =
+        "HrisCompanyPayStatementItemRuleListPageAsync{service=$service, params=$params, response=$response}"
 }
