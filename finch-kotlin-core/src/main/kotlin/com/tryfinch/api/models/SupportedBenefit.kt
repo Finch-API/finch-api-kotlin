@@ -26,7 +26,6 @@ private constructor(
     private val employeeDeduction: JsonField<List<EmployeeDeduction?>>,
     private val frequencies: JsonField<List<BenefitFrequency?>>,
     private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>>,
-    private val type: JsonField<BenefitType>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -51,7 +50,6 @@ private constructor(
         @JsonProperty("hsa_contribution_limit")
         @ExcludeMissing
         hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
-        @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
     ) : this(
         annualMaximum,
         catchUp,
@@ -60,7 +58,6 @@ private constructor(
         employeeDeduction,
         frequencies,
         hsaContributionLimit,
-        type,
         mutableMapOf(),
     )
 
@@ -124,14 +121,6 @@ private constructor(
         hsaContributionLimit.getNullable("hsa_contribution_limit")
 
     /**
-     * Type of benefit.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun type(): BenefitType? = type.getNullable("type")
-
-    /**
      * Returns the raw JSON value of [annualMaximum].
      *
      * Unlike [annualMaximum], this method doesn't throw if the JSON field has an unexpected type.
@@ -193,13 +182,6 @@ private constructor(
     @ExcludeMissing
     fun _hsaContributionLimit(): JsonField<List<HsaContributionLimit?>> = hsaContributionLimit
 
-    /**
-     * Returns the raw JSON value of [type].
-     *
-     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
-
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -228,7 +210,6 @@ private constructor(
         private var employeeDeduction: JsonField<MutableList<EmployeeDeduction?>>? = null
         private var frequencies: JsonField<MutableList<BenefitFrequency?>>? = null
         private var hsaContributionLimit: JsonField<MutableList<HsaContributionLimit?>>? = null
-        private var type: JsonField<BenefitType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(supportedBenefit: SupportedBenefit) = apply {
@@ -239,7 +220,6 @@ private constructor(
             employeeDeduction = supportedBenefit.employeeDeduction.map { it.toMutableList() }
             frequencies = supportedBenefit.frequencies.map { it.toMutableList() }
             hsaContributionLimit = supportedBenefit.hsaContributionLimit.map { it.toMutableList() }
-            type = supportedBenefit.type
             additionalProperties = supportedBenefit.additionalProperties.toMutableMap()
         }
 
@@ -412,18 +392,6 @@ private constructor(
                 }
         }
 
-        /** Type of benefit. */
-        fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
-
-        /**
-         * Sets [Builder.type] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun type(type: JsonField<BenefitType>) = apply { this.type = type }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -457,7 +425,6 @@ private constructor(
                 (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
                 (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
                 (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
-                type,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -476,7 +443,6 @@ private constructor(
         employeeDeduction()?.forEach { it?.validate() }
         frequencies()?.forEach { it?.validate() }
         hsaContributionLimit()?.forEach { it?.validate() }
-        type()?.validate()
         validated = true
     }
 
@@ -500,8 +466,7 @@ private constructor(
             (if (description.asKnown() == null) 0 else 1) +
             (employeeDeduction.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
             (frequencies.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
-            (hsaContributionLimit.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
-            (type.asKnown()?.validity() ?: 0)
+            (hsaContributionLimit.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0)
 
     class CompanyContribution
     @JsonCreator
@@ -895,15 +860,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, description, employeeDeduction, frequencies, hsaContributionLimit, type, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, description, employeeDeduction, frequencies, hsaContributionLimit, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SupportedBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, type=$type, additionalProperties=$additionalProperties}"
+        "SupportedBenefit{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
 }

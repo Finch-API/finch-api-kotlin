@@ -2,165 +2,100 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.errors.FinchInvalidDataException
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.BenefitService
-import java.util.Collections
 import java.util.Objects
 
-/** Get deductions metadata */
+/** @see [BenefitService.listSupportedBenefits] */
 class HrisBenefitListSupportedBenefitsPage
 private constructor(
-    private val benefitsService: BenefitService,
+    private val service: BenefitService,
     private val params: HrisBenefitListSupportedBenefitsParams,
-    private val response: Response,
+    private val items: List<BenefitListSupportedBenefitsResponse>,
 ) {
 
-    fun response(): Response = response
+    fun hasNextPage(): Boolean = items.isNotEmpty()
 
-    fun items(): List<SupportedBenefit> = response().items()
+    fun getNextPageParams(): HrisBenefitListSupportedBenefitsParams? = null
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is HrisBenefitListSupportedBenefitsPage && benefitsService == other.benefitsService && params == other.params && response == other.response /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitsService, params, response) /* spotless:on */
-
-    override fun toString() =
-        "HrisBenefitListSupportedBenefitsPage{benefitsService=$benefitsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisBenefitListSupportedBenefitsParams? {
-        return null
-    }
-
-    fun getNextPage(): HrisBenefitListSupportedBenefitsPage? {
-        return getNextPageParams()?.let { benefitsService.listSupportedBenefits(it) }
-    }
+    fun getNextPage(): HrisBenefitListSupportedBenefitsPage? =
+        getNextPageParams()?.let { service.listSupportedBenefits(it) }
 
     fun autoPager(): AutoPager = AutoPager(this)
 
+    /** The parameters that were used to request this page. */
+    fun params(): HrisBenefitListSupportedBenefitsParams = params
+
+    /** The response that this page was parsed from. */
+    fun items(): List<BenefitListSupportedBenefitsResponse> = items
+
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
-        fun of(
-            benefitsService: BenefitService,
-            params: HrisBenefitListSupportedBenefitsParams,
-            response: Response,
-        ) = HrisBenefitListSupportedBenefitsPage(benefitsService, params, response)
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitListSupportedBenefitsPage].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        fun builder() = Builder()
     }
 
-    class Response(
-        private val items: JsonField<List<SupportedBenefit>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
+    /** A builder for [HrisBenefitListSupportedBenefitsPage]. */
+    class Builder internal constructor() {
 
-        @JsonCreator
-        private constructor(
-            @JsonProperty("items") items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
-        ) : this(items, mutableMapOf())
+        private var service: BenefitService? = null
+        private var params: HrisBenefitListSupportedBenefitsParams? = null
+        private var items: List<BenefitListSupportedBenefitsResponse>? = null
 
-        fun items(): List<SupportedBenefit> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items") fun _items(): JsonField<List<SupportedBenefit>>? = items
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
+        internal fun from(
+            hrisBenefitListSupportedBenefitsPage: HrisBenefitListSupportedBenefitsPage
+        ) = apply {
+            service = hrisBenefitListSupportedBenefitsPage.service
+            params = hrisBenefitListSupportedBenefitsPage.params
+            items = hrisBenefitListSupportedBenefitsPage.items
         }
 
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
+        fun service(service: BenefitService) = apply { this.service = service }
 
-        private var validated: Boolean = false
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisBenefitListSupportedBenefitsParams) = apply { this.params = params }
 
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
+        /** The response that this page was parsed from. */
+        fun items(items: List<BenefitListSupportedBenefitsResponse>?) = apply { this.items = items }
 
-            items().map { it.validate() }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of
-             * [HrisBenefitListSupportedBenefitsPage].
-             */
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<SupportedBenefit>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<SupportedBenefit>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            /**
-             * Returns an immutable instance of [Response].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Response = Response(items, additionalProperties.toMutableMap())
-        }
+        /**
+         * Returns an immutable instance of [HrisBenefitListSupportedBenefitsPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisBenefitListSupportedBenefitsPage =
+            HrisBenefitListSupportedBenefitsPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items) ?: emptyList(),
+            )
     }
 
     class AutoPager(private val firstPage: HrisBenefitListSupportedBenefitsPage) :
-        Sequence<SupportedBenefit> {
+        Sequence<BenefitListSupportedBenefitsResponse> {
 
-        override fun iterator(): Iterator<SupportedBenefit> = iterator {
+        override fun iterator(): Iterator<BenefitListSupportedBenefitsResponse> = iterator {
             var page = firstPage
             var index = 0
             while (true) {
@@ -172,4 +107,17 @@ private constructor(
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is HrisBenefitListSupportedBenefitsPage && service == other.service && params == other.params && items == other.items /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(service, params, items) /* spotless:on */
+
+    override fun toString() =
+        "HrisBenefitListSupportedBenefitsPage{service=$service, params=$params, items=$items}"
 }

@@ -20,7 +20,6 @@ internal class SupportedBenefitTest {
                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
                 .addFrequency(BenefitFrequency.ONE_TIME)
                 .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
-                .type(BenefitType._401K)
                 .build()
 
         assertThat(supportedBenefit.annualMaximum()).isEqualTo(true)
@@ -33,7 +32,6 @@ internal class SupportedBenefitTest {
         assertThat(supportedBenefit.frequencies()).containsExactly(BenefitFrequency.ONE_TIME)
         assertThat(supportedBenefit.hsaContributionLimit())
             .containsExactly(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
-        assertThat(supportedBenefit.type()).isEqualTo(BenefitType._401K)
     }
 
     @Test
@@ -48,7 +46,6 @@ internal class SupportedBenefitTest {
                 .addEmployeeDeduction(SupportedBenefit.EmployeeDeduction.FIXED)
                 .addFrequency(BenefitFrequency.ONE_TIME)
                 .addHsaContributionLimit(SupportedBenefit.HsaContributionLimit.INDIVIDUAL)
-                .type(BenefitType._401K)
                 .build()
 
         val roundtrippedSupportedBenefit =

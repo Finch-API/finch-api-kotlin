@@ -8,9 +8,9 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
-import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyPageAsync
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import com.tryfinch.api.models.IndividualEnrolledIdsResponse
+import com.tryfinch.api.models.UnenrolledIndividualBenefitResponse
 
 interface IndividualServiceAsync {
 
@@ -35,7 +35,7 @@ interface IndividualServiceAsync {
     suspend fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): HrisBenefitIndividualUnenrollManyPageAsync
+    ): UnenrolledIndividualBenefitResponse
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -71,6 +71,6 @@ interface IndividualServiceAsync {
         suspend fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<HrisBenefitIndividualUnenrollManyPageAsync>
+        ): HttpResponseFor<UnenrolledIndividualBenefitResponse>
     }
 }

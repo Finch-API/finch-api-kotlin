@@ -1,5 +1,42 @@
 # Changelog
 
+## 5.1.0 (2025-04-11)
+
+Full Changelog: [v5.0.0...v5.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.0.0...v5.1.0)
+
+### Features
+
+* **api:** add models for hrs benefits individuals async responses ([62261e3](https://github.com/Finch-API/finch-api-kotlin/commit/62261e3eed2bd62be4e2a8f1acbae57823bb0a4c))
+* **api:** api update ([#456](https://github.com/Finch-API/finch-api-kotlin/issues/456)) ([24bb58a](https://github.com/Finch-API/finch-api-kotlin/commit/24bb58a6342773772860245c79b0ede92538e3e9))
+* **api:** benefits mutation API endpoints (create benefit, update benefit, enroll individual, unenroll individual) now properly return async response types ([#462](https://github.com/Finch-API/finch-api-kotlin/issues/462)) ([14de68c](https://github.com/Finch-API/finch-api-kotlin/commit/14de68c361024634bc067a416ce07fc74b384e24))
+* **client:** make pagination robust to missing data ([5e07a62](https://github.com/Finch-API/finch-api-kotlin/commit/5e07a620efe41e8dfcb7b10926df948e581d6125))
+* **client:** support setting base URL via env var ([#458](https://github.com/Finch-API/finch-api-kotlin/issues/458)) ([907b68c](https://github.com/Finch-API/finch-api-kotlin/commit/907b68c23bed48f2077c10777cbc29e817432b53))
+
+
+### Bug Fixes
+
+* **client:** bump to better jackson version ([#460](https://github.com/Finch-API/finch-api-kotlin/issues/460)) ([aea8670](https://github.com/Finch-API/finch-api-kotlin/commit/aea8670b3fe77609c4a3411480ab602d54d2d088))
+* **client:** page compilation error ([903a991](https://github.com/Finch-API/finch-api-kotlin/commit/903a99127dfdabd5204035ee3ae696052f891fd9))
+
+
+### Chores
+
+* fix typo ([7e47078](https://github.com/Finch-API/finch-api-kotlin/commit/7e4707874de02747737e96d797d9cefc1fb5b89d))
+* fix typo ([#463](https://github.com/Finch-API/finch-api-kotlin/issues/463)) ([508f7fe](https://github.com/Finch-API/finch-api-kotlin/commit/508f7feac28525c470a213fb9af77ac8e889242d))
+* **internal:** expand CI branch coverage ([#459](https://github.com/Finch-API/finch-api-kotlin/issues/459)) ([262a990](https://github.com/Finch-API/finch-api-kotlin/commit/262a990657fd7207677e4ac75c3b6c05cd4d08d4))
+* **internal:** reduce CI branch coverage ([13a3e07](https://github.com/Finch-API/finch-api-kotlin/commit/13a3e07dd84178c965153cf99d689ba9eff305b0))
+
+
+### Documentation
+
+* add comments for page methods ([5e07a62](https://github.com/Finch-API/finch-api-kotlin/commit/5e07a620efe41e8dfcb7b10926df948e581d6125))
+
+
+### Refactors
+
+* **client:** deduplicate page response classes ([#461](https://github.com/Finch-API/finch-api-kotlin/issues/461)) ([5e07a62](https://github.com/Finch-API/finch-api-kotlin/commit/5e07a620efe41e8dfcb7b10926df948e581d6125))
+* **client:** migrate pages to builder pattern ([#464](https://github.com/Finch-API/finch-api-kotlin/issues/464)) ([401bdcc](https://github.com/Finch-API/finch-api-kotlin/commit/401bdcc65e9a5caf6694e157b250888c0f249a47))
+
 ## 5.0.0 (2025-04-08)
 
 Full Changelog: [v4.2.0...v5.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v4.2.0...v5.0.0)

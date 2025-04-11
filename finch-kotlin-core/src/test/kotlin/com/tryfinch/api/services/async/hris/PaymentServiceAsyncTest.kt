@@ -29,6 +29,6 @@ internal class PaymentServiceAsyncTest {
                     .build()
             )
 
-        page.response().validate()
+        page.items().forEach { it.validate() }
     }
 }
