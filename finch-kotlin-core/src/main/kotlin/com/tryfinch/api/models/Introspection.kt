@@ -21,6 +21,7 @@ import java.util.Objects
 
 class Introspection
 private constructor(
+    private val id: JsonField<String>,
     private val accountId: JsonField<String>,
     private val authenticationMethods: JsonField<List<AuthenticationMethod>>,
     private val clientId: JsonField<String>,
@@ -42,6 +43,7 @@ private constructor(
 
     @JsonCreator
     private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("authentication_methods")
         @ExcludeMissing
@@ -81,6 +83,7 @@ private constructor(
         providerId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("username") @ExcludeMissing username: JsonField<String> = JsonMissing.of(),
     ) : this(
+        id,
         accountId,
         authenticationMethods,
         clientId,
@@ -99,6 +102,14 @@ private constructor(
         username,
         mutableMapOf(),
     )
+
+    /**
+     * The Finch UUID of the token being introspected.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun id(): String = id.getRequired("id")
 
     /**
      * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of this
@@ -233,6 +244,13 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun username(): String = username.getRequired("username")
+
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
      * Returns the raw JSON value of [accountId].
@@ -391,6 +409,7 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
+         * .id()
          * .accountId()
          * .authenticationMethods()
          * .clientId()
@@ -415,6 +434,7 @@ private constructor(
     /** A builder for [Introspection]. */
     class Builder internal constructor() {
 
+        private var id: JsonField<String>? = null
         private var accountId: JsonField<String>? = null
         private var authenticationMethods: JsonField<MutableList<AuthenticationMethod>>? = null
         private var clientId: JsonField<String>? = null
@@ -434,6 +454,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(introspection: Introspection) = apply {
+            id = introspection.id
             accountId = introspection.accountId
             authenticationMethods = introspection.authenticationMethods.map { it.toMutableList() }
             clientId = introspection.clientId
@@ -452,6 +473,17 @@ private constructor(
             username = introspection.username
             additionalProperties = introspection.additionalProperties.toMutableMap()
         }
+
+        /** The Finch UUID of the token being introspected. */
+        fun id(id: String) = id(JsonField.of(id))
+
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
@@ -743,6 +775,7 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
+         * .id()
          * .accountId()
          * .authenticationMethods()
          * .clientId()
@@ -765,6 +798,7 @@ private constructor(
          */
         fun build(): Introspection =
             Introspection(
+                checkRequired("id", id),
                 checkRequired("accountId", accountId),
                 checkRequired("authenticationMethods", authenticationMethods).map {
                     it.toImmutable()
@@ -794,6 +828,7 @@ private constructor(
             return@apply
         }
 
+        id()
         accountId()
         authenticationMethods().forEach { it.validate() }
         clientId()
@@ -827,7 +862,8 @@ private constructor(
      * Used for best match union deserialization.
      */
     internal fun validity(): Int =
-        (if (accountId.asKnown() == null) 0 else 1) +
+        (if (id.asKnown() == null) 0 else 1) +
+            (if (accountId.asKnown() == null) 0 else 1) +
             (authenticationMethods.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (clientId.asKnown() == null) 0 else 1) +
             (clientType.asKnown()?.validity() ?: 0) +
@@ -1890,15 +1926,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Introspection && accountId == other.accountId && authenticationMethods == other.authenticationMethods && clientId == other.clientId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionStatus == other.connectionStatus && connectionType == other.connectionType && customerEmail == other.customerEmail && customerId == other.customerId && customerName == other.customerName && manual == other.manual && payrollProviderId == other.payrollProviderId && products == other.products && providerId == other.providerId && username == other.username && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Introspection && id == other.id && accountId == other.accountId && authenticationMethods == other.authenticationMethods && clientId == other.clientId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionStatus == other.connectionStatus && connectionType == other.connectionType && customerEmail == other.customerEmail && customerId == other.customerId && customerName == other.customerName && manual == other.manual && payrollProviderId == other.payrollProviderId && products == other.products && providerId == other.providerId && username == other.username && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(accountId, authenticationMethods, clientId, clientType, companyId, connectionId, connectionStatus, connectionType, customerEmail, customerId, customerName, manual, payrollProviderId, products, providerId, username, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, accountId, authenticationMethods, clientId, clientType, companyId, connectionId, connectionStatus, connectionType, customerEmail, customerId, customerName, manual, payrollProviderId, products, providerId, username, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Introspection{accountId=$accountId, authenticationMethods=$authenticationMethods, clientId=$clientId, clientType=$clientType, companyId=$companyId, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, manual=$manual, payrollProviderId=$payrollProviderId, products=$products, providerId=$providerId, username=$username, additionalProperties=$additionalProperties}"
+        "Introspection{id=$id, accountId=$accountId, authenticationMethods=$authenticationMethods, clientId=$clientId, clientType=$clientType, companyId=$companyId, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, manual=$manual, payrollProviderId=$payrollProviderId, products=$products, providerId=$providerId, username=$username, additionalProperties=$additionalProperties}"
 }
