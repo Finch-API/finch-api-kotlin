@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.2.0 (2025-04-12)
+
+Full Changelog: [v5.1.0...v5.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.1.0...v5.2.0)
+
+### Features
+
+* **api:** api update ([7a19c60](https://github.com/Finch-API/finch-api-kotlin/commit/7a19c600b2eedf82e18c0864a9359253ebcf31fa))
+
 ## 5.1.0 (2025-04-11)
 
 Full Changelog: [v5.0.0...v5.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.0.0...v5.1.0)
