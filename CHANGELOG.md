@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.3.0 (2025-04-18)
+
+Full Changelog: [v5.2.0...v5.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.2.0...v5.3.0)
+
+### Features
+
+* **api:** api update ([925bbef](https://github.com/Finch-API/finch-api-kotlin/commit/925bbef7b02aa1491f2a74cf773272c9ae2a03ad))
+
+
+### Performance Improvements
+
+* **internal:** improve compilation+test speed ([d02a977](https://github.com/Finch-API/finch-api-kotlin/commit/d02a9774127d594c1298887d5a3a559588772114))
+
+
+### Documentation
+
+* **client:** update jackson compat error message ([7ed0ef6](https://github.com/Finch-API/finch-api-kotlin/commit/7ed0ef6f37865422c4106ac2522462acca655909))
+* explain http client customization ([56d4a3e](https://github.com/Finch-API/finch-api-kotlin/commit/56d4a3e3613e8c7610153df6c17dcc7adf168faa))
+* explain jackson compat in readme ([a398943](https://github.com/Finch-API/finch-api-kotlin/commit/a3989439c70f8d2fd9b0b627e11ed77f59403243))
+* update documentation links to be more uniform ([362f869](https://github.com/Finch-API/finch-api-kotlin/commit/362f869d455eeebc71b5bf2d772a1a37d1221ce5))
+
 ## 5.2.0 (2025-04-12)
 
 Full Changelog: [v5.1.0...v5.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.1.0...v5.2.0)
