@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.4.0 (2025-04-22)
+
+Full Changelog: [v5.3.0...v5.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.3.0...v5.4.0)
+
+### Features
+
+* **api:** api update ([e33f7c1](https://github.com/Finch-API/finch-api-kotlin/commit/e33f7c1399bbada24d75faab81ab876d4c5343a8))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([b403ee1](https://github.com/Finch-API/finch-api-kotlin/commit/b403ee133d0b9282f012942180fc57c6ee15cd21))
+
 ## 5.3.0 (2025-04-18)
 
 Full Changelog: [v5.2.0...v5.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.2.0...v5.3.0)
