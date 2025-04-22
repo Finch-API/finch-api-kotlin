@@ -52,7 +52,7 @@ internal fun checkJacksonVersionCompatibility() {
         }
     check(incompatibleJacksonVersions.isEmpty()) {
         """
-This SDK depends on Jackson version $MINIMUM_JACKSON_VERSION, but the following incompatible Jackson versions were detected at runtime:
+This SDK requires a minimum Jackson version of $MINIMUM_JACKSON_VERSION, but the following incompatible Jackson versions were detected at runtime:
 
 ${incompatibleJacksonVersions.asSequence().map { (version, incompatibilityReason) ->
     "- `${version.toFullString().replace("/", ":")}` ($incompatibilityReason)"
@@ -63,6 +63,8 @@ This can happen if you are either:
 2. Depending on some library that depends on different Jackson versions, potentially transitively
 
 Double-check that you are depending on compatible Jackson versions.
+
+See https://www.github.com/Finch-API/finch-api-kotlin#jackson for more information.
         """
             .trimIndent()
     }
