@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.5.0 (2025-04-23)
+
+Full Changelog: [v5.4.0...v5.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.4.0...v5.5.0)
+
+### Features
+
+* **api:** api update ([954cbef](https://github.com/Finch-API/finch-api-kotlin/commit/954cbef48b9aefdad25abea3e7ed227982782dd8))
+
+
+### Chores
+
+* **ci:** only use depot for staging repos ([0a5095c](https://github.com/Finch-API/finch-api-kotlin/commit/0a5095cc61085a4b71b5ffd5c13dd43ba4d67668))
+* **ci:** run on more branches and use depot runners ([4c66fe1](https://github.com/Finch-API/finch-api-kotlin/commit/4c66fe11ebed7cc2e736ede8e2a50bd2bcd3bcbe))
+* **internal:** java 17 -&gt; 21 on ci ([5c1afc6](https://github.com/Finch-API/finch-api-kotlin/commit/5c1afc611419410c0880e1020bba1f0cb7285237))
+
 ## 5.4.0 (2025-04-22)
 
 Full Changelog: [v5.3.0...v5.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.3.0...v5.4.0)
