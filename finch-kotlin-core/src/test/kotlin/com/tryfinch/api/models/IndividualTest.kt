@@ -15,10 +15,6 @@ internal class IndividualTest {
             Individual.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-                )
-                .encryptedSsn("encrypted_ssn")
                 .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("first_name")
                 .gender(Individual.Gender.FEMALE)
@@ -43,16 +39,15 @@ internal class IndividualTest {
                         .sourceId("source_id")
                         .build()
                 )
+                .addEmail(
+                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+                )
+                .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 
         assertThat(individual.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(individual.dob()).isEqualTo("dob")
-        assertThat(individual.emails())
-            .containsExactly(
-                Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-            )
-        assertThat(individual.encryptedSsn()).isEqualTo("encrypted_ssn")
         assertThat(individual.ethnicity()).isEqualTo(Individual.Ethnicity.ASIAN)
         assertThat(individual.firstName()).isEqualTo("first_name")
         assertThat(individual.gender()).isEqualTo(Individual.Gender.FEMALE)
@@ -79,6 +74,11 @@ internal class IndividualTest {
                     .sourceId("source_id")
                     .build()
             )
+        assertThat(individual.emails())
+            .containsExactly(
+                Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+            )
+        assertThat(individual.encryptedSsn()).isEqualTo("encrypted_ssn")
         assertThat(individual.ssn()).isEqualTo("ssn")
     }
 
@@ -89,10 +89,6 @@ internal class IndividualTest {
             Individual.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dob("dob")
-                .addEmail(
-                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
-                )
-                .encryptedSsn("encrypted_ssn")
                 .ethnicity(Individual.Ethnicity.ASIAN)
                 .firstName("first_name")
                 .gender(Individual.Gender.FEMALE)
@@ -117,6 +113,10 @@ internal class IndividualTest {
                         .sourceId("source_id")
                         .build()
                 )
+                .addEmail(
+                    Individual.Email.builder().data("data").type(Individual.Email.Type.WORK).build()
+                )
+                .encryptedSsn("encrypted_ssn")
                 .ssn("ssn")
                 .build()
 
