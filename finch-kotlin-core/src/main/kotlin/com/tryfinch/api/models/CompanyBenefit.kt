@@ -490,37 +490,37 @@ private constructor(
 
         class Tier
         private constructor(
-            private val match: JsonField<Double>,
-            private val threshold: JsonField<Double>,
+            private val match: JsonField<Long>,
+            private val threshold: JsonField<Long>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
             @JsonCreator
             private constructor(
-                @JsonProperty("match") @ExcludeMissing match: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("match") @ExcludeMissing match: JsonField<Long> = JsonMissing.of(),
                 @JsonProperty("threshold")
                 @ExcludeMissing
-                threshold: JsonField<Double> = JsonMissing.of(),
+                threshold: JsonField<Long> = JsonMissing.of(),
             ) : this(match, threshold, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun match(): Double? = match.getNullable("match")
+            fun match(): Long? = match.getNullable("match")
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
-            fun threshold(): Double? = threshold.getNullable("threshold")
+            fun threshold(): Long? = threshold.getNullable("threshold")
 
             /**
              * Returns the raw JSON value of [match].
              *
              * Unlike [match], this method doesn't throw if the JSON field has an unexpected type.
              */
-            @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<Double> = match
+            @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<Long> = match
 
             /**
              * Returns the raw JSON value of [threshold].
@@ -528,9 +528,7 @@ private constructor(
              * Unlike [threshold], this method doesn't throw if the JSON field has an unexpected
              * type.
              */
-            @JsonProperty("threshold")
-            @ExcludeMissing
-            fun _threshold(): JsonField<Double> = threshold
+            @JsonProperty("threshold") @ExcludeMissing fun _threshold(): JsonField<Long> = threshold
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -553,8 +551,8 @@ private constructor(
             /** A builder for [Tier]. */
             class Builder internal constructor() {
 
-                private var match: JsonField<Double> = JsonMissing.of()
-                private var threshold: JsonField<Double> = JsonMissing.of()
+                private var match: JsonField<Long> = JsonMissing.of()
+                private var threshold: JsonField<Long> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(tier: Tier) = apply {
@@ -563,27 +561,27 @@ private constructor(
                     additionalProperties = tier.additionalProperties.toMutableMap()
                 }
 
-                fun match(match: Double) = match(JsonField.of(match))
+                fun match(match: Long) = match(JsonField.of(match))
 
                 /**
                  * Sets [Builder.match] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.match] with a well-typed [Double] value instead.
+                 * You should usually call [Builder.match] with a well-typed [Long] value instead.
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun match(match: JsonField<Double>) = apply { this.match = match }
+                fun match(match: JsonField<Long>) = apply { this.match = match }
 
-                fun threshold(threshold: Double) = threshold(JsonField.of(threshold))
+                fun threshold(threshold: Long) = threshold(JsonField.of(threshold))
 
                 /**
                  * Sets [Builder.threshold] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.threshold] with a well-typed [Double] value
+                 * You should usually call [Builder.threshold] with a well-typed [Long] value
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun threshold(threshold: JsonField<Double>) = apply { this.threshold = threshold }
+                fun threshold(threshold: JsonField<Long>) = apply { this.threshold = threshold }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
