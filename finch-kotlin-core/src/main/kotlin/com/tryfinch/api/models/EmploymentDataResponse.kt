@@ -10,6 +10,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -32,24 +33,24 @@ private constructor(
     ) : this(body, code, individualId, mutableMapOf())
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun body(): EmploymentData? = body.getNullable("body")
+    fun body(): EmploymentData = body.getRequired("body")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun code(): Long? = code.getNullable("code")
+    fun code(): Long = code.getRequired("code")
 
     /**
      * A stable Finch `id` (UUID v4) for an individual in the company.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun individualId(): String? = individualId.getNullable("individual_id")
+    fun individualId(): String = individualId.getRequired("individual_id")
 
     /**
      * Returns the raw JSON value of [body].
@@ -88,16 +89,25 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [EmploymentDataResponse]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [EmploymentDataResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * .code()
+         * .individualId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [EmploymentDataResponse]. */
     class Builder internal constructor() {
 
-        private var body: JsonField<EmploymentData> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
-        private var individualId: JsonField<String> = JsonMissing.of()
+        private var body: JsonField<EmploymentData>? = null
+        private var code: JsonField<Long>? = null
+        private var individualId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(employmentDataResponse: EmploymentDataResponse) = apply {
@@ -117,6 +127,14 @@ private constructor(
          * value.
          */
         fun body(body: JsonField<EmploymentData>) = apply { this.body = body }
+
+        /** Alias for calling [body] with `EmploymentData.ofUnionMember0(unionMember0)`. */
+        fun body(unionMember0: EmploymentData.UnionMember0) =
+            body(EmploymentData.ofUnionMember0(unionMember0))
+
+        /** Alias for calling [body] with `EmploymentData.ofBatchError(batchError)`. */
+        fun body(batchError: EmploymentData.BatchError) =
+            body(EmploymentData.ofBatchError(batchError))
 
         fun code(code: Long) = code(JsonField.of(code))
 
@@ -165,9 +183,23 @@ private constructor(
          * Returns an immutable instance of [EmploymentDataResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * .code()
+         * .individualId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): EmploymentDataResponse =
-            EmploymentDataResponse(body, code, individualId, additionalProperties.toMutableMap())
+            EmploymentDataResponse(
+                checkRequired("body", body),
+                checkRequired("code", code),
+                checkRequired("individualId", individualId),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -177,7 +209,7 @@ private constructor(
             return@apply
         }
 
-        body()?.validate()
+        body().validate()
         code()
         individualId()
         validated = true
