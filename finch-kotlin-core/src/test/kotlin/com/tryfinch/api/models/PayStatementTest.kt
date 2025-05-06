@@ -24,7 +24,10 @@ internal class PayStatementTest {
                                         .metadata(
                                             PayStatement.Earning.Attributes.Metadata.InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -48,7 +51,10 @@ internal class PayStatementTest {
                                             PayStatement.EmployeeDeduction.Attributes.Metadata
                                                 .InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -72,7 +78,10 @@ internal class PayStatementTest {
                                             PayStatement.EmployerContribution.Attributes.Metadata
                                                 .InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -98,7 +107,10 @@ internal class PayStatementTest {
                                         .metadata(
                                             PayStatement.Tax.Attributes.Metadata.InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -126,7 +138,10 @@ internal class PayStatementTest {
                                     .metadata(
                                         PayStatement.Earning.Attributes.Metadata.InnerMetadata
                                             .builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            .putAdditionalProperty(
+                                                "foo",
+                                                JsonValue.from(mapOf<String, Any>()),
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -151,7 +166,10 @@ internal class PayStatementTest {
                                         PayStatement.EmployeeDeduction.Attributes.Metadata
                                             .InnerMetadata
                                             .builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            .putAdditionalProperty(
+                                                "foo",
+                                                JsonValue.from(mapOf<String, Any>()),
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -176,7 +194,10 @@ internal class PayStatementTest {
                                         PayStatement.EmployerContribution.Attributes.Metadata
                                             .InnerMetadata
                                             .builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            .putAdditionalProperty(
+                                                "foo",
+                                                JsonValue.from(mapOf<String, Any>()),
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -204,7 +225,10 @@ internal class PayStatementTest {
                                 PayStatement.Tax.Attributes.Metadata.builder()
                                     .metadata(
                                         PayStatement.Tax.Attributes.Metadata.InnerMetadata.builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            .putAdditionalProperty(
+                                                "foo",
+                                                JsonValue.from(mapOf<String, Any>()),
+                                            )
                                             .build()
                                     )
                                     .build()
@@ -236,7 +260,10 @@ internal class PayStatementTest {
                                         .metadata(
                                             PayStatement.Earning.Attributes.Metadata.InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -260,7 +287,10 @@ internal class PayStatementTest {
                                             PayStatement.EmployeeDeduction.Attributes.Metadata
                                                 .InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -284,7 +314,10 @@ internal class PayStatementTest {
                                             PayStatement.EmployerContribution.Attributes.Metadata
                                                 .InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
@@ -310,7 +343,10 @@ internal class PayStatementTest {
                                         .metadata(
                                             PayStatement.Tax.Attributes.Metadata.InnerMetadata
                                                 .builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                                .putAdditionalProperty(
+                                                    "foo",
+                                                    JsonValue.from(mapOf<String, Any>()),
+                                                )
                                                 .build()
                                         )
                                         .build()
