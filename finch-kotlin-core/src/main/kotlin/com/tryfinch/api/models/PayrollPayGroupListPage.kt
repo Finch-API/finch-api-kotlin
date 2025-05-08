@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.payroll.PayGroupService
 import java.util.Objects
@@ -12,21 +14,22 @@ private constructor(
     private val service: PayGroupService,
     private val params: PayrollPayGroupListParams,
     private val items: List<PayGroupListResponse>,
-) {
+) : Page<PayGroupListResponse> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): PayrollPayGroupListParams? = null
+    fun nextPageParams(): PayrollPayGroupListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): PayrollPayGroupListPage? = getNextPageParams()?.let { service.list(it) }
+    override fun nextPage(): PayrollPayGroupListPage = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<PayGroupListResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): PayrollPayGroupListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<PayGroupListResponse> = items
+    override fun items(): List<PayGroupListResponse> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -86,22 +89,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: PayrollPayGroupListPage) :
-        Sequence<PayGroupListResponse> {
-
-        override fun iterator(): Iterator<PayGroupListResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

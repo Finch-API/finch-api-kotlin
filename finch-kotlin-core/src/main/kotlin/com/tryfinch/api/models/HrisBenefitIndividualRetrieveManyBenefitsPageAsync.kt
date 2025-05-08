@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
 /** @see [IndividualServiceAsync.retrieveManyBenefits] */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
@@ -14,22 +14,23 @@ private constructor(
     private val service: IndividualServiceAsync,
     private val params: HrisBenefitIndividualRetrieveManyBenefitsParams,
     private val items: List<IndividualBenefit>,
-) {
+) : PageAsync<IndividualBenefit> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams? = null
+    fun nextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    suspend fun getNextPage(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync? =
-        getNextPageParams()?.let { service.retrieveManyBenefits(it) }
+    override suspend fun nextPage(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
+        service.retrieveManyBenefits(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<IndividualBenefit> = AutoPagerAsync.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitIndividualRetrieveManyBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<IndividualBenefit> = items
+    override fun items(): List<IndividualBenefit> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -95,22 +96,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPageAsync) :
-        Flow<IndividualBenefit> {
-
-        override suspend fun collect(collector: FlowCollector<IndividualBenefit>) {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    collector.emit(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

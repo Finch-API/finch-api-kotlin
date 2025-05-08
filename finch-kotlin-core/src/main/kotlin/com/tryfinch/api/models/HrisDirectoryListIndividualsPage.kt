@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
@@ -13,7 +15,7 @@ private constructor(
     private val service: DirectoryService,
     private val params: HrisDirectoryListIndividualsParams,
     private val response: HrisDirectoryListIndividualsPageResponse,
-) {
+) : Page<IndividualInDirectory> {
 
     /**
      * Delegates to [HrisDirectoryListIndividualsPageResponse], but gracefully handles missing data.
@@ -30,29 +32,27 @@ private constructor(
      */
     fun paging(): Paging? = response._paging().getNullable("paging")
 
-    fun hasNextPage(): Boolean {
-        if (individuals().isEmpty()) {
+    override fun items(): List<IndividualInDirectory> = individuals()
+
+    override fun hasNextPage(): Boolean {
+        if (items().isEmpty()) {
             return false
         }
 
         val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
         val totalCount = paging()?.let { it._count().getNullable("count") } ?: Long.MAX_VALUE
-        return offset + individuals().size < totalCount
+        return offset + items().size < totalCount
     }
 
-    fun getNextPageParams(): HrisDirectoryListIndividualsParams? {
-        if (!hasNextPage()) {
-            return null
-        }
-
+    fun nextPageParams(): HrisDirectoryListIndividualsParams {
         val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
-        return params.toBuilder().offset(offset + individuals().size).build()
+        return params.toBuilder().offset(offset + items().size).build()
     }
 
-    fun getNextPage(): HrisDirectoryListIndividualsPage? =
-        getNextPageParams()?.let { service.listIndividuals(it) }
+    override fun nextPage(): HrisDirectoryListIndividualsPage =
+        service.listIndividuals(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<IndividualInDirectory> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisDirectoryListIndividualsParams = params
@@ -122,22 +122,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisDirectoryListIndividualsPage) :
-        Sequence<IndividualInDirectory> {
-
-        override fun iterator(): Iterator<IndividualInDirectory> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.individuals().size) {
-                    yield(page.individuals()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

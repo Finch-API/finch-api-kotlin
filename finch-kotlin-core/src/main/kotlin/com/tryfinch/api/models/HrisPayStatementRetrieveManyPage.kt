@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import java.util.Objects
@@ -12,7 +14,7 @@ private constructor(
     private val service: PayStatementService,
     private val params: HrisPayStatementRetrieveManyParams,
     private val response: HrisPayStatementRetrieveManyPageResponse,
-) {
+) : Page<PayStatementResponse> {
 
     /**
      * Delegates to [HrisPayStatementRetrieveManyPageResponse], but gracefully handles missing data.
@@ -22,14 +24,17 @@ private constructor(
     fun responses(): List<PayStatementResponse> =
         response._responses().getNullable("responses") ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<PayStatementResponse> = responses()
 
-    fun getNextPageParams(): HrisPayStatementRetrieveManyParams? = null
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): HrisPayStatementRetrieveManyPage? =
-        getNextPageParams()?.let { service.retrieveMany(it) }
+    fun nextPageParams(): HrisPayStatementRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisPayStatementRetrieveManyPage =
+        service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPager<PayStatementResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisPayStatementRetrieveManyParams = params
@@ -99,22 +104,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisPayStatementRetrieveManyPage) :
-        Sequence<PayStatementResponse> {
-
-        override fun iterator(): Iterator<PayStatementResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

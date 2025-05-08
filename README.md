@@ -217,48 +217,54 @@ The SDK throws custom unchecked exception types:
 
 ## Pagination
 
-For methods that return a paginated list of results, this library provides convenient ways access the results either one page at a time, or item-by-item across all pages.
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
 
 ### Auto-pagination
 
-To iterate through all results across all pages, you can use `autoPager`, which automatically handles fetching more pages for you:
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
 
-### Synchronous
+When using the synchronous client, the method returns a [`Sequence`](https://kotlinlang.org/docs/sequences.html)
 
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
-import com.tryfinch.api.models.IndividualInDirectory
 
-// As a Sequence:
-client.hris().directory().list(params).autoPager()
+val page: HrisDirectoryListPage = client.hris().directory().list()
+page.autoPager()
     .take(50)
-    .forEach { directory -> print(directory) }
+    .forEach { directory -> println(directory) }
 ```
 
-### Asynchronous
+When using the asynchronous client, the method returns a [`Flow`](https://kotlinlang.org/docs/flow.html):
 
 ```kotlin
-// As a Flow:
-asyncClient.hris().directory().list(params).autoPager()
+import com.tryfinch.api.models.HrisDirectoryListPageAsync
+
+val page: HrisDirectoryListPageAsync = client.async().hris().directory().list()
+page.autoPager()
     .take(50)
-    .collect { directory -> print(directory) }
+    .forEach { directory -> println(directory) }
 ```
 
 ### Manual pagination
 
-If none of the above helpers meet your needs, you can also manually request pages one-by-one. A page of results has a `data()` method to fetch the list of objects, as well as top-level `response` and other methods to fetch top-level data about the page. It also has methods `hasNextPage`, `getNextPage`, and `getNextPageParams` methods to help with pagination.
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
 
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.IndividualInDirectory
 
-val page = client.hris().directory().list(params)
-while (page != null) {
-    for (directory in page.individuals) {
-        print(directory)
+val page: HrisDirectoryListPage = client.hris().directory().list()
+while (true) {
+    for (directory in page.items()) {
+        println(directory)
     }
 
-    page = page.getNextPage()
+    if (!page.hasNextPage()) {
+        break
+    }
+
+    page = page.nextPage()
 }
 ```
 
@@ -326,7 +332,6 @@ To set a custom timeout, configure the method call using the `timeout` method:
 
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
-import com.tryfinch.api.models.HrisDirectoryListParams
 
 val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build())
 ```
@@ -541,7 +546,6 @@ Or configure the method call to validate the response using the `responseValidat
 
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
-import com.tryfinch.api.models.HrisDirectoryListParams
 
 val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build())
 ```

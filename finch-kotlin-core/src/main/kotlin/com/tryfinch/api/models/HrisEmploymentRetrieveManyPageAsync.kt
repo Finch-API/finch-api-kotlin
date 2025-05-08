@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
 /** @see [EmploymentServiceAsync.retrieveMany] */
 class HrisEmploymentRetrieveManyPageAsync
@@ -14,7 +14,7 @@ private constructor(
     private val service: EmploymentServiceAsync,
     private val params: HrisEmploymentRetrieveManyParams,
     private val response: HrisEmploymentRetrieveManyPageResponse,
-) {
+) : PageAsync<EmploymentDataResponse> {
 
     /**
      * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
@@ -24,14 +24,17 @@ private constructor(
     fun responses(): List<EmploymentDataResponse> =
         response._responses().getNullable("responses") ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<EmploymentDataResponse> = responses()
 
-    fun getNextPageParams(): HrisEmploymentRetrieveManyParams? = null
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    suspend fun getNextPage(): HrisEmploymentRetrieveManyPageAsync? =
-        getNextPageParams()?.let { service.retrieveMany(it) }
+    fun nextPageParams(): HrisEmploymentRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override suspend fun nextPage(): HrisEmploymentRetrieveManyPageAsync =
+        service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPagerAsync<EmploymentDataResponse> = AutoPagerAsync.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisEmploymentRetrieveManyParams = params
@@ -102,22 +105,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisEmploymentRetrieveManyPageAsync) :
-        Flow<EmploymentDataResponse> {
-
-        override suspend fun collect(collector: FlowCollector<EmploymentDataResponse>) {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    collector.emit(page.responses()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
