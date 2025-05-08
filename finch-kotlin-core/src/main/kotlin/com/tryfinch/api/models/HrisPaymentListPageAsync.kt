@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
 /** @see [PaymentServiceAsync.list] */
 class HrisPaymentListPageAsync
@@ -14,22 +14,22 @@ private constructor(
     private val service: PaymentServiceAsync,
     private val params: HrisPaymentListParams,
     private val items: List<Payment>,
-) {
+) : PageAsync<Payment> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): HrisPaymentListParams? = null
+    fun nextPageParams(): HrisPaymentListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    suspend fun getNextPage(): HrisPaymentListPageAsync? =
-        getNextPageParams()?.let { service.list(it) }
+    override suspend fun nextPage(): HrisPaymentListPageAsync = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<Payment> = AutoPagerAsync.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisPaymentListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<Payment> = items
+    override fun items(): List<Payment> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -89,21 +89,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisPaymentListPageAsync) : Flow<Payment> {
-
-        override suspend fun collect(collector: FlowCollector<Payment>) {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    collector.emit(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
