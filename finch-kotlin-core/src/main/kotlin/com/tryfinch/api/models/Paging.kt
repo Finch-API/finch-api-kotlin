@@ -10,22 +10,31 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
 class Paging
 private constructor(
-    private val count: JsonField<Long>,
     private val offset: JsonField<Long>,
+    private val count: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
-    ) : this(count, offset, mutableMapOf())
+        @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
+    ) : this(offset, count, mutableMapOf())
+
+    /**
+     * The current start index of the returned list of elements
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun offset(): Long = offset.getRequired("offset")
 
     /**
      * The total number of elements for the entire query (not just the given page)
@@ -36,12 +45,11 @@ private constructor(
     fun count(): Long? = count.getNullable("count")
 
     /**
-     * The current start index of the returned list of elements
+     * Returns the raw JSON value of [offset].
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun offset(): Long? = offset.getNullable("offset")
+    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
     /**
      * Returns the raw JSON value of [count].
@@ -49,13 +57,6 @@ private constructor(
      * Unlike [count], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
-
-    /**
-     * Returns the raw JSON value of [offset].
-     *
-     * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -71,33 +72,29 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [Paging]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [Paging].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .offset()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [Paging]. */
     class Builder internal constructor() {
 
+        private var offset: JsonField<Long>? = null
         private var count: JsonField<Long> = JsonMissing.of()
-        private var offset: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(paging: Paging) = apply {
-            count = paging.count
             offset = paging.offset
+            count = paging.count
             additionalProperties = paging.additionalProperties.toMutableMap()
         }
-
-        /** The total number of elements for the entire query (not just the given page) */
-        fun count(count: Long) = count(JsonField.of(count))
-
-        /**
-         * Sets [Builder.count] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.count] with a well-typed [Long] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
@@ -109,6 +106,17 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+
+        /** The total number of elements for the entire query (not just the given page) */
+        fun count(count: Long) = count(JsonField.of(count))
+
+        /**
+         * Sets [Builder.count] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.count] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun count(count: JsonField<Long>) = apply { this.count = count }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -133,8 +141,16 @@ private constructor(
          * Returns an immutable instance of [Paging].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .offset()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Paging = Paging(count, offset, additionalProperties.toMutableMap())
+        fun build(): Paging =
+            Paging(checkRequired("offset", offset), count, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false
@@ -144,8 +160,8 @@ private constructor(
             return@apply
         }
 
-        count()
         offset()
+        count()
         validated = true
     }
 
@@ -163,22 +179,22 @@ private constructor(
      * Used for best match union deserialization.
      */
     internal fun validity(): Int =
-        (if (count.asKnown() == null) 0 else 1) + (if (offset.asKnown() == null) 0 else 1)
+        (if (offset.asKnown() == null) 0 else 1) + (if (count.asKnown() == null) 0 else 1)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is Paging && count == other.count && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Paging && offset == other.offset && count == other.count && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(count, offset, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(offset, count, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Paging{count=$count, offset=$offset, additionalProperties=$additionalProperties}"
+        "Paging{offset=$offset, count=$count, additionalProperties=$additionalProperties}"
 }
