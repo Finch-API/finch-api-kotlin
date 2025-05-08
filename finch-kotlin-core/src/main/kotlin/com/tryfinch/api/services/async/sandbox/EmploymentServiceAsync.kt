@@ -17,9 +17,24 @@ interface EmploymentServiceAsync {
 
     /** Update sandbox employment */
     suspend fun update(
+        individualId: String,
+        params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EmploymentUpdateResponse =
+        update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+    /** @see [update] */
+    suspend fun update(
         params: SandboxEmploymentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
+
+    /** @see [update] */
+    suspend fun update(
+        individualId: String,
+        requestOptions: RequestOptions,
+    ): EmploymentUpdateResponse =
+        update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
 
     /**
      * A view of [EmploymentServiceAsync] that provides access to raw HTTP responses for each
@@ -33,8 +48,25 @@ interface EmploymentServiceAsync {
          */
         @MustBeClosed
         suspend fun update(
+            individualId: String,
+            params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EmploymentUpdateResponse> =
+            update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        suspend fun update(
             params: SandboxEmploymentUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<EmploymentUpdateResponse>
+
+        /** @see [update] */
+        @MustBeClosed
+        suspend fun update(
+            individualId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<EmploymentUpdateResponse> =
+            update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
     }
 }

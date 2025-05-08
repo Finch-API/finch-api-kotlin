@@ -19,9 +19,21 @@ interface PayGroupService {
 
     /** Read information from a single pay group */
     fun retrieve(
+        payGroupId: String,
+        params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PayGroupRetrieveResponse =
+        retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
+
+    /** @see [retrieve] */
+    fun retrieve(payGroupId: String, requestOptions: RequestOptions): PayGroupRetrieveResponse =
+        retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
     /** Read company pay groups and frequencies */
     fun list(
@@ -42,9 +54,26 @@ interface PayGroupService {
          */
         @MustBeClosed
         fun retrieve(
+            payGroupId: String,
+            params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            payGroupId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as

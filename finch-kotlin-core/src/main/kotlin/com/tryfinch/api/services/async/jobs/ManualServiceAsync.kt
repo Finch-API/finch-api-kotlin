@@ -20,9 +20,20 @@ interface ManualServiceAsync {
      * Benefits jobs.
      */
     suspend fun retrieve(
+        jobId: String,
+        params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ManualAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    suspend fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob
+
+    /** @see [retrieve] */
+    suspend fun retrieve(jobId: String, requestOptions: RequestOptions): ManualAsyncJob =
+        retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
 
     /**
      * A view of [ManualServiceAsync] that provides access to raw HTTP responses for each method.
@@ -35,8 +46,25 @@ interface ManualServiceAsync {
          */
         @MustBeClosed
         suspend fun retrieve(
+            jobId: String,
+            params: JobManualRetrieveParams = JobManualRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ManualAsyncJob> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        suspend fun retrieve(
             params: JobManualRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ManualAsyncJob>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        suspend fun retrieve(
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ManualAsyncJob> =
+            retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
     }
 }

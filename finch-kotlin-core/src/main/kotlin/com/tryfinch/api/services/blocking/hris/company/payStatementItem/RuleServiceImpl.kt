@@ -5,6 +5,7 @@ package com.tryfinch.api.services.blocking.hris.company.payStatementItem
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -100,6 +101,9 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             params: HrisCompanyPayStatementItemRuleUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<RuleUpdateResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("ruleId", params.ruleId())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
@@ -161,6 +165,9 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<RuleDeleteResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("ruleId", params.ruleId())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
