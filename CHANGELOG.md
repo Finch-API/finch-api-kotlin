@@ -1,5 +1,41 @@
 # Changelog
 
+## 6.0.0 (2025-05-08)
+
+Full Changelog: [v5.5.0...v6.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.5.0...v6.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** don't require end-users to specify constants
+* **client:** **Migration:** Builder methods that previously accepted a single possible value no longer need to be called.
+
+### Features
+
+* **api:** api update ([631cea1](https://github.com/Finch-API/finch-api-kotlin/commit/631cea180b886016da7ff3e4e77bf9d5c8f25374))
+* **api:** api update ([7c4bc22](https://github.com/Finch-API/finch-api-kotlin/commit/7c4bc2200768937218b0867f545ce117535922ea))
+* **api:** api update ([8db91ce](https://github.com/Finch-API/finch-api-kotlin/commit/8db91ce17891c5670bd3eb44a8ce406a03b010ec))
+* **api:** api update ([459a565](https://github.com/Finch-API/finch-api-kotlin/commit/459a5651c6d243e6e0a89f8af771496d5c58d3c1))
+* **api:** api update ([593c8c9](https://github.com/Finch-API/finch-api-kotlin/commit/593c8c9bf158f7c31c77fd4964c5f4f574d3ef47))
+* **api:** api update ([3ef0014](https://github.com/Finch-API/finch-api-kotlin/commit/3ef0014ac3d9b75438d97bbaf4a0f725ed009550))
+* **api:** api update ([c2f534e](https://github.com/Finch-API/finch-api-kotlin/commit/c2f534e709c893429e0e7ad1e04c0294c4269ee8))
+* **api:** api update ([ee72886](https://github.com/Finch-API/finch-api-kotlin/commit/ee728867a41370db0f9b7d2b0cf3682db8f5b2dc))
+* **api:** api update ([33a687f](https://github.com/Finch-API/finch-api-kotlin/commit/33a687faa1668dac80b280a98882d210beaa40f0))
+* **api:** api update ([c5b9328](https://github.com/Finch-API/finch-api-kotlin/commit/c5b932816333581bbd2eecc0ca0c989f39d40ad1))
+* **api:** api update ([2142c9e](https://github.com/Finch-API/finch-api-kotlin/commit/2142c9e8f819dcb639b95727fd6f638e8d17d9f4))
+* **api:** api update ([8b23a52](https://github.com/Finch-API/finch-api-kotlin/commit/8b23a527818839e9d008a628fe30e37229dc1e8c))
+* **api:** api update ([c11ebd7](https://github.com/Finch-API/finch-api-kotlin/commit/c11ebd76bf8f2d92cc9a7f0407d517019a5be5b8))
+* **api:** api update ([ec467ad](https://github.com/Finch-API/finch-api-kotlin/commit/ec467ad5c1f6233f80c7813a7b667724b540fbf6))
+* **api:** api update ([a476600](https://github.com/Finch-API/finch-api-kotlin/commit/a47660072bc597aed643213d16e35ac0879b9fe1))
+* **api:** api update ([c1ce717](https://github.com/Finch-API/finch-api-kotlin/commit/c1ce71743372630206fa6ebaccdb7818e5451a8b))
+* **api:** api update ([21e061a](https://github.com/Finch-API/finch-api-kotlin/commit/21e061a2f0f183908b8fc6e66b072eef24187f12))
+* **client:** don't require end-users to specify constants ([4fee798](https://github.com/Finch-API/finch-api-kotlin/commit/4fee798edd120ae2045227bc952ad34fa820967a))
+
+
+### Chores
+
+* **internal:** remove flaky `-Xbackend-threads=0` option ([02bc21a](https://github.com/Finch-API/finch-api-kotlin/commit/02bc21aa1c692f71827df9c683a9102009180dd3))
+* **internal:** update java toolchain ([2482d86](https://github.com/Finch-API/finch-api-kotlin/commit/2482d86a019e0fc2eea17362e6b3803ae5e39058))
+
 ## 5.5.0 (2025-04-23)
 
 Full Changelog: [v5.4.0...v5.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.4.0...v5.5.0)
