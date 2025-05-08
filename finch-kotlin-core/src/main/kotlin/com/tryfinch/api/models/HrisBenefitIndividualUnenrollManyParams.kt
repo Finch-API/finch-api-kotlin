@@ -12,7 +12,6 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -23,13 +22,13 @@ import java.util.Objects
 /** Unenroll individuals from a deduction or contribution */
 class HrisBenefitIndividualUnenrollManyParams
 private constructor(
-    private val benefitId: String,
+    private val benefitId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun benefitId(): String = benefitId
+    fun benefitId(): String? = benefitId
 
     /**
      * Array of individual_ids to unenroll.
@@ -56,14 +55,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisBenefitIndividualUnenrollManyParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisBenefitIndividualUnenrollManyParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .benefitId()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -87,7 +83,7 @@ private constructor(
                 hrisBenefitIndividualUnenrollManyParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
         /**
          * Sets the entire request body.
@@ -240,17 +236,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitIndividualUnenrollManyParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .benefitId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitIndividualUnenrollManyParams =
             HrisBenefitIndividualUnenrollManyParams(
-                checkRequired("benefitId", benefitId),
+                benefitId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -261,7 +250,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> benefitId
+            0 -> benefitId ?: ""
             else -> ""
         }
 

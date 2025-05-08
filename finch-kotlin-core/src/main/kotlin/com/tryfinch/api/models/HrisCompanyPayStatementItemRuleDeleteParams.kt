@@ -4,7 +4,6 @@ package com.tryfinch.api.models
 
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -16,13 +15,13 @@ import java.util.Objects
  */
 class HrisCompanyPayStatementItemRuleDeleteParams
 private constructor(
-    private val ruleId: String,
+    private val ruleId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun ruleId(): String = ruleId
+    fun ruleId(): String? = ruleId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -34,14 +33,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisCompanyPayStatementItemRuleDeleteParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleDeleteParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .ruleId()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -66,7 +62,7 @@ private constructor(
                 hrisCompanyPayStatementItemRuleDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun ruleId(ruleId: String) = apply { this.ruleId = ruleId }
+        fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -192,17 +188,10 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .ruleId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleDeleteParams =
             HrisCompanyPayStatementItemRuleDeleteParams(
-                checkRequired("ruleId", ruleId),
+                ruleId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -213,7 +202,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> ruleId
+            0 -> ruleId ?: ""
             else -> ""
         }
 

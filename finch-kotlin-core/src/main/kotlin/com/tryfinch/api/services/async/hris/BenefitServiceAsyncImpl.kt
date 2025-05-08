@@ -5,6 +5,7 @@ package com.tryfinch.api.services.async.hris
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
 import com.tryfinch.api.core.handlers.withErrorHandler
@@ -125,6 +126,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<CompanyBenefit> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -152,6 +156,9 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
             params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<UpdateCompanyBenefitResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
