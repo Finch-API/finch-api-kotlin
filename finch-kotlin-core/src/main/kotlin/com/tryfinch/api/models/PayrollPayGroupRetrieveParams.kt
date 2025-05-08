@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
@@ -11,12 +10,12 @@ import java.util.Objects
 /** Read information from a single pay group */
 class PayrollPayGroupRetrieveParams
 private constructor(
-    private val payGroupId: String,
+    private val payGroupId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun payGroupId(): String = payGroupId
+    fun payGroupId(): String? = payGroupId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,14 +25,11 @@ private constructor(
 
     companion object {
 
+        fun none(): PayrollPayGroupRetrieveParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [PayrollPayGroupRetrieveParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .payGroupId()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -51,7 +47,7 @@ private constructor(
             additionalQueryParams = payrollPayGroupRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun payGroupId(payGroupId: String) = apply { this.payGroupId = payGroupId }
+        fun payGroupId(payGroupId: String?) = apply { this.payGroupId = payGroupId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -155,17 +151,10 @@ private constructor(
          * Returns an immutable instance of [PayrollPayGroupRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .payGroupId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PayrollPayGroupRetrieveParams =
             PayrollPayGroupRetrieveParams(
-                checkRequired("payGroupId", payGroupId),
+                payGroupId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -173,7 +162,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> payGroupId
+            0 -> payGroupId ?: ""
             else -> ""
         }
 

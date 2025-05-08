@@ -19,9 +19,24 @@ interface PayGroupServiceAsync {
 
     /** Read information from a single pay group */
     suspend fun retrieve(
+        payGroupId: String,
+        params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): PayGroupRetrieveResponse =
+        retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    suspend fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
+
+    /** @see [retrieve] */
+    suspend fun retrieve(
+        payGroupId: String,
+        requestOptions: RequestOptions,
+    ): PayGroupRetrieveResponse =
+        retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
     /** Read company pay groups and frequencies */
     suspend fun list(
@@ -44,9 +59,26 @@ interface PayGroupServiceAsync {
          */
         @MustBeClosed
         suspend fun retrieve(
+            payGroupId: String,
+            params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        suspend fun retrieve(
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        suspend fun retrieve(
+            payGroupId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PayGroupRetrieveResponse> =
+            retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as

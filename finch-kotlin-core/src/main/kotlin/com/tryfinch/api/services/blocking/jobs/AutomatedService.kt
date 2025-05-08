@@ -45,9 +45,20 @@ interface AutomatedService {
 
     /** Get an automated job by `job_id`. */
     fun retrieve(
+        jobId: String,
+        params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): AutomatedAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob
+
+    /** @see [retrieve] */
+    fun retrieve(jobId: String, requestOptions: RequestOptions): AutomatedAsyncJob =
+        retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
     /**
      * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are
@@ -87,9 +98,26 @@ interface AutomatedService {
          */
         @MustBeClosed
         fun retrieve(
+            jobId: String,
+            params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedAsyncJob> =
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
             params: JobAutomatedRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedAsyncJob>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            jobId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AutomatedAsyncJob> =
+            retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as

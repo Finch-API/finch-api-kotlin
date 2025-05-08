@@ -1,5 +1,22 @@
 # Changelog
 
+## 7.0.0 (2025-05-08)
+
+Full Changelog: [v6.0.0...v7.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v6.0.0...v7.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-nullable types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **client:** allow providing some params positionally ([c808c38](https://github.com/Finch-API/finch-api-kotlin/commit/c808c38eff78427c590e26c9b162d6e4a0beed8b))
+* **client:** extract auto pagination to shared classes ([8c65504](https://github.com/Finch-API/finch-api-kotlin/commit/8c65504aa1255e08bdf00652d5fce34f5b107f25))
+
 ## 6.0.0 (2025-05-08)
 
 Full Changelog: [v5.5.0...v6.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v5.5.0...v6.0.0)

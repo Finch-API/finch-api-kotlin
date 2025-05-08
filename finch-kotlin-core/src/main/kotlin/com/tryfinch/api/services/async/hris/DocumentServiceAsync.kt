@@ -34,9 +34,24 @@ interface DocumentServiceAsync {
      * its ID.
      */
     suspend fun retreive(
+        documentId: String,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DocumentRetreiveResponse =
+        retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+
+    /** @see [retreive] */
+    suspend fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
+
+    /** @see [retreive] */
+    suspend fun retreive(
+        documentId: String,
+        requestOptions: RequestOptions,
+    ): DocumentRetreiveResponse =
+        retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
     /**
      * A view of [DocumentServiceAsync] that provides access to raw HTTP responses for each method.
@@ -64,8 +79,25 @@ interface DocumentServiceAsync {
          */
         @MustBeClosed
         suspend fun retreive(
+            documentId: String,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
+
+        /** @see [retreive] */
+        @MustBeClosed
+        suspend fun retreive(
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse>
+
+        /** @see [retreive] */
+        @MustBeClosed
+        suspend fun retreive(
+            documentId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
     }
 }

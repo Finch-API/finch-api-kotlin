@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 import java.util.Objects
@@ -12,7 +14,7 @@ private constructor(
     private val service: PayStatementItemService,
     private val params: HrisCompanyPayStatementItemListParams,
     private val response: HrisCompanyPayStatementItemListPageResponse,
-) {
+) : Page<PayStatementItemListResponse> {
 
     /**
      * Delegates to [HrisCompanyPayStatementItemListPageResponse], but gracefully handles missing
@@ -23,14 +25,16 @@ private constructor(
     fun responses(): List<PayStatementItemListResponse> =
         response._responses().getNullable("responses") ?: emptyList()
 
-    fun hasNextPage(): Boolean = responses().isNotEmpty()
+    override fun items(): List<PayStatementItemListResponse> = responses()
 
-    fun getNextPageParams(): HrisCompanyPayStatementItemListParams? = null
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPage(): HrisCompanyPayStatementItemListPage? =
-        getNextPageParams()?.let { service.list(it) }
+    fun nextPageParams(): HrisCompanyPayStatementItemListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    override fun nextPage(): HrisCompanyPayStatementItemListPage = service.list(nextPageParams())
+
+    fun autoPager(): AutoPager<PayStatementItemListResponse> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisCompanyPayStatementItemListParams = params
@@ -101,22 +105,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisCompanyPayStatementItemListPage) :
-        Sequence<PayStatementItemListResponse> {
-
-        override fun iterator(): Iterator<PayStatementItemListResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

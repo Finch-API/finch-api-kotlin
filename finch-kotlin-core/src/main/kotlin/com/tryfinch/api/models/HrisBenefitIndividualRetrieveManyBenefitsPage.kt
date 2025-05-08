@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.benefits.IndividualService
 import java.util.Objects
@@ -12,22 +14,23 @@ private constructor(
     private val service: IndividualService,
     private val params: HrisBenefitIndividualRetrieveManyBenefitsParams,
     private val items: List<IndividualBenefit>,
-) {
+) : Page<IndividualBenefit> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams? = null
+    fun nextPageParams(): HrisBenefitIndividualRetrieveManyBenefitsParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): HrisBenefitIndividualRetrieveManyBenefitsPage? =
-        getNextPageParams()?.let { service.retrieveManyBenefits(it) }
+    override fun nextPage(): HrisBenefitIndividualRetrieveManyBenefitsPage =
+        service.retrieveManyBenefits(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<IndividualBenefit> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitIndividualRetrieveManyBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<IndividualBenefit> = items
+    override fun items(): List<IndividualBenefit> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -93,22 +96,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisBenefitIndividualRetrieveManyBenefitsPage) :
-        Sequence<IndividualBenefit> {
-
-        override fun iterator(): Iterator<IndividualBenefit> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

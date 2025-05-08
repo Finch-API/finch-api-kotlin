@@ -2,6 +2,8 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Objects
@@ -12,21 +14,22 @@ private constructor(
     private val service: PaymentService,
     private val params: HrisPaymentListParams,
     private val items: List<Payment>,
-) {
+) : Page<Payment> {
 
-    fun hasNextPage(): Boolean = items.isNotEmpty()
+    override fun hasNextPage(): Boolean = items().isNotEmpty()
 
-    fun getNextPageParams(): HrisPaymentListParams? = null
+    fun nextPageParams(): HrisPaymentListParams =
+        throw IllegalStateException("Cannot construct next page params")
 
-    fun getNextPage(): HrisPaymentListPage? = getNextPageParams()?.let { service.list(it) }
+    override fun nextPage(): HrisPaymentListPage = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPager<Payment> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisPaymentListParams = params
 
     /** The response that this page was parsed from. */
-    fun items(): List<Payment> = items
+    override fun items(): List<Payment> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -86,21 +89,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("items", items),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisPaymentListPage) : Sequence<Payment> {
-
-        override fun iterator(): Iterator<Payment> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {

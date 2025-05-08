@@ -2,11 +2,11 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
 /** @see [DirectoryServiceAsync.list] */
 class HrisDirectoryListPageAsync
@@ -14,7 +14,7 @@ private constructor(
     private val service: DirectoryServiceAsync,
     private val params: HrisDirectoryListParams,
     private val response: HrisDirectoryListPageResponse,
-) {
+) : PageAsync<IndividualInDirectory> {
 
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
@@ -31,29 +31,26 @@ private constructor(
      */
     fun paging(): Paging? = response._paging().getNullable("paging")
 
-    fun hasNextPage(): Boolean {
-        if (individuals().isEmpty()) {
+    override fun items(): List<IndividualInDirectory> = individuals()
+
+    override fun hasNextPage(): Boolean {
+        if (items().isEmpty()) {
             return false
         }
 
         val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
         val totalCount = paging()?.let { it._count().getNullable("count") } ?: Long.MAX_VALUE
-        return offset + individuals().size < totalCount
+        return offset + items().size < totalCount
     }
 
-    fun getNextPageParams(): HrisDirectoryListParams? {
-        if (!hasNextPage()) {
-            return null
-        }
-
+    fun nextPageParams(): HrisDirectoryListParams {
         val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
-        return params.toBuilder().offset(offset + individuals().size).build()
+        return params.toBuilder().offset(offset + items().size).build()
     }
 
-    suspend fun getNextPage(): HrisDirectoryListPageAsync? =
-        getNextPageParams()?.let { service.list(it) }
+    override suspend fun nextPage(): HrisDirectoryListPageAsync = service.list(nextPageParams())
 
-    fun autoPager(): AutoPager = AutoPager(this)
+    fun autoPager(): AutoPagerAsync<IndividualInDirectory> = AutoPagerAsync.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisDirectoryListParams = params
@@ -119,22 +116,6 @@ private constructor(
                 checkRequired("params", params),
                 checkRequired("response", response),
             )
-    }
-
-    class AutoPager(private val firstPage: HrisDirectoryListPageAsync) :
-        Flow<IndividualInDirectory> {
-
-        override suspend fun collect(collector: FlowCollector<IndividualInDirectory>) {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.individuals().size) {
-                    collector.emit(page.individuals()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
     }
 
     override fun equals(other: Any?): Boolean {
