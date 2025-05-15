@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
@@ -37,26 +38,26 @@ private constructor(
     /**
      * Finch id (uuidv4) for the pay group
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun id(): String? = id.getNullable("id")
+    fun id(): String = id.getRequired("id")
 
     /**
      * Name of the pay group
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun name(): String? = name.getNullable("name")
+    fun name(): String = name.getRequired("name")
 
     /**
      * List of pay frequencies associated with this pay group
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun payFrequencies(): List<PayFrequency>? = payFrequencies.getNullable("pay_frequencies")
+    fun payFrequencies(): List<PayFrequency> = payFrequencies.getRequired("pay_frequencies")
 
     /**
      * Returns the raw JSON value of [id].
@@ -95,15 +96,24 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [PayGroupListResponse]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [PayGroupListResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .id()
+         * .name()
+         * .payFrequencies()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [PayGroupListResponse]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var name: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var name: JsonField<String>? = null
         private var payFrequencies: JsonField<MutableList<PayFrequency>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -186,12 +196,21 @@ private constructor(
          * Returns an immutable instance of [PayGroupListResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .id()
+         * .name()
+         * .payFrequencies()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PayGroupListResponse =
             PayGroupListResponse(
-                id,
-                name,
-                (payFrequencies ?: JsonMissing.of()).map { it.toImmutable() },
+                checkRequired("id", id),
+                checkRequired("name", name),
+                checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }
@@ -205,7 +224,7 @@ private constructor(
 
         id()
         name()
-        payFrequencies()?.forEach { it.validate() }
+        payFrequencies().forEach { it.validate() }
         validated = true
     }
 
@@ -244,21 +263,21 @@ private constructor(
 
             val ANNUALLY = of("annually")
 
-            val SEMI_ANNUALLY = of("semi_annually")
-
-            val QUARTERLY = of("quarterly")
-
-            val MONTHLY = of("monthly")
-
-            val SEMI_MONTHLY = of("semi_monthly")
-
             val BI_WEEKLY = of("bi_weekly")
-
-            val WEEKLY = of("weekly")
 
             val DAILY = of("daily")
 
+            val MONTHLY = of("monthly")
+
             val OTHER = of("other")
+
+            val QUARTERLY = of("quarterly")
+
+            val SEMI_ANNUALLY = of("semi_annually")
+
+            val SEMI_MONTHLY = of("semi_monthly")
+
+            val WEEKLY = of("weekly")
 
             fun of(value: String) = PayFrequency(JsonField.of(value))
         }
@@ -266,14 +285,14 @@ private constructor(
         /** An enum containing [PayFrequency]'s known values. */
         enum class Known {
             ANNUALLY,
-            SEMI_ANNUALLY,
-            QUARTERLY,
-            MONTHLY,
-            SEMI_MONTHLY,
             BI_WEEKLY,
-            WEEKLY,
             DAILY,
+            MONTHLY,
             OTHER,
+            QUARTERLY,
+            SEMI_ANNUALLY,
+            SEMI_MONTHLY,
+            WEEKLY,
         }
 
         /**
@@ -287,14 +306,14 @@ private constructor(
          */
         enum class Value {
             ANNUALLY,
-            SEMI_ANNUALLY,
-            QUARTERLY,
-            MONTHLY,
-            SEMI_MONTHLY,
             BI_WEEKLY,
-            WEEKLY,
             DAILY,
+            MONTHLY,
             OTHER,
+            QUARTERLY,
+            SEMI_ANNUALLY,
+            SEMI_MONTHLY,
+            WEEKLY,
             /**
              * An enum member indicating that [PayFrequency] was instantiated with an unknown value.
              */
@@ -311,14 +330,14 @@ private constructor(
         fun value(): Value =
             when (this) {
                 ANNUALLY -> Value.ANNUALLY
-                SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
-                QUARTERLY -> Value.QUARTERLY
-                MONTHLY -> Value.MONTHLY
-                SEMI_MONTHLY -> Value.SEMI_MONTHLY
                 BI_WEEKLY -> Value.BI_WEEKLY
-                WEEKLY -> Value.WEEKLY
                 DAILY -> Value.DAILY
+                MONTHLY -> Value.MONTHLY
                 OTHER -> Value.OTHER
+                QUARTERLY -> Value.QUARTERLY
+                SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
+                SEMI_MONTHLY -> Value.SEMI_MONTHLY
+                WEEKLY -> Value.WEEKLY
                 else -> Value._UNKNOWN
             }
 
@@ -333,14 +352,14 @@ private constructor(
         fun known(): Known =
             when (this) {
                 ANNUALLY -> Known.ANNUALLY
-                SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
-                QUARTERLY -> Known.QUARTERLY
-                MONTHLY -> Known.MONTHLY
-                SEMI_MONTHLY -> Known.SEMI_MONTHLY
                 BI_WEEKLY -> Known.BI_WEEKLY
-                WEEKLY -> Known.WEEKLY
                 DAILY -> Known.DAILY
+                MONTHLY -> Known.MONTHLY
                 OTHER -> Known.OTHER
+                QUARTERLY -> Known.QUARTERLY
+                SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
+                SEMI_MONTHLY -> Known.SEMI_MONTHLY
+                WEEKLY -> Known.WEEKLY
                 else -> throw FinchInvalidDataException("Unknown PayFrequency: $value")
             }
 

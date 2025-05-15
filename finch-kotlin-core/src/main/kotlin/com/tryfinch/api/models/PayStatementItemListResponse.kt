@@ -11,6 +11,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
@@ -36,26 +37,26 @@ private constructor(
     /**
      * The attributes of the pay statement item.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun attributes(): Attributes? = attributes.getNullable("attributes")
+    fun attributes(): Attributes = attributes.getRequired("attributes")
 
     /**
      * The category of the pay statement item.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun category(): Category? = category.getNullable("category")
+    fun category(): Category = category.getRequired("category")
 
     /**
      * The name of the pay statement item.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun name(): String? = name.getNullable("name")
+    fun name(): String = name.getRequired("name")
 
     /**
      * Returns the raw JSON value of [attributes].
@@ -96,6 +97,13 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of [PayStatementItemListResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .attributes()
+         * .category()
+         * .name()
+         * ```
          */
         fun builder() = Builder()
     }
@@ -103,9 +111,9 @@ private constructor(
     /** A builder for [PayStatementItemListResponse]. */
     class Builder internal constructor() {
 
-        private var attributes: JsonField<Attributes> = JsonMissing.of()
-        private var category: JsonField<Category> = JsonMissing.of()
-        private var name: JsonField<String> = JsonMissing.of()
+        private var attributes: JsonField<Attributes>? = null
+        private var category: JsonField<Category>? = null
+        private var name: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payStatementItemListResponse: PayStatementItemListResponse) = apply {
@@ -173,12 +181,21 @@ private constructor(
          * Returns an immutable instance of [PayStatementItemListResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .attributes()
+         * .category()
+         * .name()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PayStatementItemListResponse =
             PayStatementItemListResponse(
-                attributes,
-                category,
-                name,
+                checkRequired("attributes", attributes),
+                checkRequired("category", category),
+                checkRequired("name", name),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -190,8 +207,8 @@ private constructor(
             return@apply
         }
 
-        attributes()?.validate()
-        category()?.validate()
+        attributes().validate()
+        category().validate()
         name()
         validated = true
     }
@@ -217,8 +234,8 @@ private constructor(
     /** The attributes of the pay statement item. */
     class Attributes
     private constructor(
-        private val employer: JsonField<Boolean>,
         private val metadata: JsonField<Metadata>,
+        private val employer: JsonField<Boolean>,
         private val preTax: JsonField<Boolean>,
         private val type: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -226,23 +243,15 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("employer")
-            @ExcludeMissing
-            employer: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
+            @JsonProperty("employer")
+            @ExcludeMissing
+            employer: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("pre_tax") @ExcludeMissing preTax: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
-        ) : this(employer, metadata, preTax, type, mutableMapOf())
-
-        /**
-         * `true` if the amount is paid by the employers. This field is only available for taxes.
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun employer(): Boolean? = employer.getNullable("employer")
+        ) : this(metadata, employer, preTax, type, mutableMapOf())
 
         /**
          * The metadata of the pay statement item derived by the rules engine if available. Each
@@ -252,6 +261,14 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun metadata(): Metadata? = metadata.getNullable("metadata")
+
+        /**
+         * `true` if the amount is paid by the employers. This field is only available for taxes.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun employer(): Boolean? = employer.getNullable("employer")
 
         /**
          * `true` if the pay statement item is pre-tax. This field is only available for employee
@@ -271,18 +288,18 @@ private constructor(
         fun type(): String? = type.getNullable("type")
 
         /**
-         * Returns the raw JSON value of [employer].
-         *
-         * Unlike [employer], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
-
-        /**
          * Returns the raw JSON value of [metadata].
          *
          * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /**
+         * Returns the raw JSON value of [employer].
+         *
+         * Unlike [employer], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
 
         /**
          * Returns the raw JSON value of [preTax].
@@ -312,26 +329,48 @@ private constructor(
 
         companion object {
 
-            /** Returns a mutable builder for constructing an instance of [Attributes]. */
+            /**
+             * Returns a mutable builder for constructing an instance of [Attributes].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .metadata()
+             * ```
+             */
             fun builder() = Builder()
         }
 
         /** A builder for [Attributes]. */
         class Builder internal constructor() {
 
+            private var metadata: JsonField<Metadata>? = null
             private var employer: JsonField<Boolean> = JsonMissing.of()
-            private var metadata: JsonField<Metadata> = JsonMissing.of()
             private var preTax: JsonField<Boolean> = JsonMissing.of()
             private var type: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(attributes: Attributes) = apply {
-                employer = attributes.employer
                 metadata = attributes.metadata
+                employer = attributes.employer
                 preTax = attributes.preTax
                 type = attributes.type
                 additionalProperties = attributes.additionalProperties.toMutableMap()
             }
+
+            /**
+             * The metadata of the pay statement item derived by the rules engine if available. Each
+             * attribute will be a key-value pair defined by a rule.
+             */
+            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
+
+            /**
+             * Sets [Builder.metadata] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /**
              * `true` if the amount is paid by the employers. This field is only available for
@@ -354,21 +393,6 @@ private constructor(
              * supported value.
              */
             fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
-
-            /**
-             * The metadata of the pay statement item derived by the rules engine if available. Each
-             * attribute will be a key-value pair defined by a rule.
-             */
-            fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
-
-            /**
-             * Sets [Builder.metadata] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /**
              * `true` if the pay statement item is pre-tax. This field is only available for
@@ -427,9 +451,22 @@ private constructor(
              * Returns an immutable instance of [Attributes].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .metadata()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Attributes =
-                Attributes(employer, metadata, preTax, type, additionalProperties.toMutableMap())
+                Attributes(
+                    checkRequired("metadata", metadata),
+                    employer,
+                    preTax,
+                    type,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -439,8 +476,8 @@ private constructor(
                 return@apply
             }
 
-            employer()
             metadata()?.validate()
+            employer()
             preTax()
             type()
             validated = true
@@ -461,8 +498,8 @@ private constructor(
          * Used for best match union deserialization.
          */
         internal fun validity(): Int =
-            (if (employer.asKnown() == null) 0 else 1) +
-                (metadata.asKnown()?.validity() ?: 0) +
+            (metadata.asKnown()?.validity() ?: 0) +
+                (if (employer.asKnown() == null) 0 else 1) +
                 (if (preTax.asKnown() == null) 0 else 1) +
                 (if (type.asKnown() == null) 0 else 1)
 
@@ -577,17 +614,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Attributes && employer == other.employer && metadata == other.metadata && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Attributes && metadata == other.metadata && employer == other.employer && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(employer, metadata, preTax, type, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(metadata, employer, preTax, type, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Attributes{employer=$employer, metadata=$metadata, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
+            "Attributes{metadata=$metadata, employer=$employer, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
     }
 
     /** The category of the pay statement item. */
