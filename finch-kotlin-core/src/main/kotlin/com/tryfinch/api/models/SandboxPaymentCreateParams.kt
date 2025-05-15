@@ -3727,6 +3727,8 @@ private constructor(
 
                 val DIRECT_DEPOSIT = of("direct_deposit")
 
+                val OTHER = of("other")
+
                 fun of(value: String) = PaymentMethod(JsonField.of(value))
             }
 
@@ -3734,6 +3736,7 @@ private constructor(
             enum class Known {
                 CHECK,
                 DIRECT_DEPOSIT,
+                OTHER,
             }
 
             /**
@@ -3748,6 +3751,7 @@ private constructor(
             enum class Value {
                 CHECK,
                 DIRECT_DEPOSIT,
+                OTHER,
                 /**
                  * An enum member indicating that [PaymentMethod] was instantiated with an unknown
                  * value.
@@ -3766,6 +3770,7 @@ private constructor(
                 when (this) {
                     CHECK -> Value.CHECK
                     DIRECT_DEPOSIT -> Value.DIRECT_DEPOSIT
+                    OTHER -> Value.OTHER
                     else -> Value._UNKNOWN
                 }
 
@@ -3782,6 +3787,7 @@ private constructor(
                 when (this) {
                     CHECK -> Known.CHECK
                     DIRECT_DEPOSIT -> Known.DIRECT_DEPOSIT
+                    OTHER -> Known.OTHER
                     else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
                 }
 
