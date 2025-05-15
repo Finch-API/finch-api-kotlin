@@ -16,12 +16,12 @@ internal class PayStatementItemListResponseTest {
             PayStatementItemListResponse.builder()
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
-                        .employer(true)
                         .metadata(
                             PayStatementItemListResponse.Attributes.Metadata.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
+                        .employer(true)
                         .preTax(true)
                         .type("type")
                         .build()
@@ -33,12 +33,12 @@ internal class PayStatementItemListResponseTest {
         assertThat(payStatementItemListResponse.attributes())
             .isEqualTo(
                 PayStatementItemListResponse.Attributes.builder()
-                    .employer(true)
                     .metadata(
                         PayStatementItemListResponse.Attributes.Metadata.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
+                    .employer(true)
                     .preTax(true)
                     .type("type")
                     .build()
@@ -55,12 +55,12 @@ internal class PayStatementItemListResponseTest {
             PayStatementItemListResponse.builder()
                 .attributes(
                     PayStatementItemListResponse.Attributes.builder()
-                        .employer(true)
                         .metadata(
                             PayStatementItemListResponse.Attributes.Metadata.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
+                        .employer(true)
                         .preTax(true)
                         .type("type")
                         .build()
