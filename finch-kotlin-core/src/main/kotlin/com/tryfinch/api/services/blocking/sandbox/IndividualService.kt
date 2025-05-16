@@ -17,9 +17,21 @@ interface IndividualService {
 
     /** Update sandbox individual */
     fun update(
+        individualId: String,
+        params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): IndividualUpdateResponse =
+        update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualUpdateResponse
+
+    /** @see [update] */
+    fun update(individualId: String, requestOptions: RequestOptions): IndividualUpdateResponse =
+        update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
 
     /** A view of [IndividualService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -30,8 +42,25 @@ interface IndividualService {
          */
         @MustBeClosed
         fun update(
+            individualId: String,
+            params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<IndividualUpdateResponse> =
+            update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualUpdateResponse>
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            individualId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<IndividualUpdateResponse> =
+            update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
     }
 }

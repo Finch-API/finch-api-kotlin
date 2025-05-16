@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
@@ -11,12 +10,12 @@ import java.util.Objects
 /** Lists individuals currently enrolled in a given deduction. */
 class HrisBenefitIndividualEnrolledIdsParams
 private constructor(
-    private val benefitId: String,
+    private val benefitId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun benefitId(): String = benefitId
+    fun benefitId(): String? = benefitId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,14 +25,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisBenefitIndividualEnrolledIdsParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisBenefitIndividualEnrolledIdsParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .benefitId()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -54,7 +50,7 @@ private constructor(
                 hrisBenefitIndividualEnrolledIdsParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,17 +154,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitIndividualEnrolledIdsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .benefitId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitIndividualEnrolledIdsParams =
             HrisBenefitIndividualEnrolledIdsParams(
-                checkRequired("benefitId", benefitId),
+                benefitId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -176,7 +165,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> benefitId
+            0 -> benefitId ?: ""
             else -> ""
         }
 

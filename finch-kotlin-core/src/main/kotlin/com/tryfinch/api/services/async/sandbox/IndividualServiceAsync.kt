@@ -17,9 +17,24 @@ interface IndividualServiceAsync {
 
     /** Update sandbox individual */
     suspend fun update(
+        individualId: String,
+        params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): IndividualUpdateResponse =
+        update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+    /** @see [update] */
+    suspend fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualUpdateResponse
+
+    /** @see [update] */
+    suspend fun update(
+        individualId: String,
+        requestOptions: RequestOptions,
+    ): IndividualUpdateResponse =
+        update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -33,8 +48,25 @@ interface IndividualServiceAsync {
          */
         @MustBeClosed
         suspend fun update(
+            individualId: String,
+            params: SandboxIndividualUpdateParams = SandboxIndividualUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<IndividualUpdateResponse> =
+            update(params.toBuilder().individualId(individualId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        suspend fun update(
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualUpdateResponse>
+
+        /** @see [update] */
+        @MustBeClosed
+        suspend fun update(
+            individualId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<IndividualUpdateResponse> =
+            update(individualId, SandboxIndividualUpdateParams.none(), requestOptions)
     }
 }
