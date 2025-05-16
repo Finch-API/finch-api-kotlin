@@ -315,7 +315,7 @@ private constructor(
 
         /**
          * Custom fields for the individual. These are fields which are defined by the employer in
-         * the system.
+         * the system. Custom fields are not currently supported for assisted connections.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -731,7 +731,7 @@ private constructor(
 
             /**
              * Custom fields for the individual. These are fields which are defined by the employer
-             * in the system.
+             * in the system. Custom fields are not currently supported for assisted connections.
              */
             fun customFields(customFields: List<CustomField>?) =
                 customFields(JsonField.ofNullable(customFields))
@@ -1209,7 +1209,7 @@ private constructor(
                     additionalProperties = customField.additionalProperties.toMutableMap()
                 }
 
-                fun name(name: String) = name(JsonField.of(name))
+                fun name(name: String?) = name(JsonField.ofNullable(name))
 
                 /**
                  * Sets [Builder.name] to an arbitrary JSON value.
