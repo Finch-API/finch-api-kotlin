@@ -314,21 +314,21 @@ private constructor(
 
             val ANNUALLY = of("annually")
 
-            val BI_WEEKLY = of("bi_weekly")
-
-            val DAILY = of("daily")
-
-            val MONTHLY = of("monthly")
-
-            val OTHER = of("other")
+            val SEMI_ANNUALLY = of("semi_annually")
 
             val QUARTERLY = of("quarterly")
 
-            val SEMI_ANNUALLY = of("semi_annually")
+            val MONTHLY = of("monthly")
 
             val SEMI_MONTHLY = of("semi_monthly")
 
+            val BI_WEEKLY = of("bi_weekly")
+
             val WEEKLY = of("weekly")
+
+            val DAILY = of("daily")
+
+            val OTHER = of("other")
 
             fun of(value: String) = PayFrequency(JsonField.of(value))
         }
@@ -336,14 +336,14 @@ private constructor(
         /** An enum containing [PayFrequency]'s known values. */
         enum class Known {
             ANNUALLY,
-            BI_WEEKLY,
-            DAILY,
-            MONTHLY,
-            OTHER,
-            QUARTERLY,
             SEMI_ANNUALLY,
+            QUARTERLY,
+            MONTHLY,
             SEMI_MONTHLY,
+            BI_WEEKLY,
             WEEKLY,
+            DAILY,
+            OTHER,
         }
 
         /**
@@ -357,14 +357,14 @@ private constructor(
          */
         enum class Value {
             ANNUALLY,
-            BI_WEEKLY,
-            DAILY,
-            MONTHLY,
-            OTHER,
-            QUARTERLY,
             SEMI_ANNUALLY,
+            QUARTERLY,
+            MONTHLY,
             SEMI_MONTHLY,
+            BI_WEEKLY,
             WEEKLY,
+            DAILY,
+            OTHER,
             /**
              * An enum member indicating that [PayFrequency] was instantiated with an unknown value.
              */
@@ -381,14 +381,14 @@ private constructor(
         fun value(): Value =
             when (this) {
                 ANNUALLY -> Value.ANNUALLY
-                BI_WEEKLY -> Value.BI_WEEKLY
-                DAILY -> Value.DAILY
-                MONTHLY -> Value.MONTHLY
-                OTHER -> Value.OTHER
-                QUARTERLY -> Value.QUARTERLY
                 SEMI_ANNUALLY -> Value.SEMI_ANNUALLY
+                QUARTERLY -> Value.QUARTERLY
+                MONTHLY -> Value.MONTHLY
                 SEMI_MONTHLY -> Value.SEMI_MONTHLY
+                BI_WEEKLY -> Value.BI_WEEKLY
                 WEEKLY -> Value.WEEKLY
+                DAILY -> Value.DAILY
+                OTHER -> Value.OTHER
                 else -> Value._UNKNOWN
             }
 
@@ -403,14 +403,14 @@ private constructor(
         fun known(): Known =
             when (this) {
                 ANNUALLY -> Known.ANNUALLY
-                BI_WEEKLY -> Known.BI_WEEKLY
-                DAILY -> Known.DAILY
-                MONTHLY -> Known.MONTHLY
-                OTHER -> Known.OTHER
-                QUARTERLY -> Known.QUARTERLY
                 SEMI_ANNUALLY -> Known.SEMI_ANNUALLY
+                QUARTERLY -> Known.QUARTERLY
+                MONTHLY -> Known.MONTHLY
                 SEMI_MONTHLY -> Known.SEMI_MONTHLY
+                BI_WEEKLY -> Known.BI_WEEKLY
                 WEEKLY -> Known.WEEKLY
+                DAILY -> Known.DAILY
+                OTHER -> Known.OTHER
                 else -> throw FinchInvalidDataException("Unknown PayFrequency: $value")
             }
 
