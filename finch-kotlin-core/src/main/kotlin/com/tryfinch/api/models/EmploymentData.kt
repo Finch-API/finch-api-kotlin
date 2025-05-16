@@ -214,12 +214,12 @@ private constructor(
         private val location: JsonField<Location>,
         private val manager: JsonField<Manager>,
         private val middleName: JsonField<String>,
-        private val sourceId: JsonField<String>,
         private val startDate: JsonField<String>,
         private val title: JsonField<String>,
         private val workId: JsonField<String>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
+        private val sourceId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -261,9 +261,6 @@ private constructor(
             @JsonProperty("middle_name")
             @ExcludeMissing
             middleName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("source_id")
-            @ExcludeMissing
-            sourceId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("start_date")
             @ExcludeMissing
             startDate: JsonField<String> = JsonMissing.of(),
@@ -273,6 +270,9 @@ private constructor(
             @JsonProperty("income_history")
             @ExcludeMissing
             incomeHistory: JsonField<List<Income?>> = JsonMissing.of(),
+            @JsonProperty("source_id")
+            @ExcludeMissing
+            sourceId: JsonField<String> = JsonMissing.of(),
         ) : this(
             id,
             classCode,
@@ -288,12 +288,12 @@ private constructor(
             location,
             manager,
             middleName,
-            sourceId,
             startDate,
             title,
             workId,
             income,
             incomeHistory,
+            sourceId,
             mutableMapOf(),
         )
 
@@ -407,14 +407,6 @@ private constructor(
         fun middleName(): String? = middleName.getNullable("middle_name")
 
         /**
-         * The source system's unique employment identifier for this individual
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun sourceId(): String? = sourceId.getNullable("source_id")
-
-        /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -453,6 +445,14 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun incomeHistory(): List<Income?>? = incomeHistory.getNullable("income_history")
+
+        /**
+         * The source system's unique employment identifier for this individual
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun sourceId(): String? = sourceId.getNullable("source_id")
 
         /**
          * Returns the raw JSON value of [id].
@@ -568,13 +568,6 @@ private constructor(
         fun _middleName(): JsonField<String> = middleName
 
         /**
-         * Returns the raw JSON value of [sourceId].
-         *
-         * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
-
-        /**
          * Returns the raw JSON value of [startDate].
          *
          * Unlike [startDate], this method doesn't throw if the JSON field has an unexpected type.
@@ -615,6 +608,13 @@ private constructor(
         @ExcludeMissing
         fun _incomeHistory(): JsonField<List<Income?>> = incomeHistory
 
+        /**
+         * Returns the raw JSON value of [sourceId].
+         *
+         * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -648,7 +648,6 @@ private constructor(
              * .location()
              * .manager()
              * .middleName()
-             * .sourceId()
              * .startDate()
              * .title()
              * .workId()
@@ -674,12 +673,12 @@ private constructor(
             private var location: JsonField<Location>? = null
             private var manager: JsonField<Manager>? = null
             private var middleName: JsonField<String>? = null
-            private var sourceId: JsonField<String>? = null
             private var startDate: JsonField<String>? = null
             private var title: JsonField<String>? = null
             private var workId: JsonField<String>? = null
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
+            private var sourceId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(unionMember0: UnionMember0) = apply {
@@ -697,12 +696,12 @@ private constructor(
                 location = unionMember0.location
                 manager = unionMember0.manager
                 middleName = unionMember0.middleName
-                sourceId = unionMember0.sourceId
                 startDate = unionMember0.startDate
                 title = unionMember0.title
                 workId = unionMember0.workId
                 income = unionMember0.income
                 incomeHistory = unionMember0.incomeHistory.map { it.toMutableList() }
+                sourceId = unionMember0.sourceId
                 additionalProperties = unionMember0.additionalProperties.toMutableMap()
             }
 
@@ -909,18 +908,6 @@ private constructor(
              */
             fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
-            /** The source system's unique employment identifier for this individual */
-            fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
-
-            /**
-             * Sets [Builder.sourceId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.sourceId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
-
             fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
             /**
@@ -1001,6 +988,18 @@ private constructor(
                     }
             }
 
+            /** The source system's unique employment identifier for this individual */
+            fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
+
+            /**
+             * Sets [Builder.sourceId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.sourceId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -1041,7 +1040,6 @@ private constructor(
              * .location()
              * .manager()
              * .middleName()
-             * .sourceId()
              * .startDate()
              * .title()
              * .workId()
@@ -1065,12 +1063,12 @@ private constructor(
                     checkRequired("location", location),
                     checkRequired("manager", manager),
                     checkRequired("middleName", middleName),
-                    checkRequired("sourceId", sourceId),
                     checkRequired("startDate", startDate),
                     checkRequired("title", title),
                     checkRequired("workId", workId),
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
+                    sourceId,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1096,12 +1094,12 @@ private constructor(
             location()?.validate()
             manager()?.validate()
             middleName()
-            sourceId()
             startDate()
             title()
             workId()
             income()?.validate()
             incomeHistory()?.forEach { it?.validate() }
+            sourceId()
             validated = true
         }
 
@@ -1134,12 +1132,12 @@ private constructor(
                 (location.asKnown()?.validity() ?: 0) +
                 (manager.asKnown()?.validity() ?: 0) +
                 (if (middleName.asKnown() == null) 0 else 1) +
-                (if (sourceId.asKnown() == null) 0 else 1) +
                 (if (startDate.asKnown() == null) 0 else 1) +
                 (if (title.asKnown() == null) 0 else 1) +
                 (if (workId.asKnown() == null) 0 else 1) +
                 (income.asKnown()?.validity() ?: 0) +
-                (incomeHistory.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0)
+                (incomeHistory.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
+                (if (sourceId.asKnown() == null) 0 else 1)
 
         class CustomField
         private constructor(
@@ -2535,17 +2533,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is UnionMember0 && id == other.id && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && sourceId == other.sourceId && startDate == other.startDate && title == other.title && workId == other.workId && income == other.income && incomeHistory == other.incomeHistory && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is UnionMember0 && id == other.id && classCode == other.classCode && customFields == other.customFields && department == other.department && employment == other.employment && employmentStatus == other.employmentStatus && endDate == other.endDate && firstName == other.firstName && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && startDate == other.startDate && title == other.title && workId == other.workId && income == other.income && incomeHistory == other.incomeHistory && sourceId == other.sourceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, classCode, customFields, department, employment, employmentStatus, endDate, firstName, isActive, lastName, latestRehireDate, location, manager, middleName, sourceId, startDate, title, workId, income, incomeHistory, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, classCode, customFields, department, employment, employmentStatus, endDate, firstName, isActive, lastName, latestRehireDate, location, manager, middleName, startDate, title, workId, income, incomeHistory, sourceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember0{id=$id, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, workId=$workId, income=$income, incomeHistory=$incomeHistory, additionalProperties=$additionalProperties}"
+            "UnionMember0{id=$id, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, workId=$workId, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
