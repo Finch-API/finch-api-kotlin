@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.1.0 (2025-05-16)
+
+Full Changelog: [v7.0.0...v7.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v7.0.0...v7.1.0)
+
+### Features
+
+* **api:** api update ([d7970c1](https://github.com/Finch-API/finch-api-kotlin/commit/d7970c1299c60240b1bced8bdca6283c72c7cdff))
+
 ## 7.0.0 (2025-05-16)
 
 Full Changelog: [v6.0.0...v7.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v6.0.0...v7.0.0)
