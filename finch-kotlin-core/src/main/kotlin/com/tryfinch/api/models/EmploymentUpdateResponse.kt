@@ -141,7 +141,8 @@ private constructor(
     fun employment(): Employment? = employment.getNullable("employment")
 
     /**
-     * The detailed employment status of the individual.
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -485,7 +486,8 @@ private constructor(
          * Custom fields for the individual. These are fields which are defined by the employer in
          * the system. Custom fields are not currently supported for assisted connections.
          */
-        fun customFields(customFields: List<CustomField>) = customFields(JsonField.of(customFields))
+        fun customFields(customFields: List<CustomField>?) =
+            customFields(JsonField.ofNullable(customFields))
 
         /**
          * Sets [Builder.customFields] to an arbitrary JSON value.
@@ -534,7 +536,10 @@ private constructor(
          */
         fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
 
-        /** The detailed employment status of the individual. */
+        /**
+         * The detailed employment status of the individual. Available options: `active`,
+         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+         */
         fun employmentStatus(employmentStatus: EmploymentStatus?) =
             employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -692,7 +697,7 @@ private constructor(
         fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         /** The source system's unique employment identifier for this individual */
-        fun sourceId(sourceId: String) = sourceId(JsonField.of(sourceId))
+        fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
 
         /**
          * Sets [Builder.sourceId] to an arbitrary JSON value.
@@ -1579,7 +1584,10 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /** The detailed employment status of the individual. */
+    /**
+     * The detailed employment status of the individual. Available options: `active`, `deceased`,
+     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     */
     class EmploymentStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
