@@ -10,6 +10,7 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -32,22 +33,22 @@ private constructor(
     ) : this(body, code, paymentId, mutableMapOf())
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun body(): PayStatementResponseBody? = body.getNullable("body")
+    fun body(): PayStatementResponseBody = body.getRequired("body")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun code(): Long? = code.getNullable("code")
+    fun code(): Long = code.getRequired("code")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun paymentId(): String? = paymentId.getNullable("payment_id")
+    fun paymentId(): String = paymentId.getRequired("payment_id")
 
     /**
      * Returns the raw JSON value of [body].
@@ -84,16 +85,25 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [PayStatementResponse]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [PayStatementResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * .code()
+         * .paymentId()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [PayStatementResponse]. */
     class Builder internal constructor() {
 
-        private var body: JsonField<PayStatementResponseBody> = JsonMissing.of()
-        private var code: JsonField<Long> = JsonMissing.of()
-        private var paymentId: JsonField<String> = JsonMissing.of()
+        private var body: JsonField<PayStatementResponseBody>? = null
+        private var code: JsonField<Long>? = null
+        private var paymentId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(payStatementResponse: PayStatementResponse) = apply {
@@ -113,6 +123,22 @@ private constructor(
          * supported value.
          */
         fun body(body: JsonField<PayStatementResponseBody>) = apply { this.body = body }
+
+        /**
+         * Alias for calling [body] with `PayStatementResponseBody.ofUnionMember0(unionMember0)`.
+         */
+        fun body(unionMember0: PayStatementResponseBody.UnionMember0) =
+            body(PayStatementResponseBody.ofUnionMember0(unionMember0))
+
+        /** Alias for calling [body] with `PayStatementResponseBody.ofBatchError(batchError)`. */
+        fun body(batchError: PayStatementResponseBody.BatchError) =
+            body(PayStatementResponseBody.ofBatchError(batchError))
+
+        /**
+         * Alias for calling [body] with `PayStatementResponseBody.ofUnionMember2(unionMember2)`.
+         */
+        fun body(unionMember2: PayStatementResponseBody.UnionMember2) =
+            body(PayStatementResponseBody.ofUnionMember2(unionMember2))
 
         fun code(code: Long) = code(JsonField.of(code))
 
@@ -158,9 +184,23 @@ private constructor(
          * Returns an immutable instance of [PayStatementResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * .code()
+         * .paymentId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PayStatementResponse =
-            PayStatementResponse(body, code, paymentId, additionalProperties.toMutableMap())
+            PayStatementResponse(
+                checkRequired("body", body),
+                checkRequired("code", code),
+                checkRequired("paymentId", paymentId),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -170,7 +210,7 @@ private constructor(
             return@apply
         }
 
-        body()?.validate()
+        body().validate()
         code()
         paymentId()
         validated = true
