@@ -13,8 +13,8 @@ class HrisBenefitListSupportedBenefitsPage
 private constructor(
     private val service: BenefitService,
     private val params: HrisBenefitListSupportedBenefitsParams,
-    private val items: List<BenefitListSupportedBenefitsResponse>,
-) : Page<BenefitListSupportedBenefitsResponse> {
+    private val items: List<SupportedBenefit>,
+) : Page<SupportedBenefit> {
 
     override fun hasNextPage(): Boolean = false
 
@@ -24,13 +24,13 @@ private constructor(
     override fun nextPage(): HrisBenefitListSupportedBenefitsPage =
         service.listSupportedBenefits(nextPageParams())
 
-    fun autoPager(): AutoPager<BenefitListSupportedBenefitsResponse> = AutoPager.from(this)
+    fun autoPager(): AutoPager<SupportedBenefit> = AutoPager.from(this)
 
     /** The parameters that were used to request this page. */
     fun params(): HrisBenefitListSupportedBenefitsParams = params
 
     /** The response that this page was parsed from. */
-    override fun items(): List<BenefitListSupportedBenefitsResponse> = items
+    override fun items(): List<SupportedBenefit> = items
 
     fun toBuilder() = Builder().from(this)
 
@@ -55,7 +55,7 @@ private constructor(
 
         private var service: BenefitService? = null
         private var params: HrisBenefitListSupportedBenefitsParams? = null
-        private var items: List<BenefitListSupportedBenefitsResponse>? = null
+        private var items: List<SupportedBenefit>? = null
 
         internal fun from(
             hrisBenefitListSupportedBenefitsPage: HrisBenefitListSupportedBenefitsPage
@@ -71,7 +71,7 @@ private constructor(
         fun params(params: HrisBenefitListSupportedBenefitsParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<BenefitListSupportedBenefitsResponse>?) = apply { this.items = items }
+        fun items(items: List<SupportedBenefit>?) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [HrisBenefitListSupportedBenefitsPage].
