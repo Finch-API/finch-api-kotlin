@@ -13,24 +13,20 @@ internal class SandboxPaymentCreateParamsTest {
         SandboxPaymentCreateParams.builder()
             .endDate("end_date")
             .addPayStatement(
-                SandboxPaymentCreateParams.PayStatement.builder()
+                PayStatement.builder()
                     .addEarning(
-                        SandboxPaymentCreateParams.PayStatement.Earning.builder()
+                        PayStatement.Earning.builder()
                             .amount(0L)
                             .currency("currency")
                             .hours(0.0)
                             .name("name")
-                            .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.SALARY)
+                            .type(PayStatement.Earning.Type.SALARY)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.Earning.Attributes.builder()
+                                PayStatement.Earning.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.Earning.Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.Earning.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement.Earning
-                                                    .Attributes
-                                                    .Metadata
+                                                PayStatement.Earning.Attributes.Metadata
                                                     .InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
@@ -46,25 +42,18 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .addEmployeeDeduction(
-                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
+                        PayStatement.EmployeeDeduction.builder()
                             .amount(0L)
                             .currency("currency")
                             .name("name")
                             .preTax(true)
                             .type(BenefitType._457)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.Attributes
-                                    .builder()
+                                PayStatement.EmployeeDeduction.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
-                                            .Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.EmployeeDeduction.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement
-                                                    .EmployeeDeduction
-                                                    .Attributes
-                                                    .Metadata
+                                                PayStatement.EmployeeDeduction.Attributes.Metadata
                                                     .InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
@@ -80,24 +69,18 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .addEmployerContribution(
-                        SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
+                        PayStatement.EmployerContribution.builder()
                             .currency("currency")
                             .name("name")
                             .type(BenefitType._457)
                             .amount(0L)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                    .Attributes
-                                    .builder()
+                                PayStatement.EmployerContribution.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                            .Attributes
-                                            .Metadata
+                                        PayStatement.EmployerContribution.Attributes.Metadata
                                             .builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement
-                                                    .EmployerContribution
-                                                    .Attributes
+                                                PayStatement.EmployerContribution.Attributes
                                                     .Metadata
                                                     .InnerMetadata
                                                     .builder()
@@ -116,25 +99,20 @@ internal class SandboxPaymentCreateParamsTest {
                     .grossPay(Money.builder().amount(0L).currency("currency").build())
                     .individualId("individual_id")
                     .netPay(Money.builder().amount(0L).currency("currency").build())
-                    .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
+                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
                     .addTax(
-                        SandboxPaymentCreateParams.PayStatement.Tax.builder()
+                        PayStatement.Tax.builder()
                             .currency("currency")
                             .employer(true)
                             .name("name")
-                            .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.STATE)
+                            .type(PayStatement.Tax.Type.STATE)
                             .amount(0L)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.Tax.Attributes.builder()
+                                PayStatement.Tax.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.Tax.Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.Tax.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement.Tax
-                                                    .Attributes
-                                                    .Metadata
-                                                    .InnerMetadata
+                                                PayStatement.Tax.Attributes.Metadata.InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
@@ -149,7 +127,7 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .totalHours(0.0)
-                    .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
+                    .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                     .build()
             )
             .startDate("start_date")
@@ -162,26 +140,20 @@ internal class SandboxPaymentCreateParamsTest {
             SandboxPaymentCreateParams.builder()
                 .endDate("end_date")
                 .addPayStatement(
-                    SandboxPaymentCreateParams.PayStatement.builder()
+                    PayStatement.builder()
                         .addEarning(
-                            SandboxPaymentCreateParams.PayStatement.Earning.builder()
+                            PayStatement.Earning.builder()
                                 .amount(0L)
                                 .currency("currency")
                                 .hours(0.0)
                                 .name("name")
-                                .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.SALARY)
+                                .type(PayStatement.Earning.Type.SALARY)
                                 .attributes(
-                                    SandboxPaymentCreateParams.PayStatement.Earning.Attributes
-                                        .builder()
+                                    PayStatement.Earning.Attributes.builder()
                                         .metadata(
-                                            SandboxPaymentCreateParams.PayStatement.Earning
-                                                .Attributes
-                                                .Metadata
-                                                .builder()
+                                            PayStatement.Earning.Attributes.Metadata.builder()
                                                 .metadata(
-                                                    SandboxPaymentCreateParams.PayStatement.Earning
-                                                        .Attributes
-                                                        .Metadata
+                                                    PayStatement.Earning.Attributes.Metadata
                                                         .InnerMetadata
                                                         .builder()
                                                         .putAdditionalProperty(
@@ -197,26 +169,19 @@ internal class SandboxPaymentCreateParamsTest {
                                 .build()
                         )
                         .addEmployeeDeduction(
-                            SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
+                            PayStatement.EmployeeDeduction.builder()
                                 .amount(0L)
                                 .currency("currency")
                                 .name("name")
                                 .preTax(true)
                                 .type(BenefitType._457)
                                 .attributes(
-                                    SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
-                                        .Attributes
-                                        .builder()
+                                    PayStatement.EmployeeDeduction.Attributes.builder()
                                         .metadata(
-                                            SandboxPaymentCreateParams.PayStatement
-                                                .EmployeeDeduction
-                                                .Attributes
-                                                .Metadata
+                                            PayStatement.EmployeeDeduction.Attributes.Metadata
                                                 .builder()
                                                 .metadata(
-                                                    SandboxPaymentCreateParams.PayStatement
-                                                        .EmployeeDeduction
-                                                        .Attributes
+                                                    PayStatement.EmployeeDeduction.Attributes
                                                         .Metadata
                                                         .InnerMetadata
                                                         .builder()
@@ -233,25 +198,18 @@ internal class SandboxPaymentCreateParamsTest {
                                 .build()
                         )
                         .addEmployerContribution(
-                            SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
+                            PayStatement.EmployerContribution.builder()
                                 .currency("currency")
                                 .name("name")
                                 .type(BenefitType._457)
                                 .amount(0L)
                                 .attributes(
-                                    SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                        .Attributes
-                                        .builder()
+                                    PayStatement.EmployerContribution.Attributes.builder()
                                         .metadata(
-                                            SandboxPaymentCreateParams.PayStatement
-                                                .EmployerContribution
-                                                .Attributes
-                                                .Metadata
+                                            PayStatement.EmployerContribution.Attributes.Metadata
                                                 .builder()
                                                 .metadata(
-                                                    SandboxPaymentCreateParams.PayStatement
-                                                        .EmployerContribution
-                                                        .Attributes
+                                                    PayStatement.EmployerContribution.Attributes
                                                         .Metadata
                                                         .InnerMetadata
                                                         .builder()
@@ -270,24 +228,20 @@ internal class SandboxPaymentCreateParamsTest {
                         .grossPay(Money.builder().amount(0L).currency("currency").build())
                         .individualId("individual_id")
                         .netPay(Money.builder().amount(0L).currency("currency").build())
-                        .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
+                        .paymentMethod(PayStatement.PaymentMethod.CHECK)
                         .addTax(
-                            SandboxPaymentCreateParams.PayStatement.Tax.builder()
+                            PayStatement.Tax.builder()
                                 .currency("currency")
                                 .employer(true)
                                 .name("name")
-                                .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.STATE)
+                                .type(PayStatement.Tax.Type.STATE)
                                 .amount(0L)
                                 .attributes(
-                                    SandboxPaymentCreateParams.PayStatement.Tax.Attributes.builder()
+                                    PayStatement.Tax.Attributes.builder()
                                         .metadata(
-                                            SandboxPaymentCreateParams.PayStatement.Tax.Attributes
-                                                .Metadata
-                                                .builder()
+                                            PayStatement.Tax.Attributes.Metadata.builder()
                                                 .metadata(
-                                                    SandboxPaymentCreateParams.PayStatement.Tax
-                                                        .Attributes
-                                                        .Metadata
+                                                    PayStatement.Tax.Attributes.Metadata
                                                         .InnerMetadata
                                                         .builder()
                                                         .putAdditionalProperty(
@@ -303,7 +257,7 @@ internal class SandboxPaymentCreateParamsTest {
                                 .build()
                         )
                         .totalHours(0.0)
-                        .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
+                        .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                         .build()
                 )
                 .startDate("start_date")
@@ -314,24 +268,20 @@ internal class SandboxPaymentCreateParamsTest {
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.payStatements())
             .containsExactly(
-                SandboxPaymentCreateParams.PayStatement.builder()
+                PayStatement.builder()
                     .addEarning(
-                        SandboxPaymentCreateParams.PayStatement.Earning.builder()
+                        PayStatement.Earning.builder()
                             .amount(0L)
                             .currency("currency")
                             .hours(0.0)
                             .name("name")
-                            .type(SandboxPaymentCreateParams.PayStatement.Earning.Type.SALARY)
+                            .type(PayStatement.Earning.Type.SALARY)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.Earning.Attributes.builder()
+                                PayStatement.Earning.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.Earning.Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.Earning.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement.Earning
-                                                    .Attributes
-                                                    .Metadata
+                                                PayStatement.Earning.Attributes.Metadata
                                                     .InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
@@ -347,25 +297,18 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .addEmployeeDeduction(
-                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
+                        PayStatement.EmployeeDeduction.builder()
                             .amount(0L)
                             .currency("currency")
                             .name("name")
                             .preTax(true)
                             .type(BenefitType._457)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.Attributes
-                                    .builder()
+                                PayStatement.EmployeeDeduction.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
-                                            .Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.EmployeeDeduction.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement
-                                                    .EmployeeDeduction
-                                                    .Attributes
-                                                    .Metadata
+                                                PayStatement.EmployeeDeduction.Attributes.Metadata
                                                     .InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
@@ -381,24 +324,18 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .addEmployerContribution(
-                        SandboxPaymentCreateParams.PayStatement.EmployerContribution.builder()
+                        PayStatement.EmployerContribution.builder()
                             .currency("currency")
                             .name("name")
                             .type(BenefitType._457)
                             .amount(0L)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                    .Attributes
-                                    .builder()
+                                PayStatement.EmployerContribution.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                            .Attributes
-                                            .Metadata
+                                        PayStatement.EmployerContribution.Attributes.Metadata
                                             .builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement
-                                                    .EmployerContribution
-                                                    .Attributes
+                                                PayStatement.EmployerContribution.Attributes
                                                     .Metadata
                                                     .InnerMetadata
                                                     .builder()
@@ -417,25 +354,20 @@ internal class SandboxPaymentCreateParamsTest {
                     .grossPay(Money.builder().amount(0L).currency("currency").build())
                     .individualId("individual_id")
                     .netPay(Money.builder().amount(0L).currency("currency").build())
-                    .paymentMethod(SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK)
+                    .paymentMethod(PayStatement.PaymentMethod.CHECK)
                     .addTax(
-                        SandboxPaymentCreateParams.PayStatement.Tax.builder()
+                        PayStatement.Tax.builder()
                             .currency("currency")
                             .employer(true)
                             .name("name")
-                            .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.STATE)
+                            .type(PayStatement.Tax.Type.STATE)
                             .amount(0L)
                             .attributes(
-                                SandboxPaymentCreateParams.PayStatement.Tax.Attributes.builder()
+                                PayStatement.Tax.Attributes.builder()
                                     .metadata(
-                                        SandboxPaymentCreateParams.PayStatement.Tax.Attributes
-                                            .Metadata
-                                            .builder()
+                                        PayStatement.Tax.Attributes.Metadata.builder()
                                             .metadata(
-                                                SandboxPaymentCreateParams.PayStatement.Tax
-                                                    .Attributes
-                                                    .Metadata
-                                                    .InnerMetadata
+                                                PayStatement.Tax.Attributes.Metadata.InnerMetadata
                                                     .builder()
                                                     .putAdditionalProperty(
                                                         "foo",
@@ -450,7 +382,7 @@ internal class SandboxPaymentCreateParamsTest {
                             .build()
                     )
                     .totalHours(0.0)
-                    .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
+                    .type(PayStatement.Type.OFF_CYCLE_PAYROLL)
                     .build()
             )
         assertThat(body.startDate()).isEqualTo("start_date")
