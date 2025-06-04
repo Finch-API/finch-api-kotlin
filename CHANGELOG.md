@@ -1,5 +1,27 @@
 # Changelog
 
+## 8.1.0 (2025-06-04)
+
+Full Changelog: [v8.0.0...v8.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.0.0...v8.1.0)
+
+### Features
+
+* **api:** api update ([0ae4425](https://github.com/Finch-API/finch-api-kotlin/commit/0ae4425d9f98222ed3781882abb59c1b5aad429f))
+* **api:** api update ([dbba337](https://github.com/Finch-API/finch-api-kotlin/commit/dbba33776e9901d6a32ae6105123d7d374fc86a5))
+
+
+### Bug Fixes
+
+* **client:** `hasNextPage` impl for some classes ([25a3686](https://github.com/Finch-API/finch-api-kotlin/commit/25a3686c7f9bffbf70d9b3ead26d2e94955b0386))
+* **client:** fix PayStatementResponse body ([302e912](https://github.com/Finch-API/finch-api-kotlin/commit/302e91262b61e786b0c9adebece4a8574a6e2819))
+* **client:** update pagination ([0a73daf](https://github.com/Finch-API/finch-api-kotlin/commit/0a73daf9e43930ef4d266b8ba03e056dc5c36334))
+
+
+### Chores
+
+* **docs:** grammar improvements ([32214e4](https://github.com/Finch-API/finch-api-kotlin/commit/32214e4a282fa1745f194b636f020df4c64c30a6))
+* **tests:** skip endpoints with basic auth ([96137dc](https://github.com/Finch-API/finch-api-kotlin/commit/96137dc91931245bd43f734f4dcfe4a44b6e2932))
+
 ## 8.0.0 (2025-05-16)
 
 Full Changelog: [v7.1.0...v8.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v7.1.0...v8.0.0)
