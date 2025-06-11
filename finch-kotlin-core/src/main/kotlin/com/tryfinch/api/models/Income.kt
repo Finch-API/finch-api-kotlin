@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.LocalDate
 import java.util.Collections
 import java.util.Objects
 
@@ -25,7 +26,7 @@ class Income
 private constructor(
     private val amount: JsonField<Long>,
     private val currency: JsonField<String>,
-    private val effectiveDate: JsonField<String>,
+    private val effectiveDate: JsonField<LocalDate>,
     private val unit: JsonField<Unit>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -36,7 +37,7 @@ private constructor(
         @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
         @JsonProperty("effective_date")
         @ExcludeMissing
-        effectiveDate: JsonField<String> = JsonMissing.of(),
+        effectiveDate: JsonField<LocalDate> = JsonMissing.of(),
         @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
     ) : this(amount, currency, effectiveDate, unit, mutableMapOf())
 
@@ -62,7 +63,7 @@ private constructor(
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun effectiveDate(): String? = effectiveDate.getNullable("effective_date")
+    fun effectiveDate(): LocalDate? = effectiveDate.getNullable("effective_date")
 
     /**
      * The income unit of payment. Options: `yearly`, `quarterly`, `monthly`, `semi_monthly`,
@@ -94,7 +95,7 @@ private constructor(
      */
     @JsonProperty("effective_date")
     @ExcludeMissing
-    fun _effectiveDate(): JsonField<String> = effectiveDate
+    fun _effectiveDate(): JsonField<LocalDate> = effectiveDate
 
     /**
      * Returns the raw JSON value of [unit].
@@ -136,7 +137,7 @@ private constructor(
 
         private var amount: JsonField<Long>? = null
         private var currency: JsonField<String>? = null
-        private var effectiveDate: JsonField<String>? = null
+        private var effectiveDate: JsonField<LocalDate>? = null
         private var unit: JsonField<Unit>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -178,17 +179,17 @@ private constructor(
         fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
-        fun effectiveDate(effectiveDate: String?) =
+        fun effectiveDate(effectiveDate: LocalDate?) =
             effectiveDate(JsonField.ofNullable(effectiveDate))
 
         /**
          * Sets [Builder.effectiveDate] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.effectiveDate] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.effectiveDate] with a well-typed [LocalDate] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun effectiveDate(effectiveDate: JsonField<String>) = apply {
+        fun effectiveDate(effectiveDate: JsonField<LocalDate>) = apply {
             this.effectiveDate = effectiveDate
         }
 
