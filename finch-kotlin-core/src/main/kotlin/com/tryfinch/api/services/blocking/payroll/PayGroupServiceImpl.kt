@@ -63,6 +63,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -90,6 +91,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups")
                     .build()
                     .prepare(clientOptions, params)

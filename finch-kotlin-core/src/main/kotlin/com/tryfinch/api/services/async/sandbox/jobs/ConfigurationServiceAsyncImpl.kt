@@ -58,6 +58,7 @@ class ConfigurationServiceAsyncImpl internal constructor(private val clientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs", "configuration")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -85,6 +86,7 @@ class ConfigurationServiceAsyncImpl internal constructor(private val clientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs", "configuration")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

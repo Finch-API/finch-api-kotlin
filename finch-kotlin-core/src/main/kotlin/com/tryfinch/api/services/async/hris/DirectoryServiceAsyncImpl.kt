@@ -61,6 +61,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -96,6 +97,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
                     .prepareAsync(clientOptions, params)
