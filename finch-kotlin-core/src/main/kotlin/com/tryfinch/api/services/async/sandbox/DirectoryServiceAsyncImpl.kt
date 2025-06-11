@@ -50,6 +50,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "directory")
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

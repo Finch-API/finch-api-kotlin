@@ -63,6 +63,7 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "company")
                     .build()
                     .prepareAsync(clientOptions, params)
