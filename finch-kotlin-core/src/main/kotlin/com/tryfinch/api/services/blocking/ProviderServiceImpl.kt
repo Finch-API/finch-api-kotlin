@@ -27,6 +27,9 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): ProviderService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ProviderService =
+        ProviderServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun list(
         params: ProviderListParams,
         requestOptions: RequestOptions,
@@ -38,6 +41,13 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
         ProviderService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ProviderService.WithRawResponse =
+            ProviderServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val listHandler: Handler<List<Provider>> =
             jsonHandler<List<Provider>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

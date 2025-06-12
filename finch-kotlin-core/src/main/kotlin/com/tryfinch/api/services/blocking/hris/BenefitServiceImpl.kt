@@ -41,6 +41,9 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): BenefitService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): BenefitService =
+        BenefitServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun individuals(): IndividualService = individuals
 
     override fun create(
@@ -86,6 +89,13 @@ class BenefitServiceImpl internal constructor(private val clientOptions: ClientO
         private val individuals: IndividualService.WithRawResponse by lazy {
             IndividualServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): BenefitService.WithRawResponse =
+            BenefitServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun individuals(): IndividualService.WithRawResponse = individuals
 

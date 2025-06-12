@@ -33,6 +33,9 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): JobServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobServiceAsync =
+        JobServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun configuration(): ConfigurationServiceAsync = configuration
 
     override suspend fun create(
@@ -50,6 +53,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         private val configuration: ConfigurationServiceAsync.WithRawResponse by lazy {
             ConfigurationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): JobServiceAsync.WithRawResponse =
+            JobServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun configuration(): ConfigurationServiceAsync.WithRawResponse = configuration
 

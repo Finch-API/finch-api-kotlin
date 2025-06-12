@@ -27,6 +27,9 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): PaymentServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PaymentServiceAsync =
+        PaymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun list(
         params: HrisPaymentListParams,
         requestOptions: RequestOptions,
@@ -38,6 +41,13 @@ class PaymentServiceAsyncImpl internal constructor(private val clientOptions: Cl
         PaymentServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PaymentServiceAsync.WithRawResponse =
+            PaymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val listHandler: Handler<List<Payment>> =
             jsonHandler<List<Payment>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

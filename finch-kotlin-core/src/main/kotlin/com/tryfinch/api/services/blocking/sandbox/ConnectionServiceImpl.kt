@@ -31,6 +31,9 @@ class ConnectionServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): ConnectionService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ConnectionService =
+        ConnectionServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun accounts(): AccountService = accounts
 
     override fun create(
@@ -48,6 +51,13 @@ class ConnectionServiceImpl internal constructor(private val clientOptions: Clie
         private val accounts: AccountService.WithRawResponse by lazy {
             AccountServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ConnectionService.WithRawResponse =
+            ConnectionServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun accounts(): AccountService.WithRawResponse = accounts
 

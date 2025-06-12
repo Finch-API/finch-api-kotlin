@@ -72,6 +72,9 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     override fun withRawResponse(): FinchClient.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): FinchClient =
+        FinchClientImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun accessTokens(): AccessTokenService = accessTokens
 
     override fun hris(): HrisService = hris
@@ -136,6 +139,11 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         private val connect: ConnectService.WithRawResponse by lazy {
             ConnectServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): FinchClient.WithRawResponse =
+            FinchClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         override fun accessTokens(): AccessTokenService.WithRawResponse = accessTokens
 

@@ -27,6 +27,9 @@ class RequestForwardingServiceImpl internal constructor(private val clientOption
 
     override fun withRawResponse(): RequestForwardingService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RequestForwardingService =
+        RequestForwardingServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun forward(
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions,
@@ -38,6 +41,13 @@ class RequestForwardingServiceImpl internal constructor(private val clientOption
         RequestForwardingService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): RequestForwardingService.WithRawResponse =
+            RequestForwardingServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val forwardHandler: Handler<RequestForwardingForwardResponse> =
             jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)

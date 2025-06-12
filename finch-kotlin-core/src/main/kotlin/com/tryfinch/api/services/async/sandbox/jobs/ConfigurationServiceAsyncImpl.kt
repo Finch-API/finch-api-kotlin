@@ -28,6 +28,9 @@ class ConfigurationServiceAsyncImpl internal constructor(private val clientOptio
 
     override fun withRawResponse(): ConfigurationServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ConfigurationServiceAsync =
+        ConfigurationServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieve(
         params: SandboxJobConfigurationRetrieveParams,
         requestOptions: RequestOptions,
@@ -46,6 +49,13 @@ class ConfigurationServiceAsyncImpl internal constructor(private val clientOptio
         ConfigurationServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ConfigurationServiceAsync.WithRawResponse =
+            ConfigurationServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val retrieveHandler: Handler<List<SandboxJobConfiguration>> =
             jsonHandler<List<SandboxJobConfiguration>>(clientOptions.jsonMapper)

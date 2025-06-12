@@ -32,6 +32,9 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
 
     override fun withRawResponse(): JobService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobService =
+        JobServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun configuration(): ConfigurationService = configuration
 
     override fun create(
@@ -49,6 +52,11 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
         private val configuration: ConfigurationService.WithRawResponse by lazy {
             ConfigurationServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): JobService.WithRawResponse =
+            JobServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         override fun configuration(): ConfigurationService.WithRawResponse = configuration
 

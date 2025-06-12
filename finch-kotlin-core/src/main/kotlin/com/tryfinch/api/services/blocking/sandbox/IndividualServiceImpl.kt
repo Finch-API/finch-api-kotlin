@@ -28,6 +28,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
         IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val updateHandler: Handler<IndividualUpdateResponse> =
             jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)

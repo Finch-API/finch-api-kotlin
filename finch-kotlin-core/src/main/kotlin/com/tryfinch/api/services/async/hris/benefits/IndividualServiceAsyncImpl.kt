@@ -33,6 +33,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualServiceAsync =
+        IndividualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions,
@@ -58,6 +61,13 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
         IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualServiceAsync.WithRawResponse =
+            IndividualServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)

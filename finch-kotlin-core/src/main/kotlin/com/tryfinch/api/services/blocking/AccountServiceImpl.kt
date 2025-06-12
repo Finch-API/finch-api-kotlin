@@ -29,6 +29,9 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): AccountService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AccountService =
+        AccountServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun disconnect(
         params: AccountDisconnectParams,
         requestOptions: RequestOptions,
@@ -47,6 +50,13 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
         AccountService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AccountService.WithRawResponse =
+            AccountServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val disconnectHandler: Handler<DisconnectResponse> =
             jsonHandler<DisconnectResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

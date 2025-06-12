@@ -32,6 +32,9 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
 
     override fun withRawResponse(): AutomatedServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AutomatedServiceAsync =
+        AutomatedServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun create(
         params: JobAutomatedCreateParams,
         requestOptions: RequestOptions,
@@ -57,6 +60,13 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
         AutomatedServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AutomatedServiceAsync.WithRawResponse =
+            AutomatedServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
