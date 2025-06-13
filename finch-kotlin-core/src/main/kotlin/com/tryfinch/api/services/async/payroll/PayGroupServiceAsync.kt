@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.payroll
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.PayGroupRetrieveResponse
@@ -16,6 +17,13 @@ interface PayGroupServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayGroupServiceAsync
 
     /** Read information from a single pay group */
     suspend fun retrieve(
@@ -52,6 +60,15 @@ interface PayGroupServiceAsync {
      * A view of [PayGroupServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayGroupServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/pay-groups/{pay_group_id}`, but is

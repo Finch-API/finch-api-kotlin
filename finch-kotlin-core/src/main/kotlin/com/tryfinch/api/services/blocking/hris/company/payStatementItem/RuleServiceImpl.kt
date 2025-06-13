@@ -34,6 +34,9 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
 
     override fun withRawResponse(): RuleService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RuleService =
+        RuleServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams,
         requestOptions: RequestOptions,
@@ -66,6 +69,11 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
         RuleService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): RuleService.WithRawResponse =
+            RuleServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         private val createHandler: Handler<RuleCreateResponse> =
             jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

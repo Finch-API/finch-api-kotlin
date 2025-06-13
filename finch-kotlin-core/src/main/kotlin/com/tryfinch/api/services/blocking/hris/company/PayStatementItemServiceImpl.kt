@@ -31,6 +31,9 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
 
     override fun withRawResponse(): PayStatementItemService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayStatementItemService =
+        PayStatementItemServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun rules(): RuleService = rules
 
     override fun list(
@@ -48,6 +51,13 @@ class PayStatementItemServiceImpl internal constructor(private val clientOptions
         private val rules: RuleService.WithRawResponse by lazy {
             RuleServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayStatementItemService.WithRawResponse =
+            PayStatementItemServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun rules(): RuleService.WithRawResponse = rules
 

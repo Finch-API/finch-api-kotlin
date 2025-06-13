@@ -32,6 +32,9 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
 
     override fun withRawResponse(): AutomatedService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AutomatedService =
+        AutomatedServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: JobAutomatedCreateParams,
         requestOptions: RequestOptions,
@@ -57,6 +60,13 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
         AutomatedService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AutomatedService.WithRawResponse =
+            AutomatedServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)

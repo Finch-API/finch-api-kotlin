@@ -30,6 +30,9 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
 
     override fun withRawResponse(): PayGroupServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayGroupServiceAsync =
+        PayGroupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions,
@@ -48,6 +51,13 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
         PayGroupServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayGroupServiceAsync.WithRawResponse =
+            PayGroupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)

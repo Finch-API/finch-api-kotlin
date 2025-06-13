@@ -46,6 +46,9 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
 
     override fun withRawResponse(): HrisService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisService =
+        HrisServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun company(): CompanyService = company
 
     override fun directory(): DirectoryService = directory
@@ -96,6 +99,11 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val benefits: BenefitService.WithRawResponse by lazy {
             BenefitServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): HrisService.WithRawResponse =
+            HrisServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         override fun company(): CompanyService.WithRawResponse = company
 

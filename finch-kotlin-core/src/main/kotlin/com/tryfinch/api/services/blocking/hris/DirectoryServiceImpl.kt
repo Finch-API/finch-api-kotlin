@@ -30,6 +30,9 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
     override fun withRawResponse(): DirectoryService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DirectoryService =
+        DirectoryServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun list(
         params: HrisDirectoryListParams,
         requestOptions: RequestOptions,
@@ -49,6 +52,13 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
         DirectoryService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): DirectoryService.WithRawResponse =
+            DirectoryServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val listHandler: Handler<HrisDirectoryListPageResponse> =
             jsonHandler<HrisDirectoryListPageResponse>(clientOptions.jsonMapper)

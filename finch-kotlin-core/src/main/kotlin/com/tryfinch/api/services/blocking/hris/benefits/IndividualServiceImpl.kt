@@ -33,6 +33,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions,
@@ -58,6 +61,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
         IndividualService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val enrolledIdsHandler: Handler<IndividualEnrolledIdsResponse> =
             jsonHandler<IndividualEnrolledIdsResponse>(clientOptions.jsonMapper)

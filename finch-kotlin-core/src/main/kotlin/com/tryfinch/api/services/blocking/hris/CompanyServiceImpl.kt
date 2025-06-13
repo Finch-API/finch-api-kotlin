@@ -32,6 +32,9 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyService =
+        CompanyServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun payStatementItem(): PayStatementItemService = payStatementItem
 
     override fun retrieve(
@@ -49,6 +52,13 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
         private val payStatementItem: PayStatementItemService.WithRawResponse by lazy {
             PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyService.WithRawResponse =
+            CompanyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 

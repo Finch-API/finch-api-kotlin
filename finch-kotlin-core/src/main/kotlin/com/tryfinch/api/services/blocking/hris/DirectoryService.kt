@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.blocking.hris
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
@@ -16,6 +17,13 @@ interface DirectoryService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DirectoryService
 
     /** Read company directory and organization structure */
     fun list(
@@ -41,6 +49,13 @@ interface DirectoryService {
 
     /** A view of [DirectoryService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DirectoryService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as

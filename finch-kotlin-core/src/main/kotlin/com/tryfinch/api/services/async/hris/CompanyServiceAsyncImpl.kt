@@ -32,6 +32,9 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyServiceAsync =
+        CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
     override suspend fun retrieve(
@@ -49,6 +52,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
             PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyServiceAsync.WithRawResponse =
+            CompanyServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
             payStatementItem

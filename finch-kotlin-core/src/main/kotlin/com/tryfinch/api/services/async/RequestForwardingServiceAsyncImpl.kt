@@ -27,6 +27,11 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
 
     override fun withRawResponse(): RequestForwardingServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(
+        modifier: (ClientOptions.Builder) -> Unit
+    ): RequestForwardingServiceAsync =
+        RequestForwardingServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun forward(
         params: RequestForwardingForwardParams,
         requestOptions: RequestOptions,
@@ -38,6 +43,13 @@ internal constructor(private val clientOptions: ClientOptions) : RequestForwardi
         RequestForwardingServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): RequestForwardingServiceAsync.WithRawResponse =
+            RequestForwardingServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val forwardHandler: Handler<RequestForwardingForwardResponse> =
             jsonHandler<RequestForwardingForwardResponse>(clientOptions.jsonMapper)

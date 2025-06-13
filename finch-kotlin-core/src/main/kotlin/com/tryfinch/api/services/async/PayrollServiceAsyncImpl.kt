@@ -17,6 +17,9 @@ class PayrollServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): PayrollServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayrollServiceAsync =
+        PayrollServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun payGroups(): PayGroupServiceAsync = payGroups
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +28,13 @@ class PayrollServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val payGroups: PayGroupServiceAsync.WithRawResponse by lazy {
             PayGroupServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayrollServiceAsync.WithRawResponse =
+            PayrollServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun payGroups(): PayGroupServiceAsync.WithRawResponse = payGroups
     }

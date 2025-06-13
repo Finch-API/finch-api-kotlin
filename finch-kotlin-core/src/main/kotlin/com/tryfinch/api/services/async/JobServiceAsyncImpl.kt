@@ -23,6 +23,9 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): JobServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobServiceAsync =
+        JobServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun automated(): AutomatedServiceAsync = automated
 
     override fun manual(): ManualServiceAsync = manual
@@ -37,6 +40,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         private val manual: ManualServiceAsync.WithRawResponse by lazy {
             ManualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): JobServiceAsync.WithRawResponse =
+            JobServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun automated(): AutomatedServiceAsync.WithRawResponse = automated
 

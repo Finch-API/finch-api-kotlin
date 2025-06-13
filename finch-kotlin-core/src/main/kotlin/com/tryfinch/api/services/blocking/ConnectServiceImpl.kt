@@ -17,6 +17,9 @@ class ConnectServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): ConnectService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ConnectService =
+        ConnectServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun sessions(): SessionService = sessions
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +28,13 @@ class ConnectServiceImpl internal constructor(private val clientOptions: ClientO
         private val sessions: SessionService.WithRawResponse by lazy {
             SessionServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ConnectService.WithRawResponse =
+            ConnectServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun sessions(): SessionService.WithRawResponse = sessions
     }

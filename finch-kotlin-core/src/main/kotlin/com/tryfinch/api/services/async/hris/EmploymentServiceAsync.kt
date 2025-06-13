@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.hris
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
@@ -15,6 +16,13 @@ interface EmploymentServiceAsync {
      */
     fun withRawResponse(): WithRawResponse
 
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): EmploymentServiceAsync
+
     /** Read individual employment and income data */
     suspend fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
@@ -26,6 +34,15 @@ interface EmploymentServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): EmploymentServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /employer/employment`, but is otherwise the same as

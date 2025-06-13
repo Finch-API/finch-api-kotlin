@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.sandbox.jobs
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.SandboxJobConfiguration
@@ -15,6 +16,13 @@ interface ConfigurationServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ConfigurationServiceAsync
 
     /** Get configurations for sandbox jobs */
     suspend fun retrieve(
@@ -38,6 +46,15 @@ interface ConfigurationServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ConfigurationServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /sandbox/jobs/configuration`, but is otherwise the

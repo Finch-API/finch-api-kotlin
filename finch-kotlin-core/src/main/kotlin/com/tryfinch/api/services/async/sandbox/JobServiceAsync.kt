@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.JobCreateResponse
@@ -16,6 +17,13 @@ interface JobServiceAsync {
      */
     fun withRawResponse(): WithRawResponse
 
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobServiceAsync
+
     fun configuration(): ConfigurationServiceAsync
 
     /** Enqueue a new sandbox job */
@@ -26,6 +34,13 @@ interface JobServiceAsync {
 
     /** A view of [JobServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobServiceAsync.WithRawResponse
 
         fun configuration(): ConfigurationServiceAsync.WithRawResponse
 
