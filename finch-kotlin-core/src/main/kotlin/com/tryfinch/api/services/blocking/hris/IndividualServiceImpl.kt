@@ -28,6 +28,9 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): IndividualService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualService =
+        IndividualServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions,
@@ -40,6 +43,13 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualService.WithRawResponse =
+            IndividualServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageResponse> =
             jsonHandler<HrisIndividualRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +61,7 @@ class IndividualServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "individual")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

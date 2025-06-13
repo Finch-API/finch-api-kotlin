@@ -32,6 +32,9 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyService =
+        CompanyServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun payStatementItem(): PayStatementItemService = payStatementItem
 
     override fun retrieve(
@@ -50,6 +53,13 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyService.WithRawResponse =
+            CompanyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 
         private val retrieveHandler: Handler<Company> =
@@ -62,6 +72,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "company")
                     .build()
                     .prepare(clientOptions, params)

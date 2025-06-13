@@ -32,6 +32,9 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
 
     override fun withRawResponse(): AutomatedServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AutomatedServiceAsync =
+        AutomatedServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun create(
         params: JobAutomatedCreateParams,
         requestOptions: RequestOptions,
@@ -58,6 +61,13 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AutomatedServiceAsync.WithRawResponse =
+            AutomatedServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -69,6 +79,7 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -99,6 +110,7 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -126,6 +138,7 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .build()
                     .prepareAsync(clientOptions, params)

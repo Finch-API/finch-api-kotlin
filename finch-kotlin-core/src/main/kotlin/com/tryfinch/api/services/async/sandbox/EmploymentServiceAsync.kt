@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.EmploymentUpdateResponse
@@ -14,6 +15,13 @@ interface EmploymentServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): EmploymentServiceAsync
 
     /** Update sandbox employment */
     suspend fun update(
@@ -41,6 +49,15 @@ interface EmploymentServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): EmploymentServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `put /sandbox/employment/{individual_id}`, but is

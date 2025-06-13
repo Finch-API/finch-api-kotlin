@@ -30,6 +30,9 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): PayGroupService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayGroupService =
+        PayGroupServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions,
@@ -49,6 +52,13 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayGroupService.WithRawResponse =
+            PayGroupServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveHandler: Handler<PayGroupRetrieveResponse> =
             jsonHandler<PayGroupRetrieveResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -63,6 +73,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -90,6 +101,7 @@ class PayGroupServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups")
                     .build()
                     .prepare(clientOptions, params)

@@ -31,6 +31,11 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
 
     override fun withRawResponse(): PayStatementItemServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(
+        modifier: (ClientOptions.Builder) -> Unit
+    ): PayStatementItemServiceAsync =
+        PayStatementItemServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun rules(): RuleServiceAsync = rules
 
     override suspend fun list(
@@ -49,6 +54,13 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
             RuleServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayStatementItemServiceAsync.WithRawResponse =
+            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         override fun rules(): RuleServiceAsync.WithRawResponse = rules
 
         private val listHandler: Handler<HrisCompanyPayStatementItemListPageResponse> =
@@ -62,6 +74,7 @@ internal constructor(private val clientOptions: ClientOptions) : PayStatementIte
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item")
                     .build()
                     .prepareAsync(clientOptions, params)

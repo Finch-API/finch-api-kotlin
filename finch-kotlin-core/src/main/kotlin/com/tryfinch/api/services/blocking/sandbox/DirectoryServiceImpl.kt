@@ -27,6 +27,9 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
     override fun withRawResponse(): DirectoryService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DirectoryService =
+        DirectoryServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: SandboxDirectoryCreateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): DirectoryService.WithRawResponse =
+            DirectoryServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val createHandler: Handler<List<DirectoryCreateResponse>> =
             jsonHandler<List<DirectoryCreateResponse>>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +60,7 @@ class DirectoryServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "directory")
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

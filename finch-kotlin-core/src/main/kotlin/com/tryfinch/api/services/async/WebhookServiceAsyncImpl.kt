@@ -18,6 +18,9 @@ import javax.crypto.spec.SecretKeySpec
 class WebhookServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookServiceAsync {
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): WebhookServiceAsync =
+        WebhookServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)
         return try {

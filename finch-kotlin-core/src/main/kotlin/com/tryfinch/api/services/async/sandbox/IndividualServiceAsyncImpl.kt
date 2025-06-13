@@ -28,6 +28,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualServiceAsync =
+        IndividualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
         IndividualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualServiceAsync.WithRawResponse =
+            IndividualServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val updateHandler: Handler<IndividualUpdateResponse> =
             jsonHandler<IndividualUpdateResponse>(clientOptions.jsonMapper)
@@ -54,6 +64,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "individual", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

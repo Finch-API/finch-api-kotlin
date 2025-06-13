@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.client
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.async.AccessTokenServiceAsync
 import com.tryfinch.api.services.async.AccountServiceAsync
 import com.tryfinch.api.services.async.ConnectServiceAsync
@@ -41,6 +42,13 @@ interface FinchClientAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): FinchClientAsync
 
     fun accessTokens(): AccessTokenServiceAsync
 
@@ -91,6 +99,13 @@ interface FinchClientAsync {
 
     /** A view of [FinchClientAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: (ClientOptions.Builder) -> Unit): FinchClientAsync.WithRawResponse
 
         fun accessTokens(): AccessTokenServiceAsync.WithRawResponse
 

@@ -27,6 +27,9 @@ class ManualServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
     override fun withRawResponse(): ManualServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ManualServiceAsync =
+        ManualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions,
@@ -38,6 +41,13 @@ class ManualServiceAsyncImpl internal constructor(private val clientOptions: Cli
         ManualServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ManualServiceAsync.WithRawResponse =
+            ManualServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val retrieveHandler: Handler<ManualAsyncJob> =
             jsonHandler<ManualAsyncJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
@@ -52,6 +62,7 @@ class ManualServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "manual", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
