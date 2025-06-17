@@ -27,6 +27,9 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): CompanyService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyService =
+        CompanyServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun update(
         params: SandboxCompanyUpdateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyService.WithRawResponse =
+            CompanyServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val updateHandler: Handler<CompanyUpdateResponse> =
             jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +60,7 @@ class CompanyServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "company")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

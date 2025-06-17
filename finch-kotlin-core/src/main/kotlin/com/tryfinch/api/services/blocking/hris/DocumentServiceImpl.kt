@@ -29,6 +29,9 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
 
     override fun withRawResponse(): DocumentService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DocumentService =
+        DocumentServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun list(
         params: HrisDocumentListParams,
         requestOptions: RequestOptions,
@@ -48,6 +51,13 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): DocumentService.WithRawResponse =
+            DocumentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val listHandler: Handler<DocumentListResponse> =
             jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -59,6 +69,7 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents")
                     .build()
                     .prepare(clientOptions, params)
@@ -89,6 +100,7 @@ class DocumentServiceImpl internal constructor(private val clientOptions: Client
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

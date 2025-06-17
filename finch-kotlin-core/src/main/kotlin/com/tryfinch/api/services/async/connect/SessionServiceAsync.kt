@@ -3,6 +3,7 @@
 package com.tryfinch.api.services.async.connect
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.ConnectSessionNewParams
@@ -16,6 +17,13 @@ interface SessionServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): SessionServiceAsync
 
     /** Create a new connect session for an employer */
     suspend fun new(
@@ -33,6 +41,15 @@ interface SessionServiceAsync {
      * A view of [SessionServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): SessionServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as

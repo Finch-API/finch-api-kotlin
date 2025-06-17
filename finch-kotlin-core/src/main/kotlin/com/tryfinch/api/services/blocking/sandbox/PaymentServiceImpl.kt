@@ -27,6 +27,9 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): PaymentService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PaymentService =
+        PaymentServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: SandboxPaymentCreateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PaymentService.WithRawResponse =
+            PaymentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val createHandler: Handler<PaymentCreateResponse> =
             jsonHandler<PaymentCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +60,7 @@ class PaymentServiceImpl internal constructor(private val clientOptions: ClientO
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "payment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -49,6 +49,9 @@ class SandboxServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): SandboxServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): SandboxServiceAsync =
+        SandboxServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun connections(): ConnectionServiceAsync = connections
 
     override fun company(): CompanyServiceAsync = company
@@ -93,6 +96,13 @@ class SandboxServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val jobs: JobServiceAsync.WithRawResponse by lazy {
             JobServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): SandboxServiceAsync.WithRawResponse =
+            SandboxServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun connections(): ConnectionServiceAsync.WithRawResponse = connections
 

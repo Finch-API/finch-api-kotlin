@@ -32,6 +32,9 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyServiceAsync =
+        CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
     override suspend fun retrieve(
@@ -50,6 +53,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
             PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyServiceAsync.WithRawResponse =
+            CompanyServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
             payStatementItem
 
@@ -63,6 +73,7 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "company")
                     .build()
                     .prepareAsync(clientOptions, params)

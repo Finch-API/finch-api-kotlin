@@ -32,6 +32,9 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
 
     override fun withRawResponse(): JobService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): JobService =
+        JobServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun configuration(): ConfigurationService = configuration
 
     override fun create(
@@ -50,6 +53,11 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             ConfigurationServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): JobService.WithRawResponse =
+            JobServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
+
         override fun configuration(): ConfigurationService.WithRawResponse = configuration
 
         private val createHandler: Handler<JobCreateResponse> =
@@ -62,6 +70,7 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "jobs")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
