@@ -1,5 +1,34 @@
 # Changelog
 
+## 8.1.0 (2025-06-23)
+
+Full Changelog: [v8.0.0...v8.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.0.0...v8.1.0)
+
+### Features
+
+* **api:** api update ([9d365bc](https://github.com/Finch-API/finch-api-kotlin/commit/9d365bc4480dc94fad6c282107a3b1f7df57fce1))
+* **api:** api update ([204587b](https://github.com/Finch-API/finch-api-kotlin/commit/204587b3be0e4abfab6984efed7b7448c4b5e3e3))
+* **api:** api update ([0ae4425](https://github.com/Finch-API/finch-api-kotlin/commit/0ae4425d9f98222ed3781882abb59c1b5aad429f))
+* **api:** api update ([dbba337](https://github.com/Finch-API/finch-api-kotlin/commit/dbba33776e9901d6a32ae6105123d7d374fc86a5))
+* **client:** add a `withOptions` method ([97e1024](https://github.com/Finch-API/finch-api-kotlin/commit/97e102429b3752f9770a51cc63c856cba8b8fa99))
+* **client:** implement per-endpoint base URL support ([8faed0d](https://github.com/Finch-API/finch-api-kotlin/commit/8faed0dda5675a87ed8a842278ee6b8fc9246974))
+
+
+### Bug Fixes
+
+* **client:** `hasNextPage` impl for some classes ([25a3686](https://github.com/Finch-API/finch-api-kotlin/commit/25a3686c7f9bffbf70d9b3ead26d2e94955b0386))
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([799a330](https://github.com/Finch-API/finch-api-kotlin/commit/799a3307d49d902d9b4ded7dcbafb2c89eaf9c68))
+* **client:** fix PayStatementResponse body ([302e912](https://github.com/Finch-API/finch-api-kotlin/commit/302e91262b61e786b0c9adebece4a8574a6e2819))
+* **client:** missing base URL ([51d4201](https://github.com/Finch-API/finch-api-kotlin/commit/51d4201319b9449e7c866a1a9ce660889ecbbb1f))
+* **client:** update pagination ([0a73daf](https://github.com/Finch-API/finch-api-kotlin/commit/0a73daf9e43930ef4d266b8ba03e056dc5c36334))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([658e149](https://github.com/Finch-API/finch-api-kotlin/commit/658e1492e4c5053fbaa390dac1f10a1b9626b589))
+* **docs:** grammar improvements ([32214e4](https://github.com/Finch-API/finch-api-kotlin/commit/32214e4a282fa1745f194b636f020df4c64c30a6))
+* **tests:** skip endpoints with basic auth ([96137dc](https://github.com/Finch-API/finch-api-kotlin/commit/96137dc91931245bd43f734f4dcfe4a44b6e2932))
+
 ## 8.0.0 (2025-05-16)
 
 Full Changelog: [v7.1.0...v8.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v7.1.0...v8.0.0)
