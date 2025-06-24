@@ -29,6 +29,9 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): SessionServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): SessionServiceAsync =
+        SessionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun new(
         params: ConnectSessionNewParams,
         requestOptions: RequestOptions,
@@ -48,6 +51,13 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): SessionServiceAsync.WithRawResponse =
+            SessionServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val newHandler: Handler<SessionNewResponse> =
             jsonHandler<SessionNewResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -58,6 +68,7 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -86,6 +97,7 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("connect", "sessions", "reauthenticate")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

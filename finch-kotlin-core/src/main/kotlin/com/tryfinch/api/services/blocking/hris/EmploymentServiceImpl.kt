@@ -28,6 +28,9 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): EmploymentService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): EmploymentService =
+        EmploymentServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions,
@@ -40,6 +43,13 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): EmploymentService.WithRawResponse =
+            EmploymentServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
             jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +61,7 @@ class EmploymentServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "employment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

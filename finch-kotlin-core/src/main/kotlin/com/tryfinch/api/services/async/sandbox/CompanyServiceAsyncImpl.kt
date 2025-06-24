@@ -27,6 +27,9 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyServiceAsync =
+        CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun update(
         params: SandboxCompanyUpdateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): CompanyServiceAsync.WithRawResponse =
+            CompanyServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val updateHandler: Handler<CompanyUpdateResponse> =
             jsonHandler<CompanyUpdateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +60,7 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "company")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

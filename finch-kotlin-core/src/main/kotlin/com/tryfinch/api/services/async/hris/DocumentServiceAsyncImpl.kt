@@ -29,6 +29,9 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
 
     override fun withRawResponse(): DocumentServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DocumentServiceAsync =
+        DocumentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun list(
         params: HrisDocumentListParams,
         requestOptions: RequestOptions,
@@ -48,6 +51,13 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): DocumentServiceAsync.WithRawResponse =
+            DocumentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val listHandler: Handler<DocumentListResponse> =
             jsonHandler<DocumentListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -59,6 +69,7 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -89,6 +100,7 @@ class DocumentServiceAsyncImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "documents", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)

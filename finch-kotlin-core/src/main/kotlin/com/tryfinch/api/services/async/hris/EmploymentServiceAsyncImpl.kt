@@ -28,6 +28,9 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withRawResponse(): EmploymentServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): EmploymentServiceAsync =
+        EmploymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
         requestOptions: RequestOptions,
@@ -40,6 +43,13 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): EmploymentServiceAsync.WithRawResponse =
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
             jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +61,7 @@ class EmploymentServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "employment")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

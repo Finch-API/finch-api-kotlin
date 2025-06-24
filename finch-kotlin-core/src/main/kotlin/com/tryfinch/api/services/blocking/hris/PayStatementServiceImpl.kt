@@ -28,6 +28,9 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): PayStatementService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayStatementService =
+        PayStatementServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
         requestOptions: RequestOptions,
@@ -40,6 +43,13 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayStatementService.WithRawResponse =
+            PayStatementServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisPayStatementRetrieveManyPageResponse> =
             jsonHandler<HrisPayStatementRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +61,7 @@ class PayStatementServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

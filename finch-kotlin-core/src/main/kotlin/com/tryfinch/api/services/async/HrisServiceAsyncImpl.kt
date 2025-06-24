@@ -53,6 +53,9 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
     override fun withRawResponse(): HrisServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisServiceAsync =
+        HrisServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun company(): CompanyServiceAsync = company
 
     override fun directory(): DirectoryServiceAsync = directory
@@ -103,6 +106,13 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val benefits: BenefitServiceAsync.WithRawResponse by lazy {
             BenefitServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): HrisServiceAsync.WithRawResponse =
+            HrisServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         override fun company(): CompanyServiceAsync.WithRawResponse = company
 

@@ -28,6 +28,9 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withRawResponse(): IndividualServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualServiceAsync =
+        IndividualServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieveMany(
         params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions,
@@ -40,6 +43,13 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): IndividualServiceAsync.WithRawResponse =
+            IndividualServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val retrieveManyHandler: Handler<HrisIndividualRetrieveManyPageResponse> =
             jsonHandler<HrisIndividualRetrieveManyPageResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +61,7 @@ class IndividualServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "individual")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -28,6 +28,9 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
 
     override fun withRawResponse(): AccessTokenService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AccessTokenService =
+        AccessTokenServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
         AccessTokenService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AccessTokenService.WithRawResponse =
+            AccessTokenServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val createHandler: Handler<CreateAccessTokenResponse> =
             jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)
@@ -73,6 +83,7 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("auth", "token")
                     .putAllQueryParams(clientOptions.queryParams)
                     .replaceAllQueryParams(modifiedParams._queryParams())

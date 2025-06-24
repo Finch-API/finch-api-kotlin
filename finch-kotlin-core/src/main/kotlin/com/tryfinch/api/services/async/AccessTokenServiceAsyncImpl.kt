@@ -28,6 +28,9 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
 
     override fun withRawResponse(): AccessTokenServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AccessTokenServiceAsync =
+        AccessTokenServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun create(
         params: AccessTokenCreateParams,
         requestOptions: RequestOptions,
@@ -39,6 +42,13 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
         AccessTokenServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AccessTokenServiceAsync.WithRawResponse =
+            AccessTokenServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
 
         private val createHandler: Handler<CreateAccessTokenResponse> =
             jsonHandler<CreateAccessTokenResponse>(clientOptions.jsonMapper)
@@ -73,6 +83,7 @@ class AccessTokenServiceAsyncImpl internal constructor(private val clientOptions
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("auth", "token")
                     .putAllQueryParams(clientOptions.queryParams)
                     .replaceAllQueryParams(modifiedParams._queryParams())

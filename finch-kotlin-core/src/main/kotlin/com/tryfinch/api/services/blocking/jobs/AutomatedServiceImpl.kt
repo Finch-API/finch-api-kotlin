@@ -32,6 +32,9 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
 
     override fun withRawResponse(): AutomatedService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AutomatedService =
+        AutomatedServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: JobAutomatedCreateParams,
         requestOptions: RequestOptions,
@@ -58,6 +61,13 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AutomatedService.WithRawResponse =
+            AutomatedServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         private val createHandler: Handler<AutomatedCreateResponse> =
             jsonHandler<AutomatedCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -69,6 +79,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -99,6 +110,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -126,6 +138,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .build()
                     .prepare(clientOptions, params)

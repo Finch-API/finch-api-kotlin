@@ -87,6 +87,9 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
 
     override fun withRawResponse(): FinchClient.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): FinchClient =
+        FinchClientImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun accessTokens(): AccessTokenService = accessTokens
 
     override fun hris(): HrisService = hris
@@ -127,6 +130,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
+                .baseUrl(clientOptions.baseUrl())
                 .addPathSegments("auth", "token")
                 .body(
                     json(
@@ -157,7 +161,7 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
                 .httpClient(clientOptions.httpClient)
                 .jsonMapper(clientOptions.jsonMapper)
                 .clock(clientOptions.clock)
-                .baseUrl(clientOptions.baseUrl)
+                .baseUrl(clientOptions.baseUrl())
                 .accessToken(accessToken)
                 .clientId(clientOptions.clientId)
                 .clientSecret(clientOptions.clientSecret)
@@ -223,6 +227,11 @@ class FinchClientImpl(private val clientOptions: ClientOptions) : FinchClient {
         private val connect: ConnectService.WithRawResponse by lazy {
             ConnectServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): FinchClient.WithRawResponse =
+            FinchClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         override fun accessTokens(): AccessTokenService.WithRawResponse = accessTokens
 

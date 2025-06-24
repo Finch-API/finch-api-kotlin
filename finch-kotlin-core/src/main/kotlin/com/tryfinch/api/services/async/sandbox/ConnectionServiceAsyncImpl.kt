@@ -31,6 +31,9 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun withRawResponse(): ConnectionServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ConnectionServiceAsync =
+        ConnectionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun accounts(): AccountServiceAsync = accounts
 
     override suspend fun create(
@@ -49,6 +52,13 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
             AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): ConnectionServiceAsync.WithRawResponse =
+            ConnectionServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
         override fun accounts(): AccountServiceAsync.WithRawResponse = accounts
 
         private val createHandler: Handler<ConnectionCreateResponse> =
@@ -62,6 +72,7 @@ class ConnectionServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("sandbox", "connections")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

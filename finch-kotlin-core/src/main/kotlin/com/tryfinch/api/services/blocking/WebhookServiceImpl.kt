@@ -18,6 +18,9 @@ import javax.crypto.spec.SecretKeySpec
 class WebhookServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     WebhookService {
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): WebhookService =
+        WebhookServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun unwrap(payload: String, headers: Headers, secret: String?): WebhookEvent {
         verifySignature(payload, headers, secret)
         return try {

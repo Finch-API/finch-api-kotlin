@@ -34,6 +34,9 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
 
     override fun withRawResponse(): RuleService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RuleService =
+        RuleServiceImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun create(
         params: HrisCompanyPayStatementItemRuleCreateParams,
         requestOptions: RequestOptions,
@@ -67,6 +70,11 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): RuleService.WithRawResponse =
+            RuleServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
+
         private val createHandler: Handler<RuleCreateResponse> =
             jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -77,6 +85,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -107,6 +116,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -135,6 +145,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .build()
                     .prepare(clientOptions, params)
@@ -171,6 +182,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
