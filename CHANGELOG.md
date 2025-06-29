@@ -1,5 +1,19 @@
 # Changelog
 
+## 8.1.1 (2025-06-29)
+
+Full Changelog: [v8.1.0...v8.1.1](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.0...v8.1.1)
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([d46d872](https://github.com/Finch-API/finch-api-kotlin/commit/d46d8726fdb628afe772744daf510221f4d9a40f))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([217016b](https://github.com/Finch-API/finch-api-kotlin/commit/217016be8b0f3a5bcfecfad24b2c13763280d504))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([866dc37](https://github.com/Finch-API/finch-api-kotlin/commit/866dc3727285eb2d064165503cd2a06ab188ebd5))
+
 ## 8.1.0 (2025-06-23)
 
 Full Changelog: [v8.0.0...v8.1.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.0.0...v8.1.0)
