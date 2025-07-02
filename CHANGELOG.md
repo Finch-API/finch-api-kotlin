@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.1.2 (2025-06-30)
+
+Full Changelog: [v8.1.1...v8.1.2](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.1...v8.1.2)
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([7f3b439](https://github.com/Finch-API/finch-api-kotlin/commit/7f3b4396bb59bfb9f0c9e892f066fb35ac0b7aa4))
+
 ## 8.1.1 (2025-06-29)
 
 Full Changelog: [v8.1.0...v8.1.1](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.0...v8.1.1)
