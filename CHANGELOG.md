@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.1.3 (2025-07-08)
+
+Full Changelog: [v8.1.2...v8.1.3](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.2...v8.1.3)
+
+### Chores
+
+* **ci:** ensure docs generation always succeeds ([db78ce8](https://github.com/Finch-API/finch-api-kotlin/commit/db78ce8a44642a0eea70253c6981d87c1a2927a6))
+
 ## 8.1.2 (2025-06-30)
 
 Full Changelog: [v8.1.1...v8.1.2](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.1...v8.1.2)
