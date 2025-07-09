@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/8.1.2)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/8.1.2/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.1.2)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/8.1.3)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/8.1.3/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.1.3)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.1.2).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.1.3).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:8.1.2")
+implementation("com.tryfinch.api:finch-kotlin:8.1.3")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-kotlin:8.1.2")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-kotlin</artifactId>
-  <version>8.1.2</version>
+  <version>8.1.3</version>
 </dependency>
 ```
 
