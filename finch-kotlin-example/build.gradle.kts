@@ -8,5 +8,12 @@ dependencies {
 }
 
 application {
-    mainClass = "com.tryfinch.api.example.MainKt"
+    // Use `./gradlew :finch-kotlin-example:run` to run `Main`
+    // Use `./gradlew :finch-kotlin-example:run -Dexample=Something` to run `SomethingExample`
+    mainClass = "com.tryfinch.api.example.${
+        if (project.hasProperty("example"))
+            "${project.property("example")}ExampleKt"
+        else
+            "MainKt"
+    }"
 }
