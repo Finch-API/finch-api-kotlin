@@ -3,14 +3,14 @@
 package com.tryfinch.api.services.blocking.hris.company.payStatementItem
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -68,7 +68,8 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RuleService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
@@ -76,7 +77,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             RuleServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         private val createHandler: Handler<RuleCreateResponse> =
-            jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleCreateResponse>(clientOptions.jsonMapper)
 
         override fun create(
             params: HrisCompanyPayStatementItemRuleCreateParams,
@@ -92,7 +93,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -104,7 +105,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
         }
 
         private val updateHandler: Handler<RuleUpdateResponse> =
-            jsonHandler<RuleUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleUpdateResponse>(clientOptions.jsonMapper)
 
         override fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
@@ -123,7 +124,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { updateHandler.handle(it) }
                     .also {
@@ -136,7 +137,6 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val listHandler: Handler<HrisCompanyPayStatementItemRuleListPageResponse> =
             jsonHandler<HrisCompanyPayStatementItemRuleListPageResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: HrisCompanyPayStatementItemRuleListParams,
@@ -151,7 +151,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {
@@ -170,7 +170,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
         }
 
         private val deleteHandler: Handler<RuleDeleteResponse> =
-            jsonHandler<RuleDeleteResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<RuleDeleteResponse>(clientOptions.jsonMapper)
 
         override fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
@@ -189,7 +189,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { deleteHandler.handle(it) }
                     .also {
