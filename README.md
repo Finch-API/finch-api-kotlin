@@ -55,7 +55,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams
 
 val client: FinchClient = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build()
@@ -73,7 +73,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 
 val client: FinchClient = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build()
@@ -98,7 +98,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 
 val client: FinchClient = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build()
@@ -160,7 +160,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams
 
 val client: FinchClient = FinchOkHttpClient.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build()
@@ -178,7 +178,7 @@ import com.tryfinch.api.models.HrisDirectoryListParams
 
 val client: FinchClientAsync = FinchOkHttpClientAsync.builder()
     // Configures using the `finch.clientId`, `finch.clientSecret`, `finch.webhookSecret` and `finch.baseUrl` system properties
-    Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
+    // Or configures using the `FINCH_CLIENT_ID`, `FINCH_CLIENT_SECRET`, `FINCH_WEBHOOK_SECRET` and `FINCH_BASE_URL` environment variables
     .fromEnv()
     .accessToken("My Access Token")
     .build()
