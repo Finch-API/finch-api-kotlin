@@ -13,6 +13,7 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -615,16 +616,16 @@ private constructor(
         ) : this(tiers, type, mutableMapOf())
 
         /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun tiers(): List<Tier>? = tiers.getNullable("tiers")
+        fun tiers(): List<Tier> = tiers.getRequired("tiers")
 
         /**
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun type(): Type? = type.getNullable("type")
+        fun type(): Type = type.getRequired("type")
 
         /**
          * Returns the raw JSON value of [tiers].
@@ -657,6 +658,12 @@ private constructor(
             /**
              * Returns a mutable builder for constructing an instance of
              * [BenefitCompanyMatchContribution].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .tiers()
+             * .type()
+             * ```
              */
             fun builder() = Builder()
         }
@@ -665,7 +672,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var tiers: JsonField<MutableList<Tier>>? = null
-            private var type: JsonField<Type> = JsonMissing.of()
+            private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(benefitCompanyMatchContribution: BenefitCompanyMatchContribution) =
@@ -735,11 +742,19 @@ private constructor(
              * Returns an immutable instance of [BenefitCompanyMatchContribution].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .tiers()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
              */
             fun build(): BenefitCompanyMatchContribution =
                 BenefitCompanyMatchContribution(
-                    (tiers ?: JsonMissing.of()).map { it.toImmutable() },
-                    type,
+                    checkRequired("tiers", tiers).map { it.toImmutable() },
+                    checkRequired("type", type),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -751,8 +766,8 @@ private constructor(
                 return@apply
             }
 
-            tiers()?.forEach { it.validate() }
-            type()?.validate()
+            tiers().forEach { it.validate() }
+            type().validate()
             validated = true
         }
 
@@ -790,16 +805,18 @@ private constructor(
             ) : this(match, threshold, mutableMapOf())
 
             /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
-            fun match(): Long? = match.getNullable("match")
+            fun match(): Long = match.getRequired("match")
 
             /**
-             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
-             *   the server responded with an unexpected value).
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
-            fun threshold(): Long? = threshold.getNullable("threshold")
+            fun threshold(): Long = threshold.getRequired("threshold")
 
             /**
              * Returns the raw JSON value of [match].
@@ -830,15 +847,23 @@ private constructor(
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [Tier]. */
+                /**
+                 * Returns a mutable builder for constructing an instance of [Tier].
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .match()
+                 * .threshold()
+                 * ```
+                 */
                 fun builder() = Builder()
             }
 
             /** A builder for [Tier]. */
             class Builder internal constructor() {
 
-                private var match: JsonField<Long> = JsonMissing.of()
-                private var threshold: JsonField<Long> = JsonMissing.of()
+                private var match: JsonField<Long>? = null
+                private var threshold: JsonField<Long>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(tier: Tier) = apply {
@@ -895,8 +920,21 @@ private constructor(
                  * Returns an immutable instance of [Tier].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .match()
+                 * .threshold()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): Tier = Tier(match, threshold, additionalProperties.toMutableMap())
+                fun build(): Tier =
+                    Tier(
+                        checkRequired("match", match),
+                        checkRequired("threshold", threshold),
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
