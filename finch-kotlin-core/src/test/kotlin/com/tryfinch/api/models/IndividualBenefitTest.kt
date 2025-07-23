@@ -14,7 +14,7 @@ internal class IndividualBenefitTest {
         val individualBenefit =
             IndividualBenefit.builder()
                 .body(
-                    IndividualBenefit.Body.builder()
+                    IndividualBenefit.Body.UnionMember0.builder()
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
@@ -30,7 +30,7 @@ internal class IndividualBenefitTest {
                                 .build()
                         )
                         .hsaContributionLimit(
-                            IndividualBenefit.Body.HsaContributionLimit.INDIVIDUAL
+                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
                         )
                         .build()
                 )
@@ -40,23 +40,27 @@ internal class IndividualBenefitTest {
 
         assertThat(individualBenefit.body())
             .isEqualTo(
-                IndividualBenefit.Body.builder()
-                    .annualMaximum(0L)
-                    .catchUp(true)
-                    .companyContribution(
-                        BenefitContribution.builder()
-                            .amount(0L)
-                            .type(BenefitContribution.Type.FIXED)
-                            .build()
-                    )
-                    .employeeDeduction(
-                        BenefitContribution.builder()
-                            .amount(0L)
-                            .type(BenefitContribution.Type.FIXED)
-                            .build()
-                    )
-                    .hsaContributionLimit(IndividualBenefit.Body.HsaContributionLimit.INDIVIDUAL)
-                    .build()
+                IndividualBenefit.Body.ofUnionMember0(
+                    IndividualBenefit.Body.UnionMember0.builder()
+                        .annualMaximum(0L)
+                        .catchUp(true)
+                        .companyContribution(
+                            BenefitContribution.builder()
+                                .amount(0L)
+                                .type(BenefitContribution.Type.FIXED)
+                                .build()
+                        )
+                        .employeeDeduction(
+                            BenefitContribution.builder()
+                                .amount(0L)
+                                .type(BenefitContribution.Type.FIXED)
+                                .build()
+                        )
+                        .hsaContributionLimit(
+                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
+                        )
+                        .build()
+                )
             )
         assertThat(individualBenefit.code()).isEqualTo(0L)
         assertThat(individualBenefit.individualId()).isEqualTo("individual_id")
@@ -68,7 +72,7 @@ internal class IndividualBenefitTest {
         val individualBenefit =
             IndividualBenefit.builder()
                 .body(
-                    IndividualBenefit.Body.builder()
+                    IndividualBenefit.Body.UnionMember0.builder()
                         .annualMaximum(0L)
                         .catchUp(true)
                         .companyContribution(
@@ -84,7 +88,7 @@ internal class IndividualBenefitTest {
                                 .build()
                         )
                         .hsaContributionLimit(
-                            IndividualBenefit.Body.HsaContributionLimit.INDIVIDUAL
+                            IndividualBenefit.Body.UnionMember0.HsaContributionLimit.INDIVIDUAL
                         )
                         .build()
                 )

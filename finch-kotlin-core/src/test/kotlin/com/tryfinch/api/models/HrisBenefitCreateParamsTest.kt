@@ -22,7 +22,7 @@ internal class HrisBenefitCreateParamsTest {
                     .build()
             )
             .description("description")
-            .frequency(BenefitFrequency.ONE_TIME)
+            .frequency(BenefitFrequency.EVERY_PAYCHECK)
             .type(BenefitType._457)
             .build()
     }
@@ -43,7 +43,7 @@ internal class HrisBenefitCreateParamsTest {
                         .build()
                 )
                 .description("description")
-                .frequency(BenefitFrequency.ONE_TIME)
+                .frequency(BenefitFrequency.EVERY_PAYCHECK)
                 .type(BenefitType._457)
                 .build()
 
@@ -62,7 +62,7 @@ internal class HrisBenefitCreateParamsTest {
                     .build()
             )
         assertThat(body.description()).isEqualTo("description")
-        assertThat(body.frequency()).isEqualTo(BenefitFrequency.ONE_TIME)
+        assertThat(body.frequency()).isEqualTo(BenefitFrequency.EVERY_PAYCHECK)
         assertThat(body.type()).isEqualTo(BenefitType._457)
     }
 
