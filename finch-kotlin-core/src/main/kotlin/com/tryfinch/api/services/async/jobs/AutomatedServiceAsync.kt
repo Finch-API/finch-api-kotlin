@@ -47,7 +47,7 @@ interface AutomatedServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     suspend fun create(requestOptions: RequestOptions): AutomatedCreateResponse =
         create(JobAutomatedCreateParams.none(), requestOptions)
 
@@ -58,13 +58,13 @@ interface AutomatedServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     suspend fun retrieve(
         params: JobAutomatedRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedAsyncJob
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     suspend fun retrieve(jobId: String, requestOptions: RequestOptions): AutomatedAsyncJob =
         retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
@@ -78,7 +78,7 @@ interface AutomatedServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedListResponse
 
-    /** @see [list] */
+    /** @see list */
     suspend fun list(requestOptions: RequestOptions): AutomatedListResponse =
         list(JobAutomatedListParams.none(), requestOptions)
 
@@ -106,7 +106,7 @@ interface AutomatedServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         suspend fun create(
             requestOptions: RequestOptions
@@ -125,14 +125,14 @@ interface AutomatedServiceAsync {
         ): HttpResponseFor<AutomatedAsyncJob> =
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
             params: JobAutomatedRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedAsyncJob>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
             jobId: String,
@@ -150,7 +150,7 @@ interface AutomatedServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<AutomatedListResponse> =
             list(JobAutomatedListParams.none(), requestOptions)

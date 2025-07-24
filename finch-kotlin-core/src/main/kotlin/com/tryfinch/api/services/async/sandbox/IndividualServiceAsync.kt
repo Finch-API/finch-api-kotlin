@@ -31,13 +31,13 @@ interface IndividualServiceAsync {
     ): IndividualUpdateResponse =
         update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     suspend fun update(
         params: SandboxIndividualUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     suspend fun update(
         individualId: String,
         requestOptions: RequestOptions,
@@ -71,14 +71,14 @@ interface IndividualServiceAsync {
         ): HttpResponseFor<IndividualUpdateResponse> =
             update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         suspend fun update(
             params: SandboxIndividualUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         suspend fun update(
             individualId: String,

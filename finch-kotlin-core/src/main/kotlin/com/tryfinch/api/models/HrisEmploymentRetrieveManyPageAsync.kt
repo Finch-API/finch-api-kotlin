@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import java.util.Objects
 
-/** @see [EmploymentServiceAsync.retrieveMany] */
+/** @see EmploymentServiceAsync.retrieveMany */
 class HrisEmploymentRetrieveManyPageAsync
 private constructor(
     private val service: EmploymentServiceAsync,
@@ -19,7 +19,7 @@ private constructor(
     /**
      * Delegates to [HrisEmploymentRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisEmploymentRetrieveManyPageResponse.responses]
+     * @see HrisEmploymentRetrieveManyPageResponse.responses
      */
     fun responses(): List<EmploymentDataResponse> =
         response._responses().getNullable("responses") ?: emptyList()

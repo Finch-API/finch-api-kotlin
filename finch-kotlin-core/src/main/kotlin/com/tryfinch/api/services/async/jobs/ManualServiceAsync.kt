@@ -33,13 +33,13 @@ interface ManualServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     suspend fun retrieve(
         params: JobManualRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManualAsyncJob
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     suspend fun retrieve(jobId: String, requestOptions: RequestOptions): ManualAsyncJob =
         retrieve(jobId, JobManualRetrieveParams.none(), requestOptions)
 
@@ -69,14 +69,14 @@ interface ManualServiceAsync {
         ): HttpResponseFor<ManualAsyncJob> =
             retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
             params: JobManualRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ManualAsyncJob>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
             jobId: String,

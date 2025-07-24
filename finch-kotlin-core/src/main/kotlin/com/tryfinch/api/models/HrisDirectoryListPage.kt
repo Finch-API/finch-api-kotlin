@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.DirectoryService
 import java.util.Objects
 
-/** @see [DirectoryService.list] */
+/** @see DirectoryService.list */
 class HrisDirectoryListPage
 private constructor(
     private val service: DirectoryService,
@@ -19,7 +19,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListPageResponse.individuals]
+     * @see HrisDirectoryListPageResponse.individuals
      */
     fun individuals(): List<IndividualInDirectory> =
         response._individuals().getNullable("individuals") ?: emptyList()
@@ -27,7 +27,7 @@ private constructor(
     /**
      * Delegates to [HrisDirectoryListPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisDirectoryListPageResponse.paging]
+     * @see HrisDirectoryListPageResponse.paging
      */
     fun paging(): Paging? = response._paging().getNullable("paging")
 

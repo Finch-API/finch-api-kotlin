@@ -29,7 +29,7 @@ interface IndividualService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPage
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
         retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
@@ -55,7 +55,7 @@ interface IndividualService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPage>
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         fun retrieveMany(
             requestOptions: RequestOptions
