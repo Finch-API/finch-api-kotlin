@@ -40,7 +40,7 @@ interface AccountService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AccountUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(requestOptions: RequestOptions): AccountUpdateResponse =
         update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
@@ -75,7 +75,7 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AccountUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
             update(SandboxConnectionAccountUpdateParams.none(), requestOptions)

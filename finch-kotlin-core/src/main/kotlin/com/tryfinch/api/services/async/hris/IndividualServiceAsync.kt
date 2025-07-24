@@ -29,7 +29,7 @@ interface IndividualServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPageAsync
 
-    /** @see [retrieveMany] */
+    /** @see retrieveMany */
     suspend fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPageAsync =
         retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
@@ -58,7 +58,7 @@ interface IndividualServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPageAsync>
 
-        /** @see [retrieveMany] */
+        /** @see retrieveMany */
         @MustBeClosed
         suspend fun retrieveMany(
             requestOptions: RequestOptions

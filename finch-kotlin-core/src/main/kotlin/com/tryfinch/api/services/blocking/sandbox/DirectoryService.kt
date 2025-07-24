@@ -29,7 +29,7 @@ interface DirectoryService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<DirectoryCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -53,7 +53,7 @@ interface DirectoryService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<DirectoryCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<List<DirectoryCreateResponse>> =
             create(SandboxDirectoryCreateParams.none(), requestOptions)

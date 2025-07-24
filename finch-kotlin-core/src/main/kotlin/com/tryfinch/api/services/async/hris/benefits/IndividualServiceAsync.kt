@@ -36,13 +36,13 @@ interface IndividualServiceAsync {
     ): IndividualEnrolledIdsResponse =
         enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [enrolledIds] */
+    /** @see enrolledIds */
     suspend fun enrolledIds(
         params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualEnrolledIdsResponse
 
-    /** @see [enrolledIds] */
+    /** @see enrolledIds */
     suspend fun enrolledIds(
         benefitId: String,
         requestOptions: RequestOptions,
@@ -58,13 +58,13 @@ interface IndividualServiceAsync {
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
         retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [retrieveManyBenefits] */
+    /** @see retrieveManyBenefits */
     suspend fun retrieveManyBenefits(
         params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 
-    /** @see [retrieveManyBenefits] */
+    /** @see retrieveManyBenefits */
     suspend fun retrieveManyBenefits(
         benefitId: String,
         requestOptions: RequestOptions,
@@ -84,13 +84,13 @@ interface IndividualServiceAsync {
     ): UnenrolledIndividualBenefitResponse =
         unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-    /** @see [unenrollMany] */
+    /** @see unenrollMany */
     suspend fun unenrollMany(
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UnenrolledIndividualBenefitResponse
 
-    /** @see [unenrollMany] */
+    /** @see unenrollMany */
     suspend fun unenrollMany(
         benefitId: String,
         requestOptions: RequestOptions,
@@ -125,14 +125,14 @@ interface IndividualServiceAsync {
         ): HttpResponseFor<IndividualEnrolledIdsResponse> =
             enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [enrolledIds] */
+        /** @see enrolledIds */
         @MustBeClosed
         suspend fun enrolledIds(
             params: HrisBenefitIndividualEnrolledIdsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualEnrolledIdsResponse>
 
-        /** @see [enrolledIds] */
+        /** @see enrolledIds */
         @MustBeClosed
         suspend fun enrolledIds(
             benefitId: String,
@@ -153,14 +153,14 @@ interface IndividualServiceAsync {
         ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
             retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [retrieveManyBenefits] */
+        /** @see retrieveManyBenefits */
         @MustBeClosed
         suspend fun retrieveManyBenefits(
             params: HrisBenefitIndividualRetrieveManyBenefitsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
-        /** @see [retrieveManyBenefits] */
+        /** @see retrieveManyBenefits */
         @MustBeClosed
         suspend fun retrieveManyBenefits(
             benefitId: String,
@@ -185,14 +185,14 @@ interface IndividualServiceAsync {
         ): HttpResponseFor<UnenrolledIndividualBenefitResponse> =
             unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
-        /** @see [unenrollMany] */
+        /** @see unenrollMany */
         @MustBeClosed
         suspend fun unenrollMany(
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UnenrolledIndividualBenefitResponse>
 
-        /** @see [unenrollMany] */
+        /** @see unenrollMany */
         @MustBeClosed
         suspend fun unenrollMany(
             benefitId: String,

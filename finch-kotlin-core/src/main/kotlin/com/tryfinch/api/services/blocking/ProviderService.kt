@@ -29,7 +29,7 @@ interface ProviderService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): ProviderListPage =
         list(ProviderListParams.none(), requestOptions)
 
@@ -53,7 +53,7 @@ interface ProviderService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
             list(ProviderListParams.none(), requestOptions)

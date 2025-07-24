@@ -42,7 +42,7 @@ interface RuleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     suspend fun create(requestOptions: RequestOptions): RuleCreateResponse =
         create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
@@ -57,13 +57,13 @@ interface RuleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse = update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     suspend fun update(
         params: HrisCompanyPayStatementItemRuleUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     suspend fun update(ruleId: String, requestOptions: RequestOptions): RuleUpdateResponse =
         update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none(), requestOptions)
 
@@ -77,7 +77,7 @@ interface RuleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemRuleListPageAsync
 
-    /** @see [list] */
+    /** @see list */
     suspend fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemRuleListPageAsync =
         list(HrisCompanyPayStatementItemRuleListParams.none(), requestOptions)
 
@@ -92,13 +92,13 @@ interface RuleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse = delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     suspend fun delete(
         params: HrisCompanyPayStatementItemRuleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse
 
-    /** @see [delete] */
+    /** @see delete */
     suspend fun delete(ruleId: String, requestOptions: RequestOptions): RuleDeleteResponse =
         delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none(), requestOptions)
 
@@ -123,7 +123,7 @@ interface RuleServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         suspend fun create(requestOptions: RequestOptions): HttpResponseFor<RuleCreateResponse> =
             create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
@@ -141,14 +141,14 @@ interface RuleServiceAsync {
         ): HttpResponseFor<RuleUpdateResponse> =
             update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         suspend fun update(
             params: HrisCompanyPayStatementItemRuleUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         suspend fun update(
             ruleId: String,
@@ -167,7 +167,7 @@ interface RuleServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         suspend fun list(
             requestOptions: RequestOptions
@@ -187,14 +187,14 @@ interface RuleServiceAsync {
         ): HttpResponseFor<RuleDeleteResponse> =
             delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         suspend fun delete(
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleDeleteResponse>
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         suspend fun delete(
             ruleId: String,
