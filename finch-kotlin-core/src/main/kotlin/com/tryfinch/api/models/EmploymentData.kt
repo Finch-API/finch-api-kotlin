@@ -2407,7 +2407,8 @@ private constructor(
 
                     fun ofString(string: String) = Value(string = string)
 
-                    fun ofJsonValues(jsonValues: List<JsonValue>) = Value(jsonValues = jsonValues)
+                    fun ofJsonValues(jsonValues: List<JsonValue>) =
+                        Value(jsonValues = jsonValues.toImmutable())
 
                     fun ofJson(json: JsonValue) = Value(json = json)
 
