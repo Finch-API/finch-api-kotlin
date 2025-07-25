@@ -1,5 +1,38 @@
 # Changelog
 
+## 8.2.0 (2025-07-24)
+
+Full Changelog: [v8.1.3...v8.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.3...v8.2.0)
+
+### Features
+
+* **api:** api update ([c3964b9](https://github.com/Finch-API/finch-api-kotlin/commit/c3964b92761b8b843a1a7fd72fd5796a5d610ecb))
+* **api:** api update ([607fd89](https://github.com/Finch-API/finch-api-kotlin/commit/607fd893073cb68c18214b3c312d726248d33c7d))
+* **client:** add `{QueryParams,Headers}#put(String, JsonValue)` methods ([e6d5911](https://github.com/Finch-API/finch-api-kotlin/commit/e6d5911eb4dce61dc9ba49922314e2be161b3b0b))
+* **client:** add https config options ([11235d5](https://github.com/Finch-API/finch-api-kotlin/commit/11235d5be3175a5c2a9e90faf14e8ec1112ccea4))
+* **client:** allow configuring env via system properties ([c75baad](https://github.com/Finch-API/finch-api-kotlin/commit/c75baad47d61cfb08752d30931e4dbcf61e60002))
+
+
+### Bug Fixes
+
+* **client:** accidental mutability of some classes ([17b0489](https://github.com/Finch-API/finch-api-kotlin/commit/17b0489826e4cfba96d9911794e22a39d1c9c798))
+* **client:** ensure error handling always occurs ([795c474](https://github.com/Finch-API/finch-api-kotlin/commit/795c47489a95f863e02864419eff794494e03f11))
+
+
+### Chores
+
+* **ci:** bump `actions/setup-java` to v4 ([28e6941](https://github.com/Finch-API/finch-api-kotlin/commit/28e6941fab303899e8a3c554713c25311bf80405))
+* fix conflict ([f80fa68](https://github.com/Finch-API/finch-api-kotlin/commit/f80fa68a5c2bd2a71c556afa2b74c987f008e948))
+* **internal:** allow running specific example from cli ([a33f0f0](https://github.com/Finch-API/finch-api-kotlin/commit/a33f0f05ab7a4456b43b30499bd23373aedd6af6))
+* **internal:** refactor delegating from client to options ([3e74485](https://github.com/Finch-API/finch-api-kotlin/commit/3e744859f36e3e5d9ce0cf87408b6120e5466cd3))
+* **internal:** remove unnecessary `[...]` in `[@see](https://github.com/see)` ([971edb6](https://github.com/Finch-API/finch-api-kotlin/commit/971edb65640ff0095b6ad22ede8d944fa04bd5d9))
+
+
+### Documentation
+
+* fix missing readme comment ([7112470](https://github.com/Finch-API/finch-api-kotlin/commit/711247011d28f7f3a61326481ed2f921ebc2a774))
+* more code comments ([24b82e1](https://github.com/Finch-API/finch-api-kotlin/commit/24b82e1a2f7734284fce319d09dce43276a94393))
+
 ## 8.1.3 (2025-07-08)
 
 Full Changelog: [v8.1.2...v8.1.3](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.2...v8.1.3)

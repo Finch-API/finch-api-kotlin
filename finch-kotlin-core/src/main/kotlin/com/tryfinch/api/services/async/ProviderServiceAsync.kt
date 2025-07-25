@@ -29,7 +29,7 @@ interface ProviderServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProviderListPageAsync
 
-    /** @see [list] */
+    /** @see list */
     suspend fun list(requestOptions: RequestOptions): ProviderListPageAsync =
         list(ProviderListParams.none(), requestOptions)
 
@@ -57,7 +57,7 @@ interface ProviderServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProviderListPageAsync>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPageAsync> =
             list(ProviderListParams.none(), requestOptions)

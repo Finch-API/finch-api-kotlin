@@ -37,7 +37,7 @@ interface PayStatementItemService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemListPage =
         list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
 
@@ -69,7 +69,7 @@ interface PayStatementItemService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             requestOptions: RequestOptions

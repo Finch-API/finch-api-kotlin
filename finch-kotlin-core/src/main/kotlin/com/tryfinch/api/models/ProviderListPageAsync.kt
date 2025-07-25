@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.ProviderServiceAsync
 import java.util.Objects
 
-/** @see [ProviderServiceAsync.list] */
+/** @see ProviderServiceAsync.list */
 class ProviderListPageAsync
 private constructor(
     private val service: ProviderServiceAsync,

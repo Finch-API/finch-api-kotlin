@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.payroll.PayGroupServiceAsync
 import java.util.Objects
 
-/** @see [PayGroupServiceAsync.list] */
+/** @see PayGroupServiceAsync.list */
 class PayrollPayGroupListPageAsync
 private constructor(
     private val service: PayGroupServiceAsync,

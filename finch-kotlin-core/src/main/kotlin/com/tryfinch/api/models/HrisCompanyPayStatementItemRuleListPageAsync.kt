@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.company.payStatementItem.RuleServiceAsync
 import java.util.Objects
 
-/** @see [RuleServiceAsync.list] */
+/** @see RuleServiceAsync.list */
 class HrisCompanyPayStatementItemRuleListPageAsync
 private constructor(
     private val service: RuleServiceAsync,
@@ -20,7 +20,7 @@ private constructor(
      * Delegates to [HrisCompanyPayStatementItemRuleListPageResponse], but gracefully handles
      * missing data.
      *
-     * @see [HrisCompanyPayStatementItemRuleListPageResponse.responses]
+     * @see HrisCompanyPayStatementItemRuleListPageResponse.responses
      */
     fun responses(): List<RuleListResponse> =
         response._responses().getNullable("responses") ?: emptyList()

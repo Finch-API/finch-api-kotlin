@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 import java.util.Objects
 
-/** @see [PaymentServiceAsync.list] */
+/** @see PaymentServiceAsync.list */
 class HrisPaymentListPageAsync
 private constructor(
     private val service: PaymentServiceAsync,

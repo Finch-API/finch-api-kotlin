@@ -33,13 +33,13 @@ interface PayGroupService {
     ): PayGroupRetrieveResponse =
         retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: PayrollPayGroupRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(payGroupId: String, requestOptions: RequestOptions): PayGroupRetrieveResponse =
         retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
@@ -49,7 +49,7 @@ interface PayGroupService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayrollPayGroupListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): PayrollPayGroupListPage =
         list(PayrollPayGroupListParams.none(), requestOptions)
 
@@ -75,14 +75,14 @@ interface PayGroupService {
         ): HttpResponseFor<PayGroupRetrieveResponse> =
             retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: PayrollPayGroupRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             payGroupId: String,
@@ -100,7 +100,7 @@ interface PayGroupService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayrollPayGroupListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPage> =
             list(PayrollPayGroupListParams.none(), requestOptions)

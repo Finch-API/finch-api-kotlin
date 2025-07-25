@@ -33,7 +33,7 @@ interface DocumentService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): DocumentListResponse =
         list(HrisDocumentListParams.none(), requestOptions)
 
@@ -48,13 +48,13 @@ interface DocumentService {
     ): DocumentRetreiveResponse =
         retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
 
-    /** @see [retreive] */
+    /** @see retreive */
     fun retreive(documentId: String, requestOptions: RequestOptions): DocumentRetreiveResponse =
         retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
@@ -78,7 +78,7 @@ interface DocumentService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
             list(HrisDocumentListParams.none(), requestOptions)
@@ -95,14 +95,14 @@ interface DocumentService {
         ): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse>
 
-        /** @see [retreive] */
+        /** @see retreive */
         @MustBeClosed
         fun retreive(
             documentId: String,

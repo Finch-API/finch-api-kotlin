@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import java.util.Objects
 
-/** @see [IndividualServiceAsync.retrieveMany] */
+/** @see IndividualServiceAsync.retrieveMany */
 class HrisIndividualRetrieveManyPageAsync
 private constructor(
     private val service: IndividualServiceAsync,
@@ -19,7 +19,7 @@ private constructor(
     /**
      * Delegates to [HrisIndividualRetrieveManyPageResponse], but gracefully handles missing data.
      *
-     * @see [HrisIndividualRetrieveManyPageResponse.responses]
+     * @see HrisIndividualRetrieveManyPageResponse.responses
      */
     fun responses(): List<IndividualResponse> =
         response._responses().getNullable("responses") ?: emptyList()

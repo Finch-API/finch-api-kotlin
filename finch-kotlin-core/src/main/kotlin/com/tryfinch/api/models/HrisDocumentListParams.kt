@@ -38,8 +38,10 @@ private constructor(
     /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
     fun types(): List<Type>? = types
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)

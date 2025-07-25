@@ -14,16 +14,18 @@ internal class AutomatedCreateResponseTest {
         val automatedCreateResponse =
             AutomatedCreateResponse.builder()
                 .allowedRefreshes(0L)
+                .remainingRefreshes(0L)
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .jobUrl("job_url")
-                .remainingRefreshes(0L)
+                .retryAt("retry_at")
                 .build()
 
         assertThat(automatedCreateResponse.allowedRefreshes()).isEqualTo(0L)
+        assertThat(automatedCreateResponse.remainingRefreshes()).isEqualTo(0L)
         assertThat(automatedCreateResponse.jobId())
             .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(automatedCreateResponse.jobUrl()).isEqualTo("job_url")
-        assertThat(automatedCreateResponse.remainingRefreshes()).isEqualTo(0L)
+        assertThat(automatedCreateResponse.retryAt()).isEqualTo("retry_at")
     }
 
     @Test
@@ -32,9 +34,10 @@ internal class AutomatedCreateResponseTest {
         val automatedCreateResponse =
             AutomatedCreateResponse.builder()
                 .allowedRefreshes(0L)
+                .remainingRefreshes(0L)
                 .jobId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .jobUrl("job_url")
-                .remainingRefreshes(0L)
+                .retryAt("retry_at")
                 .build()
 
         val roundtrippedAutomatedCreateResponse =

@@ -31,13 +31,13 @@ interface EmploymentService {
     ): EmploymentUpdateResponse =
         update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: SandboxEmploymentUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(individualId: String, requestOptions: RequestOptions): EmploymentUpdateResponse =
         update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
 
@@ -65,14 +65,14 @@ interface EmploymentService {
         ): HttpResponseFor<EmploymentUpdateResponse> =
             update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: SandboxEmploymentUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<EmploymentUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             individualId: String,

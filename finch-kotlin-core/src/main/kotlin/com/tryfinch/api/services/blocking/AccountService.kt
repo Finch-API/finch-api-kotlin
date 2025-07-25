@@ -31,7 +31,7 @@ interface AccountService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DisconnectResponse
 
-    /** @see [disconnect] */
+    /** @see disconnect */
     fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
         disconnect(AccountDisconnectParams.none(), requestOptions)
 
@@ -41,7 +41,7 @@ interface AccountService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Introspection
 
-    /** @see [introspect] */
+    /** @see introspect */
     fun introspect(requestOptions: RequestOptions): Introspection =
         introspect(AccountIntrospectParams.none(), requestOptions)
 
@@ -65,7 +65,7 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DisconnectResponse>
 
-        /** @see [disconnect] */
+        /** @see disconnect */
         @MustBeClosed
         fun disconnect(requestOptions: RequestOptions): HttpResponseFor<DisconnectResponse> =
             disconnect(AccountDisconnectParams.none(), requestOptions)
@@ -80,7 +80,7 @@ interface AccountService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Introspection>
 
-        /** @see [introspect] */
+        /** @see introspect */
         @MustBeClosed
         fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> =
             introspect(AccountIntrospectParams.none(), requestOptions)

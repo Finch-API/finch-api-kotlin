@@ -29,7 +29,7 @@ interface DirectoryServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<DirectoryCreateResponse>
 
-    /** @see [create] */
+    /** @see create */
     suspend fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -57,7 +57,7 @@ interface DirectoryServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<DirectoryCreateResponse>>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         suspend fun create(
             requestOptions: RequestOptions

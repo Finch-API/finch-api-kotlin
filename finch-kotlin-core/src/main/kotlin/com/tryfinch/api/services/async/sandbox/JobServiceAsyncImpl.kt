@@ -3,13 +3,13 @@
 package com.tryfinch.api.services.async.sandbox
 
 import com.tryfinch.api.core.ClientOptions
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
@@ -48,7 +48,8 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         JobServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val configuration: ConfigurationServiceAsync.WithRawResponse by lazy {
             ConfigurationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -64,7 +65,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         override fun configuration(): ConfigurationServiceAsync.WithRawResponse = configuration
 
         private val createHandler: Handler<JobCreateResponse> =
-            jsonHandler<JobCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<JobCreateResponse>(clientOptions.jsonMapper)
 
         override suspend fun create(
             params: SandboxJobCreateParams,
@@ -80,7 +81,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {

@@ -31,7 +31,7 @@ interface ConfigurationService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<SandboxJobConfiguration>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
         retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
 
@@ -66,7 +66,7 @@ interface ConfigurationService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<SandboxJobConfiguration>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             requestOptions: RequestOptions

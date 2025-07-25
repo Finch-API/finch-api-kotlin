@@ -8,18 +8,32 @@ import com.tryfinch.api.client.FinchClientAsyncImpl
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.http.HttpClient
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.jsonMapper
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
+/**
+ * A class that allows building an instance of [FinchClientAsync] with [OkHttpClient] as the
+ * underlying [HttpClient].
+ */
 class FinchOkHttpClientAsync private constructor() {
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [FinchOkHttpClientAsync]. */
+        /** Returns a mutable builder for constructing an instance of [FinchClientAsync]. */
         fun builder() = Builder()
 
+        /**
+         * Returns a client configured using system properties and environment variables.
+         *
+         * @see ClientOptions.Builder.fromEnv
+         */
         fun fromEnv(): FinchClientAsync = builder().fromEnv().build()
     }
 
@@ -27,10 +41,48 @@ class FinchOkHttpClientAsync private constructor() {
     class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()
-        private var timeout: Timeout = Timeout.default()
         private var proxy: Proxy? = null
+        private var sslSocketFactory: SSLSocketFactory? = null
+        private var trustManager: X509TrustManager? = null
+        private var hostnameVerifier: HostnameVerifier? = null
 
-        fun baseUrl(baseUrl: String) = apply { clientOptions.baseUrl(baseUrl) }
+        fun proxy(proxy: Proxy?) = apply { this.proxy = proxy }
+
+        /**
+         * The socket factory used to secure HTTPS connections.
+         *
+         * If this is set, then [trustManager] must also be set.
+         *
+         * If unset, then the system default is used. Most applications should not call this method,
+         * and instead use the system default. The default include special optimizations that can be
+         * lost if the implementation is modified.
+         */
+        fun sslSocketFactory(sslSocketFactory: SSLSocketFactory?) = apply {
+            this.sslSocketFactory = sslSocketFactory
+        }
+
+        /**
+         * The trust manager used to secure HTTPS connections.
+         *
+         * If this is set, then [sslSocketFactory] must also be set.
+         *
+         * If unset, then the system default is used. Most applications should not call this method,
+         * and instead use the system default. The default include special optimizations that can be
+         * lost if the implementation is modified.
+         */
+        fun trustManager(trustManager: X509TrustManager?) = apply {
+            this.trustManager = trustManager
+        }
+
+        /**
+         * The verifier used to confirm that response certificates apply to requested hostnames for
+         * HTTPS connections.
+         *
+         * If unset, then a default hostname verifier is used.
+         */
+        fun hostnameVerifier(hostnameVerifier: HostnameVerifier?) = apply {
+            this.hostnameVerifier = hostnameVerifier
+        }
 
         /**
          * Whether to throw an exception if any of the Jackson versions detected at runtime are
@@ -43,9 +95,83 @@ class FinchOkHttpClientAsync private constructor() {
             clientOptions.checkJacksonVersionCompatibility(checkJacksonVersionCompatibility)
         }
 
+        /**
+         * The Jackson JSON mapper to use for serializing and deserializing JSON.
+         *
+         * Defaults to [com.tryfinch.api.core.jsonMapper]. The default is usually sufficient and
+         * rarely needs to be overridden.
+         */
         fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
 
+        /**
+         * The clock to use for operations that require timing, like retries.
+         *
+         * This is primarily useful for using a fake clock in tests.
+         *
+         * Defaults to [Clock.systemUTC].
+         */
         fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
+
+        /**
+         * The base URL to use for every request.
+         *
+         * Defaults to the production environment: `https://api.tryfinch.com`.
+         */
+        fun baseUrl(baseUrl: String?) = apply { clientOptions.baseUrl(baseUrl) }
+
+        /**
+         * Whether to call `validate` on every response before returning it.
+         *
+         * Defaults to false, which means the shape of the response will not be validated upfront.
+         * Instead, validation will only occur for the parts of the response that are accessed.
+         */
+        fun responseValidation(responseValidation: Boolean) = apply {
+            clientOptions.responseValidation(responseValidation)
+        }
+
+        /**
+         * Sets the maximum time allowed for various parts of an HTTP call's lifecycle, excluding
+         * retries.
+         *
+         * Defaults to [Timeout.default].
+         */
+        fun timeout(timeout: Timeout) = apply { clientOptions.timeout(timeout) }
+
+        /**
+         * Sets the maximum time allowed for a complete HTTP call, not including retries.
+         *
+         * See [Timeout.request] for more details.
+         *
+         * For fine-grained control, pass a [Timeout] object.
+         */
+        fun timeout(timeout: Duration) = apply { clientOptions.timeout(timeout) }
+
+        /**
+         * The maximum number of times to retry failed requests, with a short exponential backoff
+         * between requests.
+         *
+         * Only the following error types are retried:
+         * - Connection errors (for example, due to a network connectivity problem)
+         * - 408 Request Timeout
+         * - 409 Conflict
+         * - 429 Rate Limit
+         * - 5xx Internal
+         *
+         * The API may also explicitly instruct the SDK to retry or not retry a request.
+         *
+         * Defaults to 2.
+         */
+        fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
+
+        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
+
+        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
+
+        fun webhookSecret(webhookSecret: String?) = apply {
+            clientOptions.webhookSecret(webhookSecret)
+        }
 
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
@@ -127,38 +253,11 @@ class FinchOkHttpClientAsync private constructor() {
             clientOptions.removeAllQueryParams(keys)
         }
 
-        fun timeout(timeout: Timeout) = apply {
-            clientOptions.timeout(timeout)
-            this.timeout = timeout
-        }
-
         /**
-         * Sets the maximum time allowed for a complete HTTP call, not including retries.
+         * Updates configuration using system properties and environment variables.
          *
-         * See [Timeout.request] for more details.
-         *
-         * For fine-grained control, pass a [Timeout] object.
+         * @see ClientOptions.Builder.fromEnv
          */
-        fun timeout(timeout: Duration) = timeout(Timeout.builder().request(timeout).build())
-
-        fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
-
-        fun proxy(proxy: Proxy) = apply { this.proxy = proxy }
-
-        fun responseValidation(responseValidation: Boolean) = apply {
-            clientOptions.responseValidation(responseValidation)
-        }
-
-        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
-
-        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
-
-        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
-
-        fun webhookSecret(webhookSecret: String?) = apply {
-            clientOptions.webhookSecret(webhookSecret)
-        }
-
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
         /**
@@ -169,7 +268,15 @@ class FinchOkHttpClientAsync private constructor() {
         fun build(): FinchClientAsync =
             FinchClientAsyncImpl(
                 clientOptions
-                    .httpClient(OkHttpClient.builder().timeout(timeout).proxy(proxy).build())
+                    .httpClient(
+                        OkHttpClient.builder()
+                            .timeout(clientOptions.timeout())
+                            .proxy(proxy)
+                            .sslSocketFactory(sslSocketFactory)
+                            .trustManager(trustManager)
+                            .hostnameVerifier(hostnameVerifier)
+                            .build()
+                    )
                     .build()
             )
     }

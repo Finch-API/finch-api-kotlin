@@ -8,7 +8,7 @@ import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import java.util.Objects
 
-/** @see [IndividualServiceAsync.retrieveManyBenefits] */
+/** @see IndividualServiceAsync.retrieveManyBenefits */
 class HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 private constructor(
     private val service: IndividualServiceAsync,

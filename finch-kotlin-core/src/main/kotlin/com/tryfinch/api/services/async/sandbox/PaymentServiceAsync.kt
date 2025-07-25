@@ -29,7 +29,7 @@ interface PaymentServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PaymentCreateResponse
 
-    /** @see [create] */
+    /** @see create */
     suspend fun create(requestOptions: RequestOptions): PaymentCreateResponse =
         create(SandboxPaymentCreateParams.none(), requestOptions)
 
@@ -57,7 +57,7 @@ interface PaymentServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PaymentCreateResponse>
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         suspend fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
             create(SandboxPaymentCreateParams.none(), requestOptions)
