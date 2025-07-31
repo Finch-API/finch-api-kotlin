@@ -1,5 +1,25 @@
 # Changelog
 
+## 8.3.0 (2025-07-31)
+
+Full Changelog: [v8.2.0...v8.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.2.0...v8.3.0)
+
+### Features
+
+* add retryable exception ([0f6d433](https://github.com/Finch-API/finch-api-kotlin/commit/0f6d4335fade7d706c4fafe08340f700c17b2118))
+* **client:** ensure compat with proguard ([7af3cea](https://github.com/Finch-API/finch-api-kotlin/commit/7af3ceaeb3961db59e0a3f410c2807bfa6159337))
+
+
+### Bug Fixes
+
+* **client:** r8 support ([ac95a29](https://github.com/Finch-API/finch-api-kotlin/commit/ac95a29abc6d38617c6fe6e30a1efa0ab9bbd454))
+
+
+### Chores
+
+* **internal:** bump ci test timeout ([35d4514](https://github.com/Finch-API/finch-api-kotlin/commit/35d451499dc02b43a102bec24fa3a0192ac8f2f8))
+* **internal:** reduce proguard ci logging ([a3e2d8a](https://github.com/Finch-API/finch-api-kotlin/commit/a3e2d8a82c57a18ec6cf413d258da8ebf8b438b4))
+
 ## 8.2.0 (2025-07-24)
 
 Full Changelog: [v8.1.3...v8.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.3...v8.2.0)
