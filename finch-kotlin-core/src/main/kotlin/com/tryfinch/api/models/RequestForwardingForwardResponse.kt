@@ -33,9 +33,9 @@ private constructor(
     ) : this(data, headers, request, statusCode, mutableMapOf())
 
     /**
-     * A string representation of the HTTP response body of the forwarded request’s response
-     * received from the underlying integration’s API. This field may be null in the case where the
-     * upstream system’s response is empty.
+     * A string representation of the HTTP response body of the forwarded request's response
+     * received from the underlying integration's API. This field may be null in the case where the
+     * upstream system's response is empty.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -43,8 +43,8 @@ private constructor(
     fun data(): String? = data.getNullable("data")
 
     /**
-     * The HTTP headers of the forwarded request’s response, exactly as received from the underlying
-     * integration’s API.
+     * The HTTP headers of the forwarded request's response, exactly as received from the underlying
+     * integration's API.
      */
     @JsonProperty("headers") @ExcludeMissing fun _headers(): JsonValue = headers
 
@@ -57,8 +57,8 @@ private constructor(
     fun request(): Request = request.getRequired("request")
 
     /**
-     * The HTTP status code of the forwarded request’s response, exactly received from the
-     * underlying integration’s API. This value will be returned as an integer.
+     * The HTTP status code of the forwarded request's response, exactly received from the
+     * underlying integration's API. This value will be returned as an integer.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -135,9 +135,9 @@ private constructor(
             }
 
         /**
-         * A string representation of the HTTP response body of the forwarded request’s response
-         * received from the underlying integration’s API. This field may be null in the case where
-         * the upstream system’s response is empty.
+         * A string representation of the HTTP response body of the forwarded request's response
+         * received from the underlying integration's API. This field may be null in the case where
+         * the upstream system's response is empty.
          */
         fun data(data: String?) = data(JsonField.ofNullable(data))
 
@@ -150,8 +150,8 @@ private constructor(
         fun data(data: JsonField<String>) = apply { this.data = data }
 
         /**
-         * The HTTP headers of the forwarded request’s response, exactly as received from the
-         * underlying integration’s API.
+         * The HTTP headers of the forwarded request's response, exactly as received from the
+         * underlying integration's API.
          */
         fun headers(headers: JsonValue) = apply { this.headers = headers }
 
@@ -170,8 +170,8 @@ private constructor(
         fun request(request: JsonField<Request>) = apply { this.request = request }
 
         /**
-         * The HTTP status code of the forwarded request’s response, exactly received from the
-         * underlying integration’s API. This value will be returned as an integer.
+         * The HTTP status code of the forwarded request's response, exactly received from the
+         * underlying integration's API. This value will be returned as an integer.
          */
         fun statusCode(statusCode: Long) = statusCode(JsonField.of(statusCode))
 
