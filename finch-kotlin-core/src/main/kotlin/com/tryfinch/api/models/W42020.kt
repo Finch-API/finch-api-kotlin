@@ -832,7 +832,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is FilingStatus && value == other.value /* spotless:on */
+                return other is FilingStatus && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -845,12 +845,31 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Data && amountForOtherDependents == other.amountForOtherDependents && amountForQualifyingChildrenUnder17 == other.amountForQualifyingChildrenUnder17 && deductions == other.deductions && extraWithholding == other.extraWithholding && filingStatus == other.filingStatus && individualId == other.individualId && otherIncome == other.otherIncome && totalClaimDependentAndOtherCredits == other.totalClaimDependentAndOtherCredits && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Data &&
+                amountForOtherDependents == other.amountForOtherDependents &&
+                amountForQualifyingChildrenUnder17 == other.amountForQualifyingChildrenUnder17 &&
+                deductions == other.deductions &&
+                extraWithholding == other.extraWithholding &&
+                filingStatus == other.filingStatus &&
+                individualId == other.individualId &&
+                otherIncome == other.otherIncome &&
+                totalClaimDependentAndOtherCredits == other.totalClaimDependentAndOtherCredits &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(amountForOtherDependents, amountForQualifyingChildrenUnder17, deductions, extraWithholding, filingStatus, individualId, otherIncome, totalClaimDependentAndOtherCredits, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                amountForOtherDependents,
+                amountForQualifyingChildrenUnder17,
+                deductions,
+                extraWithholding,
+                filingStatus,
+                individualId,
+                otherIncome,
+                totalClaimDependentAndOtherCredits,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -969,7 +988,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -982,12 +1001,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is W42020 && data == other.data && type == other.type && year == other.year && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is W42020 &&
+            data == other.data &&
+            type == other.type &&
+            year == other.year &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(data, type, year, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

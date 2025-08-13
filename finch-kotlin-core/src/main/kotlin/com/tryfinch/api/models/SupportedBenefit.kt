@@ -612,7 +612,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is CompanyContribution && value == other.value /* spotless:on */
+            return other is CompanyContribution && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -740,7 +740,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is EmployeeDeduction && value == other.value /* spotless:on */
+            return other is EmployeeDeduction && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -870,7 +870,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is HsaContributionLimit && value == other.value /* spotless:on */
+            return other is HsaContributionLimit && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -883,12 +883,29 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SupportedBenefit && annualMaximum == other.annualMaximum && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && catchUp == other.catchUp && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SupportedBenefit &&
+            annualMaximum == other.annualMaximum &&
+            companyContribution == other.companyContribution &&
+            description == other.description &&
+            employeeDeduction == other.employeeDeduction &&
+            frequencies == other.frequencies &&
+            catchUp == other.catchUp &&
+            hsaContributionLimit == other.hsaContributionLimit &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(annualMaximum, companyContribution, description, employeeDeduction, frequencies, catchUp, hsaContributionLimit, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            annualMaximum,
+            companyContribution,
+            description,
+            employeeDeduction,
+            frequencies,
+            catchUp,
+            hsaContributionLimit,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
