@@ -1,7 +1,14 @@
 rootProject.name = "finch-kotlin-root"
 
-include("finch-kotlin")
-include("finch-kotlin-client-okhttp")
-include("finch-kotlin-core")
-include("finch-kotlin-proguard-test")
-include("finch-kotlin-example")
+val projectNames = rootDir.listFiles()
+    ?.asSequence()
+    .orEmpty()
+    .filter { file ->
+        file.isDirectory &&
+        file.name.startsWith("finch-kotlin") &&
+        file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
+    }
+    .map { it.name }
+    .toList()
+println("projects: $projectNames")
+projectNames.forEach { include(it) }
