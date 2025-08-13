@@ -679,7 +679,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ClientType && value == other.value /* spotless:on */
+            return other is ClientType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -812,7 +812,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ConnectionType && value == other.value /* spotless:on */
+            return other is ConnectionType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -825,12 +825,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CreateAccessTokenResponse && accessToken == other.accessToken && accountId == other.accountId && clientType == other.clientType && companyId == other.companyId && connectionId == other.connectionId && connectionType == other.connectionType && products == other.products && providerId == other.providerId && customerId == other.customerId && tokenType == other.tokenType && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CreateAccessTokenResponse &&
+            accessToken == other.accessToken &&
+            accountId == other.accountId &&
+            clientType == other.clientType &&
+            companyId == other.companyId &&
+            connectionId == other.connectionId &&
+            connectionType == other.connectionType &&
+            products == other.products &&
+            providerId == other.providerId &&
+            customerId == other.customerId &&
+            tokenType == other.tokenType &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(accessToken, accountId, clientType, companyId, connectionId, connectionType, products, providerId, customerId, tokenType, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            accessToken,
+            accountId,
+            clientType,
+            companyId,
+            connectionId,
+            connectionType,
+            products,
+            providerId,
+            customerId,
+            tokenType,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

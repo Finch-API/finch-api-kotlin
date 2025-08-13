@@ -613,12 +613,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Params && individualId == other.individualId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Params &&
+                individualId == other.individualId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(individualId, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -766,7 +766,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -891,7 +891,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -904,12 +904,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedAsyncJob && completedAt == other.completedAt && createdAt == other.createdAt && jobId == other.jobId && jobUrl == other.jobUrl && params == other.params && scheduledAt == other.scheduledAt && startedAt == other.startedAt && status == other.status && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AutomatedAsyncJob &&
+            completedAt == other.completedAt &&
+            createdAt == other.createdAt &&
+            jobId == other.jobId &&
+            jobUrl == other.jobUrl &&
+            params == other.params &&
+            scheduledAt == other.scheduledAt &&
+            startedAt == other.startedAt &&
+            status == other.status &&
+            type == other.type &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(completedAt, createdAt, jobId, jobUrl, params, scheduledAt, startedAt, status, type, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            completedAt,
+            createdAt,
+            jobId,
+            jobUrl,
+            params,
+            scheduledAt,
+            startedAt,
+            status,
+            type,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
