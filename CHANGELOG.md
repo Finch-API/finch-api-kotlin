@@ -1,5 +1,41 @@
 # Changelog
 
+## 8.3.0 (2025-08-14)
+
+Full Changelog: [v8.2.0...v8.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.2.0...v8.3.0)
+
+### Features
+
+* add retryable exception ([0f6d433](https://github.com/Finch-API/finch-api-kotlin/commit/0f6d4335fade7d706c4fafe08340f700c17b2118))
+* **api:** api update ([d4ff788](https://github.com/Finch-API/finch-api-kotlin/commit/d4ff7884dff935b7fa1d7790a586bdf37d8e107e))
+* **api:** api update ([37a8f17](https://github.com/Finch-API/finch-api-kotlin/commit/37a8f17b8925533adc450cc56d8e305bc2eda37f))
+* **client:** ensure compat with proguard ([7af3cea](https://github.com/Finch-API/finch-api-kotlin/commit/7af3ceaeb3961db59e0a3f410c2807bfa6159337))
+
+
+### Bug Fixes
+
+* **client:** prioritise bearer auth ([9de87f4](https://github.com/Finch-API/finch-api-kotlin/commit/9de87f4b8066256e0c0ef4a47e3e33f2cadb03a5))
+* **client:** r8 support ([ac95a29](https://github.com/Finch-API/finch-api-kotlin/commit/ac95a29abc6d38617c6fe6e30a1efa0ab9bbd454))
+
+
+### Performance Improvements
+
+* **internal:** make formatting faster ([9db450d](https://github.com/Finch-API/finch-api-kotlin/commit/9db450dc4f2b02d5be10c04b8ceccf1e457cc531))
+
+
+### Chores
+
+* **example:** fix run example comment ([1fbe1b0](https://github.com/Finch-API/finch-api-kotlin/commit/1fbe1b0912c2ec96c3c6ac1d80809cb9a923d0f5))
+* increase max gradle JVM heap to 8GB ([8d5bb32](https://github.com/Finch-API/finch-api-kotlin/commit/8d5bb32cd8950ad3153d2ca5eeebc6a0719b47ab))
+* **internal:** add lock helper ([43d6b8b](https://github.com/Finch-API/finch-api-kotlin/commit/43d6b8b8d5b7c5b4eba40f2a45fb2fdb08282490))
+* **internal:** bump ci test timeout ([35d4514](https://github.com/Finch-API/finch-api-kotlin/commit/35d451499dc02b43a102bec24fa3a0192ac8f2f8))
+* **internal:** dynamically determine included projects ([c7d6b27](https://github.com/Finch-API/finch-api-kotlin/commit/c7d6b276e8052997f70a7df44f5bcf5ed71852a5))
+* **internal:** format identity methods ([08c4bb6](https://github.com/Finch-API/finch-api-kotlin/commit/08c4bb6775b65afed4439e66b74c6fa176f897fa))
+* **internal:** reduce proguard ci logging ([a3e2d8a](https://github.com/Finch-API/finch-api-kotlin/commit/a3e2d8a82c57a18ec6cf413d258da8ebf8b438b4))
+* **internal:** support passing arguments to test script ([6aed2e6](https://github.com/Finch-API/finch-api-kotlin/commit/6aed2e6597f4ae79220c0e9142996d3204440e39))
+* **internal:** update comment in script ([05cbd35](https://github.com/Finch-API/finch-api-kotlin/commit/05cbd35aa9b543265f81c45f6b02829eda3c66df))
+* update @stainless-api/prism-cli to v5.15.0 ([17b9452](https://github.com/Finch-API/finch-api-kotlin/commit/17b9452503346c8d1ae65b6ccbdba8e99200e229))
+
 ## 8.2.0 (2025-07-24)
 
 Full Changelog: [v8.1.3...v8.2.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.1.3...v8.2.0)

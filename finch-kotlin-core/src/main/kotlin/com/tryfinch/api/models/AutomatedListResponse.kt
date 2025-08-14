@@ -639,12 +639,15 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is DataSyncAll && allowedRefreshes == other.allowedRefreshes && remainingRefreshes == other.remainingRefreshes && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is DataSyncAll &&
+                        allowedRefreshes == other.allowedRefreshes &&
+                        remainingRefreshes == other.remainingRefreshes &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(allowedRefreshes, remainingRefreshes, additionalProperties) }
-                /* spotless:on */
+                private val hashCode: Int by lazy {
+                    Objects.hash(allowedRefreshes, remainingRefreshes, additionalProperties)
+                }
 
                 override fun hashCode(): Int = hashCode
 
@@ -657,12 +660,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Quotas && dataSyncAll == other.dataSyncAll && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Quotas &&
+                    dataSyncAll == other.dataSyncAll &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(dataSyncAll, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -675,12 +678,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Meta && quotas == other.quotas && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Meta &&
+                quotas == other.quotas &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(quotas, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -692,12 +695,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is AutomatedListResponse && data == other.data && meta == other.meta && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is AutomatedListResponse &&
+            data == other.data &&
+            meta == other.meta &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(data, meta, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

@@ -597,12 +597,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Metadata && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Metadata && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -614,12 +612,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Attributes && metadata == other.metadata && employer == other.employer && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Attributes &&
+                metadata == other.metadata &&
+                employer == other.employer &&
+                preTax == other.preTax &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(metadata, employer, preTax, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(metadata, employer, preTax, type, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -756,7 +759,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Category && value == other.value /* spotless:on */
+            return other is Category && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -769,12 +772,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PayStatementItemListResponse && attributes == other.attributes && category == other.category && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PayStatementItemListResponse &&
+            attributes == other.attributes &&
+            category == other.category &&
+            name == other.name &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(attributes, category, name, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(attributes, category, name, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

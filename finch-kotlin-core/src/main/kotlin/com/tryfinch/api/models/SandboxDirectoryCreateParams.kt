@@ -1407,12 +1407,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is CustomField && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is CustomField &&
+                    name == other.name &&
+                    value == other.value &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1550,12 +1551,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Department && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Department &&
+                    name == other.name &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(name, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1834,7 +1835,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1847,12 +1848,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Email && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Email &&
+                    data == other.data &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -2174,7 +2176,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
+                    return other is Subtype && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2303,7 +2305,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2316,12 +2318,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Employment && subtype == other.subtype && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Employment &&
+                    subtype == other.subtype &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(subtype, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -2486,7 +2489,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmploymentStatus && value == other.value /* spotless:on */
+                return other is EmploymentStatus && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2652,7 +2655,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Ethnicity && value == other.value /* spotless:on */
+                return other is Ethnicity && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2792,7 +2795,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Gender && value == other.value /* spotless:on */
+                return other is Gender && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2930,12 +2933,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Manager && id == other.id && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Manager &&
+                    id == other.id &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(id, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -3214,7 +3217,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -3227,12 +3230,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PhoneNumber && data == other.data && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is PhoneNumber &&
+                    data == other.data &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(data, type, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -3245,12 +3249,67 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is IndividualOrEmployment && classCode == other.classCode && customFields == other.customFields && department == other.department && dob == other.dob && emails == other.emails && employment == other.employment && employmentStatus == other.employmentStatus && encryptedSsn == other.encryptedSsn && endDate == other.endDate && ethnicity == other.ethnicity && firstName == other.firstName && gender == other.gender && income == other.income && incomeHistory == other.incomeHistory && isActive == other.isActive && lastName == other.lastName && latestRehireDate == other.latestRehireDate && location == other.location && manager == other.manager && middleName == other.middleName && phoneNumbers == other.phoneNumbers && preferredName == other.preferredName && residence == other.residence && sourceId == other.sourceId && ssn == other.ssn && startDate == other.startDate && title == other.title /* spotless:on */
+            return other is IndividualOrEmployment &&
+                classCode == other.classCode &&
+                customFields == other.customFields &&
+                department == other.department &&
+                dob == other.dob &&
+                emails == other.emails &&
+                employment == other.employment &&
+                employmentStatus == other.employmentStatus &&
+                encryptedSsn == other.encryptedSsn &&
+                endDate == other.endDate &&
+                ethnicity == other.ethnicity &&
+                firstName == other.firstName &&
+                gender == other.gender &&
+                income == other.income &&
+                incomeHistory == other.incomeHistory &&
+                isActive == other.isActive &&
+                lastName == other.lastName &&
+                latestRehireDate == other.latestRehireDate &&
+                location == other.location &&
+                manager == other.manager &&
+                middleName == other.middleName &&
+                phoneNumbers == other.phoneNumbers &&
+                preferredName == other.preferredName &&
+                residence == other.residence &&
+                sourceId == other.sourceId &&
+                ssn == other.ssn &&
+                startDate == other.startDate &&
+                title == other.title
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(classCode, customFields, department, dob, emails, employment, employmentStatus, encryptedSsn, endDate, ethnicity, firstName, gender, income, incomeHistory, isActive, lastName, latestRehireDate, location, manager, middleName, phoneNumbers, preferredName, residence, sourceId, ssn, startDate, title) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                classCode,
+                customFields,
+                department,
+                dob,
+                emails,
+                employment,
+                employmentStatus,
+                encryptedSsn,
+                endDate,
+                ethnicity,
+                firstName,
+                gender,
+                income,
+                incomeHistory,
+                isActive,
+                lastName,
+                latestRehireDate,
+                location,
+                manager,
+                middleName,
+                phoneNumbers,
+                preferredName,
+                residence,
+                sourceId,
+                ssn,
+                startDate,
+                title,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -3263,10 +3322,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxDirectoryCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SandboxDirectoryCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SandboxDirectoryCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
