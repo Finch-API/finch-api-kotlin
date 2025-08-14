@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.3.1 (2025-08-14)
+
+Full Changelog: [v8.3.0...v8.3.1](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.0...v8.3.1)
+
+### Chores
+
+* **ci:** add build job ([c08bb8c](https://github.com/Finch-API/finch-api-kotlin/commit/c08bb8c5838182c765604e1ab8ba41974adec306))
+
 ## 8.3.0 (2025-08-14)
 
 Full Changelog: [v8.2.0...v8.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.2.0...v8.3.0)
