@@ -533,7 +533,9 @@ import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 val params: HrisDirectoryListParams = AccessTokenCreateParams.builder()
-    .code(JsonMissing.of())
+    .clientSecret("client_secret")
+    .code("code")
+    .clientId(JsonMissing.of())
     .build()
 ```
 
@@ -564,19 +566,19 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 ```kotlin
 import com.tryfinch.api.core.JsonField
 
-val code: JsonField<String> = client.accessTokens().create(params)._code()
+val clientId: JsonField<String> = client.accessTokens().create(params)._clientId()
 
-if (code.isMissing()) {
+if (clientId.isMissing()) {
   // The property is absent from the JSON response
-} else if (code.isNull()) {
+} else if (clientId.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  val jsonString: String? = code.asString();
+  val jsonString: String? = clientId.asString();
 
   // Try to deserialize into a custom type
-  val myObject: MyClass = code.asUnknown()!!.convert(MyClass::class.java)
+  val myObject: MyClass = clientId.asUnknown()!!.convert(MyClass::class.java)
 }
 ```
 
