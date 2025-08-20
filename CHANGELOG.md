@@ -1,5 +1,14 @@
 # Changelog
 
+## 8.3.2 (2025-08-20)
+
+Full Changelog: [v8.3.1...v8.3.2](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.1...v8.3.2)
+
+### Chores
+
+* **client:** refactor closing / shutdown ([b8eab02](https://github.com/Finch-API/finch-api-kotlin/commit/b8eab023ed3e81a9c16de1205f2e8075c4f0cb40))
+* **internal:** support running ktfmt directly ([192c9eb](https://github.com/Finch-API/finch-api-kotlin/commit/192c9ebb042f49b7294d0c706049827ed30c2dae))
+
 ## 8.3.1 (2025-08-14)
 
 Full Changelog: [v8.3.0...v8.3.1](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.0...v8.3.1)
