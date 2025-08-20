@@ -121,7 +121,7 @@ class FinchClientAsyncImpl(private val clientOptions: ClientOptions) : FinchClie
 
     override fun connect(): ConnectServiceAsync = connect
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     // Auth helpers:
     /** @deprecated use client.accessTokens().create instead */
