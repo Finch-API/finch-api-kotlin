@@ -1,5 +1,26 @@
 # Changelog
 
+## 8.4.0 (2025-08-25)
+
+Full Changelog: [v8.3.2...v8.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.2...v8.4.0)
+
+### Features
+
+* **api:** api update ([d0b7175](https://github.com/Finch-API/finch-api-kotlin/commit/d0b717598ecd99a65825a0367226ff22bc68ee6d))
+* **api:** api update ([6c11d70](https://github.com/Finch-API/finch-api-kotlin/commit/6c11d70810e0b0595b9995041eeca3685f95b74b))
+
+
+### Bug Fixes
+
+* fix casing issue ([c8af23d](https://github.com/Finch-API/finch-api-kotlin/commit/c8af23deb1c8f469443b2cf98ac198a2282b3eca))
+* update singularization rules ([25e2159](https://github.com/Finch-API/finch-api-kotlin/commit/25e2159015fc5faa09fcc2ca3de6bb83835e5e3d))
+
+
+### Chores
+
+* **ci:** reduce log noise ([5ae43e7](https://github.com/Finch-API/finch-api-kotlin/commit/5ae43e7d1f7e9113c0a22fb96ed17443d1f00bb8))
+* remove memory upper bound from publishing step ([f30e163](https://github.com/Finch-API/finch-api-kotlin/commit/f30e1630b51737f8724ebfa46a2edcf4e217dca1))
+
 ## 8.3.2 (2025-08-20)
 
 Full Changelog: [v8.3.1...v8.3.2](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.1...v8.3.2)
