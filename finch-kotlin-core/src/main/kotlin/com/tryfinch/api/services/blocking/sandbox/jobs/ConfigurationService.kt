@@ -41,6 +41,18 @@ interface ConfigurationService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SandboxJobConfiguration
 
+    /** @see update */
+    fun update(
+        sandboxJobConfiguration: SandboxJobConfiguration,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SandboxJobConfiguration =
+        update(
+            SandboxJobConfigurationUpdateParams.builder()
+                .sandboxJobConfiguration(sandboxJobConfiguration)
+                .build(),
+            requestOptions,
+        )
+
     /**
      * A view of [ConfigurationService] that provides access to raw HTTP responses for each method.
      */
@@ -82,5 +94,18 @@ interface ConfigurationService {
             params: SandboxJobConfigurationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SandboxJobConfiguration>
+
+        /** @see update */
+        @MustBeClosed
+        fun update(
+            sandboxJobConfiguration: SandboxJobConfiguration,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SandboxJobConfiguration> =
+            update(
+                SandboxJobConfigurationUpdateParams.builder()
+                    .sandboxJobConfiguration(sandboxJobConfiguration)
+                    .build(),
+                requestOptions,
+            )
     }
 }
