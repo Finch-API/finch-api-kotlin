@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.client.FinchClient
 import com.tryfinch.api.client.FinchClientImpl
 import com.tryfinch.api.core.ClientOptions
+import com.tryfinch.api.core.Sleeper
 import com.tryfinch.api.core.Timeout
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpClient
@@ -102,6 +103,17 @@ class FinchOkHttpClient private constructor() {
          * rarely needs to be overridden.
          */
         fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
+
+        /**
+         * The interface to use for delaying execution, like during retries.
+         *
+         * This is primarily useful for using fake delays in tests.
+         *
+         * Defaults to real execution delays.
+         *
+         * This class takes ownership of the sleeper and closes it when closed.
+         */
+        fun sleeper(sleeper: Sleeper) = apply { clientOptions.sleeper(sleeper) }
 
         /**
          * The clock to use for operations that require timing, like retries.
