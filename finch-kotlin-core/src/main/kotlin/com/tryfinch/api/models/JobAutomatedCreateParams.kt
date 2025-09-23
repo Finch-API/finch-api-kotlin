@@ -40,7 +40,7 @@ import java.util.Objects
  * `w4_form_employee_sync`: Enqueues a job for sync W-4 data for a particular individual, identified
  * by `individual_id`. This feature is currently in beta.
  *
- * This endpoint is available for _Scale_ tier customers as an add-on. To request access to this
+ * This endpoint is available for *Scale* tier customers as an add-on. To request access to this
  * endpoint, please contact your Finch account manager.
  */
 class JobAutomatedCreateParams
