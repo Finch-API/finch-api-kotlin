@@ -19,6 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 class SupportedBenefit
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val annualMaximum: JsonField<Boolean>,
     private val companyContribution: JsonField<List<CompanyContribution?>>,

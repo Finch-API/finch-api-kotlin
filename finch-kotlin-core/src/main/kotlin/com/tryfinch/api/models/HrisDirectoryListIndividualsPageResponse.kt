@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class HrisDirectoryListIndividualsPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val individuals: JsonField<List<IndividualInDirectory>>,
     private val paging: JsonField<Paging>,

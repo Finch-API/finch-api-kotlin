@@ -19,6 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 class CreateAccessTokenResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accessToken: JsonField<String>,
     private val clientType: JsonField<ClientType>,

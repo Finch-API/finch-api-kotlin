@@ -331,6 +331,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val companyContribution: JsonField<BenefitCompanyMatchContribution>,
         private val description: JsonField<String>,
@@ -610,6 +611,7 @@ private constructor(
 
     /** The company match for this benefit. */
     class BenefitCompanyMatchContribution
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val tiers: JsonField<List<Tier>>,
         private val type: JsonField<Type>,
@@ -797,6 +799,7 @@ private constructor(
                 (type.asKnown()?.validity() ?: 0)
 
         class Tier
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val match: JsonField<Long>,
             private val threshold: JsonField<Long>,
