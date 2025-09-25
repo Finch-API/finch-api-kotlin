@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 
 class BenefitContribution
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val amount: JsonField<Long>,
     private val type: JsonField<Type>,

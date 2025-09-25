@@ -19,6 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 class Company
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val accounts: JsonField<List<Account>>,
@@ -522,6 +523,7 @@ private constructor(
             (if (primaryPhoneNumber.asKnown() == null) 0 else 1)
 
     class Account
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val accountName: JsonField<String>,
         private val accountNumber: JsonField<String>,
@@ -1014,6 +1016,7 @@ private constructor(
     }
 
     class Department
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val parent: JsonField<Parent>,
@@ -1190,6 +1193,7 @@ private constructor(
 
         /** The parent department, if present. */
         class Parent
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1367,6 +1371,7 @@ private constructor(
 
     /** The entity type object. */
     class Entity
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val subtype: JsonField<Subtype>,
         private val type: JsonField<Type>,

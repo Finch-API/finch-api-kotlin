@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class HrisCompanyPayStatementItemListPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val responses: JsonField<List<PayStatementItemListResponse>>,
     private val additionalProperties: MutableMap<String, JsonValue>,

@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class RequestForwardingForwardResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val data: JsonField<String>,
     private val headers: JsonValue,
@@ -262,6 +263,7 @@ private constructor(
      * An object containing details of your original forwarded request, for your ease of reference.
      */
     class Request
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val data: JsonField<String>,
         private val headers: JsonValue,

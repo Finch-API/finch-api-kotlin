@@ -31,6 +31,7 @@ import java.util.Collections
 import java.util.Objects
 
 class Introspection
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val clientId: JsonField<String>,
@@ -1099,6 +1100,7 @@ private constructor(
     }
 
     class ConnectionStatusDetail
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val status: JsonField<ConnectionStatusType>,
         private val lastSuccessfulSync: JsonField<LastSuccessfulSync>,
@@ -1657,6 +1659,7 @@ private constructor(
     }
 
     class AuthenticationMethodDetail
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val type: JsonField<Type>,
         private val connectionStatus: JsonField<ConnectionStatusDetail>,
@@ -2035,6 +2038,7 @@ private constructor(
         }
 
         class ConnectionStatusDetail
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val status: JsonField<ConnectionStatusType>,
             private val lastSuccessfulSync: JsonField<LastSuccessfulSync>,

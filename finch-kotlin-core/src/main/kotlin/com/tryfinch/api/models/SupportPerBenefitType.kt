@@ -15,6 +15,7 @@ import java.util.Collections
 import java.util.Objects
 
 class SupportPerBenefitType
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val companyBenefits: JsonField<OperationSupportMatrix>,
     private val individualBenefits: JsonField<OperationSupportMatrix>,

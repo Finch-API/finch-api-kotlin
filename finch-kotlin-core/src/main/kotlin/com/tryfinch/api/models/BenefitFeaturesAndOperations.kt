@@ -15,6 +15,7 @@ import java.util.Collections
 import java.util.Objects
 
 class BenefitFeaturesAndOperations
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val supportedFeatures: JsonField<SupportedBenefit>,
     private val supportedOperations: JsonField<SupportPerBenefitType>,
