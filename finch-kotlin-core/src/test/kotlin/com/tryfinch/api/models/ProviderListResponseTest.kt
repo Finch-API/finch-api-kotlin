@@ -8,25 +8,25 @@ import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class ProviderTest {
+internal class ProviderListResponseTest {
 
     @Test
     fun create() {
-        val provider =
-            Provider.builder()
+        val providerListResponse =
+            ProviderListResponse.builder()
                 .id("id")
                 .displayName("display_name")
                 .addProduct("string")
                 .addAuthenticationMethod(
-                    Provider.AuthenticationMethod.builder()
-                        .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                    ProviderListResponse.AuthenticationMethod.builder()
+                        .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                         .benefitsSupport(
-                            Provider.AuthenticationMethod.BenefitsSupport.builder()
+                            ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
                         .supportedFields(
-                            Provider.AuthenticationMethod.SupportedFields.builder()
+                            ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
@@ -40,51 +40,51 @@ internal class ProviderTest {
                 .primaryColor("primary_color")
                 .build()
 
-        assertThat(provider.id()).isEqualTo("id")
-        assertThat(provider.displayName()).isEqualTo("display_name")
-        assertThat(provider.products()).containsExactly("string")
-        assertThat(provider.authenticationMethods())
+        assertThat(providerListResponse.id()).isEqualTo("id")
+        assertThat(providerListResponse.displayName()).isEqualTo("display_name")
+        assertThat(providerListResponse.products()).containsExactly("string")
+        assertThat(providerListResponse.authenticationMethods())
             .containsExactly(
-                Provider.AuthenticationMethod.builder()
-                    .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                ProviderListResponse.AuthenticationMethod.builder()
+                    .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                     .benefitsSupport(
-                        Provider.AuthenticationMethod.BenefitsSupport.builder()
+                        ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
                     .supportedFields(
-                        Provider.AuthenticationMethod.SupportedFields.builder()
+                        ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
                     .build()
             )
-        assertThat(provider.beta()).isEqualTo(true)
-        assertThat(provider.icon()).isEqualTo("icon")
-        assertThat(provider.logo()).isEqualTo("logo")
-        assertThat(provider.manual()).isEqualTo(true)
-        assertThat(provider.mfaRequired()).isEqualTo(true)
-        assertThat(provider.primaryColor()).isEqualTo("primary_color")
+        assertThat(providerListResponse.beta()).isEqualTo(true)
+        assertThat(providerListResponse.icon()).isEqualTo("icon")
+        assertThat(providerListResponse.logo()).isEqualTo("logo")
+        assertThat(providerListResponse.manual()).isEqualTo(true)
+        assertThat(providerListResponse.mfaRequired()).isEqualTo(true)
+        assertThat(providerListResponse.primaryColor()).isEqualTo("primary_color")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val provider =
-            Provider.builder()
+        val providerListResponse =
+            ProviderListResponse.builder()
                 .id("id")
                 .displayName("display_name")
                 .addProduct("string")
                 .addAuthenticationMethod(
-                    Provider.AuthenticationMethod.builder()
-                        .type(Provider.AuthenticationMethod.Type.ASSISTED)
+                    ProviderListResponse.AuthenticationMethod.builder()
+                        .type(ProviderListResponse.AuthenticationMethod.Type.ASSISTED)
                         .benefitsSupport(
-                            Provider.AuthenticationMethod.BenefitsSupport.builder()
+                            ProviderListResponse.AuthenticationMethod.BenefitsSupport.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
                         .supportedFields(
-                            Provider.AuthenticationMethod.SupportedFields.builder()
+                            ProviderListResponse.AuthenticationMethod.SupportedFields.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
@@ -98,12 +98,12 @@ internal class ProviderTest {
                 .primaryColor("primary_color")
                 .build()
 
-        val roundtrippedProvider =
+        val roundtrippedProviderListResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(provider),
-                jacksonTypeRef<Provider>(),
+                jsonMapper.writeValueAsString(providerListResponse),
+                jacksonTypeRef<ProviderListResponse>(),
             )
 
-        assertThat(roundtrippedProvider).isEqualTo(provider)
+        assertThat(roundtrippedProviderListResponse).isEqualTo(providerListResponse)
     }
 }
