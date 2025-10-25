@@ -30,8 +30,7 @@ interface IndividualServiceAsync {
     /** Lists individuals currently enrolled in a given deduction. */
     suspend fun enrolledIds(
         benefitId: String,
-        params: HrisBenefitIndividualEnrolledIdsParams =
-            HrisBenefitIndividualEnrolledIdsParams.none(),
+        params: HrisBenefitIndividualEnrolledIdsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualEnrolledIdsResponse =
         enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -42,18 +41,10 @@ interface IndividualServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): IndividualEnrolledIdsResponse
 
-    /** @see enrolledIds */
-    suspend fun enrolledIds(
-        benefitId: String,
-        requestOptions: RequestOptions,
-    ): IndividualEnrolledIdsResponse =
-        enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none(), requestOptions)
-
     /** Get enrollment information for the given individuals. */
     suspend fun retrieveManyBenefits(
         benefitId: String,
-        params: HrisBenefitIndividualRetrieveManyBenefitsParams =
-            HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+        params: HrisBenefitIndividualRetrieveManyBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
         retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -64,22 +55,10 @@ interface IndividualServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync
 
-    /** @see retrieveManyBenefits */
-    suspend fun retrieveManyBenefits(
-        benefitId: String,
-        requestOptions: RequestOptions,
-    ): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
-        retrieveManyBenefits(
-            benefitId,
-            HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
-            requestOptions,
-        )
-
     /** Unenroll individuals from a deduction or contribution */
     suspend fun unenrollMany(
         benefitId: String,
-        params: HrisBenefitIndividualUnenrollManyParams =
-            HrisBenefitIndividualUnenrollManyParams.none(),
+        params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UnenrolledIndividualBenefitResponse =
         unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -89,13 +68,6 @@ interface IndividualServiceAsync {
         params: HrisBenefitIndividualUnenrollManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UnenrolledIndividualBenefitResponse
-
-    /** @see unenrollMany */
-    suspend fun unenrollMany(
-        benefitId: String,
-        requestOptions: RequestOptions,
-    ): UnenrolledIndividualBenefitResponse =
-        unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none(), requestOptions)
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -119,8 +91,7 @@ interface IndividualServiceAsync {
         @MustBeClosed
         suspend fun enrolledIds(
             benefitId: String,
-            params: HrisBenefitIndividualEnrolledIdsParams =
-                HrisBenefitIndividualEnrolledIdsParams.none(),
+            params: HrisBenefitIndividualEnrolledIdsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualEnrolledIdsResponse> =
             enrolledIds(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -132,14 +103,6 @@ interface IndividualServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<IndividualEnrolledIdsResponse>
 
-        /** @see enrolledIds */
-        @MustBeClosed
-        suspend fun enrolledIds(
-            benefitId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<IndividualEnrolledIdsResponse> =
-            enrolledIds(benefitId, HrisBenefitIndividualEnrolledIdsParams.none(), requestOptions)
-
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/individuals`, but is
          * otherwise the same as [IndividualServiceAsync.retrieveManyBenefits].
@@ -147,8 +110,7 @@ interface IndividualServiceAsync {
         @MustBeClosed
         suspend fun retrieveManyBenefits(
             benefitId: String,
-            params: HrisBenefitIndividualRetrieveManyBenefitsParams =
-                HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
+            params: HrisBenefitIndividualRetrieveManyBenefitsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
             retrieveManyBenefits(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -160,18 +122,6 @@ interface IndividualServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync>
 
-        /** @see retrieveManyBenefits */
-        @MustBeClosed
-        suspend fun retrieveManyBenefits(
-            benefitId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<HrisBenefitIndividualRetrieveManyBenefitsPageAsync> =
-            retrieveManyBenefits(
-                benefitId,
-                HrisBenefitIndividualRetrieveManyBenefitsParams.none(),
-                requestOptions,
-            )
-
         /**
          * Returns a raw HTTP response for `delete /employer/benefits/{benefit_id}/individuals`, but
          * is otherwise the same as [IndividualServiceAsync.unenrollMany].
@@ -179,8 +129,7 @@ interface IndividualServiceAsync {
         @MustBeClosed
         suspend fun unenrollMany(
             benefitId: String,
-            params: HrisBenefitIndividualUnenrollManyParams =
-                HrisBenefitIndividualUnenrollManyParams.none(),
+            params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UnenrolledIndividualBenefitResponse> =
             unenrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -191,13 +140,5 @@ interface IndividualServiceAsync {
             params: HrisBenefitIndividualUnenrollManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UnenrolledIndividualBenefitResponse>
-
-        /** @see unenrollMany */
-        @MustBeClosed
-        suspend fun unenrollMany(
-            benefitId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<UnenrolledIndividualBenefitResponse> =
-            unenrollMany(benefitId, HrisBenefitIndividualUnenrollManyParams.none(), requestOptions)
     }
 }

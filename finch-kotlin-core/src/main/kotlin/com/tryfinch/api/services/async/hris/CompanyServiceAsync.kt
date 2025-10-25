@@ -28,13 +28,9 @@ interface CompanyServiceAsync {
 
     /** Read basic company data */
     suspend fun retrieve(
-        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+        params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
-
-    /** @see retrieve */
-    suspend fun retrieve(requestOptions: RequestOptions): Company =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
     /**
      * A view of [CompanyServiceAsync] that provides access to raw HTTP responses for each method.
@@ -58,13 +54,8 @@ interface CompanyServiceAsync {
          */
         @MustBeClosed
         suspend fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+            params: HrisCompanyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
-
-        /** @see retrieve */
-        @MustBeClosed
-        suspend fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
     }
 }
