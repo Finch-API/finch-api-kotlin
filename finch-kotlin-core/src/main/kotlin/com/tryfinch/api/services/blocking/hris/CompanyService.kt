@@ -28,13 +28,9 @@ interface CompanyService {
 
     /** Read basic company data */
     fun retrieve(
-        params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+        params: HrisCompanyRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Company
-
-    /** @see retrieve */
-    fun retrieve(requestOptions: RequestOptions): Company =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
 
     /** A view of [CompanyService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -54,13 +50,8 @@ interface CompanyService {
          */
         @MustBeClosed
         fun retrieve(
-            params: HrisCompanyRetrieveParams = HrisCompanyRetrieveParams.none(),
+            params: HrisCompanyRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Company>
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
     }
 }

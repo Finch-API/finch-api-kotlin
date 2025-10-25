@@ -39,18 +39,14 @@ interface BenefitServiceAsync {
      * view available types for each provider.
      */
     suspend fun create(
-        params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
+        params: HrisBenefitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CreateCompanyBenefitsResponse
-
-    /** @see create */
-    suspend fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
-        create(HrisBenefitCreateParams.none(), requestOptions)
 
     /** Lists deductions and contributions information for a given item */
     suspend fun retrieve(
         benefitId: String,
-        params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+        params: HrisBenefitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit = retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
 
@@ -60,14 +56,10 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompanyBenefit
 
-    /** @see retrieve */
-    suspend fun retrieve(benefitId: String, requestOptions: RequestOptions): CompanyBenefit =
-        retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
-
     /** Updates an existing company-wide deduction or contribution */
     suspend fun update(
         benefitId: String,
-        params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+        params: HrisBenefitUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse =
         update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -78,35 +70,17 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse
 
-    /** @see update */
-    suspend fun update(
-        benefitId: String,
-        requestOptions: RequestOptions,
-    ): UpdateCompanyBenefitResponse =
-        update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
-
     /** List all company-wide deductions and contributions. */
     suspend fun list(
-        params: HrisBenefitListParams = HrisBenefitListParams.none(),
+        params: HrisBenefitListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListPageAsync
 
-    /** @see list */
-    suspend fun list(requestOptions: RequestOptions): HrisBenefitListPageAsync =
-        list(HrisBenefitListParams.none(), requestOptions)
-
     /** Get deductions metadata */
     suspend fun listSupportedBenefits(
-        params: HrisBenefitListSupportedBenefitsParams =
-            HrisBenefitListSupportedBenefitsParams.none(),
+        params: HrisBenefitListSupportedBenefitsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisBenefitListSupportedBenefitsPageAsync
-
-    /** @see listSupportedBenefits */
-    suspend fun listSupportedBenefits(
-        requestOptions: RequestOptions
-    ): HrisBenefitListSupportedBenefitsPageAsync =
-        listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
 
     /**
      * A view of [BenefitServiceAsync] that provides access to raw HTTP responses for each method.
@@ -130,16 +104,9 @@ interface BenefitServiceAsync {
          */
         @MustBeClosed
         suspend fun create(
-            params: HrisBenefitCreateParams = HrisBenefitCreateParams.none(),
+            params: HrisBenefitCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CreateCompanyBenefitsResponse>
-
-        /** @see create */
-        @MustBeClosed
-        suspend fun create(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<CreateCompanyBenefitsResponse> =
-            create(HrisBenefitCreateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}`, but is otherwise
@@ -148,7 +115,7 @@ interface BenefitServiceAsync {
         @MustBeClosed
         suspend fun retrieve(
             benefitId: String,
-            params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
+            params: HrisBenefitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CompanyBenefit> =
             retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -160,14 +127,6 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CompanyBenefit>
 
-        /** @see retrieve */
-        @MustBeClosed
-        suspend fun retrieve(
-            benefitId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<CompanyBenefit> =
-            retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
-
         /**
          * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}`, but is otherwise
          * the same as [BenefitServiceAsync.update].
@@ -175,7 +134,7 @@ interface BenefitServiceAsync {
         @MustBeClosed
         suspend fun update(
             benefitId: String,
-            params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
+            params: HrisBenefitUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UpdateCompanyBenefitResponse> =
             update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
@@ -187,30 +146,15 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UpdateCompanyBenefitResponse>
 
-        /** @see update */
-        @MustBeClosed
-        suspend fun update(
-            benefitId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<UpdateCompanyBenefitResponse> =
-            update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
-
         /**
          * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
          * [BenefitServiceAsync.list].
          */
         @MustBeClosed
         suspend fun list(
-            params: HrisBenefitListParams = HrisBenefitListParams.none(),
+            params: HrisBenefitListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListPageAsync>
-
-        /** @see list */
-        @MustBeClosed
-        suspend fun list(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<HrisBenefitListPageAsync> =
-            list(HrisBenefitListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
@@ -218,16 +162,8 @@ interface BenefitServiceAsync {
          */
         @MustBeClosed
         suspend fun listSupportedBenefits(
-            params: HrisBenefitListSupportedBenefitsParams =
-                HrisBenefitListSupportedBenefitsParams.none(),
+            params: HrisBenefitListSupportedBenefitsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync>
-
-        /** @see listSupportedBenefits */
-        @MustBeClosed
-        suspend fun listSupportedBenefits(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync> =
-            listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
     }
 }

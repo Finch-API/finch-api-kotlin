@@ -25,6 +25,7 @@ private constructor(
     private val clientType: JsonField<ClientType>,
     private val connectionId: JsonField<String>,
     private val connectionType: JsonField<ConnectionType>,
+    private val entityIds: JsonField<List<String>>,
     private val products: JsonField<List<String>>,
     private val providerId: JsonField<String>,
     private val tokenType: JsonField<String>,
@@ -48,6 +49,9 @@ private constructor(
         @JsonProperty("connection_type")
         @ExcludeMissing
         connectionType: JsonField<ConnectionType> = JsonMissing.of(),
+        @JsonProperty("entity_ids")
+        @ExcludeMissing
+        entityIds: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("products")
         @ExcludeMissing
         products: JsonField<List<String>> = JsonMissing.of(),
@@ -65,6 +69,7 @@ private constructor(
         clientType,
         connectionId,
         connectionType,
+        entityIds,
         products,
         providerId,
         tokenType,
@@ -107,6 +112,14 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun connectionType(): ConnectionType = connectionType.getRequired("connection_type")
+
+    /**
+     * An array of entity IDs that can be accessed with this access token
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun entityIds(): List<String> = entityIds.getRequired("entity_ids")
 
     /**
      * An array of the authorized products associated with the `access_token`
@@ -194,6 +207,15 @@ private constructor(
     fun _connectionType(): JsonField<ConnectionType> = connectionType
 
     /**
+     * Returns the raw JSON value of [entityIds].
+     *
+     * Unlike [entityIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_ids")
+    @ExcludeMissing
+    fun _entityIds(): JsonField<List<String>> = entityIds
+
+    /**
      * Returns the raw JSON value of [products].
      *
      * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
@@ -264,6 +286,7 @@ private constructor(
          * .clientType()
          * .connectionId()
          * .connectionType()
+         * .entityIds()
          * .products()
          * .providerId()
          * .tokenType()
@@ -279,6 +302,7 @@ private constructor(
         private var clientType: JsonField<ClientType>? = null
         private var connectionId: JsonField<String>? = null
         private var connectionType: JsonField<ConnectionType>? = null
+        private var entityIds: JsonField<MutableList<String>>? = null
         private var products: JsonField<MutableList<String>>? = null
         private var providerId: JsonField<String>? = null
         private var tokenType: JsonField<String>? = null
@@ -292,6 +316,7 @@ private constructor(
             clientType = createAccessTokenResponse.clientType
             connectionId = createAccessTokenResponse.connectionId
             connectionType = createAccessTokenResponse.connectionType
+            entityIds = createAccessTokenResponse.entityIds.map { it.toMutableList() }
             products = createAccessTokenResponse.products.map { it.toMutableList() }
             providerId = createAccessTokenResponse.providerId
             tokenType = createAccessTokenResponse.tokenType
@@ -356,6 +381,32 @@ private constructor(
          */
         fun connectionType(connectionType: JsonField<ConnectionType>) = apply {
             this.connectionType = connectionType
+        }
+
+        /** An array of entity IDs that can be accessed with this access token */
+        fun entityIds(entityIds: List<String>) = entityIds(JsonField.of(entityIds))
+
+        /**
+         * Sets [Builder.entityIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun entityIds(entityIds: JsonField<List<String>>) = apply {
+            this.entityIds = entityIds.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds =
+                (entityIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("entityIds", it).add(entityId)
+                }
         }
 
         /** An array of the authorized products associated with the `access_token` */
@@ -485,6 +536,7 @@ private constructor(
          * .clientType()
          * .connectionId()
          * .connectionType()
+         * .entityIds()
          * .products()
          * .providerId()
          * .tokenType()
@@ -498,6 +550,7 @@ private constructor(
                 checkRequired("clientType", clientType),
                 checkRequired("connectionId", connectionId),
                 checkRequired("connectionType", connectionType),
+                checkRequired("entityIds", entityIds).map { it.toImmutable() },
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 checkRequired("tokenType", tokenType),
@@ -519,6 +572,7 @@ private constructor(
         clientType().validate()
         connectionId()
         connectionType().validate()
+        entityIds()
         products()
         providerId()
         tokenType()
@@ -546,6 +600,7 @@ private constructor(
             (clientType.asKnown()?.validity() ?: 0) +
             (if (connectionId.asKnown() == null) 0 else 1) +
             (connectionType.asKnown()?.validity() ?: 0) +
+            (entityIds.asKnown()?.size ?: 0) +
             (products.asKnown()?.size ?: 0) +
             (if (providerId.asKnown() == null) 0 else 1) +
             (if (tokenType.asKnown() == null) 0 else 1) +
@@ -829,6 +884,7 @@ private constructor(
             clientType == other.clientType &&
             connectionId == other.connectionId &&
             connectionType == other.connectionType &&
+            entityIds == other.entityIds &&
             products == other.products &&
             providerId == other.providerId &&
             tokenType == other.tokenType &&
@@ -844,6 +900,7 @@ private constructor(
             clientType,
             connectionId,
             connectionType,
+            entityIds,
             products,
             providerId,
             tokenType,
@@ -857,5 +914,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CreateAccessTokenResponse{accessToken=$accessToken, clientType=$clientType, connectionId=$connectionId, connectionType=$connectionType, products=$products, providerId=$providerId, tokenType=$tokenType, accountId=$accountId, companyId=$companyId, customerId=$customerId, additionalProperties=$additionalProperties}"
+        "CreateAccessTokenResponse{accessToken=$accessToken, clientType=$clientType, connectionId=$connectionId, connectionType=$connectionType, entityIds=$entityIds, products=$products, providerId=$providerId, tokenType=$tokenType, accountId=$accountId, companyId=$companyId, customerId=$customerId, additionalProperties=$additionalProperties}"
 }

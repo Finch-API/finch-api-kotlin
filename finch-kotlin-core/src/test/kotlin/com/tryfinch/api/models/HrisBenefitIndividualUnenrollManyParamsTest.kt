@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.models
 
+import com.tryfinch.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,6 +12,7 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
     fun create() {
         HrisBenefitIndividualUnenrollManyParams.builder()
             .benefitId("benefit_id")
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .addIndividualId("string")
             .build()
     }
@@ -18,7 +20,10 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
     @Test
     fun pathParams() {
         val params =
-            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+            HrisBenefitIndividualUnenrollManyParams.builder()
+                .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .build()
 
         assertThat(params._pathParam(0)).isEqualTo("benefit_id")
         // out-of-bound path param
@@ -26,10 +31,48 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
     }
 
     @Test
+    fun queryParams() {
+        val params =
+            HrisBenefitIndividualUnenrollManyParams.builder()
+                .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .addIndividualId("string")
+                .build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
+    }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params =
+            HrisBenefitIndividualUnenrollManyParams.builder()
+                .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
+    }
+
+    @Test
     fun body() {
         val params =
             HrisBenefitIndividualUnenrollManyParams.builder()
                 .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .addIndividualId("string")
                 .build()
 
@@ -41,7 +84,10 @@ internal class HrisBenefitIndividualUnenrollManyParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+            HrisBenefitIndividualUnenrollManyParams.builder()
+                .benefitId("benefit_id")
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .build()
 
         val body = params._body()
     }
