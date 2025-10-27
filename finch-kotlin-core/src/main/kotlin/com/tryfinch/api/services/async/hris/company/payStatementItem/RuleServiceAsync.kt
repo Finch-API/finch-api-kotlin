@@ -37,9 +37,14 @@ interface RuleServiceAsync {
      * statement item information is available.
      */
     suspend fun create(
-        params: HrisCompanyPayStatementItemRuleCreateParams,
+        params: HrisCompanyPayStatementItemRuleCreateParams =
+            HrisCompanyPayStatementItemRuleCreateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleCreateResponse
+
+    /** @see create */
+    suspend fun create(requestOptions: RequestOptions): RuleCreateResponse =
+        create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
     /**
      * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
@@ -47,7 +52,8 @@ interface RuleServiceAsync {
      */
     suspend fun update(
         ruleId: String,
-        params: HrisCompanyPayStatementItemRuleUpdateParams,
+        params: HrisCompanyPayStatementItemRuleUpdateParams =
+            HrisCompanyPayStatementItemRuleUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse = update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
@@ -57,14 +63,23 @@ interface RuleServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleUpdateResponse
 
+    /** @see update */
+    suspend fun update(ruleId: String, requestOptions: RequestOptions): RuleUpdateResponse =
+        update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none(), requestOptions)
+
     /**
      * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
      * support will be added soon List all rules of a connection account.
      */
     suspend fun list(
-        params: HrisCompanyPayStatementItemRuleListParams,
+        params: HrisCompanyPayStatementItemRuleListParams =
+            HrisCompanyPayStatementItemRuleListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemRuleListPageAsync
+
+    /** @see list */
+    suspend fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemRuleListPageAsync =
+        list(HrisCompanyPayStatementItemRuleListParams.none(), requestOptions)
 
     /**
      * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
@@ -72,7 +87,8 @@ interface RuleServiceAsync {
      */
     suspend fun delete(
         ruleId: String,
-        params: HrisCompanyPayStatementItemRuleDeleteParams,
+        params: HrisCompanyPayStatementItemRuleDeleteParams =
+            HrisCompanyPayStatementItemRuleDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse = delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
 
@@ -81,6 +97,10 @@ interface RuleServiceAsync {
         params: HrisCompanyPayStatementItemRuleDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleDeleteResponse
+
+    /** @see delete */
+    suspend fun delete(ruleId: String, requestOptions: RequestOptions): RuleDeleteResponse =
+        delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none(), requestOptions)
 
     /** A view of [RuleServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -98,9 +118,15 @@ interface RuleServiceAsync {
          */
         @MustBeClosed
         suspend fun create(
-            params: HrisCompanyPayStatementItemRuleCreateParams,
+            params: HrisCompanyPayStatementItemRuleCreateParams =
+                HrisCompanyPayStatementItemRuleCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleCreateResponse>
+
+        /** @see create */
+        @MustBeClosed
+        suspend fun create(requestOptions: RequestOptions): HttpResponseFor<RuleCreateResponse> =
+            create(HrisCompanyPayStatementItemRuleCreateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /employer/pay-statement-item/rule/{rule_id}`, but is
@@ -109,7 +135,8 @@ interface RuleServiceAsync {
         @MustBeClosed
         suspend fun update(
             ruleId: String,
-            params: HrisCompanyPayStatementItemRuleUpdateParams,
+            params: HrisCompanyPayStatementItemRuleUpdateParams =
+                HrisCompanyPayStatementItemRuleUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleUpdateResponse> =
             update(params.toBuilder().ruleId(ruleId).build(), requestOptions)
@@ -121,15 +148,31 @@ interface RuleServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleUpdateResponse>
 
+        /** @see update */
+        @MustBeClosed
+        suspend fun update(
+            ruleId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RuleUpdateResponse> =
+            update(ruleId, HrisCompanyPayStatementItemRuleUpdateParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `get /employer/pay-statement-item/rule`, but is otherwise
          * the same as [RuleServiceAsync.list].
          */
         @MustBeClosed
         suspend fun list(
-            params: HrisCompanyPayStatementItemRuleListParams,
+            params: HrisCompanyPayStatementItemRuleListParams =
+                HrisCompanyPayStatementItemRuleListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync>
+
+        /** @see list */
+        @MustBeClosed
+        suspend fun list(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<HrisCompanyPayStatementItemRuleListPageAsync> =
+            list(HrisCompanyPayStatementItemRuleListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /employer/pay-statement-item/rule/{rule_id}`, but
@@ -138,7 +181,8 @@ interface RuleServiceAsync {
         @MustBeClosed
         suspend fun delete(
             ruleId: String,
-            params: HrisCompanyPayStatementItemRuleDeleteParams,
+            params: HrisCompanyPayStatementItemRuleDeleteParams =
+                HrisCompanyPayStatementItemRuleDeleteParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleDeleteResponse> =
             delete(params.toBuilder().ruleId(ruleId).build(), requestOptions)
@@ -149,5 +193,13 @@ interface RuleServiceAsync {
             params: HrisCompanyPayStatementItemRuleDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RuleDeleteResponse>
+
+        /** @see delete */
+        @MustBeClosed
+        suspend fun delete(
+            ruleId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RuleDeleteResponse> =
+            delete(ruleId, HrisCompanyPayStatementItemRuleDeleteParams.none(), requestOptions)
     }
 }

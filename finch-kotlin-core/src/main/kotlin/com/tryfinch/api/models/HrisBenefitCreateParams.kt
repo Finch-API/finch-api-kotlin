@@ -27,14 +27,14 @@ import java.util.Objects
  */
 class HrisBenefitCreateParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * The company match for this benefit.
@@ -111,14 +111,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         */
+        fun none(): HrisBenefitCreateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams]. */
         fun builder() = Builder()
     }
 
@@ -131,15 +126,15 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisBenefitCreateParams: HrisBenefitCreateParams) = apply {
-            entityIds = hrisBenefitCreateParams.entityIds.toMutableList()
+            entityIds = hrisBenefitCreateParams.entityIds?.toMutableList()
             body = hrisBenefitCreateParams.body.toBuilder()
             additionalHeaders = hrisBenefitCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitCreateParams.additionalQueryParams.toBuilder()
         }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -340,17 +335,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitCreateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitCreateParams =
             HrisBenefitCreateParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -364,7 +352,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

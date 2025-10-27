@@ -27,14 +27,14 @@ import java.util.Objects
  */
 class HrisPayStatementRetrieveManyParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * The array of batch requests.
@@ -69,7 +69,6 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .entityIds()
          * .requests()
          * ```
          */
@@ -86,7 +85,7 @@ private constructor(
 
         internal fun from(hrisPayStatementRetrieveManyParams: HrisPayStatementRetrieveManyParams) =
             apply {
-                entityIds = hrisPayStatementRetrieveManyParams.entityIds.toMutableList()
+                entityIds = hrisPayStatementRetrieveManyParams.entityIds?.toMutableList()
                 body = hrisPayStatementRetrieveManyParams.body.toBuilder()
                 additionalHeaders = hrisPayStatementRetrieveManyParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
@@ -94,8 +93,8 @@ private constructor(
             }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -259,7 +258,6 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .entityIds()
          * .requests()
          * ```
          *
@@ -267,7 +265,7 @@ private constructor(
          */
         fun build(): HrisPayStatementRetrieveManyParams =
             HrisPayStatementRetrieveManyParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -281,7 +279,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
