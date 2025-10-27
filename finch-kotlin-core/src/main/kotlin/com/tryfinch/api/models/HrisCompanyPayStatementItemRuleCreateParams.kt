@@ -13,7 +13,6 @@ import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkKnown
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -30,14 +29,14 @@ import java.util.Objects
  */
 class HrisCompanyPayStatementItemRuleCreateParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val body: CreateRuleRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to create the rule for. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * Specifies the fields to be applied when the condition is met.
@@ -126,14 +125,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisCompanyPayStatementItemRuleCreateParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleCreateParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -149,7 +145,7 @@ private constructor(
         internal fun from(
             hrisCompanyPayStatementItemRuleCreateParams: HrisCompanyPayStatementItemRuleCreateParams
         ) = apply {
-            entityIds = hrisCompanyPayStatementItemRuleCreateParams.entityIds.toMutableList()
+            entityIds = hrisCompanyPayStatementItemRuleCreateParams.entityIds?.toMutableList()
             body = hrisCompanyPayStatementItemRuleCreateParams.body.toBuilder()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleCreateParams.additionalHeaders.toBuilder()
@@ -158,8 +154,8 @@ private constructor(
         }
 
         /** The entity IDs to create the rule for. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -382,17 +378,10 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleCreateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -406,7 +395,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

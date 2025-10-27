@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -12,7 +11,7 @@ import java.util.Objects
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val individualId: String?,
     private val payFrequencies: List<String>?,
     private val additionalHeaders: Headers,
@@ -20,7 +19,7 @@ private constructor(
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     fun individualId(): String? = individualId
 
@@ -36,13 +35,10 @@ private constructor(
 
     companion object {
 
+        fun none(): PayrollPayGroupListParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -57,7 +53,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(payrollPayGroupListParams: PayrollPayGroupListParams) = apply {
-            entityIds = payrollPayGroupListParams.entityIds.toMutableList()
+            entityIds = payrollPayGroupListParams.entityIds?.toMutableList()
             individualId = payrollPayGroupListParams.individualId
             payFrequencies = payrollPayGroupListParams.payFrequencies?.toMutableList()
             additionalHeaders = payrollPayGroupListParams.additionalHeaders.toBuilder()
@@ -65,8 +61,8 @@ private constructor(
         }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -195,17 +191,10 @@ private constructor(
          * Returns an immutable instance of [PayrollPayGroupListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 individualId,
                 payFrequencies?.toImmutable(),
                 additionalHeaders.build(),
@@ -218,7 +207,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 individualId?.let { put("individual_id", it) }
                 payFrequencies?.forEach { put("pay_frequencies[]", it) }
                 putAll(additionalQueryParams)

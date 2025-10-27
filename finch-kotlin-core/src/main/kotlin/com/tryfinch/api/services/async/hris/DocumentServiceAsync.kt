@@ -29,9 +29,13 @@ interface DocumentServiceAsync {
      * **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents.
      */
     suspend fun list(
-        params: HrisDocumentListParams,
+        params: HrisDocumentListParams = HrisDocumentListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentListResponse
+
+    /** @see list */
+    suspend fun list(requestOptions: RequestOptions): DocumentListResponse =
+        list(HrisDocumentListParams.none(), requestOptions)
 
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by
@@ -39,7 +43,7 @@ interface DocumentServiceAsync {
      */
     suspend fun retreive(
         documentId: String,
-        params: HrisDocumentRetreiveParams,
+        params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse =
         retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
@@ -49,6 +53,13 @@ interface DocumentServiceAsync {
         params: HrisDocumentRetreiveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse
+
+    /** @see retreive */
+    suspend fun retreive(
+        documentId: String,
+        requestOptions: RequestOptions,
+    ): DocumentRetreiveResponse =
+        retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
     /**
      * A view of [DocumentServiceAsync] that provides access to raw HTTP responses for each method.
@@ -70,9 +81,14 @@ interface DocumentServiceAsync {
          */
         @MustBeClosed
         suspend fun list(
-            params: HrisDocumentListParams,
+            params: HrisDocumentListParams = HrisDocumentListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentListResponse>
+
+        /** @see list */
+        @MustBeClosed
+        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
+            list(HrisDocumentListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/documents/{document_id}`, but is otherwise
@@ -81,7 +97,7 @@ interface DocumentServiceAsync {
         @MustBeClosed
         suspend fun retreive(
             documentId: String,
-            params: HrisDocumentRetreiveParams,
+            params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse> =
             retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
@@ -92,5 +108,13 @@ interface DocumentServiceAsync {
             params: HrisDocumentRetreiveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse>
+
+        /** @see retreive */
+        @MustBeClosed
+        suspend fun retreive(
+            documentId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocumentRetreiveResponse> =
+            retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
     }
 }

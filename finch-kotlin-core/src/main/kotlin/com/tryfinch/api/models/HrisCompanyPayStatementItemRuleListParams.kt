@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -15,13 +14,13 @@ import java.util.Objects
  */
 class HrisCompanyPayStatementItemRuleListParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to retrieve rules for. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -33,14 +32,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisCompanyPayStatementItemRuleListParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisCompanyPayStatementItemRuleListParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -55,7 +51,7 @@ private constructor(
         internal fun from(
             hrisCompanyPayStatementItemRuleListParams: HrisCompanyPayStatementItemRuleListParams
         ) = apply {
-            entityIds = hrisCompanyPayStatementItemRuleListParams.entityIds.toMutableList()
+            entityIds = hrisCompanyPayStatementItemRuleListParams.entityIds?.toMutableList()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleListParams.additionalHeaders.toBuilder()
             additionalQueryParams =
@@ -63,8 +59,8 @@ private constructor(
         }
 
         /** The entity IDs to retrieve rules for. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -178,17 +174,10 @@ private constructor(
          * Returns an immutable instance of [HrisCompanyPayStatementItemRuleListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisCompanyPayStatementItemRuleListParams =
             HrisCompanyPayStatementItemRuleListParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -199,7 +188,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

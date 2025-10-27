@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -12,13 +11,13 @@ import java.util.Objects
 /** List all company-wide deductions and contributions. */
 class HrisBenefitListParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -30,14 +29,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [HrisBenefitListParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         */
+        fun none(): HrisBenefitListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitListParams]. */
         fun builder() = Builder()
     }
 
@@ -49,14 +43,14 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisBenefitListParams: HrisBenefitListParams) = apply {
-            entityIds = hrisBenefitListParams.entityIds.toMutableList()
+            entityIds = hrisBenefitListParams.entityIds?.toMutableList()
             additionalHeaders = hrisBenefitListParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitListParams.additionalQueryParams.toBuilder()
         }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -170,17 +164,10 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitListParams =
             HrisBenefitListParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -191,7 +178,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

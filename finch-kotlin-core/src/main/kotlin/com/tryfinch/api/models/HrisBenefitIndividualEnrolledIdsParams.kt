@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -13,7 +12,7 @@ import java.util.Objects
 class HrisBenefitIndividualEnrolledIdsParams
 private constructor(
     private val benefitId: String?,
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -21,7 +20,7 @@ private constructor(
     fun benefitId(): String? = benefitId
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -33,14 +32,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisBenefitIndividualEnrolledIdsParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisBenefitIndividualEnrolledIdsParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -57,7 +53,7 @@ private constructor(
             hrisBenefitIndividualEnrolledIdsParams: HrisBenefitIndividualEnrolledIdsParams
         ) = apply {
             benefitId = hrisBenefitIndividualEnrolledIdsParams.benefitId
-            entityIds = hrisBenefitIndividualEnrolledIdsParams.entityIds.toMutableList()
+            entityIds = hrisBenefitIndividualEnrolledIdsParams.entityIds?.toMutableList()
             additionalHeaders = hrisBenefitIndividualEnrolledIdsParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 hrisBenefitIndividualEnrolledIdsParams.additionalQueryParams.toBuilder()
@@ -66,8 +62,8 @@ private constructor(
         fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -181,18 +177,11 @@ private constructor(
          * Returns an immutable instance of [HrisBenefitIndividualEnrolledIdsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisBenefitIndividualEnrolledIdsParams =
             HrisBenefitIndividualEnrolledIdsParams(
                 benefitId,
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -209,7 +198,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

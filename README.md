@@ -60,10 +60,7 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build()
-val page: HrisDirectoryListPage = client.hris().directory().list(params)
+val page: HrisDirectoryListPage = client.hris().directory().list()
 ```
 
 ## Client configuration
@@ -168,10 +165,7 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build()
-val page: HrisDirectoryListPageAsync = client.async().hris().directory().list(params)
+val page: HrisDirectoryListPageAsync = client.async().hris().directory().list()
 ```
 
 Or create an asynchronous client from the beginning:
@@ -189,10 +183,7 @@ val client: FinchClientAsync = FinchOkHttpClientAsync.builder()
     .accessToken("My Access Token")
     .build()
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build()
-val page: HrisDirectoryListPageAsync = client.hris().directory().list(params)
+val page: HrisDirectoryListPageAsync = client.hris().directory().list()
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
@@ -209,10 +200,7 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build()
-val page: HttpResponseFor<HrisDirectoryListPage> = client.hris().directory().withRawResponse().list(params)
+val page: HttpResponseFor<HrisDirectoryListPage> = client.hris().directory().withRawResponse().list()
 
 val statusCode: Int = page.statusCode()
 val headers: Headers = page.headers()
@@ -264,7 +252,7 @@ When using the synchronous client, the method returns a [`Sequence`](https://kot
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
 
-val page: HrisDirectoryListPage = client.hris().directory().list(params)
+val page: HrisDirectoryListPage = client.hris().directory().list()
 page.autoPager()
     .take(50)
     .forEach { directory -> println(directory) }
@@ -275,7 +263,7 @@ When using the asynchronous client, the method returns a [`Flow`](https://kotlin
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
 
-val page: HrisDirectoryListPageAsync = client.async().hris().directory().list(params)
+val page: HrisDirectoryListPageAsync = client.async().hris().directory().list()
 page.autoPager()
     .take(50)
     .forEach { directory -> println(directory) }
@@ -290,7 +278,7 @@ To access individual page items and manually request the next page, use the `ite
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.IndividualInDirectory
 
-val page: HrisDirectoryListPage = client.hris().directory().list(params)
+val page: HrisDirectoryListPage = client.hris().directory().list()
 while (true) {
     for (directory in page.items()) {
         println(directory)
@@ -385,9 +373,7 @@ To set a custom timeout, configure the method call using the `timeout` method:
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
 
-val page: HrisDirectoryListPage = client.hris().directory().list(
-  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
-)
+val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build())
 ```
 
 Or configure the default for all method calls at the client level:
@@ -509,9 +495,7 @@ To set a documented parameter or property to an undocumented or not yet supporte
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-    .build()
+val params: HrisDirectoryListParams = HrisDirectoryListParams.builder().build()
 ```
 
 The most straightforward way to create a [`JsonValue`](finch-kotlin-core/src/main/kotlin/com/tryfinch/api/core/Values.kt) is using its `from(...)` method:
@@ -555,10 +539,11 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](finch-ko
 
 ```kotlin
 import com.tryfinch.api.core.JsonMissing
+import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-val params: HrisDirectoryListParams = HrisDirectoryListParams.builder()
-    .entityIds(JsonMissing.of())
+val params: HrisDirectoryListParams = AccessTokenCreateParams.builder()
+    .code(JsonMissing.of())
     .build()
 ```
 
@@ -624,9 +609,7 @@ Or configure the method call to validate the response using the `responseValidat
 ```kotlin
 import com.tryfinch.api.models.HrisDirectoryListPage
 
-val page: HrisDirectoryListPage = client.hris().directory().list(
-  params, RequestOptions.builder().responseValidation(true).build()
-)
+val page: HrisDirectoryListPage = client.hris().directory().list(RequestOptions.builder().responseValidation(true).build())
 ```
 
 Or configure the default for all method calls at the client level:

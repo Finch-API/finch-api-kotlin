@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.tryfinch.api.core.Params
-import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -13,7 +12,7 @@ import java.util.Objects
 @Deprecated("use `list` instead")
 class HrisDirectoryListIndividualsParams
 private constructor(
-    private val entityIds: List<String>,
+    private val entityIds: List<String>?,
     private val limit: Long?,
     private val offset: Long?,
     private val additionalHeaders: Headers,
@@ -21,7 +20,7 @@ private constructor(
 ) : Params {
 
     /** The entity IDs to specify which entities' data to access. */
-    fun entityIds(): List<String> = entityIds
+    fun entityIds(): List<String>? = entityIds
 
     /** Number of employees to return (defaults to all) */
     fun limit(): Long? = limit
@@ -39,14 +38,11 @@ private constructor(
 
     companion object {
 
+        fun none(): HrisDirectoryListIndividualsParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [HrisDirectoryListIndividualsParams].
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
          */
         fun builder() = Builder()
     }
@@ -62,7 +58,7 @@ private constructor(
 
         internal fun from(hrisDirectoryListIndividualsParams: HrisDirectoryListIndividualsParams) =
             apply {
-                entityIds = hrisDirectoryListIndividualsParams.entityIds.toMutableList()
+                entityIds = hrisDirectoryListIndividualsParams.entityIds?.toMutableList()
                 limit = hrisDirectoryListIndividualsParams.limit
                 offset = hrisDirectoryListIndividualsParams.offset
                 additionalHeaders = hrisDirectoryListIndividualsParams.additionalHeaders.toBuilder()
@@ -71,8 +67,8 @@ private constructor(
             }
 
         /** The entity IDs to specify which entities' data to access. */
-        fun entityIds(entityIds: List<String>) = apply {
-            this.entityIds = entityIds.toMutableList()
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
         }
 
         /**
@@ -206,17 +202,10 @@ private constructor(
          * Returns an immutable instance of [HrisDirectoryListIndividualsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```kotlin
-         * .entityIds()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): HrisDirectoryListIndividualsParams =
             HrisDirectoryListIndividualsParams(
-                checkRequired("entityIds", entityIds).toImmutable(),
+                entityIds?.toImmutable(),
                 limit,
                 offset,
                 additionalHeaders.build(),
@@ -229,7 +218,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 putAll(additionalQueryParams)

@@ -32,9 +32,14 @@ interface PayStatementItemServiceAsync {
      * token's connection account.
      */
     suspend fun list(
-        params: HrisCompanyPayStatementItemListParams,
+        params: HrisCompanyPayStatementItemListParams =
+            HrisCompanyPayStatementItemListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisCompanyPayStatementItemListPageAsync
+
+    /** @see list */
+    suspend fun list(requestOptions: RequestOptions): HrisCompanyPayStatementItemListPageAsync =
+        list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
 
     /**
      * A view of [PayStatementItemServiceAsync] that provides access to raw HTTP responses for each
@@ -59,8 +64,16 @@ interface PayStatementItemServiceAsync {
          */
         @MustBeClosed
         suspend fun list(
-            params: HrisCompanyPayStatementItemListParams,
+            params: HrisCompanyPayStatementItemListParams =
+                HrisCompanyPayStatementItemListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisCompanyPayStatementItemListPageAsync>
+
+        /** @see list */
+        @MustBeClosed
+        suspend fun list(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<HrisCompanyPayStatementItemListPageAsync> =
+            list(HrisCompanyPayStatementItemListParams.none(), requestOptions)
     }
 }
