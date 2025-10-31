@@ -19,6 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 class AccountUpdateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accountId: JsonField<String>,
     private val authenticationType: JsonField<AuthenticationType>,

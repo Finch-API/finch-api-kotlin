@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class AutomatedListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val data: JsonField<List<AutomatedAsyncJob>>,
     private val meta: JsonField<Meta>,
@@ -201,6 +202,7 @@ private constructor(
         (data.asKnown()?.sumOf { it.validity().toInt() } ?: 0) + (meta.asKnown()?.validity() ?: 0)
 
     class Meta
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val quotas: JsonField<Quotas>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -333,6 +335,7 @@ private constructor(
          * contact a Finch representative for more details.
          */
         class Quotas
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val dataSyncAll: JsonField<DataSyncAll>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -461,6 +464,7 @@ private constructor(
             internal fun validity(): Int = (dataSyncAll.asKnown()?.validity() ?: 0)
 
             class DataSyncAll
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val allowedRefreshes: JsonField<Long>,
                 private val remainingRefreshes: JsonField<Long>,

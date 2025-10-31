@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class HrisEmploymentRetrieveManyPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val responses: JsonField<List<EmploymentDataResponse>>,
     private val additionalProperties: MutableMap<String, JsonValue>,

@@ -11,11 +11,13 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
 class DocumentResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val individualId: JsonField<String>,
@@ -39,10 +41,10 @@ private constructor(
     /**
      * A stable Finch id for the document.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun id(): String? = id.getNullable("id")
+    fun id(): String = id.getRequired("id")
 
     /**
      * The ID of the individual associated with the document. This will be null for employer-level
@@ -56,27 +58,27 @@ private constructor(
     /**
      * The type of document.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun type(): Type? = type.getNullable("type")
+    fun type(): Type = type.getRequired("type")
 
     /**
      * A URL to access the document. Format:
      * `https://api.tryfinch.com/employer/documents/:document_id`.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun url(): String? = url.getNullable("url")
+    fun url(): String = url.getRequired("url")
 
     /**
      * The year the document applies to, if available.
      *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun year(): Double? = year.getNullable("year")
+    fun year(): Double = year.getRequired("year")
 
     /**
      * Returns the raw JSON value of [id].
@@ -129,18 +131,29 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [DocumentResponse]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [DocumentResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .id()
+         * .individualId()
+         * .type()
+         * .url()
+         * .year()
+         * ```
+         */
         fun builder() = Builder()
     }
 
     /** A builder for [DocumentResponse]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var individualId: JsonField<String> = JsonMissing.of()
-        private var type: JsonField<Type> = JsonMissing.of()
-        private var url: JsonField<String> = JsonMissing.of()
-        private var year: JsonField<Double> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var individualId: JsonField<String>? = null
+        private var type: JsonField<Type>? = null
+        private var url: JsonField<String>? = null
+        private var year: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(documentResponse: DocumentResponse) = apply {
@@ -206,14 +219,7 @@ private constructor(
         fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** The year the document applies to, if available. */
-        fun year(year: Double?) = year(JsonField.ofNullable(year))
-
-        /**
-         * Alias for [Builder.year].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun year(year: Double) = year(year as Double?)
+        fun year(year: Double) = year(JsonField.of(year))
 
         /**
          * Sets [Builder.year] to an arbitrary JSON value.
@@ -246,9 +252,27 @@ private constructor(
          * Returns an immutable instance of [DocumentResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .id()
+         * .individualId()
+         * .type()
+         * .url()
+         * .year()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): DocumentResponse =
-            DocumentResponse(id, individualId, type, url, year, additionalProperties.toMutableMap())
+            DocumentResponse(
+                checkRequired("id", id),
+                checkRequired("individualId", individualId),
+                checkRequired("type", type),
+                checkRequired("url", url),
+                checkRequired("year", year),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -260,7 +284,7 @@ private constructor(
 
         id()
         individualId()
-        type()?.validate()
+        type().validate()
         url()
         year()
         validated = true

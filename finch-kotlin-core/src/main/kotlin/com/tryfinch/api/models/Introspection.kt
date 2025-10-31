@@ -31,6 +31,7 @@ import java.util.Collections
 import java.util.Objects
 
 class Introspection
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val clientId: JsonField<String>,
@@ -46,8 +47,7 @@ private constructor(
     private val customerEmail: JsonField<String>,
     private val customerId: JsonField<String>,
     private val customerName: JsonField<String>,
-    private val entityIds: JsonField<List<String>>,
-    private val entityMode: JsonField<EntityMode>,
+    private val entities: JsonField<List<MultiAccountEntity>>,
     private val manual: JsonField<Boolean>,
     private val payrollProviderId: JsonField<String>,
     private val username: JsonField<String>,
@@ -90,12 +90,9 @@ private constructor(
         @JsonProperty("customer_name")
         @ExcludeMissing
         customerName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("entity_ids")
+        @JsonProperty("entities")
         @ExcludeMissing
-        entityIds: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("entity_mode")
-        @ExcludeMissing
-        entityMode: JsonField<EntityMode> = JsonMissing.of(),
+        entities: JsonField<List<MultiAccountEntity>> = JsonMissing.of(),
         @JsonProperty("manual") @ExcludeMissing manual: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("payroll_provider_id")
         @ExcludeMissing
@@ -116,8 +113,7 @@ private constructor(
         customerEmail,
         customerId,
         customerName,
-        entityIds,
-        entityMode,
+        entities,
         manual,
         payrollProviderId,
         username,
@@ -242,20 +238,12 @@ private constructor(
     fun customerName(): String? = customerName.getNullable("customer_name")
 
     /**
-     * Array of entity IDs associated with this connection.
+     * Array of detailed entity information for each connected account in multi-account mode
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun entityIds(): List<String>? = entityIds.getNullable("entity_ids")
-
-    /**
-     * Indicates whether this connection manages a single entity or multiple entities.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun entityMode(): EntityMode? = entityMode.getNullable("entity_mode")
+    fun entities(): List<MultiAccountEntity>? = entities.getNullable("entities")
 
     /**
      * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
@@ -405,22 +393,13 @@ private constructor(
     fun _customerName(): JsonField<String> = customerName
 
     /**
-     * Returns the raw JSON value of [entityIds].
+     * Returns the raw JSON value of [entities].
      *
-     * Unlike [entityIds], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [entities], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("entity_ids")
+    @JsonProperty("entities")
     @ExcludeMissing
-    fun _entityIds(): JsonField<List<String>> = entityIds
-
-    /**
-     * Returns the raw JSON value of [entityMode].
-     *
-     * Unlike [entityMode], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("entity_mode")
-    @ExcludeMissing
-    fun _entityMode(): JsonField<EntityMode> = entityMode
+    fun _entities(): JsonField<List<MultiAccountEntity>> = entities
 
     /**
      * Returns the raw JSON value of [manual].
@@ -497,8 +476,7 @@ private constructor(
         private var customerEmail: JsonField<String> = JsonMissing.of()
         private var customerId: JsonField<String> = JsonMissing.of()
         private var customerName: JsonField<String> = JsonMissing.of()
-        private var entityIds: JsonField<MutableList<String>>? = null
-        private var entityMode: JsonField<EntityMode> = JsonMissing.of()
+        private var entities: JsonField<MutableList<MultiAccountEntity>>? = null
         private var manual: JsonField<Boolean> = JsonMissing.of()
         private var payrollProviderId: JsonField<String> = JsonMissing.of()
         private var username: JsonField<String> = JsonMissing.of()
@@ -519,8 +497,7 @@ private constructor(
             customerEmail = introspection.customerEmail
             customerId = introspection.customerId
             customerName = introspection.customerName
-            entityIds = introspection.entityIds.map { it.toMutableList() }
-            entityMode = introspection.entityMode
+            entities = introspection.entities.map { it.toMutableList() }
             manual = introspection.manual
             payrollProviderId = introspection.payrollProviderId
             username = introspection.username
@@ -756,43 +733,31 @@ private constructor(
             this.customerName = customerName
         }
 
-        /** Array of entity IDs associated with this connection. */
-        fun entityIds(entityIds: List<String>) = entityIds(JsonField.of(entityIds))
+        /** Array of detailed entity information for each connected account in multi-account mode */
+        fun entities(entities: List<MultiAccountEntity>) = entities(JsonField.of(entities))
 
         /**
-         * Sets [Builder.entityIds] to an arbitrary JSON value.
+         * Sets [Builder.entities] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.entityIds] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
+         * You should usually call [Builder.entities] with a well-typed `List<MultiAccountEntity>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
          */
-        fun entityIds(entityIds: JsonField<List<String>>) = apply {
-            this.entityIds = entityIds.map { it.toMutableList() }
+        fun entities(entities: JsonField<List<MultiAccountEntity>>) = apply {
+            this.entities = entities.map { it.toMutableList() }
         }
 
         /**
-         * Adds a single [String] to [entityIds].
+         * Adds a single [MultiAccountEntity] to [entities].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addEntityId(entityId: String) = apply {
-            entityIds =
-                (entityIds ?: JsonField.of(mutableListOf())).also {
-                    checkKnown("entityIds", it).add(entityId)
+        fun addEntity(entity: MultiAccountEntity) = apply {
+            entities =
+                (entities ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("entities", it).add(entity)
                 }
         }
-
-        /** Indicates whether this connection manages a single entity or multiple entities. */
-        fun entityMode(entityMode: EntityMode) = entityMode(JsonField.of(entityMode))
-
-        /**
-         * Sets [Builder.entityMode] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.entityMode] with a well-typed [EntityMode] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun entityMode(entityMode: JsonField<EntityMode>) = apply { this.entityMode = entityMode }
 
         /**
          * Whether the connection associated with the `access_token` uses the Assisted Connect Flow.
@@ -893,8 +858,7 @@ private constructor(
                 customerEmail,
                 customerId,
                 customerName,
-                (entityIds ?: JsonMissing.of()).map { it.toImmutable() },
-                entityMode,
+                (entities ?: JsonMissing.of()).map { it.toImmutable() },
                 manual,
                 payrollProviderId,
                 username,
@@ -923,8 +887,7 @@ private constructor(
         customerEmail()
         customerId()
         customerName()
-        entityIds()
-        entityMode()?.validate()
+        entities()?.forEach { it.validate() }
         manual()
         payrollProviderId()
         username()
@@ -959,8 +922,7 @@ private constructor(
             (if (customerEmail.asKnown() == null) 0 else 1) +
             (if (customerId.asKnown() == null) 0 else 1) +
             (if (customerName.asKnown() == null) 0 else 1) +
-            (entityIds.asKnown()?.size ?: 0) +
-            (entityMode.asKnown()?.validity() ?: 0) +
+            (entities.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (manual.asKnown() == null) 0 else 1) +
             (if (payrollProviderId.asKnown() == null) 0 else 1) +
             (if (username.asKnown() == null) 0 else 1)
@@ -1099,6 +1061,7 @@ private constructor(
     }
 
     class ConnectionStatusDetail
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val status: JsonField<ConnectionStatusType>,
         private val lastSuccessfulSync: JsonField<LastSuccessfulSync>,
@@ -1657,6 +1620,7 @@ private constructor(
     }
 
     class AuthenticationMethodDetail
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val type: JsonField<Type>,
         private val connectionStatus: JsonField<ConnectionStatusDetail>,
@@ -2035,6 +1999,7 @@ private constructor(
         }
 
         class ConnectionStatusDetail
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val status: JsonField<ConnectionStatusType>,
             private val lastSuccessfulSync: JsonField<LastSuccessfulSync>,
@@ -2493,101 +2458,234 @@ private constructor(
             "AuthenticationMethodDetail{type=$type, connectionStatus=$connectionStatus, products=$products, additionalProperties=$additionalProperties}"
     }
 
-    /** Indicates whether this connection manages a single entity or multiple entities. */
-    class EntityMode @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+    class MultiAccountEntity
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val id: JsonField<String>,
+        private val name: JsonField<String>,
+        private val sourceId: JsonField<String>,
+        private val type: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("source_id")
+            @ExcludeMissing
+            sourceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
+        ) : this(id, name, sourceId, type, mutableMapOf())
 
         /**
-         * Returns this class instance's raw value.
+         * The connection account ID for this entity
          *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+        fun id(): String = id.getRequired("id")
+
+        /**
+         * The name of the entity (payroll provider company name)
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun name(): String? = name.getNullable("name")
+
+        /**
+         * The source ID of the entity
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun sourceId(): String? = sourceId.getNullable("source_id")
+
+        /**
+         * The type of entity
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): String? = type.getNullable("type")
+
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Returns the raw JSON value of [sourceId].
+         *
+         * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
 
         companion object {
 
-            val SINGLE = of("single")
-
-            val MULTI = of("multi")
-
-            fun of(value: String) = EntityMode(JsonField.of(value))
-        }
-
-        /** An enum containing [EntityMode]'s known values. */
-        enum class Known {
-            SINGLE,
-            MULTI,
-        }
-
-        /**
-         * An enum containing [EntityMode]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [EntityMode] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            SINGLE,
-            MULTI,
             /**
-             * An enum member indicating that [EntityMode] was instantiated with an unknown value.
+             * Returns a mutable builder for constructing an instance of [MultiAccountEntity].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .id()
+             * .name()
+             * .sourceId()
+             * .type()
+             * ```
              */
-            _UNKNOWN,
+            fun builder() = Builder()
         }
 
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                SINGLE -> Value.SINGLE
-                MULTI -> Value.MULTI
-                else -> Value._UNKNOWN
+        /** A builder for [MultiAccountEntity]. */
+        class Builder internal constructor() {
+
+            private var id: JsonField<String>? = null
+            private var name: JsonField<String>? = null
+            private var sourceId: JsonField<String>? = null
+            private var type: JsonField<String>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(multiAccountEntity: MultiAccountEntity) = apply {
+                id = multiAccountEntity.id
+                name = multiAccountEntity.name
+                sourceId = multiAccountEntity.sourceId
+                type = multiAccountEntity.type
+                additionalProperties = multiAccountEntity.additionalProperties.toMutableMap()
             }
 
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                SINGLE -> Known.SINGLE
-                MULTI -> Known.MULTI
-                else -> throw FinchInvalidDataException("Unknown EntityMode: $value")
+            /** The connection account ID for this entity */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /** The name of the entity (payroll provider company name) */
+            fun name(name: String?) = name(JsonField.ofNullable(name))
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** The source ID of the entity */
+            fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
+
+            /**
+             * Sets [Builder.sourceId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.sourceId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
+
+            /** The type of entity */
+            fun type(type: String?) = type(JsonField.ofNullable(type))
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun type(type: JsonField<String>) = apply { this.type = type }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
             }
 
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws FinchInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [MultiAccountEntity].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .id()
+             * .name()
+             * .sourceId()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): MultiAccountEntity =
+                MultiAccountEntity(
+                    checkRequired("id", id),
+                    checkRequired("name", name),
+                    checkRequired("sourceId", sourceId),
+                    checkRequired("type", type),
+                    additionalProperties.toMutableMap(),
+                )
+        }
 
         private var validated: Boolean = false
 
-        fun validate(): EntityMode = apply {
+        fun validate(): MultiAccountEntity = apply {
             if (validated) {
                 return@apply
             }
 
-            known()
+            id()
+            name()
+            sourceId()
+            type()
             validated = true
         }
 
@@ -2605,19 +2703,33 @@ private constructor(
          *
          * Used for best match union deserialization.
          */
-        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+        internal fun validity(): Int =
+            (if (id.asKnown() == null) 0 else 1) +
+                (if (name.asKnown() == null) 0 else 1) +
+                (if (sourceId.asKnown() == null) 0 else 1) +
+                (if (type.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is EntityMode && value == other.value
+            return other is MultiAccountEntity &&
+                id == other.id &&
+                name == other.name &&
+                sourceId == other.sourceId &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        override fun hashCode() = value.hashCode()
+        private val hashCode: Int by lazy {
+            Objects.hash(id, name, sourceId, type, additionalProperties)
+        }
 
-        override fun toString() = value.toString()
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "MultiAccountEntity{id=$id, name=$name, sourceId=$sourceId, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -2640,8 +2752,7 @@ private constructor(
             customerEmail == other.customerEmail &&
             customerId == other.customerId &&
             customerName == other.customerName &&
-            entityIds == other.entityIds &&
-            entityMode == other.entityMode &&
+            entities == other.entities &&
             manual == other.manual &&
             payrollProviderId == other.payrollProviderId &&
             username == other.username &&
@@ -2664,8 +2775,7 @@ private constructor(
             customerEmail,
             customerId,
             customerName,
-            entityIds,
-            entityMode,
+            entities,
             manual,
             payrollProviderId,
             username,
@@ -2676,5 +2786,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Introspection{id=$id, clientId=$clientId, clientType=$clientType, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, products=$products, providerId=$providerId, accountId=$accountId, authenticationMethods=$authenticationMethods, companyId=$companyId, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, entityIds=$entityIds, entityMode=$entityMode, manual=$manual, payrollProviderId=$payrollProviderId, username=$username, additionalProperties=$additionalProperties}"
+        "Introspection{id=$id, clientId=$clientId, clientType=$clientType, connectionId=$connectionId, connectionStatus=$connectionStatus, connectionType=$connectionType, products=$products, providerId=$providerId, accountId=$accountId, authenticationMethods=$authenticationMethods, companyId=$companyId, customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, entities=$entities, manual=$manual, payrollProviderId=$payrollProviderId, username=$username, additionalProperties=$additionalProperties}"
 }

@@ -14,9 +14,9 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
-import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPage
 import com.tryfinch.api.models.ProviderListParams
+import com.tryfinch.api.models.ProviderListResponse
 
 class ProviderServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProviderService {
@@ -50,8 +50,8 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
                 clientOptions.toBuilder().apply(modifier).build()
             )
 
-        private val listHandler: Handler<List<Provider>> =
-            jsonHandler<List<Provider>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<ProviderListResponse>> =
+            jsonHandler<List<ProviderListResponse>>(clientOptions.jsonMapper)
 
         override fun list(
             params: ProviderListParams,

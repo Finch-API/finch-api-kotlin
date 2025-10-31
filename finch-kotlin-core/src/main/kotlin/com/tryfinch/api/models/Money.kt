@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class Money
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val amount: JsonField<Long>,
     private val currency: JsonField<String>,

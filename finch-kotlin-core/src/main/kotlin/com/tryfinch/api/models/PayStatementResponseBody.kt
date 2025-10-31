@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PayStatementResponseBody
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val paging: JsonField<Paging>,
     private val payStatements: JsonField<List<PayStatement>>,
@@ -205,6 +206,7 @@ private constructor(
             (payStatements.asKnown()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Paging
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val offset: JsonField<Long>,
         private val count: JsonField<Long>,

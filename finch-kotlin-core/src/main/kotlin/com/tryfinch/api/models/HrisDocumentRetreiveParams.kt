@@ -5,6 +5,7 @@ package com.tryfinch.api.models
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 /**
@@ -14,11 +15,15 @@ import java.util.Objects
 class HrisDocumentRetreiveParams
 private constructor(
     private val documentId: String?,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun documentId(): String? = documentId
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -42,16 +47,32 @@ private constructor(
     class Builder internal constructor() {
 
         private var documentId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisDocumentRetreiveParams: HrisDocumentRetreiveParams) = apply {
             documentId = hrisDocumentRetreiveParams.documentId
+            entityIds = hrisDocumentRetreiveParams.entityIds?.toMutableList()
             additionalHeaders = hrisDocumentRetreiveParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisDocumentRetreiveParams.additionalQueryParams.toBuilder()
         }
 
         fun documentId(documentId: String?) = apply { this.documentId = documentId }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -159,6 +180,7 @@ private constructor(
         fun build(): HrisDocumentRetreiveParams =
             HrisDocumentRetreiveParams(
                 documentId,
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -172,7 +194,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -181,13 +209,14 @@ private constructor(
 
         return other is HrisDocumentRetreiveParams &&
             documentId == other.documentId &&
+            entityIds == other.entityIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(documentId, additionalHeaders, additionalQueryParams)
+        Objects.hash(documentId, entityIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisDocumentRetreiveParams{documentId=$documentId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisDocumentRetreiveParams{documentId=$documentId, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

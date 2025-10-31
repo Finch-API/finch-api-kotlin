@@ -14,9 +14,9 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.models.Provider
 import com.tryfinch.api.models.ProviderListPageAsync
 import com.tryfinch.api.models.ProviderListParams
+import com.tryfinch.api.models.ProviderListResponse
 
 class ProviderServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProviderServiceAsync {
@@ -50,8 +50,8 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                 clientOptions.toBuilder().apply(modifier).build()
             )
 
-        private val listHandler: Handler<List<Provider>> =
-            jsonHandler<List<Provider>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<ProviderListResponse>> =
+            jsonHandler<List<ProviderListResponse>>(clientOptions.jsonMapper)
 
         override suspend fun list(
             params: ProviderListParams,

@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class HrisIndividualRetrieveManyPageResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val responses: JsonField<List<IndividualResponse>>,
     private val additionalProperties: MutableMap<String, JsonValue>,

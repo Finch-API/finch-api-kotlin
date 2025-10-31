@@ -5,18 +5,23 @@ package com.tryfinch.api.models
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
 /** Get enrollment information for the given individuals. */
 class HrisBenefitIndividualRetrieveManyBenefitsParams
 private constructor(
     private val benefitId: String?,
+    private val entityIds: List<String>?,
     private val individualIds: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun benefitId(): String? = benefitId
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -47,6 +52,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var individualIds: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -56,6 +62,7 @@ private constructor(
                 HrisBenefitIndividualRetrieveManyBenefitsParams
         ) = apply {
             benefitId = hrisBenefitIndividualRetrieveManyBenefitsParams.benefitId
+            entityIds = hrisBenefitIndividualRetrieveManyBenefitsParams.entityIds?.toMutableList()
             individualIds = hrisBenefitIndividualRetrieveManyBenefitsParams.individualIds
             additionalHeaders =
                 hrisBenefitIndividualRetrieveManyBenefitsParams.additionalHeaders.toBuilder()
@@ -64,6 +71,20 @@ private constructor(
         }
 
         fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /**
          * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -177,6 +198,7 @@ private constructor(
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsParams =
             HrisBenefitIndividualRetrieveManyBenefitsParams(
                 benefitId,
+                entityIds?.toImmutable(),
                 individualIds,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -194,6 +216,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
                 individualIds?.let { put("individual_ids", it) }
                 putAll(additionalQueryParams)
             }
@@ -206,14 +229,15 @@ private constructor(
 
         return other is HrisBenefitIndividualRetrieveManyBenefitsParams &&
             benefitId == other.benefitId &&
+            entityIds == other.entityIds &&
             individualIds == other.individualIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(benefitId, individualIds, additionalHeaders, additionalQueryParams)
+        Objects.hash(benefitId, entityIds, individualIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisBenefitIndividualRetrieveManyBenefitsParams{benefitId=$benefitId, entityIds=$entityIds, individualIds=$individualIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -19,6 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 class RuleListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val attributes: JsonField<Attributes>,
@@ -473,6 +474,7 @@ private constructor(
 
     /** Specifies the fields to be applied when the condition is met. */
     class Attributes
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -722,6 +724,7 @@ private constructor(
     }
 
     class Condition
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val field: JsonField<String>,
         private val operator: JsonField<Operator>,

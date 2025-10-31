@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class DocumentListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val documents: JsonField<List<DocumentResponse>>,
     private val paging: JsonField<Paging>,

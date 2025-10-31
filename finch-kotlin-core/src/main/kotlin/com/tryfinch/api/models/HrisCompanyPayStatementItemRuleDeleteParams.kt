@@ -16,12 +16,16 @@ import java.util.Objects
 class HrisCompanyPayStatementItemRuleDeleteParams
 private constructor(
     private val ruleId: String?,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun ruleId(): String? = ruleId
+
+    /** The entity IDs to delete the rule for. */
+    fun entityIds(): List<String>? = entityIds
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -49,6 +53,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var ruleId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -57,6 +62,7 @@ private constructor(
             hrisCompanyPayStatementItemRuleDeleteParams: HrisCompanyPayStatementItemRuleDeleteParams
         ) = apply {
             ruleId = hrisCompanyPayStatementItemRuleDeleteParams.ruleId
+            entityIds = hrisCompanyPayStatementItemRuleDeleteParams.entityIds?.toMutableList()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams =
@@ -66,6 +72,20 @@ private constructor(
         }
 
         fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
+
+        /** The entity IDs to delete the rule for. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -195,6 +215,7 @@ private constructor(
         fun build(): HrisCompanyPayStatementItemRuleDeleteParams =
             HrisCompanyPayStatementItemRuleDeleteParams(
                 ruleId,
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -211,7 +232,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -220,14 +247,21 @@ private constructor(
 
         return other is HrisCompanyPayStatementItemRuleDeleteParams &&
             ruleId == other.ruleId &&
+            entityIds == other.entityIds &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int =
-        Objects.hash(ruleId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
+        Objects.hash(
+            ruleId,
+            entityIds,
+            additionalHeaders,
+            additionalQueryParams,
+            additionalBodyProperties,
+        )
 
     override fun toString() =
-        "HrisCompanyPayStatementItemRuleDeleteParams{ruleId=$ruleId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "HrisCompanyPayStatementItemRuleDeleteParams{ruleId=$ruleId, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

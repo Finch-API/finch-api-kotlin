@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PaymentEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
@@ -323,6 +324,7 @@ private constructor(
             (eventType.asKnown()?.validity() ?: 0)
 
     class PaymentIdentifiers
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val payDate: JsonField<String>,
         private val paymentId: JsonField<String>,

@@ -41,6 +41,18 @@ interface ConfigurationServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SandboxJobConfiguration
 
+    /** @see update */
+    suspend fun update(
+        sandboxJobConfiguration: SandboxJobConfiguration,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SandboxJobConfiguration =
+        update(
+            SandboxJobConfigurationUpdateParams.builder()
+                .sandboxJobConfiguration(sandboxJobConfiguration)
+                .build(),
+            requestOptions,
+        )
+
     /**
      * A view of [ConfigurationServiceAsync] that provides access to raw HTTP responses for each
      * method.
@@ -83,5 +95,18 @@ interface ConfigurationServiceAsync {
             params: SandboxJobConfigurationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SandboxJobConfiguration>
+
+        /** @see update */
+        @MustBeClosed
+        suspend fun update(
+            sandboxJobConfiguration: SandboxJobConfiguration,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SandboxJobConfiguration> =
+            update(
+                SandboxJobConfigurationUpdateParams.builder()
+                    .sandboxJobConfiguration(sandboxJobConfiguration)
+                    .build(),
+                requestOptions,
+            )
     }
 }

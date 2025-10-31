@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class CompanyEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,

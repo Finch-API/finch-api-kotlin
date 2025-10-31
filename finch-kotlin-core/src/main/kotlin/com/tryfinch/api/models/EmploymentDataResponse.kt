@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class EmploymentDataResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val body: JsonField<EmploymentData>,
     private val code: JsonField<Long>,

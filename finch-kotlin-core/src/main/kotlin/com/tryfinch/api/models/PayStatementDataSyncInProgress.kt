@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PayStatementDataSyncInProgress
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val code: JsonField<Code>,
     private val finchCode: JsonField<FinchCode>,
