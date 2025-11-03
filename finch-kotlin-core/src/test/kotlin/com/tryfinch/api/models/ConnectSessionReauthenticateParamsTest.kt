@@ -35,4 +35,14 @@ internal class ConnectSessionReauthenticateParamsTest {
             .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            ConnectSessionReauthenticateParams.builder().connectionId("connection_id").build()
+
+        val body = params._body()
+
+        assertThat(body.connectionId()).isEqualTo("connection_id")
+    }
 }

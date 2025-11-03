@@ -30,14 +30,6 @@ private constructor(
 ) : Params {
 
     /**
-     * Email address of the customer
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun customerEmail(): String? = body.customerEmail()
-
-    /**
      * Unique identifier for the customer
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -52,6 +44,22 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun customerName(): String = body.customerName()
+
+    /**
+     * The Finch products to request access to
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun products(): List<ConnectProducts> = body.products()
+
+    /**
+     * Email address of the customer
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun customerEmail(): String? = body.customerEmail()
 
     /**
      * Integration configuration for the connect session
@@ -78,14 +86,6 @@ private constructor(
     fun minutesToExpire(): Double? = body.minutesToExpire()
 
     /**
-     * The Finch products to request access to
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun products(): List<ConnectProducts> = body.products()
-
-    /**
      * The URI to redirect to after the Connect flow is completed
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -102,13 +102,6 @@ private constructor(
     fun sandbox(): Sandbox? = body.sandbox()
 
     /**
-     * Returns the raw JSON value of [customerEmail].
-     *
-     * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _customerEmail(): JsonField<String> = body._customerEmail()
-
-    /**
      * Returns the raw JSON value of [customerId].
      *
      * Unlike [customerId], this method doesn't throw if the JSON field has an unexpected type.
@@ -121,6 +114,20 @@ private constructor(
      * Unlike [customerName], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _customerName(): JsonField<String> = body._customerName()
+
+    /**
+     * Returns the raw JSON value of [products].
+     *
+     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _products(): JsonField<List<ConnectProducts>> = body._products()
+
+    /**
+     * Returns the raw JSON value of [customerEmail].
+     *
+     * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _customerEmail(): JsonField<String> = body._customerEmail()
 
     /**
      * Returns the raw JSON value of [integration].
@@ -142,13 +149,6 @@ private constructor(
      * Unlike [minutesToExpire], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _minutesToExpire(): JsonField<Double> = body._minutesToExpire()
-
-    /**
-     * Returns the raw JSON value of [products].
-     *
-     * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _products(): JsonField<List<ConnectProducts>> = body._products()
 
     /**
      * Returns the raw JSON value of [redirectUri].
@@ -181,15 +181,9 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .customerEmail()
          * .customerId()
          * .customerName()
-         * .integration()
-         * .manual()
-         * .minutesToExpire()
          * .products()
-         * .redirectUri()
-         * .sandbox()
          * ```
          */
         fun builder() = Builder()
@@ -214,28 +208,14 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [customerEmail]
          * - [customerId]
          * - [customerName]
+         * - [products]
+         * - [customerEmail]
          * - [integration]
-         * - [manual]
          * - etc.
          */
         fun body(body: CreateConnectSessionRequest) = apply { this.body = body.toBuilder() }
-
-        /** Email address of the customer */
-        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
-
-        /**
-         * Sets [Builder.customerEmail] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.customerEmail] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun customerEmail(customerEmail: JsonField<String>) = apply {
-            body.customerEmail(customerEmail)
-        }
 
         /** Unique identifier for the customer */
         fun customerId(customerId: String) = apply { body.customerId(customerId) }
@@ -261,6 +241,39 @@ private constructor(
          */
         fun customerName(customerName: JsonField<String>) = apply {
             body.customerName(customerName)
+        }
+
+        /** The Finch products to request access to */
+        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
+
+        /**
+         * Sets [Builder.products] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
+
+        /**
+         * Adds a single [ConnectProducts] to [products].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
+
+        /** Email address of the customer */
+        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
+
+        /**
+         * Sets [Builder.customerEmail] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customerEmail] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun customerEmail(customerEmail: JsonField<String>) = apply {
+            body.customerEmail(customerEmail)
         }
 
         /** Integration configuration for the connect session */
@@ -319,25 +332,6 @@ private constructor(
         fun minutesToExpire(minutesToExpire: JsonField<Double>) = apply {
             body.minutesToExpire(minutesToExpire)
         }
-
-        /** The Finch products to request access to */
-        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
-
-        /**
-         * Sets [Builder.products] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
-         * value instead. This method is primarily for setting the field to an undocumented or not
-         * yet supported value.
-         */
-        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
-
-        /**
-         * Adds a single [ConnectProducts] to [products].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
         fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
@@ -486,15 +480,9 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .customerEmail()
          * .customerId()
          * .customerName()
-         * .integration()
-         * .manual()
-         * .minutesToExpire()
          * .products()
-         * .redirectUri()
-         * .sandbox()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -516,13 +504,13 @@ private constructor(
     class CreateConnectSessionRequest
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val customerEmail: JsonField<String>,
         private val customerId: JsonField<String>,
         private val customerName: JsonField<String>,
+        private val products: JsonField<List<ConnectProducts>>,
+        private val customerEmail: JsonField<String>,
         private val integration: JsonField<Integration>,
         private val manual: JsonField<Boolean>,
         private val minutesToExpire: JsonField<Double>,
-        private val products: JsonField<List<ConnectProducts>>,
         private val redirectUri: JsonField<String>,
         private val sandbox: JsonField<Sandbox>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -530,15 +518,18 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("customer_email")
-            @ExcludeMissing
-            customerEmail: JsonField<String> = JsonMissing.of(),
             @JsonProperty("customer_id")
             @ExcludeMissing
             customerId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("customer_name")
             @ExcludeMissing
             customerName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("products")
+            @ExcludeMissing
+            products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
+            @JsonProperty("customer_email")
+            @ExcludeMissing
+            customerEmail: JsonField<String> = JsonMissing.of(),
             @JsonProperty("integration")
             @ExcludeMissing
             integration: JsonField<Integration> = JsonMissing.of(),
@@ -546,33 +537,22 @@ private constructor(
             @JsonProperty("minutes_to_expire")
             @ExcludeMissing
             minutesToExpire: JsonField<Double> = JsonMissing.of(),
-            @JsonProperty("products")
-            @ExcludeMissing
-            products: JsonField<List<ConnectProducts>> = JsonMissing.of(),
             @JsonProperty("redirect_uri")
             @ExcludeMissing
             redirectUri: JsonField<String> = JsonMissing.of(),
             @JsonProperty("sandbox") @ExcludeMissing sandbox: JsonField<Sandbox> = JsonMissing.of(),
         ) : this(
-            customerEmail,
             customerId,
             customerName,
+            products,
+            customerEmail,
             integration,
             manual,
             minutesToExpire,
-            products,
             redirectUri,
             sandbox,
             mutableMapOf(),
         )
-
-        /**
-         * Email address of the customer
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun customerEmail(): String? = customerEmail.getNullable("customer_email")
 
         /**
          * Unique identifier for the customer
@@ -589,6 +569,22 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun customerName(): String = customerName.getRequired("customer_name")
+
+        /**
+         * The Finch products to request access to
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun products(): List<ConnectProducts> = products.getRequired("products")
+
+        /**
+         * Email address of the customer
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun customerEmail(): String? = customerEmail.getNullable("customer_email")
 
         /**
          * Integration configuration for the connect session
@@ -615,14 +611,6 @@ private constructor(
         fun minutesToExpire(): Double? = minutesToExpire.getNullable("minutes_to_expire")
 
         /**
-         * The Finch products to request access to
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun products(): List<ConnectProducts> = products.getRequired("products")
-
-        /**
          * The URI to redirect to after the Connect flow is completed
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -637,16 +625,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun sandbox(): Sandbox? = sandbox.getNullable("sandbox")
-
-        /**
-         * Returns the raw JSON value of [customerEmail].
-         *
-         * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("customer_email")
-        @ExcludeMissing
-        fun _customerEmail(): JsonField<String> = customerEmail
 
         /**
          * Returns the raw JSON value of [customerId].
@@ -666,6 +644,25 @@ private constructor(
         @JsonProperty("customer_name")
         @ExcludeMissing
         fun _customerName(): JsonField<String> = customerName
+
+        /**
+         * Returns the raw JSON value of [products].
+         *
+         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("products")
+        @ExcludeMissing
+        fun _products(): JsonField<List<ConnectProducts>> = products
+
+        /**
+         * Returns the raw JSON value of [customerEmail].
+         *
+         * Unlike [customerEmail], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("customer_email")
+        @ExcludeMissing
+        fun _customerEmail(): JsonField<String> = customerEmail
 
         /**
          * Returns the raw JSON value of [integration].
@@ -692,15 +689,6 @@ private constructor(
         @JsonProperty("minutes_to_expire")
         @ExcludeMissing
         fun _minutesToExpire(): JsonField<Double> = minutesToExpire
-
-        /**
-         * Returns the raw JSON value of [products].
-         *
-         * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("products")
-        @ExcludeMissing
-        fun _products(): JsonField<List<ConnectProducts>> = products
 
         /**
          * Returns the raw JSON value of [redirectUri].
@@ -738,15 +726,9 @@ private constructor(
              *
              * The following fields are required:
              * ```kotlin
-             * .customerEmail()
              * .customerId()
              * .customerName()
-             * .integration()
-             * .manual()
-             * .minutesToExpire()
              * .products()
-             * .redirectUri()
-             * .sandbox()
              * ```
              */
             fun builder() = Builder()
@@ -755,44 +737,29 @@ private constructor(
         /** A builder for [CreateConnectSessionRequest]. */
         class Builder internal constructor() {
 
-            private var customerEmail: JsonField<String>? = null
             private var customerId: JsonField<String>? = null
             private var customerName: JsonField<String>? = null
-            private var integration: JsonField<Integration>? = null
-            private var manual: JsonField<Boolean>? = null
-            private var minutesToExpire: JsonField<Double>? = null
             private var products: JsonField<MutableList<ConnectProducts>>? = null
-            private var redirectUri: JsonField<String>? = null
-            private var sandbox: JsonField<Sandbox>? = null
+            private var customerEmail: JsonField<String> = JsonMissing.of()
+            private var integration: JsonField<Integration> = JsonMissing.of()
+            private var manual: JsonField<Boolean> = JsonMissing.of()
+            private var minutesToExpire: JsonField<Double> = JsonMissing.of()
+            private var redirectUri: JsonField<String> = JsonMissing.of()
+            private var sandbox: JsonField<Sandbox> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(createConnectSessionRequest: CreateConnectSessionRequest) = apply {
-                customerEmail = createConnectSessionRequest.customerEmail
                 customerId = createConnectSessionRequest.customerId
                 customerName = createConnectSessionRequest.customerName
+                products = createConnectSessionRequest.products.map { it.toMutableList() }
+                customerEmail = createConnectSessionRequest.customerEmail
                 integration = createConnectSessionRequest.integration
                 manual = createConnectSessionRequest.manual
                 minutesToExpire = createConnectSessionRequest.minutesToExpire
-                products = createConnectSessionRequest.products.map { it.toMutableList() }
                 redirectUri = createConnectSessionRequest.redirectUri
                 sandbox = createConnectSessionRequest.sandbox
                 additionalProperties =
                     createConnectSessionRequest.additionalProperties.toMutableMap()
-            }
-
-            /** Email address of the customer */
-            fun customerEmail(customerEmail: String?) =
-                customerEmail(JsonField.ofNullable(customerEmail))
-
-            /**
-             * Sets [Builder.customerEmail] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.customerEmail] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun customerEmail(customerEmail: JsonField<String>) = apply {
-                this.customerEmail = customerEmail
             }
 
             /** Unique identifier for the customer */
@@ -819,6 +786,47 @@ private constructor(
              */
             fun customerName(customerName: JsonField<String>) = apply {
                 this.customerName = customerName
+            }
+
+            /** The Finch products to request access to */
+            fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
+
+            /**
+             * Sets [Builder.products] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun products(products: JsonField<List<ConnectProducts>>) = apply {
+                this.products = products.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ConnectProducts] to [products].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addProduct(product: ConnectProducts) = apply {
+                products =
+                    (products ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("products", it).add(product)
+                    }
+            }
+
+            /** Email address of the customer */
+            fun customerEmail(customerEmail: String?) =
+                customerEmail(JsonField.ofNullable(customerEmail))
+
+            /**
+             * Sets [Builder.customerEmail] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customerEmail] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun customerEmail(customerEmail: JsonField<String>) = apply {
+                this.customerEmail = customerEmail
             }
 
             /** Integration configuration for the connect session */
@@ -881,32 +889,6 @@ private constructor(
                 this.minutesToExpire = minutesToExpire
             }
 
-            /** The Finch products to request access to */
-            fun products(products: List<ConnectProducts>) = products(JsonField.of(products))
-
-            /**
-             * Sets [Builder.products] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.products] with a well-typed `List<ConnectProducts>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun products(products: JsonField<List<ConnectProducts>>) = apply {
-                this.products = products.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [ConnectProducts] to [products].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addProduct(product: ConnectProducts) = apply {
-                products =
-                    (products ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("products", it).add(product)
-                    }
-            }
-
             /** The URI to redirect to after the Connect flow is completed */
             fun redirectUri(redirectUri: String?) = redirectUri(JsonField.ofNullable(redirectUri))
 
@@ -959,30 +941,24 @@ private constructor(
              *
              * The following fields are required:
              * ```kotlin
-             * .customerEmail()
              * .customerId()
              * .customerName()
-             * .integration()
-             * .manual()
-             * .minutesToExpire()
              * .products()
-             * .redirectUri()
-             * .sandbox()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): CreateConnectSessionRequest =
                 CreateConnectSessionRequest(
-                    checkRequired("customerEmail", customerEmail),
                     checkRequired("customerId", customerId),
                     checkRequired("customerName", customerName),
-                    checkRequired("integration", integration),
-                    checkRequired("manual", manual),
-                    checkRequired("minutesToExpire", minutesToExpire),
                     checkRequired("products", products).map { it.toImmutable() },
-                    checkRequired("redirectUri", redirectUri),
-                    checkRequired("sandbox", sandbox),
+                    customerEmail,
+                    integration,
+                    manual,
+                    minutesToExpire,
+                    redirectUri,
+                    sandbox,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -994,13 +970,13 @@ private constructor(
                 return@apply
             }
 
-            customerEmail()
             customerId()
             customerName()
+            products().forEach { it.validate() }
+            customerEmail()
             integration()?.validate()
             manual()
             minutesToExpire()
-            products().forEach { it.validate() }
             redirectUri()
             sandbox()?.validate()
             validated = true
@@ -1021,13 +997,13 @@ private constructor(
          * Used for best match union deserialization.
          */
         internal fun validity(): Int =
-            (if (customerEmail.asKnown() == null) 0 else 1) +
-                (if (customerId.asKnown() == null) 0 else 1) +
+            (if (customerId.asKnown() == null) 0 else 1) +
                 (if (customerName.asKnown() == null) 0 else 1) +
+                (products.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (customerEmail.asKnown() == null) 0 else 1) +
                 (integration.asKnown()?.validity() ?: 0) +
                 (if (manual.asKnown() == null) 0 else 1) +
                 (if (minutesToExpire.asKnown() == null) 0 else 1) +
-                (products.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (redirectUri.asKnown() == null) 0 else 1) +
                 (sandbox.asKnown()?.validity() ?: 0)
 
@@ -1037,13 +1013,13 @@ private constructor(
             }
 
             return other is CreateConnectSessionRequest &&
-                customerEmail == other.customerEmail &&
                 customerId == other.customerId &&
                 customerName == other.customerName &&
+                products == other.products &&
+                customerEmail == other.customerEmail &&
                 integration == other.integration &&
                 manual == other.manual &&
                 minutesToExpire == other.minutesToExpire &&
-                products == other.products &&
                 redirectUri == other.redirectUri &&
                 sandbox == other.sandbox &&
                 additionalProperties == other.additionalProperties
@@ -1051,13 +1027,13 @@ private constructor(
 
         private val hashCode: Int by lazy {
             Objects.hash(
-                customerEmail,
                 customerId,
                 customerName,
+                products,
+                customerEmail,
                 integration,
                 manual,
                 minutesToExpire,
-                products,
                 redirectUri,
                 sandbox,
                 additionalProperties,
@@ -1067,353 +1043,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "CreateConnectSessionRequest{customerEmail=$customerEmail, customerId=$customerId, customerName=$customerName, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
-    }
-
-    /** Integration configuration for the connect session */
-    class Integration
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val authMethod: JsonField<AuthMethod>,
-        private val provider: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("auth_method")
-            @ExcludeMissing
-            authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-            @JsonProperty("provider") @ExcludeMissing provider: JsonField<String> = JsonMissing.of(),
-        ) : this(authMethod, provider, mutableMapOf())
-
-        /**
-         * The authentication method to use
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun authMethod(): AuthMethod? = authMethod.getNullable("auth_method")
-
-        /**
-         * The provider to integrate with
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun provider(): String? = provider.getNullable("provider")
-
-        /**
-         * Returns the raw JSON value of [authMethod].
-         *
-         * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("auth_method")
-        @ExcludeMissing
-        fun _authMethod(): JsonField<AuthMethod> = authMethod
-
-        /**
-         * Returns the raw JSON value of [provider].
-         *
-         * Unlike [provider], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Integration].
-             *
-             * The following fields are required:
-             * ```kotlin
-             * .authMethod()
-             * .provider()
-             * ```
-             */
-            fun builder() = Builder()
-        }
-
-        /** A builder for [Integration]. */
-        class Builder internal constructor() {
-
-            private var authMethod: JsonField<AuthMethod>? = null
-            private var provider: JsonField<String>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(integration: Integration) = apply {
-                authMethod = integration.authMethod
-                provider = integration.provider
-                additionalProperties = integration.additionalProperties.toMutableMap()
-            }
-
-            /** The authentication method to use */
-            fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
-
-            /**
-             * Sets [Builder.authMethod] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.authMethod] with a well-typed [AuthMethod] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
-                this.authMethod = authMethod
-            }
-
-            /** The provider to integrate with */
-            fun provider(provider: String?) = provider(JsonField.ofNullable(provider))
-
-            /**
-             * Sets [Builder.provider] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.provider] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Integration].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```kotlin
-             * .authMethod()
-             * .provider()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Integration =
-                Integration(
-                    checkRequired("authMethod", authMethod),
-                    checkRequired("provider", provider),
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Integration = apply {
-            if (validated) {
-                return@apply
-            }
-
-            authMethod()?.validate()
-            provider()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        internal fun validity(): Int =
-            (authMethod.asKnown()?.validity() ?: 0) + (if (provider.asKnown() == null) 0 else 1)
-
-        /** The authentication method to use */
-        class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :
-            Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val ASSISTED = of("assisted")
-
-                val CREDENTIAL = of("credential")
-
-                val OAUTH = of("oauth")
-
-                val API_TOKEN = of("api_token")
-
-                fun of(value: String) = AuthMethod(JsonField.of(value))
-            }
-
-            /** An enum containing [AuthMethod]'s known values. */
-            enum class Known {
-                ASSISTED,
-                CREDENTIAL,
-                OAUTH,
-                API_TOKEN,
-            }
-
-            /**
-             * An enum containing [AuthMethod]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [AuthMethod] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                ASSISTED,
-                CREDENTIAL,
-                OAUTH,
-                API_TOKEN,
-                /**
-                 * An enum member indicating that [AuthMethod] was instantiated with an unknown
-                 * value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    ASSISTED -> Value.ASSISTED
-                    CREDENTIAL -> Value.CREDENTIAL
-                    OAUTH -> Value.OAUTH
-                    API_TOKEN -> Value.API_TOKEN
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws FinchInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    ASSISTED -> Known.ASSISTED
-                    CREDENTIAL -> Known.CREDENTIAL
-                    OAUTH -> Known.OAUTH
-                    API_TOKEN -> Known.API_TOKEN
-                    else -> throw FinchInvalidDataException("Unknown AuthMethod: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws FinchInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
-
-            private var validated: Boolean = false
-
-            fun validate(): AuthMethod = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: FinchInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is AuthMethod && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Integration &&
-                authMethod == other.authMethod &&
-                provider == other.provider &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(authMethod, provider, additionalProperties)
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Integration{authMethod=$authMethod, provider=$provider, additionalProperties=$additionalProperties}"
+            "CreateConnectSessionRequest{customerId=$customerId, customerName=$customerName, products=$products, customerEmail=$customerEmail, integration=$integration, manual=$manual, minutesToExpire=$minutesToExpire, redirectUri=$redirectUri, sandbox=$sandbox, additionalProperties=$additionalProperties}"
     }
 
     /** The Finch products that can be requested during the Connect flow. */
@@ -1591,6 +1221,352 @@ private constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
+    }
+
+    /** Integration configuration for the connect session */
+    class Integration
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val provider: JsonField<String>,
+        private val authMethod: JsonField<AuthMethod>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("provider")
+            @ExcludeMissing
+            provider: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("auth_method")
+            @ExcludeMissing
+            authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+        ) : this(provider, authMethod, mutableMapOf())
+
+        /**
+         * The provider to integrate with
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun provider(): String = provider.getRequired("provider")
+
+        /**
+         * The authentication method to use
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun authMethod(): AuthMethod? = authMethod.getNullable("auth_method")
+
+        /**
+         * Returns the raw JSON value of [provider].
+         *
+         * Unlike [provider], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
+
+        /**
+         * Returns the raw JSON value of [authMethod].
+         *
+         * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("auth_method")
+        @ExcludeMissing
+        fun _authMethod(): JsonField<AuthMethod> = authMethod
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Integration].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .provider()
+             * ```
+             */
+            fun builder() = Builder()
+        }
+
+        /** A builder for [Integration]. */
+        class Builder internal constructor() {
+
+            private var provider: JsonField<String>? = null
+            private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(integration: Integration) = apply {
+                provider = integration.provider
+                authMethod = integration.authMethod
+                additionalProperties = integration.additionalProperties.toMutableMap()
+            }
+
+            /** The provider to integrate with */
+            fun provider(provider: String) = provider(JsonField.of(provider))
+
+            /**
+             * Sets [Builder.provider] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.provider] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
+
+            /** The authentication method to use */
+            fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
+
+            /**
+             * Sets [Builder.authMethod] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.authMethod] with a well-typed [AuthMethod] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
+                this.authMethod = authMethod
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Integration].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .provider()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Integration =
+                Integration(
+                    checkRequired("provider", provider),
+                    authMethod,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Integration = apply {
+            if (validated) {
+                return@apply
+            }
+
+            provider()
+            authMethod()?.validate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (provider.asKnown() == null) 0 else 1) + (authMethod.asKnown()?.validity() ?: 0)
+
+        /** The authentication method to use */
+        class AuthMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                val ASSISTED = of("assisted")
+
+                val CREDENTIAL = of("credential")
+
+                val OAUTH = of("oauth")
+
+                val API_TOKEN = of("api_token")
+
+                fun of(value: String) = AuthMethod(JsonField.of(value))
+            }
+
+            /** An enum containing [AuthMethod]'s known values. */
+            enum class Known {
+                ASSISTED,
+                CREDENTIAL,
+                OAUTH,
+                API_TOKEN,
+            }
+
+            /**
+             * An enum containing [AuthMethod]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [AuthMethod] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                ASSISTED,
+                CREDENTIAL,
+                OAUTH,
+                API_TOKEN,
+                /**
+                 * An enum member indicating that [AuthMethod] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    ASSISTED -> Value.ASSISTED
+                    CREDENTIAL -> Value.CREDENTIAL
+                    OAUTH -> Value.OAUTH
+                    API_TOKEN -> Value.API_TOKEN
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    ASSISTED -> Known.ASSISTED
+                    CREDENTIAL -> Known.CREDENTIAL
+                    OAUTH -> Known.OAUTH
+                    API_TOKEN -> Known.API_TOKEN
+                    else -> throw FinchInvalidDataException("Unknown AuthMethod: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): AuthMethod = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is AuthMethod && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Integration &&
+                provider == other.provider &&
+                authMethod == other.authMethod &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(provider, authMethod, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Integration{provider=$provider, authMethod=$authMethod, additionalProperties=$additionalProperties}"
     }
 
     /** Sandbox mode for testing */
