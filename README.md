@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/8.4.0)
-[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/8.4.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.4.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tryfinch.api/finch-kotlin)](https://central.sonatype.com/artifact/com.tryfinch.api/finch-kotlin/8.5.0)
+[![javadoc](https://javadoc.io/badge2/com.tryfinch.api/finch-kotlin/8.5.0/javadoc.svg)](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.5.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.4.0).
+The REST API documentation can be found on [developer.tryfinch.com](https://developer.tryfinch.com/). KDocs are available on [javadoc.io](https://javadoc.io/doc/com.tryfinch.api/finch-kotlin/8.5.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ The REST API documentation can be found on [developer.tryfinch.com](https://deve
 ### Gradle
 
 ```kotlin
-implementation("com.tryfinch.api:finch-kotlin:8.4.0")
+implementation("com.tryfinch.api:finch-kotlin:8.5.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.tryfinch.api:finch-kotlin:8.4.0")
 <dependency>
   <groupId>com.tryfinch.api</groupId>
   <artifactId>finch-kotlin</artifactId>
-  <version>8.4.0</version>
+  <version>8.5.0</version>
 </dependency>
 ```
 
@@ -543,9 +543,7 @@ import com.tryfinch.api.models.AccessTokenCreateParams
 import com.tryfinch.api.models.HrisDirectoryListParams
 
 val params: HrisDirectoryListParams = AccessTokenCreateParams.builder()
-    .clientSecret("client_secret")
-    .code("code")
-    .clientId(JsonMissing.of())
+    .code(JsonMissing.of())
     .build()
 ```
 
@@ -576,19 +574,19 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 ```kotlin
 import com.tryfinch.api.core.JsonField
 
-val clientId: JsonField<String> = client.accessTokens().create(params)._clientId()
+val code: JsonField<String> = client.accessTokens().create(params)._code()
 
-if (clientId.isMissing()) {
+if (code.isMissing()) {
   // The property is absent from the JSON response
-} else if (clientId.isNull()) {
+} else if (code.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  val jsonString: String? = clientId.asString();
+  val jsonString: String? = code.asString();
 
   // Try to deserialize into a custom type
-  val myObject: MyClass = clientId.asUnknown()!!.convert(MyClass::class.java)
+  val myObject: MyClass = code.asUnknown()!!.convert(MyClass::class.java)
 }
 ```
 

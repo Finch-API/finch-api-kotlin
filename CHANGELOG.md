@@ -1,5 +1,41 @@
 # Changelog
 
+## 8.5.0 (2025-11-04)
+
+Full Changelog: [v8.4.0...v8.5.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.4.0...v8.5.0)
+
+### Features
+
+* **api:** api update ([c92c774](https://github.com/Finch-API/finch-api-kotlin/commit/c92c774b934a5ab6db27a906e1840de9f151f9b1))
+* **api:** api update ([aa03039](https://github.com/Finch-API/finch-api-kotlin/commit/aa030391bf8a9b74f0c76ad87f4334656b7055dd))
+* **api:** api update ([f1e18b8](https://github.com/Finch-API/finch-api-kotlin/commit/f1e18b8d13b096434e1cdf7f5624c251492b4f11))
+* **api:** api update ([285aa30](https://github.com/Finch-API/finch-api-kotlin/commit/285aa306aecee27dff1b0c8d1a55a5779f9be342))
+* **api:** api update ([ff22d83](https://github.com/Finch-API/finch-api-kotlin/commit/ff22d835809078666e8e0fb50298869925a06279))
+* **api:** api update ([fa48e8f](https://github.com/Finch-API/finch-api-kotlin/commit/fa48e8f5a940d34d4ad951ff7ba62902d0b88568))
+* **api:** api update ([c1d8819](https://github.com/Finch-API/finch-api-kotlin/commit/c1d881999d64f0b925d923c2011ce77ae59bd09d))
+* **api:** api update ([271ad83](https://github.com/Finch-API/finch-api-kotlin/commit/271ad835c0e5094987968000fd8e88a948359d00))
+* **api:** api update ([71b5b03](https://github.com/Finch-API/finch-api-kotlin/commit/71b5b03244c1b7c93780b68d118be363fa124ddb))
+* **api:** api update ([3a162ea](https://github.com/Finch-API/finch-api-kotlin/commit/3a162ea7663bb333eb618091be53864dd88eda92))
+* **api:** api update ([32309ae](https://github.com/Finch-API/finch-api-kotlin/commit/32309aefb7eba23e5ab8a32001566dc0d2b72c1a))
+* **api:** make client id, client secret optional again ([13bf198](https://github.com/Finch-API/finch-api-kotlin/commit/13bf19897304e4e85662e0e738b63094a83c9b03))
+* **client:** add convenience overloads for some methods ([0614133](https://github.com/Finch-API/finch-api-kotlin/commit/0614133eb181ef87faa43dd92fdd8d22e482212b))
+* **client:** expose sleeper option ([27e831e](https://github.com/Finch-API/finch-api-kotlin/commit/27e831e751e2266402ae51ba79e3ff31389760e9))
+
+
+### Bug Fixes
+
+* **ci:** use java-version 21 for publish step ([782e222](https://github.com/Finch-API/finch-api-kotlin/commit/782e222a460ed56f6e065e49bae5b1eff365d8c1))
+* **client:** add missing additional properties fields ([28d6a59](https://github.com/Finch-API/finch-api-kotlin/commit/28d6a59036cab616a350fe58c897d5c94bafbc47))
+* **client:** deserialization of empty objects ([c276a03](https://github.com/Finch-API/finch-api-kotlin/commit/c276a033104f54f76b275cc6ad43d34cfd27142d))
+* **client:** ensure single timer is created per client ([27e831e](https://github.com/Finch-API/finch-api-kotlin/commit/27e831e751e2266402ae51ba79e3ff31389760e9))
+* **client:** incorrect `getPackageVersion` impl ([f83aef2](https://github.com/Finch-API/finch-api-kotlin/commit/f83aef2bf5126f9e507c2196986207e6ca818a52))
+
+
+### Chores
+
+* **internal:** change some comment formatting ([a6e3883](https://github.com/Finch-API/finch-api-kotlin/commit/a6e38837435deebe5913f14fa682298ea659bd1c))
+* **ownership:** move from data to platform team ([#484](https://github.com/Finch-API/finch-api-kotlin/issues/484)) ([476cc47](https://github.com/Finch-API/finch-api-kotlin/commit/476cc4706fe9c6c18cdcc333bbbd62fd823aecf6))
+
 ## 8.4.0 (2025-08-25)
 
 Full Changelog: [v8.3.2...v8.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.2...v8.4.0)

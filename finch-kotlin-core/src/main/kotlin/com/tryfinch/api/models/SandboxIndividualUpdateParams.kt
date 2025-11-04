@@ -569,6 +569,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class IndividualWithoutId
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val dob: JsonField<String>,
         private val emails: JsonField<List<Email>>,
@@ -1194,6 +1195,7 @@ private constructor(
     }
 
     class Email
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val data: JsonField<String>,
         private val type: JsonField<Type>,
@@ -1786,6 +1788,7 @@ private constructor(
     }
 
     class PhoneNumber
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val data: JsonField<String>,
         private val type: JsonField<Type>,

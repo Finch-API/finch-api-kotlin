@@ -12,7 +12,7 @@ internal class ConnectSessionReauthenticateParamsTest {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
             .minutesToExpire(0L)
-            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
+            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
             .redirectUri("https://example.com")
             .build()
     }
@@ -23,7 +23,7 @@ internal class ConnectSessionReauthenticateParamsTest {
             ConnectSessionReauthenticateParams.builder()
                 .connectionId("connection_id")
                 .minutesToExpire(0L)
-                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
+                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
                 .redirectUri("https://example.com")
                 .build()
 
@@ -32,7 +32,7 @@ internal class ConnectSessionReauthenticateParamsTest {
         assertThat(body.connectionId()).isEqualTo("connection_id")
         assertThat(body.minutesToExpire()).isEqualTo(0L)
         assertThat(body.products())
-            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY)
+            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 

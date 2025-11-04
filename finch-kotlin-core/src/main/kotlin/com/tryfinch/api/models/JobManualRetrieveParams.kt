@@ -14,19 +14,11 @@ import java.util.Objects
 class JobManualRetrieveParams
 private constructor(
     private val jobId: String?,
-    private val entityId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun jobId(): String? = jobId
-
-    /**
-     * The entity ID to use when authenticating with a multi-account token. Required when using a
-     * multi-account token to specify which entity's data to access. Example:
-     * `123e4567-e89b-12d3-a456-426614174000`
-     */
-    fun entityId(): String? = entityId
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -48,25 +40,16 @@ private constructor(
     class Builder internal constructor() {
 
         private var jobId: String? = null
-        private var entityId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(jobManualRetrieveParams: JobManualRetrieveParams) = apply {
             jobId = jobManualRetrieveParams.jobId
-            entityId = jobManualRetrieveParams.entityId
             additionalHeaders = jobManualRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobManualRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         fun jobId(jobId: String?) = apply { this.jobId = jobId }
-
-        /**
-         * The entity ID to use when authenticating with a multi-account token. Required when using
-         * a multi-account token to specify which entity's data to access. Example:
-         * `123e4567-e89b-12d3-a456-426614174000`
-         */
-        fun entityId(entityId: String?) = apply { this.entityId = entityId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -172,12 +155,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): JobManualRetrieveParams =
-            JobManualRetrieveParams(
-                jobId,
-                entityId,
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobManualRetrieveParams(jobId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
@@ -188,13 +166,7 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                entityId?.let { put("entity_id", it) }
-                putAll(additionalQueryParams)
-            }
-            .build()
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -203,14 +175,12 @@ private constructor(
 
         return other is JobManualRetrieveParams &&
             jobId == other.jobId &&
-            entityId == other.entityId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int =
-        Objects.hash(jobId, entityId, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int = Objects.hash(jobId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "JobManualRetrieveParams{jobId=$jobId, entityId=$entityId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

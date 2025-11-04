@@ -12,6 +12,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -23,12 +24,16 @@ import java.util.Objects
 class HrisCompanyPayStatementItemRuleUpdateParams
 private constructor(
     private val ruleId: String?,
+    private val entityIds: List<String>?,
     private val body: UpdateRuleRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun ruleId(): String? = ruleId
+
+    /** The entity IDs to update the rule for. */
+    fun entityIds(): List<String>? = entityIds
 
     fun _optionalProperty(): JsonValue = body._optionalProperty()
 
@@ -57,6 +62,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var ruleId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var body: UpdateRuleRequest.Builder = UpdateRuleRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -65,6 +71,7 @@ private constructor(
             hrisCompanyPayStatementItemRuleUpdateParams: HrisCompanyPayStatementItemRuleUpdateParams
         ) = apply {
             ruleId = hrisCompanyPayStatementItemRuleUpdateParams.ruleId
+            entityIds = hrisCompanyPayStatementItemRuleUpdateParams.entityIds?.toMutableList()
             body = hrisCompanyPayStatementItemRuleUpdateParams.body.toBuilder()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleUpdateParams.additionalHeaders.toBuilder()
@@ -73,6 +80,20 @@ private constructor(
         }
 
         fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
+
+        /** The entity IDs to update the rule for. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /**
          * Sets the entire request body.
@@ -212,6 +233,7 @@ private constructor(
         fun build(): HrisCompanyPayStatementItemRuleUpdateParams =
             HrisCompanyPayStatementItemRuleUpdateParams(
                 ruleId,
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -228,9 +250,16 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class UpdateRuleRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val optionalProperty: JsonValue,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -359,14 +388,15 @@ private constructor(
 
         return other is HrisCompanyPayStatementItemRuleUpdateParams &&
             ruleId == other.ruleId &&
+            entityIds == other.entityIds &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(ruleId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(ruleId, entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisCompanyPayStatementItemRuleUpdateParams{ruleId=$ruleId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisCompanyPayStatementItemRuleUpdateParams{ruleId=$ruleId, entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

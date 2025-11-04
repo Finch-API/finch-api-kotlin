@@ -23,12 +23,16 @@ import java.util.Objects
 class HrisBenefitIndividualUnenrollManyParams
 private constructor(
     private val benefitId: String?,
+    private val entityIds: List<String>?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun benefitId(): String? = benefitId
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * Array of individual_ids to unenroll.
@@ -70,6 +74,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var benefitId: String? = null
+        private var entityIds: MutableList<String>? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -78,6 +83,7 @@ private constructor(
             hrisBenefitIndividualUnenrollManyParams: HrisBenefitIndividualUnenrollManyParams
         ) = apply {
             benefitId = hrisBenefitIndividualUnenrollManyParams.benefitId
+            entityIds = hrisBenefitIndividualUnenrollManyParams.entityIds?.toMutableList()
             body = hrisBenefitIndividualUnenrollManyParams.body.toBuilder()
             additionalHeaders =
                 hrisBenefitIndividualUnenrollManyParams.additionalHeaders.toBuilder()
@@ -86,6 +92,20 @@ private constructor(
         }
 
         fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /**
          * Sets the entire request body.
@@ -242,6 +262,7 @@ private constructor(
         fun build(): HrisBenefitIndividualUnenrollManyParams =
             HrisBenefitIndividualUnenrollManyParams(
                 benefitId,
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -258,9 +279,16 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualIds: JsonField<List<String>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -430,14 +458,15 @@ private constructor(
 
         return other is HrisBenefitIndividualUnenrollManyParams &&
             benefitId == other.benefitId &&
+            entityIds == other.entityIds &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(benefitId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(benefitId, entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisBenefitIndividualUnenrollManyParams{benefitId=$benefitId, entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
