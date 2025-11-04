@@ -2464,7 +2464,6 @@ private constructor(
         private val id: JsonField<String>,
         private val name: JsonField<String>,
         private val sourceId: JsonField<String>,
-        private val type: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -2475,8 +2474,7 @@ private constructor(
             @JsonProperty("source_id")
             @ExcludeMissing
             sourceId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
-        ) : this(id, name, sourceId, type, mutableMapOf())
+        ) : this(id, name, sourceId, mutableMapOf())
 
         /**
          * The connection account ID for this entity
@@ -2503,14 +2501,6 @@ private constructor(
         fun sourceId(): String? = sourceId.getNullable("source_id")
 
         /**
-         * The type of entity
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun type(): String? = type.getNullable("type")
-
-        /**
          * Returns the raw JSON value of [id].
          *
          * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
@@ -2530,13 +2520,6 @@ private constructor(
          * Unlike [sourceId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("source_id") @ExcludeMissing fun _sourceId(): JsonField<String> = sourceId
-
-        /**
-         * Returns the raw JSON value of [type].
-         *
-         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -2560,7 +2543,6 @@ private constructor(
              * .id()
              * .name()
              * .sourceId()
-             * .type()
              * ```
              */
             fun builder() = Builder()
@@ -2572,14 +2554,12 @@ private constructor(
             private var id: JsonField<String>? = null
             private var name: JsonField<String>? = null
             private var sourceId: JsonField<String>? = null
-            private var type: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(multiAccountEntity: MultiAccountEntity) = apply {
                 id = multiAccountEntity.id
                 name = multiAccountEntity.name
                 sourceId = multiAccountEntity.sourceId
-                type = multiAccountEntity.type
                 additionalProperties = multiAccountEntity.additionalProperties.toMutableMap()
             }
 
@@ -2619,18 +2599,6 @@ private constructor(
              */
             fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
-            /** The type of entity */
-            fun type(type: String?) = type(JsonField.ofNullable(type))
-
-            /**
-             * Sets [Builder.type] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.type] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun type(type: JsonField<String>) = apply { this.type = type }
-
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -2660,7 +2628,6 @@ private constructor(
              * .id()
              * .name()
              * .sourceId()
-             * .type()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
@@ -2670,7 +2637,6 @@ private constructor(
                     checkRequired("id", id),
                     checkRequired("name", name),
                     checkRequired("sourceId", sourceId),
-                    checkRequired("type", type),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -2685,7 +2651,6 @@ private constructor(
             id()
             name()
             sourceId()
-            type()
             validated = true
         }
 
@@ -2706,8 +2671,7 @@ private constructor(
         internal fun validity(): Int =
             (if (id.asKnown() == null) 0 else 1) +
                 (if (name.asKnown() == null) 0 else 1) +
-                (if (sourceId.asKnown() == null) 0 else 1) +
-                (if (type.asKnown() == null) 0 else 1)
+                (if (sourceId.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -2718,18 +2682,15 @@ private constructor(
                 id == other.id &&
                 name == other.name &&
                 sourceId == other.sourceId &&
-                type == other.type &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy {
-            Objects.hash(id, name, sourceId, type, additionalProperties)
-        }
+        private val hashCode: Int by lazy { Objects.hash(id, name, sourceId, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "MultiAccountEntity{id=$id, name=$name, sourceId=$sourceId, type=$type, additionalProperties=$additionalProperties}"
+            "MultiAccountEntity{id=$id, name=$name, sourceId=$sourceId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
