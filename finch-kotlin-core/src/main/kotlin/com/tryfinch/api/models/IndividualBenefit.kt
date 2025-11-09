@@ -468,6 +468,10 @@ private constructor(
             fun catchUp(): Boolean? = catchUp.getNullable("catch_up")
 
             /**
+             * Company contribution configuration. Supports fixed amounts (in cents),
+             * percentage-based contributions (in basis points where 100 = 1%), or tiered matching
+             * structures.
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -475,6 +479,9 @@ private constructor(
                 companyContribution.getNullable("company_contribution")
 
             /**
+             * Employee deduction configuration. Supports both fixed amounts (in cents) and
+             * percentage-based contributions (in basis points where 100 = 1%).
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -630,6 +637,11 @@ private constructor(
                  */
                 fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
+                /**
+                 * Company contribution configuration. Supports fixed amounts (in cents),
+                 * percentage-based contributions (in basis points where 100 = 1%), or tiered
+                 * matching structures.
+                 */
                 fun companyContribution(companyContribution: CompanyContribution?) =
                     companyContribution(JsonField.ofNullable(companyContribution))
 
@@ -666,6 +678,10 @@ private constructor(
                 fun companyContribution(unionMember2: CompanyContribution.UnionMember2) =
                     companyContribution(CompanyContribution.ofUnionMember2(unionMember2))
 
+                /**
+                 * Employee deduction configuration. Supports both fixed amounts (in cents) and
+                 * percentage-based contributions (in basis points where 100 = 1%).
+                 */
                 fun employeeDeduction(employeeDeduction: EmployeeDeduction?) =
                     employeeDeduction(JsonField.ofNullable(employeeDeduction))
 
@@ -794,6 +810,11 @@ private constructor(
                     (employeeDeduction.asKnown()?.validity() ?: 0) +
                     (hsaContributionLimit.asKnown()?.validity() ?: 0)
 
+            /**
+             * Company contribution configuration. Supports fixed amounts (in cents),
+             * percentage-based contributions (in basis points where 100 = 1%), or tiered matching
+             * structures.
+             */
             @JsonDeserialize(using = CompanyContribution.Deserializer::class)
             @JsonSerialize(using = CompanyContribution.Serializer::class)
             class CompanyContribution
@@ -1028,7 +1049,8 @@ private constructor(
                     ) : this(amount, type, mutableMapOf())
 
                     /**
-                     * Contribution amount in cents.
+                     * Contribution amount in cents (for type=fixed) or basis points (for
+                     * type=percent, where 100 = 1%). Not used for type=tiered.
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1037,7 +1059,8 @@ private constructor(
                     fun amount(): Long = amount.getRequired("amount")
 
                     /**
-                     * Fixed contribution type.
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1103,7 +1126,10 @@ private constructor(
                                 innerUnionMember0.additionalProperties.toMutableMap()
                         }
 
-                        /** Contribution amount in cents. */
+                        /**
+                         * Contribution amount in cents (for type=fixed) or basis points (for
+                         * type=percent, where 100 = 1%). Not used for type=tiered.
+                         */
                         fun amount(amount: Long) = amount(JsonField.of(amount))
 
                         /**
@@ -1115,7 +1141,10 @@ private constructor(
                          */
                         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                        /** Fixed contribution type. */
+                        /**
+                         * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                         * (amount in basis points), or "tiered" (multi-tier matching).
+                         */
                         fun type(type: Type) = type(JsonField.of(type))
 
                         /**
@@ -1199,7 +1228,10 @@ private constructor(
                     internal fun validity(): Int =
                         (if (amount.asKnown() == null) 0 else 1) + (type.asKnown()?.validity() ?: 0)
 
-                    /** Fixed contribution type. */
+                    /**
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
+                     */
                     class Type
                     @JsonCreator
                     private constructor(private val value: JsonField<String>) : Enum {
@@ -1367,7 +1399,8 @@ private constructor(
                     ) : this(amount, type, mutableMapOf())
 
                     /**
-                     * Contribution amount in basis points (1/100th of a percent).
+                     * Contribution amount in cents (for type=fixed) or basis points (for
+                     * type=percent, where 100 = 1%). Not used for type=tiered.
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1376,7 +1409,8 @@ private constructor(
                     fun amount(): Long = amount.getRequired("amount")
 
                     /**
-                     * Percentage contribution type.
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1440,7 +1474,10 @@ private constructor(
                             additionalProperties = unionMember1.additionalProperties.toMutableMap()
                         }
 
-                        /** Contribution amount in basis points (1/100th of a percent). */
+                        /**
+                         * Contribution amount in cents (for type=fixed) or basis points (for
+                         * type=percent, where 100 = 1%). Not used for type=tiered.
+                         */
                         fun amount(amount: Long) = amount(JsonField.of(amount))
 
                         /**
@@ -1452,7 +1489,10 @@ private constructor(
                          */
                         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                        /** Percentage contribution type. */
+                        /**
+                         * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                         * (amount in basis points), or "tiered" (multi-tier matching).
+                         */
                         fun type(type: Type) = type(JsonField.of(type))
 
                         /**
@@ -1536,7 +1576,10 @@ private constructor(
                     internal fun validity(): Int =
                         (if (amount.asKnown() == null) 0 else 1) + (type.asKnown()?.validity() ?: 0)
 
-                    /** Percentage contribution type. */
+                    /**
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
+                     */
                     class Type
                     @JsonCreator
                     private constructor(private val value: JsonField<String>) : Enum {
@@ -1705,7 +1748,7 @@ private constructor(
 
                     /**
                      * Array of tier objects defining employer match tiers based on employee
-                     * contribution thresholds.
+                     * contribution thresholds. Required when type=tiered.
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1714,7 +1757,8 @@ private constructor(
                     fun tiers(): List<Tier> = tiers.getRequired("tiers")
 
                     /**
-                     * Tiered contribution type (only valid for company_contribution).
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -1782,7 +1826,7 @@ private constructor(
 
                         /**
                          * Array of tier objects defining employer match tiers based on employee
-                         * contribution thresholds.
+                         * contribution thresholds. Required when type=tiered.
                          */
                         fun tiers(tiers: List<Tier>) = tiers(JsonField.of(tiers))
 
@@ -1810,7 +1854,10 @@ private constructor(
                                 }
                         }
 
-                        /** Tiered contribution type (only valid for company_contribution). */
+                        /**
+                         * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                         * (amount in basis points), or "tiered" (multi-tier matching).
+                         */
                         fun type(type: Type) = type(JsonField.of(type))
 
                         /**
@@ -2104,7 +2151,10 @@ private constructor(
                             "Tier{match=$match, threshold=$threshold, additionalProperties=$additionalProperties}"
                     }
 
-                    /** Tiered contribution type (only valid for company_contribution). */
+                    /**
+                     * Contribution type. Supported values: "fixed" (amount in cents), "percent"
+                     * (amount in basis points), or "tiered" (multi-tier matching).
+                     */
                     class Type
                     @JsonCreator
                     private constructor(private val value: JsonField<String>) : Enum {
@@ -2254,6 +2304,10 @@ private constructor(
                 }
             }
 
+            /**
+             * Employee deduction configuration. Supports both fixed amounts (in cents) and
+             * percentage-based contributions (in basis points where 100 = 1%).
+             */
             @JsonDeserialize(using = EmployeeDeduction.Deserializer::class)
             @JsonSerialize(using = EmployeeDeduction.Serializer::class)
             class EmployeeDeduction
@@ -2461,7 +2515,8 @@ private constructor(
                     ) : this(amount, type, mutableMapOf())
 
                     /**
-                     * Contribution amount in cents.
+                     * Contribution amount in cents (for type=fixed) or basis points (for
+                     * type=percent, where 100 = 1%).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -2470,7 +2525,8 @@ private constructor(
                     fun amount(): Long = amount.getRequired("amount")
 
                     /**
-                     * Fixed contribution type.
+                     * Contribution type. Supported values: "fixed" (amount in cents) or "percent"
+                     * (amount in basis points).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -2536,7 +2592,10 @@ private constructor(
                                 innerUnionMember0.additionalProperties.toMutableMap()
                         }
 
-                        /** Contribution amount in cents. */
+                        /**
+                         * Contribution amount in cents (for type=fixed) or basis points (for
+                         * type=percent, where 100 = 1%).
+                         */
                         fun amount(amount: Long) = amount(JsonField.of(amount))
 
                         /**
@@ -2548,7 +2607,10 @@ private constructor(
                          */
                         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                        /** Fixed contribution type. */
+                        /**
+                         * Contribution type. Supported values: "fixed" (amount in cents) or
+                         * "percent" (amount in basis points).
+                         */
                         fun type(type: Type) = type(JsonField.of(type))
 
                         /**
@@ -2632,7 +2694,10 @@ private constructor(
                     internal fun validity(): Int =
                         (if (amount.asKnown() == null) 0 else 1) + (type.asKnown()?.validity() ?: 0)
 
-                    /** Fixed contribution type. */
+                    /**
+                     * Contribution type. Supported values: "fixed" (amount in cents) or "percent"
+                     * (amount in basis points).
+                     */
                     class Type
                     @JsonCreator
                     private constructor(private val value: JsonField<String>) : Enum {
@@ -2800,7 +2865,8 @@ private constructor(
                     ) : this(amount, type, mutableMapOf())
 
                     /**
-                     * Contribution amount in basis points (1/100th of a percent).
+                     * Contribution amount in cents (for type=fixed) or basis points (for
+                     * type=percent, where 100 = 1%).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -2809,7 +2875,8 @@ private constructor(
                     fun amount(): Long = amount.getRequired("amount")
 
                     /**
-                     * Percentage contribution type.
+                     * Contribution type. Supported values: "fixed" (amount in cents) or "percent"
+                     * (amount in basis points).
                      *
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type or
                      *   is unexpectedly missing or null (e.g. if the server responded with an
@@ -2873,7 +2940,10 @@ private constructor(
                             additionalProperties = unionMember1.additionalProperties.toMutableMap()
                         }
 
-                        /** Contribution amount in basis points (1/100th of a percent). */
+                        /**
+                         * Contribution amount in cents (for type=fixed) or basis points (for
+                         * type=percent, where 100 = 1%).
+                         */
                         fun amount(amount: Long) = amount(JsonField.of(amount))
 
                         /**
@@ -2885,7 +2955,10 @@ private constructor(
                          */
                         fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                        /** Percentage contribution type. */
+                        /**
+                         * Contribution type. Supported values: "fixed" (amount in cents) or
+                         * "percent" (amount in basis points).
+                         */
                         fun type(type: Type) = type(JsonField.of(type))
 
                         /**
@@ -2969,7 +3042,10 @@ private constructor(
                     internal fun validity(): Int =
                         (if (amount.asKnown() == null) 0 else 1) + (type.asKnown()?.validity() ?: 0)
 
-                    /** Percentage contribution type. */
+                    /**
+                     * Contribution type. Supported values: "fixed" (amount in cents) or "percent"
+                     * (amount in basis points).
+                     */
                     class Type
                     @JsonCreator
                     private constructor(private val value: JsonField<String>) : Enum {
