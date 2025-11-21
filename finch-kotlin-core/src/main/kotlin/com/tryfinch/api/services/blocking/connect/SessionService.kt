@@ -6,9 +6,9 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
-import com.tryfinch.api.models.ConnectSessionNewParams
+import com.tryfinch.api.models.ConnectSessionConnectParams
 import com.tryfinch.api.models.ConnectSessionReauthenticateParams
-import com.tryfinch.api.models.SessionNewResponse
+import com.tryfinch.api.models.SessionConnectResponse
 import com.tryfinch.api.models.SessionReauthenticateResponse
 
 interface SessionService {
@@ -26,10 +26,10 @@ interface SessionService {
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): SessionService
 
     /** Create a new connect session for an employer */
-    fun new(
-        params: ConnectSessionNewParams,
+    fun connect(
+        params: ConnectSessionConnectParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): SessionNewResponse
+    ): SessionConnectResponse
 
     /** Create a new Connect session for reauthenticating an existing connection */
     fun reauthenticate(
@@ -49,13 +49,13 @@ interface SessionService {
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions`, but is otherwise the same as
-         * [SessionService.new].
+         * [SessionService.connect].
          */
         @MustBeClosed
-        fun new(
-            params: ConnectSessionNewParams,
+        fun connect(
+            params: ConnectSessionConnectParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SessionNewResponse>
+        ): HttpResponseFor<SessionConnectResponse>
 
         /**
          * Returns a raw HTTP response for `post /connect/sessions/reauthenticate`, but is otherwise

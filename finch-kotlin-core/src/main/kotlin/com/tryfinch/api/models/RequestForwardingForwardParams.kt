@@ -59,16 +59,6 @@ private constructor(
     fun data(): String? = body.data()
 
     /**
-     * The HTTP headers to include on the forwarded request. This value must be specified as an
-     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
-     * "v1" }`
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun headers(): Headers? = body.headers()
-
-    /**
      * The query parameters for the forwarded request. This value must be specified as a valid JSON
      * object rather than a query string.
      *
@@ -76,6 +66,16 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun params(): Params? = body.params()
+
+    /**
+     * The HTTP headers to include on the forwarded request. This value must be specified as an
+     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+     * "v1" }`
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun requestHeaders(): RequestHeaders? = body.requestHeaders()
 
     /**
      * Returns the raw JSON value of [method].
@@ -99,18 +99,18 @@ private constructor(
     fun _data(): JsonField<String> = body._data()
 
     /**
-     * Returns the raw JSON value of [headers].
-     *
-     * Unlike [headers], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _headers_(): JsonField<Headers> = body._headers_()
-
-    /**
      * Returns the raw JSON value of [params].
      *
      * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _params(): JsonField<Params> = body._params()
+
+    /**
+     * Returns the raw JSON value of [requestHeaders].
+     *
+     * Unlike [requestHeaders], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _requestHeaders(): JsonField<RequestHeaders> = body._requestHeaders()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -158,8 +158,8 @@ private constructor(
          * - [method]
          * - [route]
          * - [data]
-         * - [headers]
          * - [params]
+         * - [requestHeaders]
          * - etc.
          */
         fun body(body: ForwardRequest) = apply { this.body = body.toBuilder() }
@@ -207,21 +207,6 @@ private constructor(
         fun data(data: JsonField<String>) = apply { body.data(data) }
 
         /**
-         * The HTTP headers to include on the forwarded request. This value must be specified as an
-         * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
-         * "v1" }`
-         */
-        fun headers(headers: Headers?) = apply { body.headers(headers) }
-
-        /**
-         * Sets [Builder.headers] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.headers] with a well-typed [Headers] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun headers(headers: JsonField<Headers>) = apply { body.headers(headers) }
-
-        /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
@@ -234,6 +219,26 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun params(params: JsonField<Params>) = apply { body.params(params) }
+
+        /**
+         * The HTTP headers to include on the forwarded request. This value must be specified as an
+         * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+         * "v1" }`
+         */
+        fun requestHeaders(requestHeaders: RequestHeaders?) = apply {
+            body.requestHeaders(requestHeaders)
+        }
+
+        /**
+         * Sets [Builder.requestHeaders] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requestHeaders] with a well-typed [RequestHeaders] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun requestHeaders(requestHeaders: JsonField<RequestHeaders>) = apply {
+            body.requestHeaders(requestHeaders)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -385,8 +390,8 @@ private constructor(
         private val method: JsonField<String>,
         private val route: JsonField<String>,
         private val data: JsonField<String>,
-        private val headers: JsonField<Headers>,
         private val params: JsonField<Params>,
+        private val requestHeaders: JsonField<RequestHeaders>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -395,9 +400,11 @@ private constructor(
             @JsonProperty("method") @ExcludeMissing method: JsonField<String> = JsonMissing.of(),
             @JsonProperty("route") @ExcludeMissing route: JsonField<String> = JsonMissing.of(),
             @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("headers") @ExcludeMissing headers: JsonField<Headers> = JsonMissing.of(),
             @JsonProperty("params") @ExcludeMissing params: JsonField<Params> = JsonMissing.of(),
-        ) : this(method, route, data, headers, params, mutableMapOf())
+            @JsonProperty("request_headers")
+            @ExcludeMissing
+            requestHeaders: JsonField<RequestHeaders> = JsonMissing.of(),
+        ) : this(method, route, data, params, requestHeaders, mutableMapOf())
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
@@ -427,16 +434,6 @@ private constructor(
         fun data(): String? = data.getNullable("data")
 
         /**
-         * The HTTP headers to include on the forwarded request. This value must be specified as an
-         * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
-         * "v1" }`
-         *
-         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun headers(): Headers? = headers.getNullable("headers")
-
-        /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          *
@@ -444,6 +441,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun params(): Params? = params.getNullable("params")
+
+        /**
+         * The HTTP headers to include on the forwarded request. This value must be specified as an
+         * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+         * "v1" }`
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun requestHeaders(): RequestHeaders? = requestHeaders.getNullable("request_headers")
 
         /**
          * Returns the raw JSON value of [method].
@@ -467,18 +474,21 @@ private constructor(
         @JsonProperty("data") @ExcludeMissing fun _data(): JsonField<String> = data
 
         /**
-         * Returns the raw JSON value of [headers].
-         *
-         * Unlike [headers], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("headers") @ExcludeMissing fun _headers_(): JsonField<Headers> = headers
-
-        /**
          * Returns the raw JSON value of [params].
          *
          * Unlike [params], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("params") @ExcludeMissing fun _params(): JsonField<Params> = params
+
+        /**
+         * Returns the raw JSON value of [requestHeaders].
+         *
+         * Unlike [requestHeaders], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("request_headers")
+        @ExcludeMissing
+        fun _requestHeaders(): JsonField<RequestHeaders> = requestHeaders
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -512,16 +522,16 @@ private constructor(
             private var method: JsonField<String>? = null
             private var route: JsonField<String>? = null
             private var data: JsonField<String> = JsonMissing.of()
-            private var headers: JsonField<Headers> = JsonMissing.of()
             private var params: JsonField<Params> = JsonMissing.of()
+            private var requestHeaders: JsonField<RequestHeaders> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(forwardRequest: ForwardRequest) = apply {
                 method = forwardRequest.method
                 route = forwardRequest.route
                 data = forwardRequest.data
-                headers = forwardRequest.headers
                 params = forwardRequest.params
+                requestHeaders = forwardRequest.requestHeaders
                 additionalProperties = forwardRequest.additionalProperties.toMutableMap()
             }
 
@@ -572,22 +582,6 @@ private constructor(
             fun data(data: JsonField<String>) = apply { this.data = data }
 
             /**
-             * The HTTP headers to include on the forwarded request. This value must be specified as
-             * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
-             * "X-API-Version": "v1" }`
-             */
-            fun headers(headers: Headers?) = headers(JsonField.ofNullable(headers))
-
-            /**
-             * Sets [Builder.headers] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.headers] with a well-typed [Headers] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun headers(headers: JsonField<Headers>) = apply { this.headers = headers }
-
-            /**
              * The query parameters for the forwarded request. This value must be specified as a
              * valid JSON object rather than a query string.
              */
@@ -601,6 +595,25 @@ private constructor(
              * supported value.
              */
             fun params(params: JsonField<Params>) = apply { this.params = params }
+
+            /**
+             * The HTTP headers to include on the forwarded request. This value must be specified as
+             * an object of key-value pairs. Example: `{"Content-Type": "application/xml",
+             * "X-API-Version": "v1" }`
+             */
+            fun requestHeaders(requestHeaders: RequestHeaders?) =
+                requestHeaders(JsonField.ofNullable(requestHeaders))
+
+            /**
+             * Sets [Builder.requestHeaders] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requestHeaders] with a well-typed [RequestHeaders]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun requestHeaders(requestHeaders: JsonField<RequestHeaders>) = apply {
+                this.requestHeaders = requestHeaders
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -639,8 +652,8 @@ private constructor(
                     checkRequired("method", method),
                     checkRequired("route", route),
                     data,
-                    headers,
                     params,
+                    requestHeaders,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -655,8 +668,8 @@ private constructor(
             method()
             route()
             data()
-            headers()?.validate()
             params()?.validate()
+            requestHeaders()?.validate()
             validated = true
         }
 
@@ -678,8 +691,8 @@ private constructor(
             (if (method.asKnown() == null) 0 else 1) +
                 (if (route.asKnown() == null) 0 else 1) +
                 (if (data.asKnown() == null) 0 else 1) +
-                (headers.asKnown()?.validity() ?: 0) +
-                (params.asKnown()?.validity() ?: 0)
+                (params.asKnown()?.validity() ?: 0) +
+                (requestHeaders.asKnown()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -690,121 +703,19 @@ private constructor(
                 method == other.method &&
                 route == other.route &&
                 data == other.data &&
-                headers == other.headers &&
                 params == other.params &&
+                requestHeaders == other.requestHeaders &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(method, route, data, headers, params, additionalProperties)
+            Objects.hash(method, route, data, params, requestHeaders, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ForwardRequest{method=$method, route=$route, data=$data, headers=$headers, params=$params, additionalProperties=$additionalProperties}"
-    }
-
-    /**
-     * The HTTP headers to include on the forwarded request. This value must be specified as an
-     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
-     * "v1" }`
-     */
-    class Headers
-    @JsonCreator
-    private constructor(
-        @com.fasterxml.jackson.annotation.JsonValue
-        private val additionalProperties: Map<String, JsonValue>
-    ) {
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Headers]. */
-            fun builder() = Builder()
-        }
-
-        /** A builder for [Headers]. */
-        class Builder internal constructor() {
-
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(headers: Headers) = apply {
-                additionalProperties = headers.additionalProperties.toMutableMap()
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Headers].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Headers = Headers(additionalProperties.toImmutable())
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Headers = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: FinchInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        internal fun validity(): Int =
-            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Headers && additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() = "Headers{additionalProperties=$additionalProperties}"
+            "ForwardRequest{method=$method, route=$route, data=$data, params=$params, requestHeaders=$requestHeaders, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -906,6 +817,108 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() = "Params{additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * The HTTP headers to include on the forwarded request. This value must be specified as an
+     * object of key-value pairs. Example: `{"Content-Type": "application/xml", "X-API-Version":
+     * "v1" }`
+     */
+    class RequestHeaders
+    @JsonCreator
+    private constructor(
+        @com.fasterxml.jackson.annotation.JsonValue
+        private val additionalProperties: Map<String, JsonValue>
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [RequestHeaders]. */
+            fun builder() = Builder()
+        }
+
+        /** A builder for [RequestHeaders]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(requestHeaders: RequestHeaders) = apply {
+                additionalProperties = requestHeaders.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [RequestHeaders].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): RequestHeaders = RequestHeaders(additionalProperties.toImmutable())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): RequestHeaders = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is RequestHeaders && additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "RequestHeaders{additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

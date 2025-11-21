@@ -14,13 +14,13 @@ internal class RequestForwardingForwardParamsTest {
             .method("method")
             .route("route")
             .data("data")
-            .headers(
-                RequestForwardingForwardParams.Headers.builder()
+            .params(
+                RequestForwardingForwardParams.Params.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
-            .params(
-                RequestForwardingForwardParams.Params.builder()
+            .requestHeaders(
+                RequestForwardingForwardParams.RequestHeaders.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
@@ -34,13 +34,13 @@ internal class RequestForwardingForwardParamsTest {
                 .method("method")
                 .route("route")
                 .data("data")
-                .headers(
-                    RequestForwardingForwardParams.Headers.builder()
+                .params(
+                    RequestForwardingForwardParams.Params.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
-                .params(
-                    RequestForwardingForwardParams.Params.builder()
+                .requestHeaders(
+                    RequestForwardingForwardParams.RequestHeaders.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
@@ -51,15 +51,15 @@ internal class RequestForwardingForwardParamsTest {
         assertThat(body.method()).isEqualTo("method")
         assertThat(body.route()).isEqualTo("route")
         assertThat(body.data()).isEqualTo("data")
-        assertThat(body.headers())
-            .isEqualTo(
-                RequestForwardingForwardParams.Headers.builder()
-                    .putAdditionalProperty("foo", JsonValue.from("bar"))
-                    .build()
-            )
         assertThat(body.params())
             .isEqualTo(
                 RequestForwardingForwardParams.Params.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(body.requestHeaders())
+            .isEqualTo(
+                RequestForwardingForwardParams.RequestHeaders.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()
             )
