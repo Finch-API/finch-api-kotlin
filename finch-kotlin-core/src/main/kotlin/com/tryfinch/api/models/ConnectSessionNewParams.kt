@@ -22,7 +22,7 @@ import java.util.Collections
 import java.util.Objects
 
 /** Create a new connect session for an employer */
-class ConnectSessionConnectParams
+class ConnectSessionNewParams
 private constructor(
     private val body: CreateConnectSessionRequest,
     private val additionalHeaders: Headers,
@@ -177,7 +177,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ConnectSessionConnectParams].
+         * Returns a mutable builder for constructing an instance of [ConnectSessionNewParams].
          *
          * The following fields are required:
          * ```kotlin
@@ -189,7 +189,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [ConnectSessionConnectParams]. */
+    /** A builder for [ConnectSessionNewParams]. */
     class Builder internal constructor() {
 
         private var body: CreateConnectSessionRequest.Builder =
@@ -197,10 +197,10 @@ private constructor(
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
-        internal fun from(connectSessionConnectParams: ConnectSessionConnectParams) = apply {
-            body = connectSessionConnectParams.body.toBuilder()
-            additionalHeaders = connectSessionConnectParams.additionalHeaders.toBuilder()
-            additionalQueryParams = connectSessionConnectParams.additionalQueryParams.toBuilder()
+        internal fun from(connectSessionNewParams: ConnectSessionNewParams) = apply {
+            body = connectSessionNewParams.body.toBuilder()
+            additionalHeaders = connectSessionNewParams.additionalHeaders.toBuilder()
+            additionalQueryParams = connectSessionNewParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -474,7 +474,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ConnectSessionConnectParams].
+         * Returns an immutable instance of [ConnectSessionNewParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -487,8 +487,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ConnectSessionConnectParams =
-            ConnectSessionConnectParams(
+        fun build(): ConnectSessionNewParams =
+            ConnectSessionNewParams(
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -1699,7 +1699,7 @@ private constructor(
             return true
         }
 
-        return other is ConnectSessionConnectParams &&
+        return other is ConnectSessionNewParams &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
@@ -1708,5 +1708,5 @@ private constructor(
     override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ConnectSessionConnectParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ConnectSessionNewParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
