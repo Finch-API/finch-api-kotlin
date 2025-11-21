@@ -15,7 +15,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
-class SessionNewResponse
+class SessionConnectResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val connectUrl: JsonField<String>,
@@ -76,7 +76,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [SessionNewResponse].
+         * Returns a mutable builder for constructing an instance of [SessionConnectResponse].
          *
          * The following fields are required:
          * ```kotlin
@@ -87,17 +87,17 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [SessionNewResponse]. */
+    /** A builder for [SessionConnectResponse]. */
     class Builder internal constructor() {
 
         private var connectUrl: JsonField<String>? = null
         private var sessionId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(sessionNewResponse: SessionNewResponse) = apply {
-            connectUrl = sessionNewResponse.connectUrl
-            sessionId = sessionNewResponse.sessionId
-            additionalProperties = sessionNewResponse.additionalProperties.toMutableMap()
+        internal fun from(sessionConnectResponse: SessionConnectResponse) = apply {
+            connectUrl = sessionConnectResponse.connectUrl
+            sessionId = sessionConnectResponse.sessionId
+            additionalProperties = sessionConnectResponse.additionalProperties.toMutableMap()
         }
 
         /** The Connect URL to redirect the user to for authentication */
@@ -144,7 +144,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [SessionNewResponse].
+         * Returns an immutable instance of [SessionConnectResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -156,8 +156,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): SessionNewResponse =
-            SessionNewResponse(
+        fun build(): SessionConnectResponse =
+            SessionConnectResponse(
                 checkRequired("connectUrl", connectUrl),
                 checkRequired("sessionId", sessionId),
                 additionalProperties.toMutableMap(),
@@ -166,7 +166,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): SessionNewResponse = apply {
+    fun validate(): SessionConnectResponse = apply {
         if (validated) {
             return@apply
         }
@@ -197,7 +197,7 @@ private constructor(
             return true
         }
 
-        return other is SessionNewResponse &&
+        return other is SessionConnectResponse &&
             connectUrl == other.connectUrl &&
             sessionId == other.sessionId &&
             additionalProperties == other.additionalProperties
@@ -208,5 +208,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SessionNewResponse{connectUrl=$connectUrl, sessionId=$sessionId, additionalProperties=$additionalProperties}"
+        "SessionConnectResponse{connectUrl=$connectUrl, sessionId=$sessionId, additionalProperties=$additionalProperties}"
 }
