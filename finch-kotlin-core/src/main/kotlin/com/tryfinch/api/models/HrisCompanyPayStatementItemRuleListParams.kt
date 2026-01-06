@@ -8,10 +8,7 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon List all rules of a connection account.
- */
+/** List all rules of a connection account. */
 class HrisCompanyPayStatementItemRuleListParams
 private constructor(
     private val entityIds: List<String>?,

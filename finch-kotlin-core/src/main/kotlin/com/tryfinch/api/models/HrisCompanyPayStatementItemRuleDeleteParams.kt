@@ -9,10 +9,7 @@ import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
 import java.util.Objects
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Delete a rule for a pay statement item.
- */
+/** Delete a rule for a pay statement item. */
 class HrisCompanyPayStatementItemRuleDeleteParams
 private constructor(
     private val ruleId: String?,
