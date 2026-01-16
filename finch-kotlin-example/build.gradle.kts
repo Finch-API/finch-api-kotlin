@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":finch-kotlin"))
+    implementation(project(":finch-kotlin-core"))
+    implementation(project(":finch-kotlin-client-okhttp"))
 }
 
 application {
