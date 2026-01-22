@@ -858,6 +858,12 @@ private constructor(
          */
         fun name(): String? = name.getNullable("name")
 
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = customField.value().convert(MyClass::class.java)
+         * ```
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
         /**

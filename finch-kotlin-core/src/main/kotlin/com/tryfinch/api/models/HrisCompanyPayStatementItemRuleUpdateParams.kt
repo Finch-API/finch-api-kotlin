@@ -32,6 +32,12 @@ private constructor(
     /** The entity IDs to update the rule for. */
     fun entityIds(): List<String>? = entityIds
 
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```kotlin
+     * val myObject: MyClass = hrisCompanyPayStatementItemRuleUpdateParams.optionalProperty().convert(MyClass::class.java)
+     * ```
+     */
     fun _optionalProperty(): JsonValue = body._optionalProperty()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -269,6 +275,12 @@ private constructor(
             optionalProperty: JsonValue = JsonMissing.of()
         ) : this(optionalProperty, mutableMapOf())
 
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = updateRuleRequest.optionalProperty().convert(MyClass::class.java)
+         * ```
+         */
         @JsonProperty("optionalProperty")
         @ExcludeMissing
         fun _optionalProperty(): JsonValue = optionalProperty
