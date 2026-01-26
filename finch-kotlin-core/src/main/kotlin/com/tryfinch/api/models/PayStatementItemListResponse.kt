@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PayStatementItemListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val attributes: JsonField<Attributes>,
     private val category: JsonField<Category>,
@@ -233,6 +234,7 @@ private constructor(
 
     /** The attributes of the pay statement item. */
     class Attributes
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val employer: JsonField<Boolean>,

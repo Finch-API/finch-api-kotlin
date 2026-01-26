@@ -13,15 +13,12 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.time.LocalDate
 import java.util.Objects
 
-/**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Retrieve a list of detailed pay statement items for the access token's
- * connection account.
- */
+/** Retrieve a list of detailed pay statement items for the access token's connection account. */
 class HrisCompanyPayStatementItemListParams
 private constructor(
     private val categories: List<Category>?,
     private val endDate: LocalDate?,
+    private val entityIds: List<String>?,
     private val name: String?,
     private val startDate: LocalDate?,
     private val type: String?,
@@ -40,6 +37,9 @@ private constructor(
      * format.
      */
     fun endDate(): LocalDate? = endDate
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     /** Case-insensitive partial match search by pay statement item name. */
     fun name(): String? = name
@@ -77,6 +77,7 @@ private constructor(
 
         private var categories: MutableList<Category>? = null
         private var endDate: LocalDate? = null
+        private var entityIds: MutableList<String>? = null
         private var name: String? = null
         private var startDate: LocalDate? = null
         private var type: String? = null
@@ -88,6 +89,7 @@ private constructor(
         ) = apply {
             categories = hrisCompanyPayStatementItemListParams.categories?.toMutableList()
             endDate = hrisCompanyPayStatementItemListParams.endDate
+            entityIds = hrisCompanyPayStatementItemListParams.entityIds?.toMutableList()
             name = hrisCompanyPayStatementItemListParams.name
             startDate = hrisCompanyPayStatementItemListParams.startDate
             type = hrisCompanyPayStatementItemListParams.type
@@ -118,6 +120,20 @@ private constructor(
          * `YYYY-MM-DD` format.
          */
         fun endDate(endDate: LocalDate?) = apply { this.endDate = endDate }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         /** Case-insensitive partial match search by pay statement item name. */
         fun name(name: String?) = apply { this.name = name }
@@ -238,6 +254,7 @@ private constructor(
             HrisCompanyPayStatementItemListParams(
                 categories?.toImmutable(),
                 endDate,
+                entityIds?.toImmutable(),
                 name,
                 startDate,
                 type,
@@ -253,6 +270,7 @@ private constructor(
             .apply {
                 categories?.forEach { put("categories[]", it.toString()) }
                 endDate?.let { put("end_date", it.toString()) }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 name?.let { put("name", it) }
                 startDate?.let { put("start_date", it.toString()) }
                 type?.let { put("type", it) }
@@ -404,6 +422,7 @@ private constructor(
         return other is HrisCompanyPayStatementItemListParams &&
             categories == other.categories &&
             endDate == other.endDate &&
+            entityIds == other.entityIds &&
             name == other.name &&
             startDate == other.startDate &&
             type == other.type &&
@@ -415,6 +434,7 @@ private constructor(
         Objects.hash(
             categories,
             endDate,
+            entityIds,
             name,
             startDate,
             type,
@@ -423,5 +443,5 @@ private constructor(
         )
 
     override fun toString() =
-        "HrisCompanyPayStatementItemListParams{categories=$categories, endDate=$endDate, name=$name, startDate=$startDate, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisCompanyPayStatementItemListParams{categories=$categories, endDate=$endDate, entityIds=$entityIds, name=$name, startDate=$startDate, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

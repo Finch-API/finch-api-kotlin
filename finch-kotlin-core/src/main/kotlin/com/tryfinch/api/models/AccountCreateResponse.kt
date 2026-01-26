@@ -19,12 +19,14 @@ import java.util.Collections
 import java.util.Objects
 
 class AccountCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accessToken: JsonField<String>,
     private val accountId: JsonField<String>,
     private val authenticationType: JsonField<AuthenticationType>,
     private val companyId: JsonField<String>,
     private val connectionId: JsonField<String>,
+    private val entityId: JsonField<String>,
     private val products: JsonField<List<String>>,
     private val providerId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -43,6 +45,7 @@ private constructor(
         @JsonProperty("connection_id")
         @ExcludeMissing
         connectionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("entity_id") @ExcludeMissing entityId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("products")
         @ExcludeMissing
         products: JsonField<List<String>> = JsonMissing.of(),
@@ -55,6 +58,7 @@ private constructor(
         authenticationType,
         companyId,
         connectionId,
+        entityId,
         products,
         providerId,
         mutableMapOf(),
@@ -96,6 +100,14 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun connectionId(): String = connectionId.getRequired("connection_id")
+
+    /**
+     * The ID of the entity for this connection
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun entityId(): String = entityId.getRequired("entity_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -160,6 +172,13 @@ private constructor(
     fun _connectionId(): JsonField<String> = connectionId
 
     /**
+     * Returns the raw JSON value of [entityId].
+     *
+     * Unlike [entityId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_id") @ExcludeMissing fun _entityId(): JsonField<String> = entityId
+
+    /**
      * Returns the raw JSON value of [products].
      *
      * Unlike [products], this method doesn't throw if the JSON field has an unexpected type.
@@ -197,6 +216,7 @@ private constructor(
          * .authenticationType()
          * .companyId()
          * .connectionId()
+         * .entityId()
          * .products()
          * .providerId()
          * ```
@@ -212,6 +232,7 @@ private constructor(
         private var authenticationType: JsonField<AuthenticationType>? = null
         private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String>? = null
+        private var entityId: JsonField<String>? = null
         private var products: JsonField<MutableList<String>>? = null
         private var providerId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -222,6 +243,7 @@ private constructor(
             authenticationType = accountCreateResponse.authenticationType
             companyId = accountCreateResponse.companyId
             connectionId = accountCreateResponse.connectionId
+            entityId = accountCreateResponse.entityId
             products = accountCreateResponse.products.map { it.toMutableList() }
             providerId = accountCreateResponse.providerId
             additionalProperties = accountCreateResponse.additionalProperties.toMutableMap()
@@ -294,6 +316,17 @@ private constructor(
             this.connectionId = connectionId
         }
 
+        /** The ID of the entity for this connection */
+        fun entityId(entityId: String) = entityId(JsonField.of(entityId))
+
+        /**
+         * Sets [Builder.entityId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
+
         fun products(products: List<String>) = products(JsonField.of(products))
 
         /**
@@ -362,6 +395,7 @@ private constructor(
          * .authenticationType()
          * .companyId()
          * .connectionId()
+         * .entityId()
          * .products()
          * .providerId()
          * ```
@@ -375,6 +409,7 @@ private constructor(
                 checkRequired("authenticationType", authenticationType),
                 checkRequired("companyId", companyId),
                 checkRequired("connectionId", connectionId),
+                checkRequired("entityId", entityId),
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
                 additionalProperties.toMutableMap(),
@@ -393,6 +428,7 @@ private constructor(
         authenticationType().validate()
         companyId()
         connectionId()
+        entityId()
         products()
         providerId()
         validated = true
@@ -417,6 +453,7 @@ private constructor(
             (authenticationType.asKnown()?.validity() ?: 0) +
             (if (companyId.asKnown() == null) 0 else 1) +
             (if (connectionId.asKnown() == null) 0 else 1) +
+            (if (entityId.asKnown() == null) 0 else 1) +
             (products.asKnown()?.size ?: 0) +
             (if (providerId.asKnown() == null) 0 else 1)
 
@@ -572,6 +609,7 @@ private constructor(
             authenticationType == other.authenticationType &&
             companyId == other.companyId &&
             connectionId == other.connectionId &&
+            entityId == other.entityId &&
             products == other.products &&
             providerId == other.providerId &&
             additionalProperties == other.additionalProperties
@@ -584,6 +622,7 @@ private constructor(
             authenticationType,
             companyId,
             connectionId,
+            entityId,
             products,
             providerId,
             additionalProperties,
@@ -593,5 +632,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AccountCreateResponse{accessToken=$accessToken, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, connectionId=$connectionId, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
+        "AccountCreateResponse{accessToken=$accessToken, accountId=$accountId, authenticationType=$authenticationType, companyId=$companyId, connectionId=$connectionId, entityId=$entityId, products=$products, providerId=$providerId, additionalProperties=$additionalProperties}"
 }

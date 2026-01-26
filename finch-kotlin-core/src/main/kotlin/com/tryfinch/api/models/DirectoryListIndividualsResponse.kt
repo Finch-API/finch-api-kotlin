@@ -17,7 +17,8 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
-class HrisDirectoryListIndividualsPageResponse
+class DirectoryListIndividualsResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val individuals: JsonField<List<IndividualInDirectory>>,
     private val paging: JsonField<Paging>,
@@ -78,7 +79,7 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of
-         * [HrisDirectoryListIndividualsPageResponse].
+         * [DirectoryListIndividualsResponse].
          *
          * The following fields are required:
          * ```kotlin
@@ -89,22 +90,21 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [HrisDirectoryListIndividualsPageResponse]. */
+    /** A builder for [DirectoryListIndividualsResponse]. */
     class Builder internal constructor() {
 
         private var individuals: JsonField<MutableList<IndividualInDirectory>>? = null
         private var paging: JsonField<Paging>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(
-            hrisDirectoryListIndividualsPageResponse: HrisDirectoryListIndividualsPageResponse
-        ) = apply {
-            individuals =
-                hrisDirectoryListIndividualsPageResponse.individuals.map { it.toMutableList() }
-            paging = hrisDirectoryListIndividualsPageResponse.paging
-            additionalProperties =
-                hrisDirectoryListIndividualsPageResponse.additionalProperties.toMutableMap()
-        }
+        internal fun from(directoryListIndividualsResponse: DirectoryListIndividualsResponse) =
+            apply {
+                individuals =
+                    directoryListIndividualsResponse.individuals.map { it.toMutableList() }
+                paging = directoryListIndividualsResponse.paging
+                additionalProperties =
+                    directoryListIndividualsResponse.additionalProperties.toMutableMap()
+            }
 
         /** The array of employees. */
         fun individuals(individuals: List<IndividualInDirectory>) =
@@ -163,7 +163,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [HrisDirectoryListIndividualsPageResponse].
+         * Returns an immutable instance of [DirectoryListIndividualsResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -175,8 +175,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): HrisDirectoryListIndividualsPageResponse =
-            HrisDirectoryListIndividualsPageResponse(
+        fun build(): DirectoryListIndividualsResponse =
+            DirectoryListIndividualsResponse(
                 checkRequired("individuals", individuals).map { it.toImmutable() },
                 checkRequired("paging", paging),
                 additionalProperties.toMutableMap(),
@@ -185,7 +185,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): HrisDirectoryListIndividualsPageResponse = apply {
+    fun validate(): DirectoryListIndividualsResponse = apply {
         if (validated) {
             return@apply
         }
@@ -217,7 +217,7 @@ private constructor(
             return true
         }
 
-        return other is HrisDirectoryListIndividualsPageResponse &&
+        return other is DirectoryListIndividualsResponse &&
             individuals == other.individuals &&
             paging == other.paging &&
             additionalProperties == other.additionalProperties
@@ -228,5 +228,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "HrisDirectoryListIndividualsPageResponse{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
+        "DirectoryListIndividualsResponse{individuals=$individuals, paging=$paging, additionalProperties=$additionalProperties}"
 }

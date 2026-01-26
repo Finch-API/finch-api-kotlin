@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class IndividualResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val body: JsonField<Individual>,
     private val code: JsonField<Long>,

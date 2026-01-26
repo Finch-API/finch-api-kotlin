@@ -21,18 +21,20 @@ import java.util.Collections
 import java.util.Objects
 
 /**
- * **Beta:** this endpoint currently serves employers onboarded after March 4th and historical
- * support will be added soon Custom rules can be created to associate specific attributes to pay
- * statement items depending on the use case. For example, pay statement items that meet certain
- * conditions can be labeled as a pre-tax 401k. This metadata can be retrieved where pay statement
- * item information is available.
+ * Custom rules can be created to associate specific attributes to pay statement items depending on
+ * the use case. For example, pay statement items that meet certain conditions can be labeled as a
+ * pre-tax 401k. This metadata can be retrieved where pay statement item information is available.
  */
 class HrisCompanyPayStatementItemRuleCreateParams
 private constructor(
+    private val entityIds: List<String>?,
     private val body: CreateRuleRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** The entity IDs to create the rule for. */
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * Specifies the fields to be applied when the condition is met.
@@ -133,6 +135,7 @@ private constructor(
     /** A builder for [HrisCompanyPayStatementItemRuleCreateParams]. */
     class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var body: CreateRuleRequest.Builder = CreateRuleRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -140,11 +143,26 @@ private constructor(
         internal fun from(
             hrisCompanyPayStatementItemRuleCreateParams: HrisCompanyPayStatementItemRuleCreateParams
         ) = apply {
+            entityIds = hrisCompanyPayStatementItemRuleCreateParams.entityIds?.toMutableList()
             body = hrisCompanyPayStatementItemRuleCreateParams.body.toBuilder()
             additionalHeaders =
                 hrisCompanyPayStatementItemRuleCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams =
                 hrisCompanyPayStatementItemRuleCreateParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to create the rule for. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         /**
@@ -361,6 +379,7 @@ private constructor(
          */
         fun build(): HrisCompanyPayStatementItemRuleCreateParams =
             HrisCompanyPayStatementItemRuleCreateParams(
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -371,9 +390,16 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class CreateRuleRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val attributes: JsonField<Attributes>,
         private val conditions: JsonField<List<Condition>>,
@@ -718,6 +744,7 @@ private constructor(
 
     /** Specifies the fields to be applied when the condition is met. */
     class Attributes
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -967,6 +994,7 @@ private constructor(
     }
 
     class Condition
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val field: JsonField<String>,
         private val operator: JsonField<Operator>,
@@ -1429,13 +1457,15 @@ private constructor(
         }
 
         return other is HrisCompanyPayStatementItemRuleCreateParams &&
+            entityIds == other.entityIds &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisCompanyPayStatementItemRuleCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisCompanyPayStatementItemRuleCreateParams{entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

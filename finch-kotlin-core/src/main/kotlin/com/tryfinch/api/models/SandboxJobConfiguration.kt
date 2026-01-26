@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 
 class SandboxJobConfiguration
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val completionStatus: JsonField<CompletionStatus>,
     private val type: JsonField<Type>,

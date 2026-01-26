@@ -1,6 +1,8 @@
 package com.tryfinch.api.core.http
 
+import com.tryfinch.api.core.DefaultSleeper
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.Sleeper
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.errors.FinchIoException
 import com.tryfinch.api.errors.FinchRetryableException
@@ -16,8 +18,6 @@ import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.math.pow
-import kotlin.time.toKotlinDuration
-import kotlinx.coroutines.delay
 
 class RetryingHttpClient
 private constructor(
@@ -29,10 +29,6 @@ private constructor(
 ) : HttpClient {
 
     override fun execute(request: HttpRequest, requestOptions: RequestOptions): HttpResponse {
-        if (!isRetryable(request) || maxRetries <= 0) {
-            return httpClient.execute(request, requestOptions)
-        }
-
         var modifiedRequest = maybeAddIdempotencyHeader(request)
 
         // Don't send the current retry count in the headers if the caller set their own value.
@@ -44,6 +40,10 @@ private constructor(
         while (true) {
             if (shouldSendRetryCount) {
                 modifiedRequest = setRetryCountHeader(modifiedRequest, retries)
+            }
+
+            if (!isRetryable(modifiedRequest)) {
+                return httpClient.execute(modifiedRequest, requestOptions)
             }
 
             val response =
@@ -73,10 +73,6 @@ private constructor(
         request: HttpRequest,
         requestOptions: RequestOptions,
     ): HttpResponse {
-        if (!isRetryable(request) || maxRetries <= 0) {
-            return httpClient.executeAsync(request, requestOptions)
-        }
-
         var modifiedRequest = maybeAddIdempotencyHeader(request)
 
         // Don't send the current retry count in the headers if the caller set their own value.
@@ -88,6 +84,10 @@ private constructor(
         while (true) {
             if (shouldSendRetryCount) {
                 modifiedRequest = setRetryCountHeader(modifiedRequest, retries)
+            }
+
+            if (!isRetryable(modifiedRequest)) {
+                return httpClient.executeAsync(modifiedRequest, requestOptions)
             }
 
             val response =
@@ -113,7 +113,10 @@ private constructor(
         }
     }
 
-    override fun close() = httpClient.close()
+    override fun close() {
+        httpClient.close()
+        sleeper.close()
+    }
 
     private fun isRetryable(request: HttpRequest): Boolean =
         // Some requests, such as when a request body is being streamed, cannot be retried because
@@ -218,21 +221,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var httpClient: HttpClient? = null
-        private var sleeper: Sleeper =
-            object : Sleeper {
-
-                override fun sleep(duration: Duration) = Thread.sleep(duration.toMillis())
-
-                override suspend fun sleepAsync(duration: Duration) =
-                    delay(duration.toKotlinDuration())
-            }
+        private var sleeper: Sleeper? = null
         private var clock: Clock = Clock.systemUTC()
         private var maxRetries: Int = 2
         private var idempotencyHeader: String? = null
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
 
-        internal fun sleeper(sleeper: Sleeper) = apply { this.sleeper = sleeper }
+        fun sleeper(sleeper: Sleeper) = apply { this.sleeper = sleeper }
 
         fun clock(clock: Clock) = apply { this.clock = clock }
 
@@ -243,17 +239,10 @@ private constructor(
         fun build(): HttpClient =
             RetryingHttpClient(
                 checkRequired("httpClient", httpClient),
-                sleeper,
+                sleeper ?: DefaultSleeper(),
                 clock,
                 maxRetries,
                 idempotencyHeader,
             )
-    }
-
-    internal interface Sleeper {
-
-        fun sleep(duration: Duration)
-
-        suspend fun sleepAsync(duration: Duration)
     }
 }

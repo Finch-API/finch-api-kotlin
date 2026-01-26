@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 
 class JobCompletionEvent
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
@@ -320,6 +321,7 @@ private constructor(
             (eventType.asKnown()?.validity() ?: 0)
 
     class Data
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val jobId: JsonField<String>,
         private val jobUrl: JsonField<String>,

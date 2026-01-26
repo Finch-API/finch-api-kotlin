@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 
 class EmploymentUpdateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val classCode: JsonField<String>,
@@ -141,8 +142,7 @@ private constructor(
     fun employment(): Employment? = employment.getNullable("employment")
 
     /**
-     * The detailed employment status of the individual. Available options: `active`, `deceased`,
-     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
+     * The detailed employment status of the individual.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -536,10 +536,7 @@ private constructor(
          */
         fun employment(employment: JsonField<Employment>) = apply { this.employment = employment }
 
-        /**
-         * The detailed employment status of the individual. Available options: `active`,
-         * `deceased`, `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-         */
+        /** The detailed employment status of the individual. */
         fun employmentStatus(employmentStatus: EmploymentStatus?) =
             employmentStatus(JsonField.ofNullable(employmentStatus))
 
@@ -842,6 +839,7 @@ private constructor(
             (if (title.asKnown() == null) 0 else 1)
 
     class CustomField
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val value: JsonValue,
@@ -860,6 +858,12 @@ private constructor(
          */
         fun name(): String? = name.getNullable("name")
 
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```kotlin
+         * val myObject: MyClass = customField.value().convert(MyClass::class.java)
+         * ```
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
         /**
@@ -988,6 +992,7 @@ private constructor(
 
     /** The department object. */
     class Department
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1128,6 +1133,7 @@ private constructor(
 
     /** The employment object. */
     class Employment
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val subtype: JsonField<Subtype>,
         private val type: JsonField<Type>,
@@ -1586,10 +1592,7 @@ private constructor(
             "Employment{subtype=$subtype, type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /**
-     * The detailed employment status of the individual. Available options: `active`, `deceased`,
-     * `leave`, `onboarding`, `prehire`, `retired`, `terminated`.
-     */
+    /** The detailed employment status of the individual. */
     class EmploymentStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
@@ -1750,6 +1753,7 @@ private constructor(
 
     /** The manager object representing the manager of the individual within the org. */
     class Manager
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

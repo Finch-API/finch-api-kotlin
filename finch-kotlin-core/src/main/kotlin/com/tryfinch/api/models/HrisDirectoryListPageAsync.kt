@@ -39,8 +39,8 @@ private constructor(
         }
 
         val offset = paging()?.let { it._offset().getNullable("offset") } ?: 0
-        val totalCount = paging()?.let { it._count().getNullable("count") } ?: Long.MAX_VALUE
-        return offset + items().size < totalCount
+        val totalCount = paging()?.let { it._count().getNullable("count") }
+        return totalCount == null || offset + items().size < totalCount
     }
 
     fun nextPageParams(): HrisDirectoryListParams {

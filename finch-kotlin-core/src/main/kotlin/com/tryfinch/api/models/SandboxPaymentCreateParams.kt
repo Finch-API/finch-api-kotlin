@@ -304,6 +304,7 @@ private constructor(
      * are optional.
      */
     class CreateSandboxPaymentRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val endDate: JsonField<LocalDate>,
         private val payStatements: JsonField<List<PayStatement>>,
@@ -544,6 +545,7 @@ private constructor(
     }
 
     class PayStatement
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val individualId: JsonField<String>,
         private val earnings: JsonField<List<Earning>>,
@@ -1068,6 +1070,7 @@ private constructor(
                 (type.asKnown()?.validity() ?: 0)
 
         class Earning
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val amount: JsonField<Long>,
             private val hours: JsonField<Double>,
@@ -1498,6 +1501,7 @@ private constructor(
         }
 
         class EmployeeDeduction
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val amount: JsonField<Long>,
             private val name: JsonField<String>,
@@ -1523,6 +1527,8 @@ private constructor(
             fun amount(): Long? = amount.getNullable("amount")
 
             /**
+             * The deduction name. Required when type is specified.
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -1616,6 +1622,7 @@ private constructor(
                  */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
+                /** The deduction name. Required when type is specified. */
                 fun name(name: String) = name(JsonField.of(name))
 
                 /**
@@ -1974,6 +1981,7 @@ private constructor(
         }
 
         class EmployerContribution
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val amount: JsonField<Long>,
             private val name: JsonField<String>,
@@ -1995,6 +2003,8 @@ private constructor(
             fun amount(): Long? = amount.getNullable("amount")
 
             /**
+             * The contribution name. Required when type is specified.
+             *
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
              */
@@ -2073,6 +2083,7 @@ private constructor(
                  */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
+                /** The contribution name. Required when type is specified. */
                 fun name(name: String) = name(JsonField.of(name))
 
                 /**
@@ -2546,6 +2557,7 @@ private constructor(
         }
 
         class Tax
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val amount: JsonField<Long>,
             private val employer: JsonField<Boolean>,

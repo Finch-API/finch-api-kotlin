@@ -5,12 +5,14 @@ package com.tryfinch.api.services.async
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.AccessTokenCreateParams
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class AccessTokenServiceAsyncTest {
 
+    @Disabled("prism doesnt like the format for the API-Version header")
     @Test
     suspend fun create() {
         val client =
@@ -23,9 +25,9 @@ internal class AccessTokenServiceAsyncTest {
         val createAccessTokenResponse =
             accessTokenServiceAsync.create(
                 AccessTokenCreateParams.builder()
+                    .code("code")
                     .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .clientSecret("client_secret")
-                    .code("code")
                     .redirectUri("redirect_uri")
                     .build()
             )
