@@ -4,7 +4,6 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -74,11 +73,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -113,11 +108,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "directory")
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {

@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.jobs
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
@@ -84,11 +83,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .addPathSegments("jobs", "automated")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -118,11 +113,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated", params._pathParam(0))
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -149,11 +140,7 @@ class AutomatedServiceImpl internal constructor(private val clientOptions: Clien
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {

@@ -4,7 +4,6 @@ package com.tryfinch.api.services.blocking.hris.company.payStatementItem
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
@@ -91,11 +90,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -126,11 +121,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -157,11 +148,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -199,11 +186,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
