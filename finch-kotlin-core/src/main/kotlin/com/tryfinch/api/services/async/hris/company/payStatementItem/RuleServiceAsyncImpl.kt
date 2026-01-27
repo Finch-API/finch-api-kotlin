@@ -4,6 +4,7 @@ package com.tryfinch.api.services.async.hris.company.payStatementItem
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
@@ -93,7 +94,11 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
-                    .prepareAsync(clientOptions, params)
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -124,7 +129,11 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
-                    .prepareAsync(clientOptions, params)
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -151,7 +160,11 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-statement-item", "rule")
                     .build()
-                    .prepareAsync(clientOptions, params)
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -189,7 +202,11 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     .addPathSegments("employer", "pay-statement-item", "rule", params._pathParam(0))
                     .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
-                    .prepareAsync(clientOptions, params)
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
