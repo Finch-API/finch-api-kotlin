@@ -4,7 +4,6 @@ package com.tryfinch.api.services.async.payroll
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
-import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
@@ -77,11 +76,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups", params._pathParam(0))
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
@@ -108,11 +103,7 @@ class PayGroupServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("employer", "pay-groups")
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
+                    .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
