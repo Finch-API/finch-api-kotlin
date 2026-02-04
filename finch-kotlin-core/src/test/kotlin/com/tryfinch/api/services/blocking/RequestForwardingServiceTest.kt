@@ -10,27 +10,36 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class RequestForwardingServiceTest {
+internal class RequestForwardingServiceTest {
 
     @Test
-    fun callForward() {
+    fun forward() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val requestForwardingService = client.requestForwarding()
-        val requestForwardingForwardResponse =
+
+        val response =
             requestForwardingService.forward(
                 RequestForwardingForwardParams.builder()
-                    .method("POST")
-                    .route("/people/search")
-                    .data(null)
-                    .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-                    .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+                    .method("method")
+                    .route("route")
+                    .data("data")
+                    .params(
+                        RequestForwardingForwardParams.Params.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .requestHeaders(
+                        RequestForwardingForwardParams.RequestHeaders.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
-        println(requestForwardingForwardResponse)
-        requestForwardingForwardResponse.validate()
+
+        response.validate()
     }
 }

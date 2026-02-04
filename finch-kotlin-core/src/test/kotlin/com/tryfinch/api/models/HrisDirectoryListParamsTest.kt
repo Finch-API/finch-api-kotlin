@@ -6,26 +6,44 @@ import com.tryfinch.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisDirectoryListParamsTest {
+internal class HrisDirectoryListParamsTest {
 
     @Test
-    fun createHrisDirectoryListParams() {
-        HrisDirectoryListParams.builder().limit(0L).offset(0L).build()
+    fun create() {
+        HrisDirectoryListParams.builder()
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+            .limit(0L)
+            .offset(0L)
+            .build()
     }
 
     @Test
-    fun getQueryParams() {
-        val params = HrisDirectoryListParams.builder().limit(0L).offset(0L).build()
-        val expected = QueryParams.builder()
-        expected.put("limit", "0")
-        expected.put("offset", "0")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+    fun queryParams() {
+        val params =
+            HrisDirectoryListParams.builder()
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .limit(0L)
+                .offset(0L)
+                .build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .put("limit", "0")
+                    .put("offset", "0")
+                    .build()
+            )
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = HrisDirectoryListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }

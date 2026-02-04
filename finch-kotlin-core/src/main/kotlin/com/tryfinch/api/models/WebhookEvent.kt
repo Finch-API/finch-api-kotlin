@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.BaseDeserializer
 import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.allMaxBy
 import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Objects
@@ -20,82 +21,79 @@ import java.util.Objects
 @JsonSerialize(using = WebhookEvent.Serializer::class)
 class WebhookEvent
 private constructor(
-    private val accountUpdateEvent: AccountUpdateEvent? = null,
-    private val jobCompletionEvent: JobCompletionEvent? = null,
-    private val companyEvent: CompanyEvent? = null,
-    private val directoryEvent: DirectoryEvent? = null,
-    private val employmentEvent: EmploymentEvent? = null,
-    private val individualEvent: IndividualEvent? = null,
-    private val paymentEvent: PaymentEvent? = null,
-    private val payStatementEvent: PayStatementEvent? = null,
+    private val accountUpdated: AccountUpdateEvent? = null,
+    private val jobCompletion: JobCompletionEvent? = null,
+    private val companyUpdated: CompanyEvent? = null,
+    private val directory: DirectoryEvent? = null,
+    private val employment: EmploymentEvent? = null,
+    private val individual: IndividualEvent? = null,
+    private val payment: PaymentEvent? = null,
+    private val payStatement: PayStatementEvent? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun accountUpdateEvent(): AccountUpdateEvent? = accountUpdateEvent
+    fun accountUpdated(): AccountUpdateEvent? = accountUpdated
 
-    fun jobCompletionEvent(): JobCompletionEvent? = jobCompletionEvent
+    fun jobCompletion(): JobCompletionEvent? = jobCompletion
 
-    fun companyEvent(): CompanyEvent? = companyEvent
+    fun companyUpdated(): CompanyEvent? = companyUpdated
 
-    fun directoryEvent(): DirectoryEvent? = directoryEvent
+    fun directory(): DirectoryEvent? = directory
 
-    fun employmentEvent(): EmploymentEvent? = employmentEvent
+    fun employment(): EmploymentEvent? = employment
 
-    fun individualEvent(): IndividualEvent? = individualEvent
+    fun individual(): IndividualEvent? = individual
 
-    fun paymentEvent(): PaymentEvent? = paymentEvent
+    fun payment(): PaymentEvent? = payment
 
-    fun payStatementEvent(): PayStatementEvent? = payStatementEvent
+    fun payStatement(): PayStatementEvent? = payStatement
 
-    fun isAccountUpdateEvent(): Boolean = accountUpdateEvent != null
+    fun isAccountUpdated(): Boolean = accountUpdated != null
 
-    fun isJobCompletionEvent(): Boolean = jobCompletionEvent != null
+    fun isJobCompletion(): Boolean = jobCompletion != null
 
-    fun isCompanyEvent(): Boolean = companyEvent != null
+    fun isCompanyUpdated(): Boolean = companyUpdated != null
 
-    fun isDirectoryEvent(): Boolean = directoryEvent != null
+    fun isDirectory(): Boolean = directory != null
 
-    fun isEmploymentEvent(): Boolean = employmentEvent != null
+    fun isEmployment(): Boolean = employment != null
 
-    fun isIndividualEvent(): Boolean = individualEvent != null
+    fun isIndividual(): Boolean = individual != null
 
-    fun isPaymentEvent(): Boolean = paymentEvent != null
+    fun isPayment(): Boolean = payment != null
 
-    fun isPayStatementEvent(): Boolean = payStatementEvent != null
+    fun isPayStatement(): Boolean = payStatement != null
 
-    fun asAccountUpdateEvent(): AccountUpdateEvent =
-        accountUpdateEvent.getOrThrow("accountUpdateEvent")
+    fun asAccountUpdated(): AccountUpdateEvent = accountUpdated.getOrThrow("accountUpdated")
 
-    fun asJobCompletionEvent(): JobCompletionEvent =
-        jobCompletionEvent.getOrThrow("jobCompletionEvent")
+    fun asJobCompletion(): JobCompletionEvent = jobCompletion.getOrThrow("jobCompletion")
 
-    fun asCompanyEvent(): CompanyEvent = companyEvent.getOrThrow("companyEvent")
+    fun asCompanyUpdated(): CompanyEvent = companyUpdated.getOrThrow("companyUpdated")
 
-    fun asDirectoryEvent(): DirectoryEvent = directoryEvent.getOrThrow("directoryEvent")
+    fun asDirectory(): DirectoryEvent = directory.getOrThrow("directory")
 
-    fun asEmploymentEvent(): EmploymentEvent = employmentEvent.getOrThrow("employmentEvent")
+    fun asEmployment(): EmploymentEvent = employment.getOrThrow("employment")
 
-    fun asIndividualEvent(): IndividualEvent = individualEvent.getOrThrow("individualEvent")
+    fun asIndividual(): IndividualEvent = individual.getOrThrow("individual")
 
-    fun asPaymentEvent(): PaymentEvent = paymentEvent.getOrThrow("paymentEvent")
+    fun asPayment(): PaymentEvent = payment.getOrThrow("payment")
 
-    fun asPayStatementEvent(): PayStatementEvent = payStatementEvent.getOrThrow("payStatementEvent")
+    fun asPayStatement(): PayStatementEvent = payStatement.getOrThrow("payStatement")
 
     fun _json(): JsonValue? = _json
 
-    fun <T> accept(visitor: Visitor<T>): T {
-        return when {
-            accountUpdateEvent != null -> visitor.visitAccountUpdateEvent(accountUpdateEvent)
-            jobCompletionEvent != null -> visitor.visitJobCompletionEvent(jobCompletionEvent)
-            companyEvent != null -> visitor.visitCompanyEvent(companyEvent)
-            directoryEvent != null -> visitor.visitDirectoryEvent(directoryEvent)
-            employmentEvent != null -> visitor.visitEmploymentEvent(employmentEvent)
-            individualEvent != null -> visitor.visitIndividualEvent(individualEvent)
-            paymentEvent != null -> visitor.visitPaymentEvent(paymentEvent)
-            payStatementEvent != null -> visitor.visitPayStatementEvent(payStatementEvent)
+    fun <T> accept(visitor: Visitor<T>): T =
+        when {
+            accountUpdated != null -> visitor.visitAccountUpdated(accountUpdated)
+            jobCompletion != null -> visitor.visitJobCompletion(jobCompletion)
+            companyUpdated != null -> visitor.visitCompanyUpdated(companyUpdated)
+            directory != null -> visitor.visitDirectory(directory)
+            employment != null -> visitor.visitEmployment(employment)
+            individual != null -> visitor.visitIndividual(individual)
+            payment != null -> visitor.visitPayment(payment)
+            payStatement != null -> visitor.visitPayStatement(payStatement)
             else -> visitor.unknown(_json)
         }
-    }
 
     private var validated: Boolean = false
 
@@ -106,172 +104,245 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitAccountUpdateEvent(accountUpdateEvent: AccountUpdateEvent) {
-                    accountUpdateEvent.validate()
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) {
+                    accountUpdated.validate()
                 }
 
-                override fun visitJobCompletionEvent(jobCompletionEvent: JobCompletionEvent) {
-                    jobCompletionEvent.validate()
+                override fun visitJobCompletion(jobCompletion: JobCompletionEvent) {
+                    jobCompletion.validate()
                 }
 
-                override fun visitCompanyEvent(companyEvent: CompanyEvent) {
-                    companyEvent.validate()
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) {
+                    companyUpdated.validate()
                 }
 
-                override fun visitDirectoryEvent(directoryEvent: DirectoryEvent) {
-                    directoryEvent.validate()
+                override fun visitDirectory(directory: DirectoryEvent) {
+                    directory.validate()
                 }
 
-                override fun visitEmploymentEvent(employmentEvent: EmploymentEvent) {
-                    employmentEvent.validate()
+                override fun visitEmployment(employment: EmploymentEvent) {
+                    employment.validate()
                 }
 
-                override fun visitIndividualEvent(individualEvent: IndividualEvent) {
-                    individualEvent.validate()
+                override fun visitIndividual(individual: IndividualEvent) {
+                    individual.validate()
                 }
 
-                override fun visitPaymentEvent(paymentEvent: PaymentEvent) {
-                    paymentEvent.validate()
+                override fun visitPayment(payment: PaymentEvent) {
+                    payment.validate()
                 }
 
-                override fun visitPayStatementEvent(payStatementEvent: PayStatementEvent) {
-                    payStatementEvent.validate()
+                override fun visitPayStatement(payStatement: PayStatementEvent) {
+                    payStatement.validate()
                 }
             }
         )
         validated = true
     }
 
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        accept(
+            object : Visitor<Int> {
+                override fun visitAccountUpdated(accountUpdated: AccountUpdateEvent) =
+                    accountUpdated.validity()
+
+                override fun visitJobCompletion(jobCompletion: JobCompletionEvent) =
+                    jobCompletion.validity()
+
+                override fun visitCompanyUpdated(companyUpdated: CompanyEvent) =
+                    companyUpdated.validity()
+
+                override fun visitDirectory(directory: DirectoryEvent) = directory.validity()
+
+                override fun visitEmployment(employment: EmploymentEvent) = employment.validity()
+
+                override fun visitIndividual(individual: IndividualEvent) = individual.validity()
+
+                override fun visitPayment(payment: PaymentEvent) = payment.validity()
+
+                override fun visitPayStatement(payStatement: PayStatementEvent) =
+                    payStatement.validity()
+
+                override fun unknown(json: JsonValue?) = 0
+            }
+        )
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is WebhookEvent && accountUpdateEvent == other.accountUpdateEvent && jobCompletionEvent == other.jobCompletionEvent && companyEvent == other.companyEvent && directoryEvent == other.directoryEvent && employmentEvent == other.employmentEvent && individualEvent == other.individualEvent && paymentEvent == other.paymentEvent && payStatementEvent == other.payStatementEvent /* spotless:on */
+        return other is WebhookEvent &&
+            accountUpdated == other.accountUpdated &&
+            jobCompletion == other.jobCompletion &&
+            companyUpdated == other.companyUpdated &&
+            directory == other.directory &&
+            employment == other.employment &&
+            individual == other.individual &&
+            payment == other.payment &&
+            payStatement == other.payStatement
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(accountUpdateEvent, jobCompletionEvent, companyEvent, directoryEvent, employmentEvent, individualEvent, paymentEvent, payStatementEvent) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            accountUpdated,
+            jobCompletion,
+            companyUpdated,
+            directory,
+            employment,
+            individual,
+            payment,
+            payStatement,
+        )
 
     override fun toString(): String =
         when {
-            accountUpdateEvent != null -> "WebhookEvent{accountUpdateEvent=$accountUpdateEvent}"
-            jobCompletionEvent != null -> "WebhookEvent{jobCompletionEvent=$jobCompletionEvent}"
-            companyEvent != null -> "WebhookEvent{companyEvent=$companyEvent}"
-            directoryEvent != null -> "WebhookEvent{directoryEvent=$directoryEvent}"
-            employmentEvent != null -> "WebhookEvent{employmentEvent=$employmentEvent}"
-            individualEvent != null -> "WebhookEvent{individualEvent=$individualEvent}"
-            paymentEvent != null -> "WebhookEvent{paymentEvent=$paymentEvent}"
-            payStatementEvent != null -> "WebhookEvent{payStatementEvent=$payStatementEvent}"
+            accountUpdated != null -> "WebhookEvent{accountUpdated=$accountUpdated}"
+            jobCompletion != null -> "WebhookEvent{jobCompletion=$jobCompletion}"
+            companyUpdated != null -> "WebhookEvent{companyUpdated=$companyUpdated}"
+            directory != null -> "WebhookEvent{directory=$directory}"
+            employment != null -> "WebhookEvent{employment=$employment}"
+            individual != null -> "WebhookEvent{individual=$individual}"
+            payment != null -> "WebhookEvent{payment=$payment}"
+            payStatement != null -> "WebhookEvent{payStatement=$payStatement}"
             _json != null -> "WebhookEvent{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid WebhookEvent")
         }
 
     companion object {
 
-        fun ofAccountUpdateEvent(accountUpdateEvent: AccountUpdateEvent) =
-            WebhookEvent(accountUpdateEvent = accountUpdateEvent)
+        fun ofAccountUpdated(accountUpdated: AccountUpdateEvent) =
+            WebhookEvent(accountUpdated = accountUpdated)
 
-        fun ofJobCompletionEvent(jobCompletionEvent: JobCompletionEvent) =
-            WebhookEvent(jobCompletionEvent = jobCompletionEvent)
+        fun ofJobCompletion(jobCompletion: JobCompletionEvent) =
+            WebhookEvent(jobCompletion = jobCompletion)
 
-        fun ofCompanyEvent(companyEvent: CompanyEvent) = WebhookEvent(companyEvent = companyEvent)
+        fun ofCompanyUpdated(companyUpdated: CompanyEvent) =
+            WebhookEvent(companyUpdated = companyUpdated)
 
-        fun ofDirectoryEvent(directoryEvent: DirectoryEvent) =
-            WebhookEvent(directoryEvent = directoryEvent)
+        fun ofDirectory(directory: DirectoryEvent) = WebhookEvent(directory = directory)
 
-        fun ofEmploymentEvent(employmentEvent: EmploymentEvent) =
-            WebhookEvent(employmentEvent = employmentEvent)
+        fun ofEmployment(employment: EmploymentEvent) = WebhookEvent(employment = employment)
 
-        fun ofIndividualEvent(individualEvent: IndividualEvent) =
-            WebhookEvent(individualEvent = individualEvent)
+        fun ofIndividual(individual: IndividualEvent) = WebhookEvent(individual = individual)
 
-        fun ofPaymentEvent(paymentEvent: PaymentEvent) = WebhookEvent(paymentEvent = paymentEvent)
+        fun ofPayment(payment: PaymentEvent) = WebhookEvent(payment = payment)
 
-        fun ofPayStatementEvent(payStatementEvent: PayStatementEvent) =
-            WebhookEvent(payStatementEvent = payStatementEvent)
+        fun ofPayStatement(payStatement: PayStatementEvent) =
+            WebhookEvent(payStatement = payStatement)
     }
 
+    /**
+     * An interface that defines how to map each variant of [WebhookEvent] to a value of type [T].
+     */
     interface Visitor<out T> {
 
-        fun visitAccountUpdateEvent(accountUpdateEvent: AccountUpdateEvent): T
+        fun visitAccountUpdated(accountUpdated: AccountUpdateEvent): T
 
-        fun visitJobCompletionEvent(jobCompletionEvent: JobCompletionEvent): T
+        fun visitJobCompletion(jobCompletion: JobCompletionEvent): T
 
-        fun visitCompanyEvent(companyEvent: CompanyEvent): T
+        fun visitCompanyUpdated(companyUpdated: CompanyEvent): T
 
-        fun visitDirectoryEvent(directoryEvent: DirectoryEvent): T
+        fun visitDirectory(directory: DirectoryEvent): T
 
-        fun visitEmploymentEvent(employmentEvent: EmploymentEvent): T
+        fun visitEmployment(employment: EmploymentEvent): T
 
-        fun visitIndividualEvent(individualEvent: IndividualEvent): T
+        fun visitIndividual(individual: IndividualEvent): T
 
-        fun visitPaymentEvent(paymentEvent: PaymentEvent): T
+        fun visitPayment(payment: PaymentEvent): T
 
-        fun visitPayStatementEvent(payStatementEvent: PayStatementEvent): T
+        fun visitPayStatement(payStatement: PayStatementEvent): T
 
+        /**
+         * Maps an unknown variant of [WebhookEvent] to a value of type [T].
+         *
+         * An instance of [WebhookEvent] can contain an unknown variant if it was deserialized from
+         * data that doesn't match any known variant. For example, if the SDK is on an older version
+         * than the API, then the API may respond with new variants that the SDK is unaware of.
+         *
+         * @throws FinchInvalidDataException in the default implementation.
+         */
         fun unknown(json: JsonValue?): T {
             throw FinchInvalidDataException("Unknown WebhookEvent: $json")
         }
     }
 
-    class Deserializer : BaseDeserializer<WebhookEvent>(WebhookEvent::class) {
+    internal class Deserializer : BaseDeserializer<WebhookEvent>(WebhookEvent::class) {
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
 
-            tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(accountUpdateEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(jobCompletionEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<CompanyEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(companyEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<DirectoryEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(directoryEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<EmploymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(employmentEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<IndividualEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(individualEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PaymentEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(paymentEvent = it, _json = json)
-                }
-            tryDeserialize(node, jacksonTypeRef<PayStatementEvent>()) { it.validate() }
-                ?.let {
-                    return WebhookEvent(payStatementEvent = it, _json = json)
-                }
-
-            return WebhookEvent(_json = json)
+            val bestMatches =
+                sequenceOf(
+                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                            WebhookEvent(accountUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
+                            WebhookEvent(jobCompletion = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                            WebhookEvent(companyUpdated = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
+                            WebhookEvent(directory = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<EmploymentEvent>())?.let {
+                            WebhookEvent(employment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<IndividualEvent>())?.let {
+                            WebhookEvent(individual = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PaymentEvent>())?.let {
+                            WebhookEvent(payment = it, _json = json)
+                        },
+                        tryDeserialize(node, jacksonTypeRef<PayStatementEvent>())?.let {
+                            WebhookEvent(payStatement = it, _json = json)
+                        },
+                    )
+                    .filterNotNull()
+                    .allMaxBy { it.validity() }
+                    .toList()
+            return when (bestMatches.size) {
+                // This can happen if what we're deserializing is completely incompatible with all
+                // the possible variants (e.g. deserializing from boolean).
+                0 -> WebhookEvent(_json = json)
+                1 -> bestMatches.single()
+                // If there's more than one match with the highest validity, then use the first
+                // completely valid match, or simply the first match if none are completely valid.
+                else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+            }
         }
     }
 
-    class Serializer : BaseSerializer<WebhookEvent>(WebhookEvent::class) {
+    internal class Serializer : BaseSerializer<WebhookEvent>(WebhookEvent::class) {
 
         override fun serialize(
             value: WebhookEvent,
             generator: JsonGenerator,
-            provider: SerializerProvider
+            provider: SerializerProvider,
         ) {
             when {
-                value.accountUpdateEvent != null -> generator.writeObject(value.accountUpdateEvent)
-                value.jobCompletionEvent != null -> generator.writeObject(value.jobCompletionEvent)
-                value.companyEvent != null -> generator.writeObject(value.companyEvent)
-                value.directoryEvent != null -> generator.writeObject(value.directoryEvent)
-                value.employmentEvent != null -> generator.writeObject(value.employmentEvent)
-                value.individualEvent != null -> generator.writeObject(value.individualEvent)
-                value.paymentEvent != null -> generator.writeObject(value.paymentEvent)
-                value.payStatementEvent != null -> generator.writeObject(value.payStatementEvent)
+                value.accountUpdated != null -> generator.writeObject(value.accountUpdated)
+                value.jobCompletion != null -> generator.writeObject(value.jobCompletion)
+                value.companyUpdated != null -> generator.writeObject(value.companyUpdated)
+                value.directory != null -> generator.writeObject(value.directory)
+                value.employment != null -> generator.writeObject(value.employment)
+                value.individual != null -> generator.writeObject(value.individual)
+                value.payment != null -> generator.writeObject(value.payment)
+                value.payStatement != null -> generator.writeObject(value.payStatement)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid WebhookEvent")
             }

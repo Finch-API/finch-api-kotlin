@@ -2,161 +2,121 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.IndividualService
 import java.util.Objects
 
+/** @see IndividualService.retrieveMany */
 class HrisIndividualRetrieveManyPage
 private constructor(
-    private val individualsService: IndividualService,
+    private val service: IndividualService,
     private val params: HrisIndividualRetrieveManyParams,
-    private val response: Response,
-) {
+    private val response: HrisIndividualRetrieveManyPageResponse,
+) : Page<IndividualResponse> {
 
-    fun response(): Response = response
+    /**
+     * Delegates to [HrisIndividualRetrieveManyPageResponse], but gracefully handles missing data.
+     *
+     * @see HrisIndividualRetrieveManyPageResponse.responses
+     */
+    fun responses(): List<IndividualResponse> =
+        response._responses().getNullable("responses") ?: emptyList()
 
-    fun responses(): List<IndividualResponse> = response().responses()
+    override fun items(): List<IndividualResponse> = responses()
+
+    override fun hasNextPage(): Boolean = false
+
+    fun nextPageParams(): HrisIndividualRetrieveManyParams =
+        throw IllegalStateException("Cannot construct next page params")
+
+    override fun nextPage(): HrisIndividualRetrieveManyPage = service.retrieveMany(nextPageParams())
+
+    fun autoPager(): AutoPager<IndividualResponse> = AutoPager.from(this)
+
+    /** The parameters that were used to request this page. */
+    fun params(): HrisIndividualRetrieveManyParams = params
+
+    /** The response that this page was parsed from. */
+    fun response(): HrisIndividualRetrieveManyPageResponse = response
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisIndividualRetrieveManyPage].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [HrisIndividualRetrieveManyPage]. */
+    class Builder internal constructor() {
+
+        private var service: IndividualService? = null
+        private var params: HrisIndividualRetrieveManyParams? = null
+        private var response: HrisIndividualRetrieveManyPageResponse? = null
+
+        internal fun from(hrisIndividualRetrieveManyPage: HrisIndividualRetrieveManyPage) = apply {
+            service = hrisIndividualRetrieveManyPage.service
+            params = hrisIndividualRetrieveManyPage.params
+            response = hrisIndividualRetrieveManyPage.response
+        }
+
+        fun service(service: IndividualService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisIndividualRetrieveManyParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun response(response: HrisIndividualRetrieveManyPageResponse) = apply {
+            this.response = response
+        }
+
+        /**
+         * Returns an immutable instance of [HrisIndividualRetrieveManyPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .response()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisIndividualRetrieveManyPage =
+            HrisIndividualRetrieveManyPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
+            )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is HrisIndividualRetrieveManyPage && individualsService == other.individualsService && params == other.params && response == other.response /* spotless:on */
+        return other is HrisIndividualRetrieveManyPage &&
+            service == other.service &&
+            params == other.params &&
+            response == other.response
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, response)
 
     override fun toString() =
-        "HrisIndividualRetrieveManyPage{individualsService=$individualsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !responses().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisIndividualRetrieveManyParams? {
-        return null
-    }
-
-    fun getNextPage(): HrisIndividualRetrieveManyPage? {
-        return getNextPageParams()?.let { individualsService.retrieveMany(it) }
-    }
-
-    fun autoPager(): AutoPager = AutoPager(this)
-
-    companion object {
-
-        fun of(
-            individualsService: IndividualService,
-            params: HrisIndividualRetrieveManyParams,
-            response: Response
-        ) =
-            HrisIndividualRetrieveManyPage(
-                individualsService,
-                params,
-                response,
-            )
-    }
-
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("responses")
-        private val responses: JsonField<List<IndividualResponse>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        fun responses(): List<IndividualResponse> = responses.getNullable("responses") ?: listOf()
-
-        @JsonProperty("responses")
-        fun _responses(): JsonField<List<IndividualResponse>>? = responses
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            responses().map { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && responses == other.responses && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(responses, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{responses=$responses, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var responses: JsonField<List<IndividualResponse>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.responses = page.responses
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun responses(responses: List<IndividualResponse>) = responses(JsonField.of(responses))
-
-            fun responses(responses: JsonField<List<IndividualResponse>>) = apply {
-                this.responses = responses
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun build() = Response(responses, additionalProperties.toImmutable())
-        }
-    }
-
-    class AutoPager
-    constructor(
-        private val firstPage: HrisIndividualRetrieveManyPage,
-    ) : Sequence<IndividualResponse> {
-
-        override fun iterator(): Iterator<IndividualResponse> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.responses().size) {
-                    yield(page.responses()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
-    }
+        "HrisIndividualRetrieveManyPage{service=$service, params=$params, response=$response}"
 }

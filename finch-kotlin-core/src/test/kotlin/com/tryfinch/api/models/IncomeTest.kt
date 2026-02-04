@@ -2,24 +2,44 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class IncomeTest {
+internal class IncomeTest {
 
     @Test
-    fun createIncome() {
+    fun create() {
         val income =
             Income.builder()
                 .amount(0L)
                 .currency("currency")
-                .effectiveDate("effective_date")
+                .effectiveDate(LocalDate.parse("2019-12-27"))
                 .unit(Income.Unit.YEARLY)
                 .build()
-        assertThat(income).isNotNull
+
         assertThat(income.amount()).isEqualTo(0L)
         assertThat(income.currency()).isEqualTo("currency")
-        assertThat(income.effectiveDate()).isEqualTo("effective_date")
+        assertThat(income.effectiveDate()).isEqualTo(LocalDate.parse("2019-12-27"))
         assertThat(income.unit()).isEqualTo(Income.Unit.YEARLY)
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val income =
+            Income.builder()
+                .amount(0L)
+                .currency("currency")
+                .effectiveDate(LocalDate.parse("2019-12-27"))
+                .unit(Income.Unit.YEARLY)
+                .build()
+
+        val roundtrippedIncome =
+            jsonMapper.readValue(jsonMapper.writeValueAsString(income), jacksonTypeRef<Income>())
+
+        assertThat(roundtrippedIncome).isEqualTo(income)
     }
 }

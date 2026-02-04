@@ -5,7 +5,7 @@ package com.tryfinch.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -14,14 +14,18 @@ import java.util.Objects
 
 /** **Beta:** This endpoint is in beta and may change. Retrieve a list of company-wide documents. */
 class HrisDocumentListParams
-constructor(
+private constructor(
+    private val entityIds: List<String>?,
     private val individualIds: List<String>?,
     private val limit: Long?,
     private val offset: Long?,
     private val types: List<Type>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     /**
      * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
@@ -38,32 +42,26 @@ constructor(
     /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
     fun types(): List<Type>? = types
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualIds?.let { queryParams.put("individual_ids[]", it.map(Any::toString)) }
-        this.limit?.let { queryParams.put("limit", listOf(it.toString())) }
-        this.offset?.let { queryParams.put("offset", listOf(it.toString())) }
-        this.types?.let { queryParams.put("types[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): HrisDocumentListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisDocumentListParams]. */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisDocumentListParams]. */
+    class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var individualIds: MutableList<String>? = null
         private var limit: Long? = null
         private var offset: Long? = null
@@ -72,12 +70,27 @@ constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisDocumentListParams: HrisDocumentListParams) = apply {
+            entityIds = hrisDocumentListParams.entityIds?.toMutableList()
             individualIds = hrisDocumentListParams.individualIds?.toMutableList()
             limit = hrisDocumentListParams.limit
             offset = hrisDocumentListParams.offset
             types = hrisDocumentListParams.types?.toMutableList()
             additionalHeaders = hrisDocumentListParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisDocumentListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         /**
@@ -89,8 +102,9 @@ constructor(
         }
 
         /**
-         * Comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
-         * individuals
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addIndividualId(individualId: String) = apply {
             individualIds = (individualIds ?: mutableListOf()).apply { add(individualId) }
@@ -99,19 +113,31 @@ constructor(
         /** Number of documents to return (defaults to all) */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
-        /** Number of documents to return (defaults to all) */
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
-        /** Index to start from (defaults to 0) */
+        /**
+         * Alias for [Builder.offset].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun offset(offset: Long) = offset(offset as Long?)
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
         fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
 
-        /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
+        /**
+         * Adds a single [Type] to [types].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -212,8 +238,14 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisDocumentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisDocumentListParams =
             HrisDocumentListParams(
+                entityIds?.toImmutable(),
                 individualIds?.toImmutable(),
                 limit,
                 offset,
@@ -223,12 +255,30 @@ constructor(
             )
     }
 
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    override fun _headers(): Headers = additionalHeaders
 
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                individualIds?.forEach { put("individual_ids[]", it) }
+                limit?.let { put("limit", it.toString()) }
+                offset?.let { put("offset", it.toString()) }
+                types?.forEach { put("types[]", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -240,17 +290,35 @@ constructor(
             fun of(value: String) = Type(JsonField.of(value))
         }
 
+        /** An enum containing [Type]'s known values. */
         enum class Known {
             W4_2020,
             W4_2005,
         }
 
+        /**
+         * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Type] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             W4_2020,
             W4_2005,
+            /** An enum member indicating that [Type] was instantiated with an unknown value. */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 W4_2020 -> Value.W4_2020
@@ -258,6 +326,14 @@ constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws FinchInvalidDataException if this class instance's value is a not a known member.
+         */
         fun known(): Known =
             when (this) {
                 W4_2020 -> Known.W4_2020
@@ -265,14 +341,51 @@ constructor(
                 else -> throw FinchInvalidDataException("Unknown Type: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws FinchInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -285,11 +398,27 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisDocumentListParams && individualIds == other.individualIds && limit == other.limit && offset == other.offset && types == other.types && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisDocumentListParams &&
+            entityIds == other.entityIds &&
+            individualIds == other.individualIds &&
+            limit == other.limit &&
+            offset == other.offset &&
+            types == other.types &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualIds, limit, offset, types, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            entityIds,
+            individualIds,
+            limit,
+            offset,
+            types,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
-        "HrisDocumentListParams{individualIds=$individualIds, limit=$limit, offset=$offset, types=$types, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisDocumentListParams{entityIds=$entityIds, individualIds=$individualIds, limit=$limit, offset=$offset, types=$types, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -4,41 +4,44 @@ package com.tryfinch.api.services.blocking.payroll
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.PayrollPayGroupListParams
 import com.tryfinch.api.models.PayrollPayGroupRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PayGroupServiceTest {
+internal class PayGroupServiceTest {
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val payGroupService = client.payroll().payGroups()
-        val payGroupRetrieveResponse =
+
+        val payGroup =
             payGroupService.retrieve(
-                PayrollPayGroupRetrieveParams.builder().payGroupId("pay_group_id").build()
+                PayrollPayGroupRetrieveParams.builder()
+                    .payGroupId("pay_group_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
             )
-        println(payGroupRetrieveResponse)
-        payGroupRetrieveResponse.validate()
+
+        payGroup.validate()
     }
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val payGroupService = client.payroll().payGroups()
-        val getAllPayGroupsResponse =
-            payGroupService.list(PayrollPayGroupListParams.builder().build())
-        println(getAllPayGroupsResponse)
-        getAllPayGroupsResponse.items().forEach { it.validate() }
+
+        val page = payGroupService.list()
+
+        page.items().forEach { it.validate() }
     }
 }

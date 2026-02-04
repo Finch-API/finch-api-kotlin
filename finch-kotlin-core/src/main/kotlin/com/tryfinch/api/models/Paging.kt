@@ -10,78 +10,114 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class Paging
-@JsonCreator
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    @JsonProperty("count") @ExcludeMissing private val count: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("offset") @ExcludeMissing private val offset: JsonField<Long> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val offset: JsonField<Long>,
+    private val count: JsonField<Long>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    /** The total number of elements for the entire query (not just the given page) */
+    @JsonCreator
+    private constructor(
+        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
+    ) : this(offset, count, mutableMapOf())
+
+    /**
+     * The current start index of the returned list of elements
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun offset(): Long = offset.getRequired("offset")
+
+    /**
+     * The total number of elements for the entire query (not just the given page)
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun count(): Long? = count.getNullable("count")
 
-    /** The current start index of the returned list of elements */
-    fun offset(): Long? = offset.getNullable("offset")
+    /**
+     * Returns the raw JSON value of [offset].
+     *
+     * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
 
-    /** The total number of elements for the entire query (not just the given page) */
+    /**
+     * Returns the raw JSON value of [count].
+     *
+     * Unlike [count], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("count") @ExcludeMissing fun _count(): JsonField<Long> = count
 
-    /** The current start index of the returned list of elements */
-    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
 
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): Paging = apply {
-        if (validated) {
-            return@apply
-        }
-
-        count()
-        offset()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [Paging].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .offset()
+         * ```
+         */
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [Paging]. */
+    class Builder internal constructor() {
 
+        private var offset: JsonField<Long>? = null
         private var count: JsonField<Long> = JsonMissing.of()
-        private var offset: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(paging: Paging) = apply {
-            count = paging.count
             offset = paging.offset
+            count = paging.count
             additionalProperties = paging.additionalProperties.toMutableMap()
         }
-
-        /** The total number of elements for the entire query (not just the given page) */
-        fun count(count: Long) = count(JsonField.of(count))
-
-        /** The total number of elements for the entire query (not just the given page) */
-        fun count(count: JsonField<Long>) = apply { this.count = count }
 
         /** The current start index of the returned list of elements */
         fun offset(offset: Long) = offset(JsonField.of(offset))
 
-        /** The current start index of the returned list of elements */
+        /**
+         * Sets [Builder.offset] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+
+        /** The total number of elements for the entire query (not just the given page) */
+        fun count(count: Long) = count(JsonField.of(count))
+
+        /**
+         * Sets [Builder.count] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.count] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun count(count: JsonField<Long>) = apply { this.count = count }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -102,28 +138,65 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [Paging].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .offset()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): Paging =
-            Paging(
-                count,
-                offset,
-                additionalProperties.toImmutable(),
-            )
+            Paging(checkRequired("offset", offset), count, additionalProperties.toMutableMap())
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): Paging = apply {
+        if (validated) {
+            return@apply
+        }
+
+        offset()
+        count()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (offset.asKnown() == null) 0 else 1) + (if (count.asKnown() == null) 0 else 1)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is Paging && count == other.count && offset == other.offset && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is Paging &&
+            offset == other.offset &&
+            count == other.count &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(count, offset, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy { Objects.hash(offset, count, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Paging{count=$count, offset=$offset, additionalProperties=$additionalProperties}"
+        "Paging{offset=$offset, count=$count, additionalProperties=$additionalProperties}"
 }

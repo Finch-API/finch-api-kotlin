@@ -5,41 +5,43 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class SandboxConnectionCreateParamsTest {
+internal class SandboxConnectionCreateParamsTest {
 
     @Test
-    fun createSandboxConnectionCreateParams() {
+    fun create() {
         SandboxConnectionCreateParams.builder()
             .providerId("provider_id")
             .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
             .employeeSize(0L)
-            .products(listOf("string"))
+            .addProduct("string")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             SandboxConnectionCreateParams.builder()
                 .providerId("provider_id")
                 .authenticationType(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
                 .employeeSize(0L)
-                .products(listOf("string"))
+                .addProduct("string")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.providerId()).isEqualTo("provider_id")
         assertThat(body.authenticationType())
             .isEqualTo(SandboxConnectionCreateParams.AuthenticationType.CREDENTIAL)
         assertThat(body.employeeSize()).isEqualTo(0L)
-        assertThat(body.products()).isEqualTo(listOf("string"))
+        assertThat(body.products()).containsExactly("string")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params = SandboxConnectionCreateParams.builder().providerId("provider_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.providerId()).isEqualTo("provider_id")
     }
 }

@@ -5,19 +5,19 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConnectSessionNewParamsTest {
+internal class ConnectSessionNewParamsTest {
 
     @Test
-    fun createConnectSessionNewParams() {
+    fun create() {
         ConnectSessionNewParams.builder()
             .customerId("x")
             .customerName("x")
-            .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-            .customerEmail("dev@stainlessapi.com")
+            .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
+            .customerEmail("dev@stainless.com")
             .integration(
                 ConnectSessionNewParams.Integration.builder()
-                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .provider("provider")
+                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .build()
             )
             .manual(true)
@@ -28,17 +28,17 @@ class ConnectSessionNewParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-                .customerEmail("dev@stainlessapi.com")
+                .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
+                .customerEmail("dev@stainless.com")
                 .integration(
                     ConnectSessionNewParams.Integration.builder()
-                        .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                         .provider("provider")
+                        .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                         .build()
                 )
                 .manual(true)
@@ -46,18 +46,19 @@ class ConnectSessionNewParamsTest {
                 .redirectUri("redirect_uri")
                 .sandbox(ConnectSessionNewParams.Sandbox.FINCH)
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
-        assertThat(body.customerEmail()).isEqualTo("dev@stainlessapi.com")
+            .containsExactly(ConnectSessionNewParams.ConnectProducts.BENEFITS)
+        assertThat(body.customerEmail()).isEqualTo("dev@stainless.com")
         assertThat(body.integration())
             .isEqualTo(
                 ConnectSessionNewParams.Integration.builder()
-                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .provider("provider")
+                    .authMethod(ConnectSessionNewParams.Integration.AuthMethod.ASSISTED)
                     .build()
             )
         assertThat(body.manual()).isEqualTo(true)
@@ -67,18 +68,19 @@ class ConnectSessionNewParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ConnectSessionNewParams.builder()
                 .customerId("x")
                 .customerName("x")
-                .products(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionNewParams.ConnectProducts.BENEFITS)
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.customerId()).isEqualTo("x")
         assertThat(body.customerName()).isEqualTo("x")
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionNewParams.ConnectProducts.COMPANY))
+            .containsExactly(ConnectSessionNewParams.ConnectProducts.BENEFITS)
     }
 }

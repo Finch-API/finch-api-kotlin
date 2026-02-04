@@ -2,56 +2,34 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class EmploymentDataResponseTest {
+internal class EmploymentDataResponseTest {
 
     @Test
-    fun createEmploymentDataResponse() {
+    fun create() {
         val employmentDataResponse =
             EmploymentDataResponse.builder()
                 .body(
-                    EmploymentData.builder()
-                        .id("id")
+                    EmploymentData.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .classCode("class_code")
-                        .customFields(
-                            listOf(
-                                EmploymentData.CustomField.builder()
-                                    .name("name")
-                                    .value(JsonValue.from(mapOf<String, Any>()))
-                                    .build()
-                            )
+                        .department(
+                            EmploymentData.UnionMember0.Department.builder().name("name").build()
                         )
-                        .department(EmploymentData.Department.builder().name("name").build())
                         .employment(
-                            EmploymentData.Employment.builder()
-                                .subtype(EmploymentData.Employment.Subtype.FULL_TIME)
-                                .type(EmploymentData.Employment.Type.EMPLOYEE)
+                            EmploymentData.UnionMember0.Employment.builder()
+                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
+                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
                                 .build()
                         )
-                        .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
+                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
                         .endDate("end_date")
                         .firstName("first_name")
-                        .income(
-                            Income.builder()
-                                .amount(0L)
-                                .currency("currency")
-                                .effectiveDate("effective_date")
-                                .unit(Income.Unit.YEARLY)
-                                .build()
-                        )
-                        .incomeHistory(
-                            listOf(
-                                Income.builder()
-                                    .amount(0L)
-                                    .currency("currency")
-                                    .effectiveDate("effective_date")
-                                    .unit(Income.Unit.YEARLY)
-                                    .build()
-                            )
-                        )
                         .isActive(true)
                         .lastName("last_name")
                         .latestRehireDate("latest_rehire_date")
@@ -61,89 +39,203 @@ class EmploymentDataResponseTest {
                                 .country("country")
                                 .line1("line1")
                                 .line2("line2")
-                                .name("name")
                                 .postalCode("postal_code")
-                                .sourceId("source_id")
                                 .state("state")
+                                .name("name")
+                                .sourceId("source_id")
                                 .build()
                         )
-                        .manager(EmploymentData.Manager.builder().id("id").build())
+                        .manager(
+                            EmploymentData.UnionMember0.Manager.builder()
+                                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .build()
+                        )
                         .middleName("middle_name")
-                        .sourceId("source_id")
                         .startDate("start_date")
                         .title("title")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
+                        .income(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
+                                .unit(Income.Unit.YEARLY)
+                                .build()
+                        )
+                        .addIncomeHistory(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
+                                .unit(Income.Unit.YEARLY)
+                                .build()
+                        )
+                        .sourceId("source_id")
                         .workId("work_id")
                         .build()
                 )
                 .code(0L)
-                .individualId("individual_id")
+                .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        assertThat(employmentDataResponse).isNotNull
+
         assertThat(employmentDataResponse.body())
             .isEqualTo(
-                EmploymentData.builder()
-                    .id("id")
-                    .classCode("class_code")
-                    .customFields(
-                        listOf(
-                            EmploymentData.CustomField.builder()
-                                .name("name")
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                EmploymentData.ofUnionMember0(
+                    EmploymentData.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .classCode("class_code")
+                        .department(
+                            EmploymentData.UnionMember0.Department.builder().name("name").build()
+                        )
+                        .employment(
+                            EmploymentData.UnionMember0.Employment.builder()
+                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
+                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
                                 .build()
                         )
-                    )
-                    .department(EmploymentData.Department.builder().name("name").build())
-                    .employment(
-                        EmploymentData.Employment.builder()
-                            .subtype(EmploymentData.Employment.Subtype.FULL_TIME)
-                            .type(EmploymentData.Employment.Type.EMPLOYEE)
-                            .build()
-                    )
-                    .employmentStatus(EmploymentData.EmploymentStatus.ACTIVE)
-                    .endDate("end_date")
-                    .firstName("first_name")
-                    .income(
-                        Income.builder()
-                            .amount(0L)
-                            .currency("currency")
-                            .effectiveDate("effective_date")
-                            .unit(Income.Unit.YEARLY)
-                            .build()
-                    )
-                    .incomeHistory(
-                        listOf(
+                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                        .endDate("end_date")
+                        .firstName("first_name")
+                        .isActive(true)
+                        .lastName("last_name")
+                        .latestRehireDate("latest_rehire_date")
+                        .location(
+                            Location.builder()
+                                .city("city")
+                                .country("country")
+                                .line1("line1")
+                                .line2("line2")
+                                .postalCode("postal_code")
+                                .state("state")
+                                .name("name")
+                                .sourceId("source_id")
+                                .build()
+                        )
+                        .manager(
+                            EmploymentData.UnionMember0.Manager.builder()
+                                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .build()
+                        )
+                        .middleName("middle_name")
+                        .startDate("start_date")
+                        .title("title")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
+                        .income(
                             Income.builder()
                                 .amount(0L)
                                 .currency("currency")
-                                .effectiveDate("effective_date")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
                                 .unit(Income.Unit.YEARLY)
                                 .build()
                         )
-                    )
-                    .isActive(true)
-                    .lastName("last_name")
-                    .latestRehireDate("latest_rehire_date")
-                    .location(
-                        Location.builder()
-                            .city("city")
-                            .country("country")
-                            .line1("line1")
-                            .line2("line2")
-                            .name("name")
-                            .postalCode("postal_code")
-                            .sourceId("source_id")
-                            .state("state")
-                            .build()
-                    )
-                    .manager(EmploymentData.Manager.builder().id("id").build())
-                    .middleName("middle_name")
-                    .sourceId("source_id")
-                    .startDate("start_date")
-                    .title("title")
-                    .workId("work_id")
-                    .build()
+                        .addIncomeHistory(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
+                                .unit(Income.Unit.YEARLY)
+                                .build()
+                        )
+                        .sourceId("source_id")
+                        .workId("work_id")
+                        .build()
+                )
             )
         assertThat(employmentDataResponse.code()).isEqualTo(0L)
-        assertThat(employmentDataResponse.individualId()).isEqualTo("individual_id")
+        assertThat(employmentDataResponse.individualId())
+            .isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val employmentDataResponse =
+            EmploymentDataResponse.builder()
+                .body(
+                    EmploymentData.UnionMember0.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .classCode("class_code")
+                        .department(
+                            EmploymentData.UnionMember0.Department.builder().name("name").build()
+                        )
+                        .employment(
+                            EmploymentData.UnionMember0.Employment.builder()
+                                .subtype(EmploymentData.UnionMember0.Employment.Subtype.FULL_TIME)
+                                .type(EmploymentData.UnionMember0.Employment.Type.EMPLOYEE)
+                                .build()
+                        )
+                        .employmentStatus(EmploymentData.UnionMember0.EmploymentStatus.ACTIVE)
+                        .endDate("end_date")
+                        .firstName("first_name")
+                        .isActive(true)
+                        .lastName("last_name")
+                        .latestRehireDate("latest_rehire_date")
+                        .location(
+                            Location.builder()
+                                .city("city")
+                                .country("country")
+                                .line1("line1")
+                                .line2("line2")
+                                .postalCode("postal_code")
+                                .state("state")
+                                .name("name")
+                                .sourceId("source_id")
+                                .build()
+                        )
+                        .manager(
+                            EmploymentData.UnionMember0.Manager.builder()
+                                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .build()
+                        )
+                        .middleName("middle_name")
+                        .startDate("start_date")
+                        .title("title")
+                        .addCustomField(
+                            EmploymentData.UnionMember0.CustomField.builder()
+                                .name("name")
+                                .value("string")
+                                .build()
+                        )
+                        .income(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
+                                .unit(Income.Unit.YEARLY)
+                                .build()
+                        )
+                        .addIncomeHistory(
+                            Income.builder()
+                                .amount(0L)
+                                .currency("currency")
+                                .effectiveDate(LocalDate.parse("2019-12-27"))
+                                .unit(Income.Unit.YEARLY)
+                                .build()
+                        )
+                        .sourceId("source_id")
+                        .workId("work_id")
+                        .build()
+                )
+                .code(0L)
+                .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
+
+        val roundtrippedEmploymentDataResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(employmentDataResponse),
+                jacksonTypeRef<EmploymentDataResponse>(),
+            )
+
+        assertThat(roundtrippedEmploymentDataResponse).isEqualTo(employmentDataResponse)
     }
 }

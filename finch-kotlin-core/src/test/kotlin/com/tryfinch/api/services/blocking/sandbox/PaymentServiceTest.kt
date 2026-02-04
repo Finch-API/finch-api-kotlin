@@ -4,96 +4,85 @@ package com.tryfinch.api.services.blocking.sandbox
 
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
-import com.tryfinch.api.models.BenefitType
-import com.tryfinch.api.models.Money
 import com.tryfinch.api.models.SandboxPaymentCreateParams
+import java.time.LocalDate
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PaymentServiceTest {
+internal class PaymentServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val paymentService = client.sandbox().payment()
-        val paymentCreateResponse =
+
+        val payment =
             paymentService.create(
                 SandboxPaymentCreateParams.builder()
-                    .endDate("end_date")
-                    .payStatements(
-                        listOf(
-                            SandboxPaymentCreateParams.PayStatement.builder()
-                                .earnings(
-                                    listOf(
-                                        SandboxPaymentCreateParams.PayStatement.Earning.builder()
-                                            .amount(0L)
-                                            .currency("currency")
-                                            .hours(0.0)
-                                            .name("name")
-                                            .type(
-                                                SandboxPaymentCreateParams.PayStatement.Earning.Type
-                                                    .SALARY
-                                            )
-                                            .build()
+                    .endDate(LocalDate.parse("2019-12-27"))
+                    .addPayStatement(
+                        SandboxPaymentCreateParams.PayStatement.builder()
+                            .individualId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .addEarning(
+                                SandboxPaymentCreateParams.PayStatement.Earning.builder()
+                                    .amount(0L)
+                                    .hours(0.0)
+                                    .name("x")
+                                    .type(
+                                        SandboxPaymentCreateParams.PayStatement.Earning.Type.BONUS
                                     )
-                                )
-                                .employeeDeductions(
-                                    listOf(
+                                    .build()
+                            )
+                            .addEmployeeDeduction(
+                                SandboxPaymentCreateParams.PayStatement.EmployeeDeduction.builder()
+                                    .amount(0L)
+                                    .name("x")
+                                    .preTax(true)
+                                    .type(
                                         SandboxPaymentCreateParams.PayStatement.EmployeeDeduction
-                                            .builder()
-                                            .amount(2000L)
-                                            .currency("usd")
-                                            .name("401k test")
-                                            .preTax(true)
-                                            .type(BenefitType._401K)
-                                            .build()
+                                            .Type
+                                            ._457
                                     )
-                                )
-                                .employerContributions(
-                                    listOf(
+                                    .build()
+                            )
+                            .addEmployerContribution(
+                                SandboxPaymentCreateParams.PayStatement.EmployerContribution
+                                    .builder()
+                                    .amount(0L)
+                                    .name("x")
+                                    .type(
                                         SandboxPaymentCreateParams.PayStatement.EmployerContribution
-                                            .builder()
-                                            .amount(0L)
-                                            .currency("currency")
-                                            .name("name")
-                                            .type(BenefitType._401K)
-                                            .build()
+                                            .Type
+                                            ._457
                                     )
-                                )
-                                .grossPay(Money.builder().amount(0L).currency("currency").build())
-                                .individualId("b2338cfb-472f-4f72-9faa-e028c083144a")
-                                .netPay(Money.builder().amount(0L).currency("currency").build())
-                                .paymentMethod(
-                                    SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
-                                )
-                                .taxes(
-                                    listOf(
-                                        SandboxPaymentCreateParams.PayStatement.Tax.builder()
-                                            .amount(0L)
-                                            .currency("currency")
-                                            .employer(true)
-                                            .name("name")
-                                            .type(
-                                                SandboxPaymentCreateParams.PayStatement.Tax.Type
-                                                    .STATE
-                                            )
-                                            .build()
-                                    )
-                                )
-                                .totalHours(0.0)
-                                .type(SandboxPaymentCreateParams.PayStatement.Type.REGULAR_PAYROLL)
-                                .build()
-                        )
+                                    .build()
+                            )
+                            .grossPay(1L)
+                            .netPay(9007199254740991L)
+                            .paymentMethod(
+                                SandboxPaymentCreateParams.PayStatement.PaymentMethod.CHECK
+                            )
+                            .addTax(
+                                SandboxPaymentCreateParams.PayStatement.Tax.builder()
+                                    .amount(0L)
+                                    .employer(true)
+                                    .name("x")
+                                    .type(SandboxPaymentCreateParams.PayStatement.Tax.Type.FEDERAL)
+                                    .build()
+                            )
+                            .totalHours(1.0)
+                            .type(SandboxPaymentCreateParams.PayStatement.Type.OFF_CYCLE_PAYROLL)
+                            .build()
                     )
-                    .startDate("start_date")
+                    .startDate(LocalDate.parse("2019-12-27"))
                     .build()
             )
-        println(paymentCreateResponse)
-        paymentCreateResponse.validate()
+
+        payment.validate()
     }
 }

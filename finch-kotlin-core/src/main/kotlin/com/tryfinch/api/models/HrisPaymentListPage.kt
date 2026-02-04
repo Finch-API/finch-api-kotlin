@@ -2,153 +2,107 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.AutoPager
+import com.tryfinch.api.core.Page
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.blocking.hris.PaymentService
 import java.util.Objects
 
+/** @see PaymentService.list */
 class HrisPaymentListPage
 private constructor(
-    private val paymentsService: PaymentService,
+    private val service: PaymentService,
     private val params: HrisPaymentListParams,
-    private val response: Response,
-) {
+    private val items: List<Payment>,
+) : Page<Payment> {
 
-    fun response(): Response = response
+    override fun hasNextPage(): Boolean = false
 
-    fun items(): List<Payment> = response().items()
+    fun nextPageParams(): HrisPaymentListParams =
+        throw IllegalStateException("Cannot construct next page params")
+
+    override fun nextPage(): HrisPaymentListPage = service.list(nextPageParams())
+
+    fun autoPager(): AutoPager<Payment> = AutoPager.from(this)
+
+    /** The parameters that were used to request this page. */
+    fun params(): HrisPaymentListParams = params
+
+    /** The response that this page was parsed from. */
+    override fun items(): List<Payment> = items
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisPaymentListPage].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [HrisPaymentListPage]. */
+    class Builder internal constructor() {
+
+        private var service: PaymentService? = null
+        private var params: HrisPaymentListParams? = null
+        private var items: List<Payment>? = null
+
+        internal fun from(hrisPaymentListPage: HrisPaymentListPage) = apply {
+            service = hrisPaymentListPage.service
+            params = hrisPaymentListPage.params
+            items = hrisPaymentListPage.items
+        }
+
+        fun service(service: PaymentService) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisPaymentListParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<Payment>) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [HrisPaymentListPage].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisPaymentListPage =
+            HrisPaymentListPage(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
+            )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is HrisPaymentListPage && paymentsService == other.paymentsService && params == other.params && response == other.response /* spotless:on */
+        return other is HrisPaymentListPage &&
+            service == other.service &&
+            params == other.params &&
+            items == other.items
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(paymentsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, items)
 
-    override fun toString() =
-        "HrisPaymentListPage{paymentsService=$paymentsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisPaymentListParams? {
-        return null
-    }
-
-    fun getNextPage(): HrisPaymentListPage? {
-        return getNextPageParams()?.let { paymentsService.list(it) }
-    }
-
-    fun autoPager(): AutoPager = AutoPager(this)
-
-    companion object {
-
-        fun of(paymentsService: PaymentService, params: HrisPaymentListParams, response: Response) =
-            HrisPaymentListPage(
-                paymentsService,
-                params,
-                response,
-            )
-    }
-
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items") private val items: JsonField<List<Payment>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        fun items(): List<Payment> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items") fun _items(): JsonField<List<Payment>>? = items
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            items().map { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<Payment>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<Payment>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<Payment>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun build() = Response(items, additionalProperties.toImmutable())
-        }
-    }
-
-    class AutoPager
-    constructor(
-        private val firstPage: HrisPaymentListPage,
-    ) : Sequence<Payment> {
-
-        override fun iterator(): Iterator<Payment> = iterator {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    yield(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
-    }
+    override fun toString() = "HrisPaymentListPage{service=$service, params=$params, items=$items}"
 }

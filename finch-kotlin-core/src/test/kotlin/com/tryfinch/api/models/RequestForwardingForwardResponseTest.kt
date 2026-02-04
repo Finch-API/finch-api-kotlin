@@ -2,43 +2,110 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RequestForwardingForwardResponseTest {
+internal class RequestForwardingForwardResponseTest {
 
     @Test
-    fun createRequestForwardingForwardResponse() {
+    fun create() {
         val requestForwardingForwardResponse =
             RequestForwardingForwardResponse.builder()
-                .data("data")
-                .headers(JsonValue.from(mapOf<String, Any>()))
                 .request(
                     RequestForwardingForwardResponse.Request.builder()
-                        .data("data")
-                        .headers(JsonValue.from(mapOf<String, Any>()))
                         .method("method")
-                        .params(JsonValue.from(mapOf<String, Any>()))
                         .route("route")
+                        .data("string")
+                        .headers(
+                            RequestForwardingForwardResponse.Request.Headers.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
+                                .build()
+                        )
+                        .params(
+                            RequestForwardingForwardResponse.Request.Params.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .build()
                 )
                 .statusCode(0L)
+                .data("data")
+                .headers(
+                    RequestForwardingForwardResponse.Headers.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .build()
-        assertThat(requestForwardingForwardResponse).isNotNull
-        assertThat(requestForwardingForwardResponse.data()).isEqualTo("data")
-        assertThat(requestForwardingForwardResponse._headers())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+
         assertThat(requestForwardingForwardResponse.request())
             .isEqualTo(
                 RequestForwardingForwardResponse.Request.builder()
-                    .data("data")
-                    .headers(JsonValue.from(mapOf<String, Any>()))
                     .method("method")
-                    .params(JsonValue.from(mapOf<String, Any>()))
                     .route("route")
+                    .data("string")
+                    .headers(
+                        RequestForwardingForwardResponse.Request.Headers.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("string"))
+                            .build()
+                    )
+                    .params(
+                        RequestForwardingForwardResponse.Request.Params.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
         assertThat(requestForwardingForwardResponse.statusCode()).isEqualTo(0L)
+        assertThat(requestForwardingForwardResponse.data()).isEqualTo("data")
+        assertThat(requestForwardingForwardResponse.headers())
+            .isEqualTo(
+                RequestForwardingForwardResponse.Headers.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val requestForwardingForwardResponse =
+            RequestForwardingForwardResponse.builder()
+                .request(
+                    RequestForwardingForwardResponse.Request.builder()
+                        .method("method")
+                        .route("route")
+                        .data("string")
+                        .headers(
+                            RequestForwardingForwardResponse.Request.Headers.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("string"))
+                                .build()
+                        )
+                        .params(
+                            RequestForwardingForwardResponse.Request.Params.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+                .statusCode(0L)
+                .data("data")
+                .headers(
+                    RequestForwardingForwardResponse.Headers.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
+                .build()
+
+        val roundtrippedRequestForwardingForwardResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(requestForwardingForwardResponse),
+                jacksonTypeRef<RequestForwardingForwardResponse>(),
+            )
+
+        assertThat(roundtrippedRequestForwardingForwardResponse)
+            .isEqualTo(requestForwardingForwardResponse)
     }
 }

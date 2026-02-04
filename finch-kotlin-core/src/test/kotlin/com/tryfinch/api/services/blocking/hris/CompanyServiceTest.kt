@@ -9,18 +9,24 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class CompanyServiceTest {
+internal class CompanyServiceTest {
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val companyService = client.hris().company()
-        val company = companyService.retrieve(HrisCompanyRetrieveParams.builder().build())
-        println(company)
+
+        val company =
+            companyService.retrieve(
+                HrisCompanyRetrieveParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
+
         company.validate()
     }
 }

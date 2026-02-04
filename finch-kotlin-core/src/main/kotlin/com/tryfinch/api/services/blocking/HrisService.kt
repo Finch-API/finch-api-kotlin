@@ -2,6 +2,7 @@
 
 package com.tryfinch.api.services.blocking
 
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.services.blocking.hris.BenefitService
 import com.tryfinch.api.services.blocking.hris.CompanyService
 import com.tryfinch.api.services.blocking.hris.DirectoryService
@@ -12,6 +13,18 @@ import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PaymentService
 
 interface HrisService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisService
 
     fun company(): CompanyService
 
@@ -28,4 +41,31 @@ interface HrisService {
     fun documents(): DocumentService
 
     fun benefits(): BenefitService
+
+    /** A view of [HrisService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisService.WithRawResponse
+
+        fun company(): CompanyService.WithRawResponse
+
+        fun directory(): DirectoryService.WithRawResponse
+
+        fun individuals(): IndividualService.WithRawResponse
+
+        fun employments(): EmploymentService.WithRawResponse
+
+        fun payments(): PaymentService.WithRawResponse
+
+        fun payStatements(): PayStatementService.WithRawResponse
+
+        fun documents(): DocumentService.WithRawResponse
+
+        fun benefits(): BenefitService.WithRawResponse
+    }
 }

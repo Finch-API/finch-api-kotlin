@@ -2,29 +2,29 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class DocumentListResponseTest {
+internal class DocumentListResponseTest {
 
     @Test
-    fun createDocumentListResponse() {
+    fun create() {
         val documentListResponse =
             DocumentListResponse.builder()
-                .documents(
-                    listOf(
-                        DocumentResponse.builder()
-                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .individualId("individual_id")
-                            .type(DocumentResponse.Type.W4_2020)
-                            .url("https://example.com")
-                            .year(0.0)
-                            .build()
-                    )
+                .addDocument(
+                    DocumentResponse.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .individualId("individual_id")
+                        .type(DocumentResponse.Type.W4_2020)
+                        .url("https://example.com")
+                        .year(0.0)
+                        .build()
                 )
-                .paging(Paging.builder().count(0L).offset(0L).build())
+                .paging(Paging.builder().offset(0L).count(0L).build())
                 .build()
-        assertThat(documentListResponse).isNotNull
+
         assertThat(documentListResponse.documents())
             .containsExactly(
                 DocumentResponse.builder()
@@ -36,6 +36,32 @@ class DocumentListResponseTest {
                     .build()
             )
         assertThat(documentListResponse.paging())
-            .isEqualTo(Paging.builder().count(0L).offset(0L).build())
+            .isEqualTo(Paging.builder().offset(0L).count(0L).build())
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val documentListResponse =
+            DocumentListResponse.builder()
+                .addDocument(
+                    DocumentResponse.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .individualId("individual_id")
+                        .type(DocumentResponse.Type.W4_2020)
+                        .url("https://example.com")
+                        .year(0.0)
+                        .build()
+                )
+                .paging(Paging.builder().offset(0L).count(0L).build())
+                .build()
+
+        val roundtrippedDocumentListResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(documentListResponse),
+                jacksonTypeRef<DocumentListResponse>(),
+            )
+
+        assertThat(roundtrippedDocumentListResponse).isEqualTo(documentListResponse)
     }
 }

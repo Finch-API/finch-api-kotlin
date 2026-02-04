@@ -1,8 +1,21 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     id("com.vanniktech.maven.publish")
+}
+
+publishing {
+  repositories {
+      if (project.hasProperty("publishLocal")) {
+          maven {
+              name = "LocalFileSystem"
+              url = uri("${rootProject.layout.buildDirectory.get()}/local-maven-repo")
+          }
+      }
+  }
 }
 
 repositories {
@@ -15,10 +28,18 @@ extra["signingInMemoryKeyId"] = System.getenv("GPG_SIGNING_KEY_ID")
 extra["signingInMemoryKeyPassword"] = System.getenv("GPG_SIGNING_PASSWORD")
 
 configure<MavenPublishBaseExtension> {
-    signAllPublications()
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    if (!project.hasProperty("publishLocal")) {
+        signAllPublications()
+        publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    }
 
     coordinates(project.group.toString(), project.name, project.version.toString())
+    configure(
+        KotlinJvm(
+            javadocJar = JavadocJar.Dokka("dokkaHtml"),
+            sourcesJar = true,
+        )
+    )
 
     pom {
         name.set("API Reference")
@@ -44,4 +65,8 @@ configure<MavenPublishBaseExtension> {
             url.set("https://github.com/Finch-API/finch-api-kotlin")
         }
     }
+}
+
+tasks.withType<Zip>().configureEach {
+    isZip64 = true
 }

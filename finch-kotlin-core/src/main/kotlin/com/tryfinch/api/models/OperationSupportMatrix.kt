@@ -10,29 +10,33 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class OperationSupportMatrix
-@JsonCreator
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    @JsonProperty("create")
-    @ExcludeMissing
-    private val create: JsonField<OperationSupport> = JsonMissing.of(),
-    @JsonProperty("delete")
-    @ExcludeMissing
-    private val delete: JsonField<OperationSupport> = JsonMissing.of(),
-    @JsonProperty("read")
-    @ExcludeMissing
-    private val read: JsonField<OperationSupport> = JsonMissing.of(),
-    @JsonProperty("update")
-    @ExcludeMissing
-    private val update: JsonField<OperationSupport> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val create: JsonField<OperationSupport>,
+    private val delete: JsonField<OperationSupport>,
+    private val read: JsonField<OperationSupport>,
+    private val update: JsonField<OperationSupport>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("create")
+        @ExcludeMissing
+        create: JsonField<OperationSupport> = JsonMissing.of(),
+        @JsonProperty("delete")
+        @ExcludeMissing
+        delete: JsonField<OperationSupport> = JsonMissing.of(),
+        @JsonProperty("read") @ExcludeMissing read: JsonField<OperationSupport> = JsonMissing.of(),
+        @JsonProperty("update")
+        @ExcludeMissing
+        update: JsonField<OperationSupport> = JsonMissing.of(),
+    ) : this(create, delete, read, update, mutableMapOf())
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -42,6 +46,9 @@ private constructor(
      *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun create(): OperationSupport? = create.getNullable("create")
 
@@ -53,6 +60,9 @@ private constructor(
      *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun delete(): OperationSupport? = delete.getNullable("delete")
 
@@ -64,6 +74,9 @@ private constructor(
      *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun read(): OperationSupport? = read.getNullable("read")
 
@@ -75,79 +88,60 @@ private constructor(
      *   cannot support
      * - `client_access_only`: This behavior is supported by the provider, but only available to the
      *   client and not to Finch
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun update(): OperationSupport? = update.getNullable("update")
 
     /**
-     * - `supported`: This operation is supported by both the provider and Finch
-     * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     *   provider
-     * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     *   cannot support
-     * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     *   client and not to Finch
+     * Returns the raw JSON value of [create].
+     *
+     * Unlike [create], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("create") @ExcludeMissing fun _create(): JsonField<OperationSupport> = create
 
     /**
-     * - `supported`: This operation is supported by both the provider and Finch
-     * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     *   provider
-     * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     *   cannot support
-     * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     *   client and not to Finch
+     * Returns the raw JSON value of [delete].
+     *
+     * Unlike [delete], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("delete") @ExcludeMissing fun _delete(): JsonField<OperationSupport> = delete
 
     /**
-     * - `supported`: This operation is supported by both the provider and Finch
-     * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     *   provider
-     * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     *   cannot support
-     * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     *   client and not to Finch
+     * Returns the raw JSON value of [read].
+     *
+     * Unlike [read], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("read") @ExcludeMissing fun _read(): JsonField<OperationSupport> = read
 
     /**
-     * - `supported`: This operation is supported by both the provider and Finch
-     * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-     *   provider
-     * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-     *   cannot support
-     * - `client_access_only`: This behavior is supported by the provider, but only available to the
-     *   client and not to Finch
+     * Returns the raw JSON value of [update].
+     *
+     * Unlike [update], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("update") @ExcludeMissing fun _update(): JsonField<OperationSupport> = update
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): OperationSupportMatrix = apply {
-        if (validated) {
-            return@apply
-        }
-
-        create()
-        delete()
-        read()
-        update()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [OperationSupportMatrix]. */
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [OperationSupportMatrix]. */
+    class Builder internal constructor() {
 
         private var create: JsonField<OperationSupport> = JsonMissing.of()
         private var delete: JsonField<OperationSupport> = JsonMissing.of()
@@ -175,13 +169,11 @@ private constructor(
         fun create(create: OperationSupport) = create(JsonField.of(create))
 
         /**
-         * - `supported`: This operation is supported by both the provider and Finch
-         * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         *   provider
-         * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         *   cannot support
-         * - `client_access_only`: This behavior is supported by the provider, but only available to
-         *   the client and not to Finch
+         * Sets [Builder.create] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.create] with a well-typed [OperationSupport] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun create(create: JsonField<OperationSupport>) = apply { this.create = create }
 
@@ -197,13 +189,11 @@ private constructor(
         fun delete(delete: OperationSupport) = delete(JsonField.of(delete))
 
         /**
-         * - `supported`: This operation is supported by both the provider and Finch
-         * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         *   provider
-         * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         *   cannot support
-         * - `client_access_only`: This behavior is supported by the provider, but only available to
-         *   the client and not to Finch
+         * Sets [Builder.delete] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.delete] with a well-typed [OperationSupport] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun delete(delete: JsonField<OperationSupport>) = apply { this.delete = delete }
 
@@ -219,13 +209,11 @@ private constructor(
         fun read(read: OperationSupport) = read(JsonField.of(read))
 
         /**
-         * - `supported`: This operation is supported by both the provider and Finch
-         * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         *   provider
-         * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         *   cannot support
-         * - `client_access_only`: This behavior is supported by the provider, but only available to
-         *   the client and not to Finch
+         * Sets [Builder.read] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.read] with a well-typed [OperationSupport] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun read(read: JsonField<OperationSupport>) = apply { this.read = read }
 
@@ -241,13 +229,11 @@ private constructor(
         fun update(update: OperationSupport) = update(JsonField.of(update))
 
         /**
-         * - `supported`: This operation is supported by both the provider and Finch
-         * - `not_supported_by_finch`: This operation is not supported by Finch but supported by the
-         *   provider
-         * - `not_supported_by_provider`: This operation is not supported by the provider, so Finch
-         *   cannot support
-         * - `client_access_only`: This behavior is supported by the provider, but only available to
-         *   the client and not to Finch
+         * Sets [Builder.update] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.update] with a well-typed [OperationSupport] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun update(update: JsonField<OperationSupport>) = apply { this.update = update }
 
@@ -270,27 +256,70 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [OperationSupportMatrix].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): OperationSupportMatrix =
             OperationSupportMatrix(
                 create,
                 delete,
                 read,
                 update,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): OperationSupportMatrix = apply {
+        if (validated) {
+            return@apply
+        }
+
+        create()?.validate()
+        delete()?.validate()
+        read()?.validate()
+        update()?.validate()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (create.asKnown()?.validity() ?: 0) +
+            (delete.asKnown()?.validity() ?: 0) +
+            (read.asKnown()?.validity() ?: 0) +
+            (update.asKnown()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is OperationSupportMatrix && create == other.create && delete == other.delete && read == other.read && update == other.update && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is OperationSupportMatrix &&
+            create == other.create &&
+            delete == other.delete &&
+            read == other.read &&
+            update == other.update &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(create, delete, read, update, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(create, delete, read, update, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

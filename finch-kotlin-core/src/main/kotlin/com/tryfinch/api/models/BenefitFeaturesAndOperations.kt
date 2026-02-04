@@ -6,69 +6,89 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class BenefitFeaturesAndOperations
-@JsonCreator
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    @JsonProperty("supported_features")
-    @ExcludeMissing
-    private val supportedFeatures: JsonField<BenefitFeature> = JsonMissing.of(),
-    @JsonProperty("supported_operations")
-    @ExcludeMissing
-    private val supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val supportedFeatures: JsonField<SupportedBenefit>,
+    private val supportedOperations: JsonField<SupportPerBenefitType>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
-    fun supportedFeatures(): BenefitFeature? = supportedFeatures.getNullable("supported_features")
+    @JsonCreator
+    private constructor(
+        @JsonProperty("supported_features")
+        @ExcludeMissing
+        supportedFeatures: JsonField<SupportedBenefit> = JsonMissing.of(),
+        @JsonProperty("supported_operations")
+        @ExcludeMissing
+        supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of(),
+    ) : this(supportedFeatures, supportedOperations, mutableMapOf())
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun supportedFeatures(): SupportedBenefit? = supportedFeatures.getNullable("supported_features")
+
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun supportedOperations(): SupportPerBenefitType? =
         supportedOperations.getNullable("supported_operations")
 
+    /**
+     * Returns the raw JSON value of [supportedFeatures].
+     *
+     * Unlike [supportedFeatures], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("supported_features")
     @ExcludeMissing
-    fun _supportedFeatures(): JsonField<BenefitFeature> = supportedFeatures
+    fun _supportedFeatures(): JsonField<SupportedBenefit> = supportedFeatures
 
+    /**
+     * Returns the raw JSON value of [supportedOperations].
+     *
+     * Unlike [supportedOperations], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("supported_operations")
     @ExcludeMissing
     fun _supportedOperations(): JsonField<SupportPerBenefitType> = supportedOperations
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): BenefitFeaturesAndOperations = apply {
-        if (validated) {
-            return@apply
-        }
-
-        supportedFeatures()?.validate()
-        supportedOperations()?.validate()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [BenefitFeaturesAndOperations].
+         */
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [BenefitFeaturesAndOperations]. */
+    class Builder internal constructor() {
 
-        private var supportedFeatures: JsonField<BenefitFeature> = JsonMissing.of()
+        private var supportedFeatures: JsonField<SupportedBenefit> = JsonMissing.of()
         private var supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -78,16 +98,30 @@ private constructor(
             additionalProperties = benefitFeaturesAndOperations.additionalProperties.toMutableMap()
         }
 
-        fun supportedFeatures(supportedFeatures: BenefitFeature) =
+        fun supportedFeatures(supportedFeatures: SupportedBenefit) =
             supportedFeatures(JsonField.of(supportedFeatures))
 
-        fun supportedFeatures(supportedFeatures: JsonField<BenefitFeature>) = apply {
+        /**
+         * Sets [Builder.supportedFeatures] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.supportedFeatures] with a well-typed [SupportedBenefit]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun supportedFeatures(supportedFeatures: JsonField<SupportedBenefit>) = apply {
             this.supportedFeatures = supportedFeatures
         }
 
         fun supportedOperations(supportedOperations: SupportPerBenefitType) =
             supportedOperations(JsonField.of(supportedOperations))
 
+        /**
+         * Sets [Builder.supportedOperations] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.supportedOperations] with a well-typed
+         * [SupportPerBenefitType] value instead. This method is primarily for setting the field to
+         * an undocumented or not yet supported value.
+         */
         fun supportedOperations(supportedOperations: JsonField<SupportPerBenefitType>) = apply {
             this.supportedOperations = supportedOperations
         }
@@ -111,537 +145,62 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [BenefitFeaturesAndOperations].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): BenefitFeaturesAndOperations =
             BenefitFeaturesAndOperations(
                 supportedFeatures,
                 supportedOperations,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
-    class BenefitFeature
-    @JsonCreator
-    private constructor(
-        @JsonProperty("annual_maximum")
-        @ExcludeMissing
-        private val annualMaximum: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("catch_up")
-        @ExcludeMissing
-        private val catchUp: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        private val companyContribution: JsonField<List<CompanyContribution?>> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        private val employeeDeduction: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
-        @JsonProperty("frequencies")
-        @ExcludeMissing
-        private val frequencies: JsonField<List<BenefitFrequency?>> = JsonMissing.of(),
-        @JsonProperty("hsa_contribution_limit")
-        @ExcludeMissing
-        private val hsaContributionLimit: JsonField<List<HsaContributionLimit?>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
+    private var validated: Boolean = false
 
-        /** Whether the provider supports an annual maximum for this benefit. */
-        fun annualMaximum(): Boolean? = annualMaximum.getNullable("annual_maximum")
-
-        /**
-         * Whether the provider supports catch up for this benefit. This field will only be true for
-         * retirement benefits.
-         */
-        fun catchUp(): Boolean? = catchUp.getNullable("catch_up")
-
-        /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
-         */
-        fun companyContribution(): List<CompanyContribution?>? =
-            companyContribution.getNullable("company_contribution")
-
-        fun description(): String? = description.getNullable("description")
-
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
-        fun employeeDeduction(): List<EmployeeDeduction?>? =
-            employeeDeduction.getNullable("employee_deduction")
-
-        /** The list of frequencies supported by the provider for this benefit */
-        fun frequencies(): List<BenefitFrequency?>? = frequencies.getNullable("frequencies")
-
-        /**
-         * Whether the provider supports HSA contribution limits. Empty if this feature is not
-         * supported for the benefit. This array only has values for HSA benefits.
-         */
-        fun hsaContributionLimit(): List<HsaContributionLimit?>? =
-            hsaContributionLimit.getNullable("hsa_contribution_limit")
-
-        /** Whether the provider supports an annual maximum for this benefit. */
-        @JsonProperty("annual_maximum")
-        @ExcludeMissing
-        fun _annualMaximum(): JsonField<Boolean> = annualMaximum
-
-        /**
-         * Whether the provider supports catch up for this benefit. This field will only be true for
-         * retirement benefits.
-         */
-        @JsonProperty("catch_up") @ExcludeMissing fun _catchUp(): JsonField<Boolean> = catchUp
-
-        /**
-         * Supported contribution types. An empty array indicates contributions are not supported.
-         */
-        @JsonProperty("company_contribution")
-        @ExcludeMissing
-        fun _companyContribution(): JsonField<List<CompanyContribution?>> = companyContribution
-
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /** Supported deduction types. An empty array indicates deductions are not supported. */
-        @JsonProperty("employee_deduction")
-        @ExcludeMissing
-        fun _employeeDeduction(): JsonField<List<EmployeeDeduction?>> = employeeDeduction
-
-        /** The list of frequencies supported by the provider for this benefit */
-        @JsonProperty("frequencies")
-        @ExcludeMissing
-        fun _frequencies(): JsonField<List<BenefitFrequency?>> = frequencies
-
-        /**
-         * Whether the provider supports HSA contribution limits. Empty if this feature is not
-         * supported for the benefit. This array only has values for HSA benefits.
-         */
-        @JsonProperty("hsa_contribution_limit")
-        @ExcludeMissing
-        fun _hsaContributionLimit(): JsonField<List<HsaContributionLimit?>> = hsaContributionLimit
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): BenefitFeature = apply {
-            if (validated) {
-                return@apply
-            }
-
-            annualMaximum()
-            catchUp()
-            companyContribution()
-            description()
-            employeeDeduction()
-            frequencies()
-            hsaContributionLimit()
-            validated = true
+    fun validate(): BenefitFeaturesAndOperations = apply {
+        if (validated) {
+            return@apply
         }
 
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var annualMaximum: JsonField<Boolean> = JsonMissing.of()
-            private var catchUp: JsonField<Boolean> = JsonMissing.of()
-            private var companyContribution: JsonField<MutableList<CompanyContribution?>>? = null
-            private var description: JsonField<String> = JsonMissing.of()
-            private var employeeDeduction: JsonField<MutableList<EmployeeDeduction?>>? = null
-            private var frequencies: JsonField<MutableList<BenefitFrequency?>>? = null
-            private var hsaContributionLimit: JsonField<MutableList<HsaContributionLimit?>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(benefitFeature: BenefitFeature) = apply {
-                annualMaximum = benefitFeature.annualMaximum
-                catchUp = benefitFeature.catchUp
-                companyContribution = benefitFeature.companyContribution.map { it.toMutableList() }
-                description = benefitFeature.description
-                employeeDeduction = benefitFeature.employeeDeduction.map { it.toMutableList() }
-                frequencies = benefitFeature.frequencies.map { it.toMutableList() }
-                hsaContributionLimit =
-                    benefitFeature.hsaContributionLimit.map { it.toMutableList() }
-                additionalProperties = benefitFeature.additionalProperties.toMutableMap()
-            }
-
-            /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: Boolean?) =
-                annualMaximum(JsonField.ofNullable(annualMaximum))
-
-            /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: Boolean) = annualMaximum(annualMaximum as Boolean?)
-
-            /** Whether the provider supports an annual maximum for this benefit. */
-            fun annualMaximum(annualMaximum: JsonField<Boolean>) = apply {
-                this.annualMaximum = annualMaximum
-            }
-
-            /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
-             */
-            fun catchUp(catchUp: Boolean?) = catchUp(JsonField.ofNullable(catchUp))
-
-            /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
-             */
-            fun catchUp(catchUp: Boolean) = catchUp(catchUp as Boolean?)
-
-            /**
-             * Whether the provider supports catch up for this benefit. This field will only be true
-             * for retirement benefits.
-             */
-            fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
-
-            /**
-             * Supported contribution types. An empty array indicates contributions are not
-             * supported.
-             */
-            fun companyContribution(companyContribution: List<CompanyContribution?>?) =
-                companyContribution(JsonField.ofNullable(companyContribution))
-
-            /**
-             * Supported contribution types. An empty array indicates contributions are not
-             * supported.
-             */
-            fun companyContribution(companyContribution: JsonField<List<CompanyContribution?>>) =
-                apply {
-                    this.companyContribution = companyContribution.map { it.toMutableList() }
-                }
-
-            /**
-             * Supported contribution types. An empty array indicates contributions are not
-             * supported.
-             */
-            fun addCompanyContribution(companyContribution: CompanyContribution) = apply {
-                this.companyContribution =
-                    (this.companyContribution ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(companyContribution)
-                    }
-            }
-
-            fun description(description: String?) = description(JsonField.ofNullable(description))
-
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>?) =
-                employeeDeduction(JsonField.ofNullable(employeeDeduction))
-
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun employeeDeduction(employeeDeduction: JsonField<List<EmployeeDeduction?>>) = apply {
-                this.employeeDeduction = employeeDeduction.map { it.toMutableList() }
-            }
-
-            /** Supported deduction types. An empty array indicates deductions are not supported. */
-            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
-                this.employeeDeduction =
-                    (this.employeeDeduction ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(employeeDeduction)
-                    }
-            }
-
-            /** The list of frequencies supported by the provider for this benefit */
-            fun frequencies(frequencies: List<BenefitFrequency?>) =
-                frequencies(JsonField.of(frequencies))
-
-            /** The list of frequencies supported by the provider for this benefit */
-            fun frequencies(frequencies: JsonField<List<BenefitFrequency?>>) = apply {
-                this.frequencies = frequencies.map { it.toMutableList() }
-            }
-
-            /** The list of frequencies supported by the provider for this benefit */
-            fun addFrequency(frequency: BenefitFrequency) = apply {
-                frequencies =
-                    (frequencies ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(frequency)
-                    }
-            }
-
-            /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
-             */
-            fun hsaContributionLimit(hsaContributionLimit: List<HsaContributionLimit?>?) =
-                hsaContributionLimit(JsonField.ofNullable(hsaContributionLimit))
-
-            /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
-             */
-            fun hsaContributionLimit(hsaContributionLimit: JsonField<List<HsaContributionLimit?>>) =
-                apply {
-                    this.hsaContributionLimit = hsaContributionLimit.map { it.toMutableList() }
-                }
-
-            /**
-             * Whether the provider supports HSA contribution limits. Empty if this feature is not
-             * supported for the benefit. This array only has values for HSA benefits.
-             */
-            fun addHsaContributionLimit(hsaContributionLimit: HsaContributionLimit) = apply {
-                this.hsaContributionLimit =
-                    (this.hsaContributionLimit ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(hsaContributionLimit)
-                    }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): BenefitFeature =
-                BenefitFeature(
-                    annualMaximum,
-                    catchUp,
-                    (companyContribution ?: JsonMissing.of()).map { it.toImmutable() },
-                    description,
-                    (employeeDeduction ?: JsonMissing.of()).map { it.toImmutable() },
-                    (frequencies ?: JsonMissing.of()).map { it.toImmutable() },
-                    (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        class CompanyContribution
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val FIXED = of("fixed")
-
-                val PERCENT = of("percent")
-
-                fun of(value: String) = CompanyContribution(JsonField.of(value))
-            }
-
-            enum class Known {
-                FIXED,
-                PERCENT,
-            }
-
-            enum class Value {
-                FIXED,
-                PERCENT,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    FIXED -> Value.FIXED
-                    PERCENT -> Value.PERCENT
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    FIXED -> Known.FIXED
-                    PERCENT -> Known.PERCENT
-                    else -> throw FinchInvalidDataException("Unknown CompanyContribution: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is CompanyContribution && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        class EmployeeDeduction
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val FIXED = of("fixed")
-
-                val PERCENT = of("percent")
-
-                fun of(value: String) = EmployeeDeduction(JsonField.of(value))
-            }
-
-            enum class Known {
-                FIXED,
-                PERCENT,
-            }
-
-            enum class Value {
-                FIXED,
-                PERCENT,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    FIXED -> Value.FIXED
-                    PERCENT -> Value.PERCENT
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    FIXED -> Known.FIXED
-                    PERCENT -> Known.PERCENT
-                    else -> throw FinchInvalidDataException("Unknown EmployeeDeduction: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is EmployeeDeduction && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        class HsaContributionLimit
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val INDIVIDUAL = of("individual")
-
-                val FAMILY = of("family")
-
-                fun of(value: String) = HsaContributionLimit(JsonField.of(value))
-            }
-
-            enum class Known {
-                INDIVIDUAL,
-                FAMILY,
-            }
-
-            enum class Value {
-                INDIVIDUAL,
-                FAMILY,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    INDIVIDUAL -> Value.INDIVIDUAL
-                    FAMILY -> Value.FAMILY
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    INDIVIDUAL -> Known.INDIVIDUAL
-                    FAMILY -> Known.FAMILY
-                    else -> throw FinchInvalidDataException("Unknown HsaContributionLimit: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is HsaContributionLimit && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is BenefitFeature && annualMaximum == other.annualMaximum && catchUp == other.catchUp && companyContribution == other.companyContribution && description == other.description && employeeDeduction == other.employeeDeduction && frequencies == other.frequencies && hsaContributionLimit == other.hsaContributionLimit && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(annualMaximum, catchUp, companyContribution, description, employeeDeduction, frequencies, hsaContributionLimit, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "BenefitFeature{annualMaximum=$annualMaximum, catchUp=$catchUp, companyContribution=$companyContribution, description=$description, employeeDeduction=$employeeDeduction, frequencies=$frequencies, hsaContributionLimit=$hsaContributionLimit, additionalProperties=$additionalProperties}"
+        supportedFeatures()?.validate()
+        supportedOperations()?.validate()
+        validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (supportedFeatures.asKnown()?.validity() ?: 0) +
+            (supportedOperations.asKnown()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is BenefitFeaturesAndOperations && supportedFeatures == other.supportedFeatures && supportedOperations == other.supportedOperations && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is BenefitFeaturesAndOperations &&
+            supportedFeatures == other.supportedFeatures &&
+            supportedOperations == other.supportedOperations &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(supportedFeatures, supportedOperations, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(supportedFeatures, supportedOperations, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

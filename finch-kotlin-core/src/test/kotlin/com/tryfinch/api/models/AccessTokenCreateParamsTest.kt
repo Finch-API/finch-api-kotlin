@@ -5,40 +5,42 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class AccessTokenCreateParamsTest {
+internal class AccessTokenCreateParamsTest {
 
     @Test
-    fun createAccessTokenCreateParams() {
+    fun create() {
         AccessTokenCreateParams.builder()
-            .code("<your_authorization_code>")
-            .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-            .clientSecret("<your_client_secret>")
-            .redirectUri("https://example.com")
+            .code("code")
+            .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .clientSecret("client_secret")
+            .redirectUri("redirect_uri")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             AccessTokenCreateParams.builder()
-                .code("<your_authorization_code>")
-                .clientId("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-                .clientSecret("<your_client_secret>")
-                .redirectUri("https://example.com")
+                .code("code")
+                .clientId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .clientSecret("client_secret")
+                .redirectUri("redirect_uri")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.code()).isEqualTo("<your_authorization_code>")
-        assertThat(body.clientId()).isEqualTo("6d28c315-5eaa-4071-8ea5-f030eb45edbc")
-        assertThat(body.clientSecret()).isEqualTo("<your_client_secret>")
-        assertThat(body.redirectUri()).isEqualTo("https://example.com")
+
+        val body = params._body()
+
+        assertThat(body.code()).isEqualTo("code")
+        assertThat(body.clientId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.clientSecret()).isEqualTo("client_secret")
+        assertThat(body.redirectUri()).isEqualTo("redirect_uri")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
-        val params = AccessTokenCreateParams.builder().code("<your_authorization_code>").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.code()).isEqualTo("<your_authorization_code>")
+    fun bodyWithoutOptionalFields() {
+        val params = AccessTokenCreateParams.builder().code("code").build()
+
+        val body = params._body()
+
+        assertThat(body.code()).isEqualTo("code")
     }
 }

@@ -10,59 +10,88 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.checkKnown
 import com.tryfinch.api.core.checkRequired
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class IndividualEnrolledIdsResponse
-@JsonCreator
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    @JsonProperty("benefit_id")
-    @ExcludeMissing
-    private val benefitId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("individual_ids")
-    @ExcludeMissing
-    private val individualIds: JsonField<List<String>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val benefitId: JsonField<String>,
+    private val individualIds: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
+    @JsonCreator
+    private constructor(
+        @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("individual_ids")
+        @ExcludeMissing
+        individualIds: JsonField<List<String>> = JsonMissing.of(),
+    ) : this(benefitId, individualIds, mutableMapOf())
+
+    /**
+     * The id of the benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun benefitId(): String = benefitId.getRequired("benefit_id")
 
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun individualIds(): List<String> = individualIds.getRequired("individual_ids")
 
+    /**
+     * Returns the raw JSON value of [benefitId].
+     *
+     * Unlike [benefitId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("benefit_id") @ExcludeMissing fun _benefitId(): JsonField<String> = benefitId
 
+    /**
+     * Returns the raw JSON value of [individualIds].
+     *
+     * Unlike [individualIds], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("individual_ids")
     @ExcludeMissing
     fun _individualIds(): JsonField<List<String>> = individualIds
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): IndividualEnrolledIdsResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        benefitId()
-        individualIds()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [IndividualEnrolledIdsResponse].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .benefitId()
+         * .individualIds()
+         * ```
+         */
         fun builder() = Builder()
     }
 
-    class Builder {
+    /** A builder for [IndividualEnrolledIdsResponse]. */
+    class Builder internal constructor() {
 
         private var benefitId: JsonField<String>? = null
         private var individualIds: JsonField<MutableList<String>>? = null
@@ -74,24 +103,40 @@ private constructor(
             additionalProperties = individualEnrolledIdsResponse.additionalProperties.toMutableMap()
         }
 
+        /** The id of the benefit. */
         fun benefitId(benefitId: String) = benefitId(JsonField.of(benefitId))
 
+        /**
+         * Sets [Builder.benefitId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.benefitId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
 
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
+        /**
+         * Sets [Builder.individualIds] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.individualIds] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun individualIds(individualIds: JsonField<List<String>>) = apply {
             this.individualIds = individualIds.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [String] to [individualIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addIndividualId(individualId: String) = apply {
             individualIds =
-                (individualIds ?: JsonField.of(mutableListOf())).apply {
-                    (asKnown()
-                            ?: throw IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            ))
-                        .add(individualId)
+                (individualIds ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("individualIds", it).add(individualId)
                 }
         }
 
@@ -114,25 +159,69 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [IndividualEnrolledIdsResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .benefitId()
+         * .individualIds()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): IndividualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse(
                 checkRequired("benefitId", benefitId),
                 checkRequired("individualIds", individualIds).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
+
+    private var validated: Boolean = false
+
+    fun validate(): IndividualEnrolledIdsResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        benefitId()
+        individualIds()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: FinchInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    internal fun validity(): Int =
+        (if (benefitId.asKnown() == null) 0 else 1) + (individualIds.asKnown()?.size ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is IndividualEnrolledIdsResponse && benefitId == other.benefitId && individualIds == other.individualIds && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is IndividualEnrolledIdsResponse &&
+            benefitId == other.benefitId &&
+            individualIds == other.individualIds &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(benefitId, individualIds, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(benefitId, individualIds, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

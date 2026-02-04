@@ -4,10 +4,10 @@ package com.tryfinch.api.models
 
 import org.junit.jupiter.api.Test
 
-class SandboxJobConfigurationRetrieveParamsTest {
+internal class SandboxJobConfigurationRetrieveParamsTest {
 
     @Test
-    fun createSandboxJobConfigurationRetrieveParams() {
+    fun create() {
         SandboxJobConfigurationRetrieveParams.builder().build()
     }
 }

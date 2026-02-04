@@ -6,15 +6,19 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.errors.FinchInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
 /**
@@ -22,220 +26,154 @@ import java.util.Objects
  * view available types for each provider.
  */
 class HrisBenefitCreateParams
-constructor(
-    private val body: HrisBenefitCreateBody,
+private constructor(
+    private val entityIds: List<String>?,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
+
+    /**
+     * The company match for this benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun companyContribution(): BenefitCompanyMatchContribution? = body.companyContribution()
 
     /**
      * Name of the benefit as it appears in the provider and pay statements. Recommend limiting this
      * to <30 characters due to limitations in specific providers (e.g. Justworks).
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun description(): String? = body.description()
 
+    /**
+     * The frequency of the benefit deduction/contribution.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun frequency(): BenefitFrequency? = body.frequency()
 
-    /** Type of benefit. */
+    /**
+     * Type of benefit.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun type(): BenefitType? = body.type()
 
     /**
-     * Name of the benefit as it appears in the provider and pay statements. Recommend limiting this
-     * to <30 characters due to limitations in specific providers (e.g. Justworks).
+     * Returns the raw JSON value of [companyContribution].
+     *
+     * Unlike [companyContribution], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _companyContribution(): JsonField<BenefitCompanyMatchContribution> =
+        body._companyContribution()
+
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _description(): JsonField<String> = body._description()
 
+    /**
+     * Returns the raw JSON value of [frequency].
+     *
+     * Unlike [frequency], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _frequency(): JsonField<BenefitFrequency> = body._frequency()
 
-    /** Type of benefit. */
+    /**
+     * Returns the raw JSON value of [type].
+     *
+     * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _type(): JsonField<BenefitType> = body._type()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getBody(): HrisBenefitCreateBody = body
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class HrisBenefitCreateBody
-    @JsonCreator
-    internal constructor(
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("frequency")
-        @ExcludeMissing
-        private val frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
-        @JsonProperty("type")
-        @ExcludeMissing
-        private val type: JsonField<BenefitType> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
-         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
-         */
-        fun description(): String? = description.getNullable("description")
-
-        fun frequency(): BenefitFrequency? = frequency.getNullable("frequency")
-
-        /** Type of benefit. */
-        fun type(): BenefitType? = type.getNullable("type")
-
-        /**
-         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
-         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        @JsonProperty("frequency")
-        @ExcludeMissing
-        fun _frequency(): JsonField<BenefitFrequency> = frequency
-
-        /** Type of benefit. */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): HrisBenefitCreateBody = apply {
-            if (validated) {
-                return@apply
-            }
-
-            description()
-            frequency()
-            type()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var description: JsonField<String> = JsonMissing.of()
-            private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
-            private var type: JsonField<BenefitType> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(hrisBenefitCreateBody: HrisBenefitCreateBody) = apply {
-                description = hrisBenefitCreateBody.description
-                frequency = hrisBenefitCreateBody.frequency
-                type = hrisBenefitCreateBody.type
-                additionalProperties = hrisBenefitCreateBody.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * Name of the benefit as it appears in the provider and pay statements. Recommend
-             * limiting this to <30 characters due to limitations in specific providers (e.g.
-             * Justworks).
-             */
-            fun description(description: String) = description(JsonField.of(description))
-
-            /**
-             * Name of the benefit as it appears in the provider and pay statements. Recommend
-             * limiting this to <30 characters due to limitations in specific providers (e.g.
-             * Justworks).
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
-
-            fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
-                this.frequency = frequency
-            }
-
-            /** Type of benefit. */
-            fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
-
-            /** Type of benefit. */
-            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): HrisBenefitCreateBody =
-                HrisBenefitCreateBody(
-                    description,
-                    frequency,
-                    type,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is HrisBenefitCreateBody && description == other.description && frequency == other.frequency && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, frequency, type, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "HrisBenefitCreateBody{description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): HrisBenefitCreateParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [HrisBenefitCreateParams]. */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisBenefitCreateParams]. */
+    class Builder internal constructor() {
 
-        private var body: HrisBenefitCreateBody.Builder = HrisBenefitCreateBody.builder()
+        private var entityIds: MutableList<String>? = null
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisBenefitCreateParams: HrisBenefitCreateParams) = apply {
+            entityIds = hrisBenefitCreateParams.entityIds?.toMutableList()
             body = hrisBenefitCreateParams.body.toBuilder()
             additionalHeaders = hrisBenefitCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisBenefitCreateParams.additionalQueryParams.toBuilder()
         }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
+
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [companyContribution]
+         * - [description]
+         * - [frequency]
+         * - [type]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        /** The company match for this benefit. */
+        fun companyContribution(companyContribution: BenefitCompanyMatchContribution?) = apply {
+            body.companyContribution(companyContribution)
+        }
+
+        /**
+         * Sets [Builder.companyContribution] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.companyContribution] with a well-typed
+         * [BenefitCompanyMatchContribution] value instead. This method is primarily for setting the
+         * field to an undocumented or not yet supported value.
+         */
+        fun companyContribution(companyContribution: JsonField<BenefitCompanyMatchContribution>) =
+            apply {
+                body.companyContribution(companyContribution)
+            }
 
         /**
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
@@ -244,19 +182,36 @@ constructor(
         fun description(description: String) = apply { body.description(description) }
 
         /**
-         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
-         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
+        /** The frequency of the benefit deduction/contribution. */
         fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
+        /**
+         * Sets [Builder.frequency] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.frequency] with a well-typed [BenefitFrequency] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun frequency(frequency: JsonField<BenefitFrequency>) = apply { body.frequency(frequency) }
 
         /** Type of benefit. */
         fun type(type: BenefitType?) = apply { body.type(type) }
 
-        /** Type of benefit. */
+        /**
+         * Sets [Builder.type] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun type(type: JsonField<BenefitType>) = apply { body.type(type) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -376,12 +331,836 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisBenefitCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): HrisBenefitCreateParams =
             HrisBenefitCreateParams(
+                entityIds?.toImmutable(),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
+    }
+
+    fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val companyContribution: JsonField<BenefitCompanyMatchContribution>,
+        private val description: JsonField<String>,
+        private val frequency: JsonField<BenefitFrequency>,
+        private val type: JsonField<BenefitType>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("company_contribution")
+            @ExcludeMissing
+            companyContribution: JsonField<BenefitCompanyMatchContribution> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("frequency")
+            @ExcludeMissing
+            frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
+        ) : this(companyContribution, description, frequency, type, mutableMapOf())
+
+        /**
+         * The company match for this benefit.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun companyContribution(): BenefitCompanyMatchContribution? =
+            companyContribution.getNullable("company_contribution")
+
+        /**
+         * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
+         * this to <30 characters due to limitations in specific providers (e.g. Justworks).
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun description(): String? = description.getNullable("description")
+
+        /**
+         * The frequency of the benefit deduction/contribution.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun frequency(): BenefitFrequency? = frequency.getNullable("frequency")
+
+        /**
+         * Type of benefit.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): BenefitType? = type.getNullable("type")
+
+        /**
+         * Returns the raw JSON value of [companyContribution].
+         *
+         * Unlike [companyContribution], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("company_contribution")
+        @ExcludeMissing
+        fun _companyContribution(): JsonField<BenefitCompanyMatchContribution> = companyContribution
+
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /**
+         * Returns the raw JSON value of [frequency].
+         *
+         * Unlike [frequency], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("frequency")
+        @ExcludeMissing
+        fun _frequency(): JsonField<BenefitFrequency> = frequency
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Body]. */
+            fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var companyContribution: JsonField<BenefitCompanyMatchContribution> =
+                JsonMissing.of()
+            private var description: JsonField<String> = JsonMissing.of()
+            private var frequency: JsonField<BenefitFrequency> = JsonMissing.of()
+            private var type: JsonField<BenefitType> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(body: Body) = apply {
+                companyContribution = body.companyContribution
+                description = body.description
+                frequency = body.frequency
+                type = body.type
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The company match for this benefit. */
+            fun companyContribution(companyContribution: BenefitCompanyMatchContribution?) =
+                companyContribution(JsonField.ofNullable(companyContribution))
+
+            /**
+             * Sets [Builder.companyContribution] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.companyContribution] with a well-typed
+             * [BenefitCompanyMatchContribution] value instead. This method is primarily for setting
+             * the field to an undocumented or not yet supported value.
+             */
+            fun companyContribution(
+                companyContribution: JsonField<BenefitCompanyMatchContribution>
+            ) = apply { this.companyContribution = companyContribution }
+
+            /**
+             * Name of the benefit as it appears in the provider and pay statements. Recommend
+             * limiting this to <30 characters due to limitations in specific providers (e.g.
+             * Justworks).
+             */
+            fun description(description: String) = description(JsonField.of(description))
+
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            /** The frequency of the benefit deduction/contribution. */
+            fun frequency(frequency: BenefitFrequency?) = frequency(JsonField.ofNullable(frequency))
+
+            /**
+             * Sets [Builder.frequency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.frequency] with a well-typed [BenefitFrequency]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
+                this.frequency = frequency
+            }
+
+            /** Type of benefit. */
+            fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [BenefitType] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Body =
+                Body(
+                    companyContribution,
+                    description,
+                    frequency,
+                    type,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            companyContribution()?.validate()
+            description()
+            frequency()?.validate()
+            type()?.validate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (companyContribution.asKnown()?.validity() ?: 0) +
+                (if (description.asKnown() == null) 0 else 1) +
+                (frequency.asKnown()?.validity() ?: 0) +
+                (type.asKnown()?.validity() ?: 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Body &&
+                companyContribution == other.companyContribution &&
+                description == other.description &&
+                frequency == other.frequency &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(companyContribution, description, frequency, type, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{companyContribution=$companyContribution, description=$description, frequency=$frequency, type=$type, additionalProperties=$additionalProperties}"
+    }
+
+    /** The company match for this benefit. */
+    class BenefitCompanyMatchContribution
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val tiers: JsonField<List<Tier>>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("tiers") @ExcludeMissing tiers: JsonField<List<Tier>> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(tiers, type, mutableMapOf())
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun tiers(): List<Tier> = tiers.getRequired("tiers")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun type(): Type = type.getRequired("type")
+
+        /**
+         * Returns the raw JSON value of [tiers].
+         *
+         * Unlike [tiers], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("tiers") @ExcludeMissing fun _tiers(): JsonField<List<Tier>> = tiers
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [BenefitCompanyMatchContribution].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .tiers()
+             * .type()
+             * ```
+             */
+            fun builder() = Builder()
+        }
+
+        /** A builder for [BenefitCompanyMatchContribution]. */
+        class Builder internal constructor() {
+
+            private var tiers: JsonField<MutableList<Tier>>? = null
+            private var type: JsonField<Type>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(benefitCompanyMatchContribution: BenefitCompanyMatchContribution) =
+                apply {
+                    tiers = benefitCompanyMatchContribution.tiers.map { it.toMutableList() }
+                    type = benefitCompanyMatchContribution.type
+                    additionalProperties =
+                        benefitCompanyMatchContribution.additionalProperties.toMutableMap()
+                }
+
+            fun tiers(tiers: List<Tier>) = tiers(JsonField.of(tiers))
+
+            /**
+             * Sets [Builder.tiers] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.tiers] with a well-typed `List<Tier>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun tiers(tiers: JsonField<List<Tier>>) = apply {
+                this.tiers = tiers.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Tier] to [tiers].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addTier(tier: Tier) = apply {
+                tiers =
+                    (tiers ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("tiers", it).add(tier)
+                    }
+            }
+
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [BenefitCompanyMatchContribution].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .tiers()
+             * .type()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): BenefitCompanyMatchContribution =
+                BenefitCompanyMatchContribution(
+                    checkRequired("tiers", tiers).map { it.toImmutable() },
+                    checkRequired("type", type),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): BenefitCompanyMatchContribution = apply {
+            if (validated) {
+                return@apply
+            }
+
+            tiers().forEach { it.validate() }
+            type().validate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (tiers.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (type.asKnown()?.validity() ?: 0)
+
+        class Tier
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val match: JsonField<Long>,
+            private val threshold: JsonField<Long>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("match") @ExcludeMissing match: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("threshold")
+                @ExcludeMissing
+                threshold: JsonField<Long> = JsonMissing.of(),
+            ) : this(match, threshold, mutableMapOf())
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun match(): Long = match.getRequired("match")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun threshold(): Long = threshold.getRequired("threshold")
+
+            /**
+             * Returns the raw JSON value of [match].
+             *
+             * Unlike [match], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("match") @ExcludeMissing fun _match(): JsonField<Long> = match
+
+            /**
+             * Returns the raw JSON value of [threshold].
+             *
+             * Unlike [threshold], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("threshold") @ExcludeMissing fun _threshold(): JsonField<Long> = threshold
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [Tier].
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .match()
+                 * .threshold()
+                 * ```
+                 */
+                fun builder() = Builder()
+            }
+
+            /** A builder for [Tier]. */
+            class Builder internal constructor() {
+
+                private var match: JsonField<Long>? = null
+                private var threshold: JsonField<Long>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                internal fun from(tier: Tier) = apply {
+                    match = tier.match
+                    threshold = tier.threshold
+                    additionalProperties = tier.additionalProperties.toMutableMap()
+                }
+
+                fun match(match: Long) = match(JsonField.of(match))
+
+                /**
+                 * Sets [Builder.match] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.match] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun match(match: JsonField<Long>) = apply { this.match = match }
+
+                fun threshold(threshold: Long) = threshold(JsonField.of(threshold))
+
+                /**
+                 * Sets [Builder.threshold] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.threshold] with a well-typed [Long] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun threshold(threshold: JsonField<Long>) = apply { this.threshold = threshold }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [Tier].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```kotlin
+                 * .match()
+                 * .threshold()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): Tier =
+                    Tier(
+                        checkRequired("match", match),
+                        checkRequired("threshold", threshold),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Tier = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                match()
+                threshold()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (match.asKnown() == null) 0 else 1) +
+                    (if (threshold.asKnown() == null) 0 else 1)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Tier &&
+                    match == other.match &&
+                    threshold == other.threshold &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(match, threshold, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "Tier{match=$match, threshold=$threshold, additionalProperties=$additionalProperties}"
+        }
+
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                val MATCH = of("match")
+
+                fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            /** An enum containing [Type]'s known values. */
+            enum class Known {
+                MATCH
+            }
+
+            /**
+             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Type] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                MATCH,
+                /** An enum member indicating that [Type] was instantiated with an unknown value. */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    MATCH -> Value.MATCH
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    MATCH -> Known.MATCH
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is BenefitCompanyMatchContribution &&
+                tiers == other.tiers &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(tiers, type, additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "BenefitCompanyMatchContribution{tiers=$tiers, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -389,11 +1168,16 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisBenefitCreateParams &&
+            entityIds == other.entityIds &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(entityIds, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisBenefitCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisBenefitCreateParams{entityIds=$entityIds, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

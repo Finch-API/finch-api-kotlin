@@ -11,202 +11,91 @@ import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
-import com.tryfinch.api.core.immutableEmptyMap
 import com.tryfinch.api.core.toImmutable
 import com.tryfinch.api.errors.FinchInvalidDataException
+import java.time.LocalDate
+import java.util.Collections
 import java.util.Objects
 
 /** Add a new sandbox payment */
 class SandboxPaymentCreateParams
-constructor(
-    private val body: SandboxPaymentCreateBody,
+private constructor(
+    private val body: CreateSandboxPaymentRequest,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    fun endDate(): String? = body.endDate()
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun endDate(): LocalDate? = body.endDate()
 
+    /**
+     * Array of pay statements to include in the payment.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun payStatements(): List<PayStatement>? = body.payStatements()
 
-    fun startDate(): String? = body.startDate()
+    /**
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun startDate(): LocalDate? = body.startDate()
 
-    fun _endDate(): JsonField<String> = body._endDate()
+    /**
+     * Returns the raw JSON value of [endDate].
+     *
+     * Unlike [endDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _endDate(): JsonField<LocalDate> = body._endDate()
 
+    /**
+     * Returns the raw JSON value of [payStatements].
+     *
+     * Unlike [payStatements], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _payStatements(): JsonField<List<PayStatement>> = body._payStatements()
 
-    fun _startDate(): JsonField<String> = body._startDate()
+    /**
+     * Returns the raw JSON value of [startDate].
+     *
+     * Unlike [startDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _startDate(): JsonField<LocalDate> = body._startDate()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getBody(): SandboxPaymentCreateBody = body
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    /**
-     * Fields to configure the payment. Takes all fields from the `/payment` endpoint. All fields
-     * are optional.
-     */
-    @NoAutoDetect
-    class SandboxPaymentCreateBody
-    @JsonCreator
-    internal constructor(
-        @JsonProperty("end_date")
-        @ExcludeMissing
-        private val endDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("pay_statements")
-        @ExcludeMissing
-        private val payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
-        @JsonProperty("start_date")
-        @ExcludeMissing
-        private val startDate: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        fun endDate(): String? = endDate.getNullable("end_date")
-
-        fun payStatements(): List<PayStatement>? = payStatements.getNullable("pay_statements")
-
-        fun startDate(): String? = startDate.getNullable("start_date")
-
-        @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<String> = endDate
-
-        @JsonProperty("pay_statements")
-        @ExcludeMissing
-        fun _payStatements(): JsonField<List<PayStatement>> = payStatements
-
-        @JsonProperty("start_date") @ExcludeMissing fun _startDate(): JsonField<String> = startDate
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): SandboxPaymentCreateBody = apply {
-            if (validated) {
-                return@apply
-            }
-
-            endDate()
-            payStatements()?.forEach { it.validate() }
-            startDate()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var endDate: JsonField<String> = JsonMissing.of()
-            private var payStatements: JsonField<MutableList<PayStatement>>? = null
-            private var startDate: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(sandboxPaymentCreateBody: SandboxPaymentCreateBody) = apply {
-                endDate = sandboxPaymentCreateBody.endDate
-                payStatements = sandboxPaymentCreateBody.payStatements.map { it.toMutableList() }
-                startDate = sandboxPaymentCreateBody.startDate
-                additionalProperties = sandboxPaymentCreateBody.additionalProperties.toMutableMap()
-            }
-
-            fun endDate(endDate: String) = endDate(JsonField.of(endDate))
-
-            fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
-
-            fun payStatements(payStatements: List<PayStatement>) =
-                payStatements(JsonField.of(payStatements))
-
-            fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
-                this.payStatements = payStatements.map { it.toMutableList() }
-            }
-
-            fun addPayStatement(payStatement: PayStatement) = apply {
-                payStatements =
-                    (payStatements ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(payStatement)
-                    }
-            }
-
-            fun startDate(startDate: String) = startDate(JsonField.of(startDate))
-
-            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            fun build(): SandboxPaymentCreateBody =
-                SandboxPaymentCreateBody(
-                    endDate,
-                    (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
-                    startDate,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is SandboxPaymentCreateBody && endDate == other.endDate && payStatements == other.payStatements && startDate == other.startDate && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(endDate, payStatements, startDate, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "SandboxPaymentCreateBody{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): SandboxPaymentCreateParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [SandboxPaymentCreateParams].
+         */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [SandboxPaymentCreateParams]. */
+    class Builder internal constructor() {
 
-        private var body: SandboxPaymentCreateBody.Builder = SandboxPaymentCreateBody.builder()
+        private var body: CreateSandboxPaymentRequest.Builder =
+            CreateSandboxPaymentRequest.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -216,25 +105,63 @@ constructor(
             additionalQueryParams = sandboxPaymentCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun endDate(endDate: String) = apply { body.endDate(endDate) }
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [endDate]
+         * - [payStatements]
+         * - [startDate]
+         */
+        fun body(body: CreateSandboxPaymentRequest) = apply { this.body = body.toBuilder() }
 
-        fun endDate(endDate: JsonField<String>) = apply { body.endDate(endDate) }
+        fun endDate(endDate: LocalDate) = apply { body.endDate(endDate) }
 
+        /**
+         * Sets [Builder.endDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.endDate] with a well-typed [LocalDate] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun endDate(endDate: JsonField<LocalDate>) = apply { body.endDate(endDate) }
+
+        /** Array of pay statements to include in the payment. */
         fun payStatements(payStatements: List<PayStatement>) = apply {
             body.payStatements(payStatements)
         }
 
+        /**
+         * Sets [Builder.payStatements] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.payStatements] with a well-typed `List<PayStatement>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
             body.payStatements(payStatements)
         }
 
+        /**
+         * Adds a single [PayStatement] to [payStatements].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayStatement(payStatement: PayStatement) = apply {
             body.addPayStatement(payStatement)
         }
 
-        fun startDate(startDate: String) = apply { body.startDate(startDate) }
+        fun startDate(startDate: LocalDate) = apply { body.startDate(startDate) }
 
-        fun startDate(startDate: JsonField<String>) = apply { body.startDate(startDate) }
+        /**
+         * Sets [Builder.startDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.startDate] with a well-typed [LocalDate] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun startDate(startDate: JsonField<LocalDate>) = apply { body.startDate(startDate) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -353,6 +280,11 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [SandboxPaymentCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): SandboxPaymentCreateParams =
             SandboxPaymentCreateParams(
                 body.build(),
@@ -361,163 +293,506 @@ constructor(
             )
     }
 
-    @NoAutoDetect
-    class PayStatement
-    @JsonCreator
+    fun _body(): CreateSandboxPaymentRequest = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    /**
+     * Fields to configure the payment. Takes all fields from the `/payment` endpoint. All fields
+     * are optional.
+     */
+    class CreateSandboxPaymentRequest
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        @JsonProperty("earnings")
-        @ExcludeMissing
-        private val earnings: JsonField<List<Earning?>> = JsonMissing.of(),
-        @JsonProperty("employee_deductions")
-        @ExcludeMissing
-        private val employeeDeductions: JsonField<List<EmployeeDeduction?>> = JsonMissing.of(),
-        @JsonProperty("employer_contributions")
-        @ExcludeMissing
-        private val employerContributions: JsonField<List<EmployerContribution?>> =
-            JsonMissing.of(),
-        @JsonProperty("gross_pay")
-        @ExcludeMissing
-        private val grossPay: JsonField<Money> = JsonMissing.of(),
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        private val individualId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("net_pay")
-        @ExcludeMissing
-        private val netPay: JsonField<Money> = JsonMissing.of(),
-        @JsonProperty("payment_method")
-        @ExcludeMissing
-        private val paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
-        @JsonProperty("taxes")
-        @ExcludeMissing
-        private val taxes: JsonField<List<Tax?>> = JsonMissing.of(),
-        @JsonProperty("total_hours")
-        @ExcludeMissing
-        private val totalHours: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val endDate: JsonField<LocalDate>,
+        private val payStatements: JsonField<List<PayStatement>>,
+        private val startDate: JsonField<LocalDate>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
-        /** The array of earnings objects associated with this pay statement */
-        fun earnings(): List<Earning?>? = earnings.getNullable("earnings")
+        @JsonCreator
+        private constructor(
+            @JsonProperty("end_date")
+            @ExcludeMissing
+            endDate: JsonField<LocalDate> = JsonMissing.of(),
+            @JsonProperty("pay_statements")
+            @ExcludeMissing
+            payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
+            @JsonProperty("start_date")
+            @ExcludeMissing
+            startDate: JsonField<LocalDate> = JsonMissing.of(),
+        ) : this(endDate, payStatements, startDate, mutableMapOf())
 
-        /** The array of deductions objects associated with this pay statement. */
-        fun employeeDeductions(): List<EmployeeDeduction?>? =
-            employeeDeductions.getNullable("employee_deductions")
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun endDate(): LocalDate? = endDate.getNullable("end_date")
 
-        fun employerContributions(): List<EmployerContribution?>? =
-            employerContributions.getNullable("employer_contributions")
+        /**
+         * Array of pay statements to include in the payment.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun payStatements(): List<PayStatement>? = payStatements.getNullable("pay_statements")
 
-        fun grossPay(): Money? = grossPay.getNullable("gross_pay")
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun startDate(): LocalDate? = startDate.getNullable("start_date")
 
-        /** A stable Finch `id` (UUID v4) for an individual in the company */
-        fun individualId(): String? = individualId.getNullable("individual_id")
+        /**
+         * Returns the raw JSON value of [endDate].
+         *
+         * Unlike [endDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("end_date") @ExcludeMissing fun _endDate(): JsonField<LocalDate> = endDate
 
-        fun netPay(): Money? = netPay.getNullable("net_pay")
-
-        /** The payment method. */
-        fun paymentMethod(): PaymentMethod? = paymentMethod.getNullable("payment_method")
-
-        /** The array of taxes objects associated with this pay statement. */
-        fun taxes(): List<Tax?>? = taxes.getNullable("taxes")
-
-        /** The number of hours worked for this pay period */
-        fun totalHours(): Double? = totalHours.getNullable("total_hours")
-
-        /** The type of the payment associated with the pay statement. */
-        fun type(): Type? = type.getNullable("type")
-
-        /** The array of earnings objects associated with this pay statement */
-        @JsonProperty("earnings")
+        /**
+         * Returns the raw JSON value of [payStatements].
+         *
+         * Unlike [payStatements], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("pay_statements")
         @ExcludeMissing
-        fun _earnings(): JsonField<List<Earning?>> = earnings
+        fun _payStatements(): JsonField<List<PayStatement>> = payStatements
 
-        /** The array of deductions objects associated with this pay statement. */
-        @JsonProperty("employee_deductions")
+        /**
+         * Returns the raw JSON value of [startDate].
+         *
+         * Unlike [startDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("start_date")
         @ExcludeMissing
-        fun _employeeDeductions(): JsonField<List<EmployeeDeduction?>> = employeeDeductions
+        fun _startDate(): JsonField<LocalDate> = startDate
 
-        @JsonProperty("employer_contributions")
-        @ExcludeMissing
-        fun _employerContributions(): JsonField<List<EmployerContribution?>> = employerContributions
-
-        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Money> = grossPay
-
-        /** A stable Finch `id` (UUID v4) for an individual in the company */
-        @JsonProperty("individual_id")
-        @ExcludeMissing
-        fun _individualId(): JsonField<String> = individualId
-
-        @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Money> = netPay
-
-        /** The payment method. */
-        @JsonProperty("payment_method")
-        @ExcludeMissing
-        fun _paymentMethod(): JsonField<PaymentMethod> = paymentMethod
-
-        /** The array of taxes objects associated with this pay statement. */
-        @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax?>> = taxes
-
-        /** The number of hours worked for this pay period */
-        @JsonProperty("total_hours")
-        @ExcludeMissing
-        fun _totalHours(): JsonField<Double> = totalHours
-
-        /** The type of the payment associated with the pay statement. */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): PayStatement = apply {
-            if (validated) {
-                return@apply
-            }
-
-            earnings()?.forEach { it?.validate() }
-            employeeDeductions()?.forEach { it?.validate() }
-            employerContributions()?.forEach { it?.validate() }
-            grossPay()?.validate()
-            individualId()
-            netPay()?.validate()
-            paymentMethod()
-            taxes()?.forEach { it?.validate() }
-            totalHours()
-            type()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of
+             * [CreateSandboxPaymentRequest].
+             */
             fun builder() = Builder()
         }
 
-        class Builder {
+        /** A builder for [CreateSandboxPaymentRequest]. */
+        class Builder internal constructor() {
 
-            private var earnings: JsonField<MutableList<Earning?>>? = null
-            private var employeeDeductions: JsonField<MutableList<EmployeeDeduction?>>? = null
-            private var employerContributions: JsonField<MutableList<EmployerContribution?>>? = null
-            private var grossPay: JsonField<Money> = JsonMissing.of()
-            private var individualId: JsonField<String> = JsonMissing.of()
-            private var netPay: JsonField<Money> = JsonMissing.of()
+            private var endDate: JsonField<LocalDate> = JsonMissing.of()
+            private var payStatements: JsonField<MutableList<PayStatement>>? = null
+            private var startDate: JsonField<LocalDate> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            internal fun from(createSandboxPaymentRequest: CreateSandboxPaymentRequest) = apply {
+                endDate = createSandboxPaymentRequest.endDate
+                payStatements = createSandboxPaymentRequest.payStatements.map { it.toMutableList() }
+                startDate = createSandboxPaymentRequest.startDate
+                additionalProperties =
+                    createSandboxPaymentRequest.additionalProperties.toMutableMap()
+            }
+
+            fun endDate(endDate: LocalDate) = endDate(JsonField.of(endDate))
+
+            /**
+             * Sets [Builder.endDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.endDate] with a well-typed [LocalDate] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun endDate(endDate: JsonField<LocalDate>) = apply { this.endDate = endDate }
+
+            /** Array of pay statements to include in the payment. */
+            fun payStatements(payStatements: List<PayStatement>) =
+                payStatements(JsonField.of(payStatements))
+
+            /**
+             * Sets [Builder.payStatements] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.payStatements] with a well-typed
+             * `List<PayStatement>` value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
+            fun payStatements(payStatements: JsonField<List<PayStatement>>) = apply {
+                this.payStatements = payStatements.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [PayStatement] to [payStatements].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addPayStatement(payStatement: PayStatement) = apply {
+                payStatements =
+                    (payStatements ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("payStatements", it).add(payStatement)
+                    }
+            }
+
+            fun startDate(startDate: LocalDate) = startDate(JsonField.of(startDate))
+
+            /**
+             * Sets [Builder.startDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.startDate] with a well-typed [LocalDate] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun startDate(startDate: JsonField<LocalDate>) = apply { this.startDate = startDate }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [CreateSandboxPaymentRequest].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): CreateSandboxPaymentRequest =
+                CreateSandboxPaymentRequest(
+                    endDate,
+                    (payStatements ?: JsonMissing.of()).map { it.toImmutable() },
+                    startDate,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): CreateSandboxPaymentRequest = apply {
+            if (validated) {
+                return@apply
+            }
+
+            endDate()
+            payStatements()?.forEach { it.validate() }
+            startDate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (endDate.asKnown() == null) 0 else 1) +
+                (payStatements.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (startDate.asKnown() == null) 0 else 1)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is CreateSandboxPaymentRequest &&
+                endDate == other.endDate &&
+                payStatements == other.payStatements &&
+                startDate == other.startDate &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(endDate, payStatements, startDate, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "CreateSandboxPaymentRequest{endDate=$endDate, payStatements=$payStatements, startDate=$startDate, additionalProperties=$additionalProperties}"
+    }
+
+    class PayStatement
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val individualId: JsonField<String>,
+        private val earnings: JsonField<List<Earning>>,
+        private val employeeDeductions: JsonField<List<EmployeeDeduction>>,
+        private val employerContributions: JsonField<List<EmployerContribution>>,
+        private val grossPay: JsonField<Long>,
+        private val netPay: JsonField<Long>,
+        private val paymentMethod: JsonField<PaymentMethod>,
+        private val taxes: JsonField<List<Tax>>,
+        private val totalHours: JsonField<Double>,
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("individual_id")
+            @ExcludeMissing
+            individualId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("earnings")
+            @ExcludeMissing
+            earnings: JsonField<List<Earning>> = JsonMissing.of(),
+            @JsonProperty("employee_deductions")
+            @ExcludeMissing
+            employeeDeductions: JsonField<List<EmployeeDeduction>> = JsonMissing.of(),
+            @JsonProperty("employer_contributions")
+            @ExcludeMissing
+            employerContributions: JsonField<List<EmployerContribution>> = JsonMissing.of(),
+            @JsonProperty("gross_pay") @ExcludeMissing grossPay: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("net_pay") @ExcludeMissing netPay: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("payment_method")
+            @ExcludeMissing
+            paymentMethod: JsonField<PaymentMethod> = JsonMissing.of(),
+            @JsonProperty("taxes") @ExcludeMissing taxes: JsonField<List<Tax>> = JsonMissing.of(),
+            @JsonProperty("total_hours")
+            @ExcludeMissing
+            totalHours: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+        ) : this(
+            individualId,
+            earnings,
+            employeeDeductions,
+            employerContributions,
+            grossPay,
+            netPay,
+            paymentMethod,
+            taxes,
+            totalHours,
+            type,
+            mutableMapOf(),
+        )
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun individualId(): String = individualId.getRequired("individual_id")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun earnings(): List<Earning>? = earnings.getNullable("earnings")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun employeeDeductions(): List<EmployeeDeduction>? =
+            employeeDeductions.getNullable("employee_deductions")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun employerContributions(): List<EmployerContribution>? =
+            employerContributions.getNullable("employer_contributions")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun grossPay(): Long? = grossPay.getNullable("gross_pay")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun netPay(): Long? = netPay.getNullable("net_pay")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun paymentMethod(): PaymentMethod? = paymentMethod.getNullable("payment_method")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun taxes(): List<Tax>? = taxes.getNullable("taxes")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun totalHours(): Double? = totalHours.getNullable("total_hours")
+
+        /**
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun type(): Type? = type.getNullable("type")
+
+        /**
+         * Returns the raw JSON value of [individualId].
+         *
+         * Unlike [individualId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("individual_id")
+        @ExcludeMissing
+        fun _individualId(): JsonField<String> = individualId
+
+        /**
+         * Returns the raw JSON value of [earnings].
+         *
+         * Unlike [earnings], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("earnings")
+        @ExcludeMissing
+        fun _earnings(): JsonField<List<Earning>> = earnings
+
+        /**
+         * Returns the raw JSON value of [employeeDeductions].
+         *
+         * Unlike [employeeDeductions], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("employee_deductions")
+        @ExcludeMissing
+        fun _employeeDeductions(): JsonField<List<EmployeeDeduction>> = employeeDeductions
+
+        /**
+         * Returns the raw JSON value of [employerContributions].
+         *
+         * Unlike [employerContributions], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("employer_contributions")
+        @ExcludeMissing
+        fun _employerContributions(): JsonField<List<EmployerContribution>> = employerContributions
+
+        /**
+         * Returns the raw JSON value of [grossPay].
+         *
+         * Unlike [grossPay], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("gross_pay") @ExcludeMissing fun _grossPay(): JsonField<Long> = grossPay
+
+        /**
+         * Returns the raw JSON value of [netPay].
+         *
+         * Unlike [netPay], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("net_pay") @ExcludeMissing fun _netPay(): JsonField<Long> = netPay
+
+        /**
+         * Returns the raw JSON value of [paymentMethod].
+         *
+         * Unlike [paymentMethod], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("payment_method")
+        @ExcludeMissing
+        fun _paymentMethod(): JsonField<PaymentMethod> = paymentMethod
+
+        /**
+         * Returns the raw JSON value of [taxes].
+         *
+         * Unlike [taxes], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("taxes") @ExcludeMissing fun _taxes(): JsonField<List<Tax>> = taxes
+
+        /**
+         * Returns the raw JSON value of [totalHours].
+         *
+         * Unlike [totalHours], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("total_hours")
+        @ExcludeMissing
+        fun _totalHours(): JsonField<Double> = totalHours
+
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [PayStatement].
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .individualId()
+             * ```
+             */
+            fun builder() = Builder()
+        }
+
+        /** A builder for [PayStatement]. */
+        class Builder internal constructor() {
+
+            private var individualId: JsonField<String>? = null
+            private var earnings: JsonField<MutableList<Earning>>? = null
+            private var employeeDeductions: JsonField<MutableList<EmployeeDeduction>>? = null
+            private var employerContributions: JsonField<MutableList<EmployerContribution>>? = null
+            private var grossPay: JsonField<Long> = JsonMissing.of()
+            private var netPay: JsonField<Long> = JsonMissing.of()
             private var paymentMethod: JsonField<PaymentMethod> = JsonMissing.of()
-            private var taxes: JsonField<MutableList<Tax?>>? = null
+            private var taxes: JsonField<MutableList<Tax>>? = null
             private var totalHours: JsonField<Double> = JsonMissing.of()
             private var type: JsonField<Type> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(payStatement: PayStatement) = apply {
+                individualId = payStatement.individualId
                 earnings = payStatement.earnings.map { it.toMutableList() }
                 employeeDeductions = payStatement.employeeDeductions.map { it.toMutableList() }
                 employerContributions =
                     payStatement.employerContributions.map { it.toMutableList() }
                 grossPay = payStatement.grossPay
-                individualId = payStatement.individualId
                 netPay = payStatement.netPay
                 paymentMethod = payStatement.paymentMethod
                 taxes = payStatement.taxes.map { it.toMutableList() }
@@ -526,126 +801,179 @@ constructor(
                 additionalProperties = payStatement.additionalProperties.toMutableMap()
             }
 
-            /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: List<Earning?>?) = earnings(JsonField.ofNullable(earnings))
-
-            /** The array of earnings objects associated with this pay statement */
-            fun earnings(earnings: JsonField<List<Earning?>>) = apply {
-                this.earnings = earnings.map { it.toMutableList() }
-            }
-
-            /** The array of earnings objects associated with this pay statement */
-            fun addEarning(earning: Earning) = apply {
-                earnings =
-                    (earnings ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(earning)
-                    }
-            }
-
-            /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction?>?) =
-                employeeDeductions(JsonField.ofNullable(employeeDeductions))
-
-            /** The array of deductions objects associated with this pay statement. */
-            fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction?>>) =
-                apply {
-                    this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
-                }
-
-            /** The array of deductions objects associated with this pay statement. */
-            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
-                employeeDeductions =
-                    (employeeDeductions ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(employeeDeduction)
-                    }
-            }
-
-            fun employerContributions(employerContributions: List<EmployerContribution?>?) =
-                employerContributions(JsonField.ofNullable(employerContributions))
-
-            fun employerContributions(
-                employerContributions: JsonField<List<EmployerContribution?>>
-            ) = apply {
-                this.employerContributions = employerContributions.map { it.toMutableList() }
-            }
-
-            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
-                employerContributions =
-                    (employerContributions ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(employerContribution)
-                    }
-            }
-
-            fun grossPay(grossPay: Money?) = grossPay(JsonField.ofNullable(grossPay))
-
-            fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
-
-            /** A stable Finch `id` (UUID v4) for an individual in the company */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
-            /** A stable Finch `id` (UUID v4) for an individual in the company */
+            /**
+             * Sets [Builder.individualId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.individualId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun individualId(individualId: JsonField<String>) = apply {
                 this.individualId = individualId
             }
 
-            fun netPay(netPay: Money?) = netPay(JsonField.ofNullable(netPay))
+            fun earnings(earnings: List<Earning>) = earnings(JsonField.of(earnings))
 
-            fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
+            /**
+             * Sets [Builder.earnings] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.earnings] with a well-typed `List<Earning>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun earnings(earnings: JsonField<List<Earning>>) = apply {
+                this.earnings = earnings.map { it.toMutableList() }
+            }
 
-            /** The payment method. */
+            /**
+             * Adds a single [Earning] to [earnings].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addEarning(earning: Earning) = apply {
+                earnings =
+                    (earnings ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("earnings", it).add(earning)
+                    }
+            }
+
+            fun employeeDeductions(employeeDeductions: List<EmployeeDeduction>) =
+                employeeDeductions(JsonField.of(employeeDeductions))
+
+            /**
+             * Sets [Builder.employeeDeductions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.employeeDeductions] with a well-typed
+             * `List<EmployeeDeduction>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
+            fun employeeDeductions(employeeDeductions: JsonField<List<EmployeeDeduction>>) = apply {
+                this.employeeDeductions = employeeDeductions.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [EmployeeDeduction] to [employeeDeductions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addEmployeeDeduction(employeeDeduction: EmployeeDeduction) = apply {
+                employeeDeductions =
+                    (employeeDeductions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("employeeDeductions", it).add(employeeDeduction)
+                    }
+            }
+
+            fun employerContributions(employerContributions: List<EmployerContribution>) =
+                employerContributions(JsonField.of(employerContributions))
+
+            /**
+             * Sets [Builder.employerContributions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.employerContributions] with a well-typed
+             * `List<EmployerContribution>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
+            fun employerContributions(
+                employerContributions: JsonField<List<EmployerContribution>>
+            ) = apply {
+                this.employerContributions = employerContributions.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [EmployerContribution] to [employerContributions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addEmployerContribution(employerContribution: EmployerContribution) = apply {
+                employerContributions =
+                    (employerContributions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("employerContributions", it).add(employerContribution)
+                    }
+            }
+
+            fun grossPay(grossPay: Long) = grossPay(JsonField.of(grossPay))
+
+            /**
+             * Sets [Builder.grossPay] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.grossPay] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun grossPay(grossPay: JsonField<Long>) = apply { this.grossPay = grossPay }
+
+            fun netPay(netPay: Long) = netPay(JsonField.of(netPay))
+
+            /**
+             * Sets [Builder.netPay] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.netPay] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun netPay(netPay: JsonField<Long>) = apply { this.netPay = netPay }
+
             fun paymentMethod(paymentMethod: PaymentMethod?) =
                 paymentMethod(JsonField.ofNullable(paymentMethod))
 
-            /** The payment method. */
+            /**
+             * Sets [Builder.paymentMethod] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.paymentMethod] with a well-typed [PaymentMethod]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun paymentMethod(paymentMethod: JsonField<PaymentMethod>) = apply {
                 this.paymentMethod = paymentMethod
             }
 
-            /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: List<Tax?>?) = taxes(JsonField.ofNullable(taxes))
+            fun taxes(taxes: List<Tax>) = taxes(JsonField.of(taxes))
 
-            /** The array of taxes objects associated with this pay statement. */
-            fun taxes(taxes: JsonField<List<Tax?>>) = apply {
+            /**
+             * Sets [Builder.taxes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.taxes] with a well-typed `List<Tax>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun taxes(taxes: JsonField<List<Tax>>) = apply {
                 this.taxes = taxes.map { it.toMutableList() }
             }
 
-            /** The array of taxes objects associated with this pay statement. */
+            /**
+             * Adds a single [Tax] to [taxes].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addTax(tax: Tax) = apply {
                 taxes =
-                    (taxes ?: JsonField.of(mutableListOf())).apply {
-                        (asKnown()
-                                ?: throw IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                ))
-                            .add(tax)
+                    (taxes ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("taxes", it).add(tax)
                     }
             }
 
-            /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: Double?) = totalHours(JsonField.ofNullable(totalHours))
+            fun totalHours(totalHours: Double) = totalHours(JsonField.of(totalHours))
 
-            /** The number of hours worked for this pay period */
-            fun totalHours(totalHours: Double) = totalHours(totalHours as Double?)
-
-            /** The number of hours worked for this pay period */
+            /**
+             * Sets [Builder.totalHours] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.totalHours] with a well-typed [Double] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun totalHours(totalHours: JsonField<Double>) = apply { this.totalHours = totalHours }
 
-            /** The type of the payment associated with the pay statement. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
-            /** The type of the payment associated with the pay statement. */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -667,84 +995,259 @@ constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [PayStatement].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```kotlin
+             * .individualId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): PayStatement =
                 PayStatement(
+                    checkRequired("individualId", individualId),
                     (earnings ?: JsonMissing.of()).map { it.toImmutable() },
                     (employeeDeductions ?: JsonMissing.of()).map { it.toImmutable() },
                     (employerContributions ?: JsonMissing.of()).map { it.toImmutable() },
                     grossPay,
-                    individualId,
                     netPay,
                     paymentMethod,
                     (taxes ?: JsonMissing.of()).map { it.toImmutable() },
                     totalHours,
                     type,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
-        @NoAutoDetect
+        private var validated: Boolean = false
+
+        fun validate(): PayStatement = apply {
+            if (validated) {
+                return@apply
+            }
+
+            individualId()
+            earnings()?.forEach { it.validate() }
+            employeeDeductions()?.forEach { it.validate() }
+            employerContributions()?.forEach { it.validate() }
+            grossPay()
+            netPay()
+            paymentMethod()?.validate()
+            taxes()?.forEach { it.validate() }
+            totalHours()
+            type()?.validate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: FinchInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int =
+            (if (individualId.asKnown() == null) 0 else 1) +
+                (earnings.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (employeeDeductions.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (employerContributions.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (grossPay.asKnown() == null) 0 else 1) +
+                (if (netPay.asKnown() == null) 0 else 1) +
+                (paymentMethod.asKnown()?.validity() ?: 0) +
+                (taxes.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (totalHours.asKnown() == null) 0 else 1) +
+                (type.asKnown()?.validity() ?: 0)
+
         class Earning
-        @JsonCreator
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            @JsonProperty("amount")
-            @ExcludeMissing
-            private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("currency")
-            @ExcludeMissing
-            private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("hours")
-            @ExcludeMissing
-            private val hours: JsonField<Double> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val amount: JsonField<Long>,
+            private val hours: JsonField<Double>,
+            private val name: JsonField<String>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
-            /** The earnings amount in cents. */
-            fun amount(): Long? = amount.getNullable("amount")
-
-            /** The earnings currency code. */
-            fun currency(): String? = currency.getNullable("currency")
+            @JsonCreator
+            private constructor(
+                @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("hours") @ExcludeMissing hours: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(amount, hours, name, type, mutableMapOf())
 
             /**
-             * The number of hours associated with this earning. (For salaried employees, this could
-             * be hours per pay period, `0` or `null`, depending on the provider).
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun amount(): Long? = amount.getNullable("amount")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
              */
             fun hours(): Double? = hours.getNullable("hours")
 
-            /** The exact name of the deduction from the pay statement. */
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun name(): String? = name.getNullable("name")
 
-            /** The type of earning. */
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun type(): Type? = type.getNullable("type")
 
-            /** The earnings amount in cents. */
+            /**
+             * Returns the raw JSON value of [amount].
+             *
+             * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-            /** The earnings currency code. */
-            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
-
             /**
-             * The number of hours associated with this earning. (For salaried employees, this could
-             * be hours per pay period, `0` or `null`, depending on the provider).
+             * Returns the raw JSON value of [hours].
+             *
+             * Unlike [hours], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("hours") @ExcludeMissing fun _hours(): JsonField<Double> = hours
 
-            /** The exact name of the deduction from the pay statement. */
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-            /** The type of earning. */
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
 
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /** Returns a mutable builder for constructing an instance of [Earning]. */
+                fun builder() = Builder()
+            }
+
+            /** A builder for [Earning]. */
+            class Builder internal constructor() {
+
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var hours: JsonField<Double> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                internal fun from(earning: Earning) = apply {
+                    amount = earning.amount
+                    hours = earning.hours
+                    name = earning.name
+                    type = earning.type
+                    additionalProperties = earning.additionalProperties.toMutableMap()
+                }
+
+                fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                /**
+                 * Sets [Builder.amount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.amount] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                fun hours(hours: Double) = hours(JsonField.of(hours))
+
+                /**
+                 * Sets [Builder.hours] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.hours] with a well-typed [Double] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
+
+                fun name(name: String) = name(JsonField.of(name))
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                fun type(type: Type) = type(JsonField.of(type))
+
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [Earning].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): Earning =
+                    Earning(amount, hours, name, type, additionalProperties.toMutableMap())
+            }
 
             private var validated: Boolean = false
 
@@ -754,81 +1257,403 @@ constructor(
                 }
 
                 amount()
-                currency()
                 hours()
                 name()
-                type()
+                type()?.validate()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (if (hours.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
+
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    val BONUS = of("bonus")
+
+                    val COMMISSION = of("commission")
+
+                    val DOUBLE_OVERTIME = of("double_overtime")
+
+                    val OTHER = of("other")
+
+                    val OVERTIME = of("overtime")
+
+                    val PTO = of("pto")
+
+                    val REIMBURSEMENT = of("reimbursement")
+
+                    val SALARY = of("salary")
+
+                    val SEVERANCE = of("severance")
+
+                    val SICK = of("sick")
+
+                    val TIPS = of("tips")
+
+                    val WAGE = of("wage")
+
+                    val _1099 = of("1099")
+
+                    fun of(value: String) = Type(JsonField.of(value))
+                }
+
+                /** An enum containing [Type]'s known values. */
+                enum class Known {
+                    BONUS,
+                    COMMISSION,
+                    DOUBLE_OVERTIME,
+                    OTHER,
+                    OVERTIME,
+                    PTO,
+                    REIMBURSEMENT,
+                    SALARY,
+                    SEVERANCE,
+                    SICK,
+                    TIPS,
+                    WAGE,
+                    _1099,
+                }
+
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    BONUS,
+                    COMMISSION,
+                    DOUBLE_OVERTIME,
+                    OTHER,
+                    OVERTIME,
+                    PTO,
+                    REIMBURSEMENT,
+                    SALARY,
+                    SEVERANCE,
+                    SICK,
+                    TIPS,
+                    WAGE,
+                    _1099,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        BONUS -> Value.BONUS
+                        COMMISSION -> Value.COMMISSION
+                        DOUBLE_OVERTIME -> Value.DOUBLE_OVERTIME
+                        OTHER -> Value.OTHER
+                        OVERTIME -> Value.OVERTIME
+                        PTO -> Value.PTO
+                        REIMBURSEMENT -> Value.REIMBURSEMENT
+                        SALARY -> Value.SALARY
+                        SEVERANCE -> Value.SEVERANCE
+                        SICK -> Value.SICK
+                        TIPS -> Value.TIPS
+                        WAGE -> Value.WAGE
+                        _1099 -> Value._1099
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        BONUS -> Known.BONUS
+                        COMMISSION -> Known.COMMISSION
+                        DOUBLE_OVERTIME -> Known.DOUBLE_OVERTIME
+                        OTHER -> Known.OTHER
+                        OVERTIME -> Known.OVERTIME
+                        PTO -> Known.PTO
+                        REIMBURSEMENT -> Known.REIMBURSEMENT
+                        SALARY -> Known.SALARY
+                        SEVERANCE -> Known.SEVERANCE
+                        SICK -> Known.SICK
+                        TIPS -> Known.TIPS
+                        WAGE -> Known.WAGE
+                        _1099 -> Known._1099
+                        else -> throw FinchInvalidDataException("Unknown Type: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Type && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Earning &&
+                    amount == other.amount &&
+                    hours == other.hours &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, hours, name, type, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "Earning{amount=$amount, hours=$hours, name=$name, type=$type, additionalProperties=$additionalProperties}"
+        }
+
+        class EmployeeDeduction
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val amount: JsonField<Long>,
+            private val name: JsonField<String>,
+            private val preTax: JsonField<Boolean>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("pre_tax")
+                @ExcludeMissing
+                preTax: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(amount, name, preTax, type, mutableMapOf())
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun amount(): Long? = amount.getNullable("amount")
+
+            /**
+             * The deduction name. Required when type is specified.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun name(): String? = name.getNullable("name")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun preTax(): Boolean? = preTax.getNullable("pre_tax")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun type(): Type? = type.getNullable("type")
+
+            /**
+             * Returns the raw JSON value of [amount].
+             *
+             * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [preTax].
+             *
+             * Unlike [preTax], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("pre_tax") @ExcludeMissing fun _preTax(): JsonField<Boolean> = preTax
+
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [EmployeeDeduction].
+                 */
                 fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [EmployeeDeduction]. */
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var currency: JsonField<String> = JsonMissing.of()
-                private var hours: JsonField<Double> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
+                private var preTax: JsonField<Boolean> = JsonMissing.of()
                 private var type: JsonField<Type> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-                internal fun from(earning: Earning) = apply {
-                    amount = earning.amount
-                    currency = earning.currency
-                    hours = earning.hours
-                    name = earning.name
-                    type = earning.type
-                    additionalProperties = earning.additionalProperties.toMutableMap()
+                internal fun from(employeeDeduction: EmployeeDeduction) = apply {
+                    amount = employeeDeduction.amount
+                    name = employeeDeduction.name
+                    preTax = employeeDeduction.preTax
+                    type = employeeDeduction.type
+                    additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
                 }
 
-                /** The earnings amount in cents. */
-                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+                fun amount(amount: Long) = amount(JsonField.of(amount))
 
-                /** The earnings amount in cents. */
-                fun amount(amount: Long) = amount(amount as Long?)
-
-                /** The earnings amount in cents. */
+                /**
+                 * Sets [Builder.amount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.amount] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                /** The earnings currency code. */
-                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
-
-                /** The earnings currency code. */
-                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+                /** The deduction name. Required when type is specified. */
+                fun name(name: String) = name(JsonField.of(name))
 
                 /**
-                 * The number of hours associated with this earning. (For salaried employees, this
-                 * could be hours per pay period, `0` or `null`, depending on the provider).
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
                  */
-                fun hours(hours: Double?) = hours(JsonField.ofNullable(hours))
-
-                /**
-                 * The number of hours associated with this earning. (For salaried employees, this
-                 * could be hours per pay period, `0` or `null`, depending on the provider).
-                 */
-                fun hours(hours: Double) = hours(hours as Double?)
-
-                /**
-                 * The number of hours associated with this earning. (For salaried employees, this
-                 * could be hours per pay period, `0` or `null`, depending on the provider).
-                 */
-                fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
-
-                /** The exact name of the deduction from the pay statement. */
-                fun name(name: String?) = name(JsonField.ofNullable(name))
-
-                /** The exact name of the deduction from the pay statement. */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
-                /** The type of earning. */
-                fun type(type: Type?) = type(JsonField.ofNullable(type))
+                fun preTax(preTax: Boolean) = preTax(JsonField.of(preTax))
 
-                /** The type of earning. */
+                /**
+                 * Sets [Builder.preTax] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.preTax] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
+
+                fun type(type: Type) = type(JsonField.of(type))
+
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -853,214 +1678,20 @@ constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
-                fun build(): Earning =
-                    Earning(
+                /**
+                 * Returns an immutable instance of [EmployeeDeduction].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): EmployeeDeduction =
+                    EmployeeDeduction(
                         amount,
-                        currency,
-                        hours,
                         name,
+                        preTax,
                         type,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
             }
-
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
-
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    val SALARY = of("salary")
-
-                    val WAGE = of("wage")
-
-                    val REIMBURSEMENT = of("reimbursement")
-
-                    val OVERTIME = of("overtime")
-
-                    val SEVERANCE = of("severance")
-
-                    val DOUBLE_OVERTIME = of("double_overtime")
-
-                    val PTO = of("pto")
-
-                    val SICK = of("sick")
-
-                    val BONUS = of("bonus")
-
-                    val COMMISSION = of("commission")
-
-                    val TIPS = of("tips")
-
-                    val _1099 = of("1099")
-
-                    val OTHER = of("other")
-
-                    fun of(value: String) = Type(JsonField.of(value))
-                }
-
-                enum class Known {
-                    SALARY,
-                    WAGE,
-                    REIMBURSEMENT,
-                    OVERTIME,
-                    SEVERANCE,
-                    DOUBLE_OVERTIME,
-                    PTO,
-                    SICK,
-                    BONUS,
-                    COMMISSION,
-                    TIPS,
-                    _1099,
-                    OTHER,
-                }
-
-                enum class Value {
-                    SALARY,
-                    WAGE,
-                    REIMBURSEMENT,
-                    OVERTIME,
-                    SEVERANCE,
-                    DOUBLE_OVERTIME,
-                    PTO,
-                    SICK,
-                    BONUS,
-                    COMMISSION,
-                    TIPS,
-                    _1099,
-                    OTHER,
-                    _UNKNOWN,
-                }
-
-                fun value(): Value =
-                    when (this) {
-                        SALARY -> Value.SALARY
-                        WAGE -> Value.WAGE
-                        REIMBURSEMENT -> Value.REIMBURSEMENT
-                        OVERTIME -> Value.OVERTIME
-                        SEVERANCE -> Value.SEVERANCE
-                        DOUBLE_OVERTIME -> Value.DOUBLE_OVERTIME
-                        PTO -> Value.PTO
-                        SICK -> Value.SICK
-                        BONUS -> Value.BONUS
-                        COMMISSION -> Value.COMMISSION
-                        TIPS -> Value.TIPS
-                        _1099 -> Value._1099
-                        OTHER -> Value.OTHER
-                        else -> Value._UNKNOWN
-                    }
-
-                fun known(): Known =
-                    when (this) {
-                        SALARY -> Known.SALARY
-                        WAGE -> Known.WAGE
-                        REIMBURSEMENT -> Known.REIMBURSEMENT
-                        OVERTIME -> Known.OVERTIME
-                        SEVERANCE -> Known.SEVERANCE
-                        DOUBLE_OVERTIME -> Known.DOUBLE_OVERTIME
-                        PTO -> Known.PTO
-                        SICK -> Known.SICK
-                        BONUS -> Known.BONUS
-                        COMMISSION -> Known.COMMISSION
-                        TIPS -> Known.TIPS
-                        _1099 -> Known._1099
-                        OTHER -> Known.OTHER
-                        else -> throw FinchInvalidDataException("Unknown Type: $value")
-                    }
-
-                fun asString(): String = _value().asStringOrThrow()
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Earning && amount == other.amount && currency == other.currency && hours == other.hours && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, currency, hours, name, type, additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "Earning{amount=$amount, currency=$currency, hours=$hours, name=$name, type=$type, additionalProperties=$additionalProperties}"
-        }
-
-        @NoAutoDetect
-        class EmployeeDeduction
-        @JsonCreator
-        private constructor(
-            @JsonProperty("amount")
-            @ExcludeMissing
-            private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("currency")
-            @ExcludeMissing
-            private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("pre_tax")
-            @ExcludeMissing
-            private val preTax: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<BenefitType> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-        ) {
-
-            /** The deduction amount in cents. */
-            fun amount(): Long? = amount.getNullable("amount")
-
-            /** The deduction currency. */
-            fun currency(): String? = currency.getNullable("currency")
-
-            /** The deduction name from the pay statement. */
-            fun name(): String? = name.getNullable("name")
-
-            /** Boolean indicating if the deduction is pre-tax. */
-            fun preTax(): Boolean? = preTax.getNullable("pre_tax")
-
-            /** Type of benefit. */
-            fun type(): BenefitType? = type.getNullable("type")
-
-            /** The deduction amount in cents. */
-            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
-
-            /** The deduction currency. */
-            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
-
-            /** The deduction name from the pay statement. */
-            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-            /** Boolean indicating if the deduction is pre-tax. */
-            @JsonProperty("pre_tax") @ExcludeMissing fun _preTax(): JsonField<Boolean> = preTax
-
-            /** Type of benefit. */
-            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
             private var validated: Boolean = false
 
@@ -1070,105 +1701,260 @@ constructor(
                 }
 
                 amount()
-                currency()
                 name()
                 preTax()
-                type()
+                type()?.validate()
                 validated = true
             }
 
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var amount: JsonField<Long> = JsonMissing.of()
-                private var currency: JsonField<String> = JsonMissing.of()
-                private var name: JsonField<String> = JsonMissing.of()
-                private var preTax: JsonField<Boolean> = JsonMissing.of()
-                private var type: JsonField<BenefitType> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                internal fun from(employeeDeduction: EmployeeDeduction) = apply {
-                    amount = employeeDeduction.amount
-                    currency = employeeDeduction.currency
-                    name = employeeDeduction.name
-                    preTax = employeeDeduction.preTax
-                    type = employeeDeduction.type
-                    additionalProperties = employeeDeduction.additionalProperties.toMutableMap()
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
                 }
 
-                /** The deduction amount in cents. */
-                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (if (preTax.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
 
-                /** The deduction amount in cents. */
-                fun amount(amount: Long) = amount(amount as Long?)
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
-                /** The deduction amount in cents. */
-                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-                /** The deduction currency. */
-                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
+                companion object {
 
-                /** The deduction currency. */
-                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+                    val _457 = of("457")
 
-                /** The deduction name from the pay statement. */
-                fun name(name: String?) = name(JsonField.ofNullable(name))
+                    val _401K = of("401k")
 
-                /** The deduction name from the pay statement. */
-                fun name(name: JsonField<String>) = apply { this.name = name }
+                    val _401K_ROTH = of("401k_roth")
 
-                /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: Boolean?) = preTax(JsonField.ofNullable(preTax))
+                    val _401K_LOAN = of("401k_loan")
 
-                /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: Boolean) = preTax(preTax as Boolean?)
+                    val _403B = of("403b")
 
-                /** Boolean indicating if the deduction is pre-tax. */
-                fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
+                    val _403B_ROTH = of("403b_roth")
 
-                /** Type of benefit. */
-                fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+                    val _457_ROTH = of("457_roth")
 
-                /** Type of benefit. */
-                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
+                    val COMMUTER = of("commuter")
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
+                    val CUSTOM_POST_TAX = of("custom_post_tax")
+
+                    val CUSTOM_PRE_TAX = of("custom_pre_tax")
+
+                    val FSA_DEPENDENT_CARE = of("fsa_dependent_care")
+
+                    val FSA_MEDICAL = of("fsa_medical")
+
+                    val HSA_POST = of("hsa_post")
+
+                    val HSA_PRE = of("hsa_pre")
+
+                    val S125_DENTAL = of("s125_dental")
+
+                    val S125_MEDICAL = of("s125_medical")
+
+                    val S125_VISION = of("s125_vision")
+
+                    val SIMPLE = of("simple")
+
+                    val SIMPLE_IRA = of("simple_ira")
+
+                    fun of(value: String) = Type(JsonField.of(value))
                 }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
+                /** An enum containing [Type]'s known values. */
+                enum class Known {
+                    _457,
+                    _401K,
+                    _401K_ROTH,
+                    _401K_LOAN,
+                    _403B,
+                    _403B_ROTH,
+                    _457_ROTH,
+                    COMMUTER,
+                    CUSTOM_POST_TAX,
+                    CUSTOM_PRE_TAX,
+                    FSA_DEPENDENT_CARE,
+                    FSA_MEDICAL,
+                    HSA_POST,
+                    HSA_PRE,
+                    S125_DENTAL,
+                    S125_MEDICAL,
+                    S125_VISION,
+                    SIMPLE,
+                    SIMPLE_IRA,
                 }
 
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    _457,
+                    _401K,
+                    _401K_ROTH,
+                    _401K_LOAN,
+                    _403B,
+                    _403B_ROTH,
+                    _457_ROTH,
+                    COMMUTER,
+                    CUSTOM_POST_TAX,
+                    CUSTOM_PRE_TAX,
+                    FSA_DEPENDENT_CARE,
+                    FSA_MEDICAL,
+                    HSA_POST,
+                    HSA_PRE,
+                    S125_DENTAL,
+                    S125_MEDICAL,
+                    S125_VISION,
+                    SIMPLE,
+                    SIMPLE_IRA,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        _457 -> Value._457
+                        _401K -> Value._401K
+                        _401K_ROTH -> Value._401K_ROTH
+                        _401K_LOAN -> Value._401K_LOAN
+                        _403B -> Value._403B
+                        _403B_ROTH -> Value._403B_ROTH
+                        _457_ROTH -> Value._457_ROTH
+                        COMMUTER -> Value.COMMUTER
+                        CUSTOM_POST_TAX -> Value.CUSTOM_POST_TAX
+                        CUSTOM_PRE_TAX -> Value.CUSTOM_PRE_TAX
+                        FSA_DEPENDENT_CARE -> Value.FSA_DEPENDENT_CARE
+                        FSA_MEDICAL -> Value.FSA_MEDICAL
+                        HSA_POST -> Value.HSA_POST
+                        HSA_PRE -> Value.HSA_PRE
+                        S125_DENTAL -> Value.S125_DENTAL
+                        S125_MEDICAL -> Value.S125_MEDICAL
+                        S125_VISION -> Value.S125_VISION
+                        SIMPLE -> Value.SIMPLE
+                        SIMPLE_IRA -> Value.SIMPLE_IRA
+                        else -> Value._UNKNOWN
                     }
 
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        _457 -> Known._457
+                        _401K -> Known._401K
+                        _401K_ROTH -> Known._401K_ROTH
+                        _401K_LOAN -> Known._401K_LOAN
+                        _403B -> Known._403B
+                        _403B_ROTH -> Known._403B_ROTH
+                        _457_ROTH -> Known._457_ROTH
+                        COMMUTER -> Known.COMMUTER
+                        CUSTOM_POST_TAX -> Known.CUSTOM_POST_TAX
+                        CUSTOM_PRE_TAX -> Known.CUSTOM_PRE_TAX
+                        FSA_DEPENDENT_CARE -> Known.FSA_DEPENDENT_CARE
+                        FSA_MEDICAL -> Known.FSA_MEDICAL
+                        HSA_POST -> Known.HSA_POST
+                        HSA_PRE -> Known.HSA_PRE
+                        S125_DENTAL -> Known.S125_DENTAL
+                        S125_MEDICAL -> Known.S125_MEDICAL
+                        S125_VISION -> Known.S125_VISION
+                        SIMPLE -> Known.SIMPLE
+                        SIMPLE_IRA -> Known.SIMPLE_IRA
+                        else -> throw FinchInvalidDataException("Unknown Type: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
                 }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Type && value == other.value
                 }
 
-                fun build(): EmployeeDeduction =
-                    EmployeeDeduction(
-                        amount,
-                        currency,
-                        name,
-                        preTax,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1176,369 +1962,148 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EmployeeDeduction && amount == other.amount && currency == other.currency && name == other.name && preTax == other.preTax && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is EmployeeDeduction &&
+                    amount == other.amount &&
+                    name == other.name &&
+                    preTax == other.preTax &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, preTax, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, name, preTax, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "EmployeeDeduction{amount=$amount, currency=$currency, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
+                "EmployeeDeduction{amount=$amount, name=$name, preTax=$preTax, type=$type, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class EmployerContribution
-        @JsonCreator
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            @JsonProperty("amount")
-            @ExcludeMissing
-            private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("currency")
-            @ExcludeMissing
-            private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<BenefitType> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val amount: JsonField<Long>,
+            private val name: JsonField<String>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
-            /** The contribution amount in cents. */
+            @JsonCreator
+            private constructor(
+                @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(amount, name, type, mutableMapOf())
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun amount(): Long? = amount.getNullable("amount")
 
-            /** The contribution currency. */
-            fun currency(): String? = currency.getNullable("currency")
-
-            /** The contribution name from the pay statement. */
+            /**
+             * The contribution name. Required when type is specified.
+             *
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
             fun name(): String? = name.getNullable("name")
 
-            /** Type of benefit. */
-            fun type(): BenefitType? = type.getNullable("type")
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun type(): Type? = type.getNullable("type")
 
-            /** The contribution amount in cents. */
+            /**
+             * Returns the raw JSON value of [amount].
+             *
+             * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
 
-            /** The contribution currency. */
-            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
-
-            /** The contribution name from the pay statement. */
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-            /** Type of benefit. */
-            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<BenefitType> = type
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
 
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): EmployerContribution = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                amount()
-                currency()
-                name()
-                type()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [EmployerContribution].
+                 */
                 fun builder() = Builder()
             }
 
-            class Builder {
+            /** A builder for [EmployerContribution]. */
+            class Builder internal constructor() {
 
                 private var amount: JsonField<Long> = JsonMissing.of()
-                private var currency: JsonField<String> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
-                private var type: JsonField<BenefitType> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(employerContribution: EmployerContribution) = apply {
                     amount = employerContribution.amount
-                    currency = employerContribution.currency
                     name = employerContribution.name
                     type = employerContribution.type
                     additionalProperties = employerContribution.additionalProperties.toMutableMap()
                 }
 
-                /** The contribution amount in cents. */
-                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
+                fun amount(amount: Long) = amount(JsonField.of(amount))
 
-                /** The contribution amount in cents. */
-                fun amount(amount: Long) = amount(amount as Long?)
-
-                /** The contribution amount in cents. */
+                /**
+                 * Sets [Builder.amount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.amount] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
-                /** The contribution currency. */
-                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
+                /** The contribution name. Required when type is specified. */
+                fun name(name: String) = name(JsonField.of(name))
 
-                /** The contribution currency. */
-                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
-
-                /** The contribution name from the pay statement. */
-                fun name(name: String?) = name(JsonField.ofNullable(name))
-
-                /** The contribution name from the pay statement. */
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
-                /** Type of benefit. */
-                fun type(type: BenefitType?) = type(JsonField.ofNullable(type))
+                fun type(type: Type) = type(JsonField.of(type))
 
-                /** Type of benefit. */
-                fun type(type: JsonField<BenefitType>) = apply { this.type = type }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                fun build(): EmployerContribution =
-                    EmployerContribution(
-                        amount,
-                        currency,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is EmployerContribution && amount == other.amount && currency == other.currency && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, currency, name, type, additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "EmployerContribution{amount=$amount, currency=$currency, name=$name, type=$type, additionalProperties=$additionalProperties}"
-        }
-
-        class PaymentMethod
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
-
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                val CHECK = of("check")
-
-                val DIRECT_DEPOSIT = of("direct_deposit")
-
-                fun of(value: String) = PaymentMethod(JsonField.of(value))
-            }
-
-            enum class Known {
-                CHECK,
-                DIRECT_DEPOSIT,
-            }
-
-            enum class Value {
-                CHECK,
-                DIRECT_DEPOSIT,
-                _UNKNOWN,
-            }
-
-            fun value(): Value =
-                when (this) {
-                    CHECK -> Value.CHECK
-                    DIRECT_DEPOSIT -> Value.DIRECT_DEPOSIT
-                    else -> Value._UNKNOWN
-                }
-
-            fun known(): Known =
-                when (this) {
-                    CHECK -> Known.CHECK
-                    DIRECT_DEPOSIT -> Known.DIRECT_DEPOSIT
-                    else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
-                }
-
-            fun asString(): String = _value().asStringOrThrow()
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is PaymentMethod && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        @NoAutoDetect
-        class Tax
-        @JsonCreator
-        private constructor(
-            @JsonProperty("amount")
-            @ExcludeMissing
-            private val amount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("currency")
-            @ExcludeMissing
-            private val currency: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("employer")
-            @ExcludeMissing
-            private val employer: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<Type> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-        ) {
-
-            /** The tax amount in cents. */
-            fun amount(): Long? = amount.getNullable("amount")
-
-            /** The currency code. */
-            fun currency(): String? = currency.getNullable("currency")
-
-            /** `true` if the amount is paid by the employers. */
-            fun employer(): Boolean? = employer.getNullable("employer")
-
-            /** The exact name of tax from the pay statement. */
-            fun name(): String? = name.getNullable("name")
-
-            /** The type of taxes. */
-            fun type(): Type? = type.getNullable("type")
-
-            /** The tax amount in cents. */
-            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
-
-            /** The currency code. */
-            @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
-
-            /** `true` if the amount is paid by the employers. */
-            @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
-
-            /** The exact name of tax from the pay statement. */
-            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-            /** The type of taxes. */
-            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Tax = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                amount()
-                currency()
-                employer()
-                name()
-                type()
-                validated = true
-            }
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                fun builder() = Builder()
-            }
-
-            class Builder {
-
-                private var amount: JsonField<Long> = JsonMissing.of()
-                private var currency: JsonField<String> = JsonMissing.of()
-                private var employer: JsonField<Boolean> = JsonMissing.of()
-                private var name: JsonField<String> = JsonMissing.of()
-                private var type: JsonField<Type> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                internal fun from(tax: Tax) = apply {
-                    amount = tax.amount
-                    currency = tax.currency
-                    employer = tax.employer
-                    name = tax.name
-                    type = tax.type
-                    additionalProperties = tax.additionalProperties.toMutableMap()
-                }
-
-                /** The tax amount in cents. */
-                fun amount(amount: Long?) = amount(JsonField.ofNullable(amount))
-
-                /** The tax amount in cents. */
-                fun amount(amount: Long) = amount(amount as Long?)
-
-                /** The tax amount in cents. */
-                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
-
-                /** The currency code. */
-                fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
-
-                /** The currency code. */
-                fun currency(currency: JsonField<String>) = apply { this.currency = currency }
-
-                /** `true` if the amount is paid by the employers. */
-                fun employer(employer: Boolean?) = employer(JsonField.ofNullable(employer))
-
-                /** `true` if the amount is paid by the employers. */
-                fun employer(employer: Boolean) = employer(employer as Boolean?)
-
-                /** `true` if the amount is paid by the employers. */
-                fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
-
-                /** The exact name of tax from the pay statement. */
-                fun name(name: String?) = name(JsonField.ofNullable(name))
-
-                /** The exact name of tax from the pay statement. */
-                fun name(name: JsonField<String>) = apply { this.name = name }
-
-                /** The type of taxes. */
-                fun type(type: Type?) = type(JsonField.ofNullable(type))
-
-                /** The type of taxes. */
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1563,79 +2128,270 @@ constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
-                fun build(): Tax =
-                    Tax(
-                        amount,
-                        currency,
-                        employer,
-                        name,
-                        type,
-                        additionalProperties.toImmutable(),
-                    )
+                /**
+                 * Returns an immutable instance of [EmployerContribution].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): EmployerContribution =
+                    EmployerContribution(amount, name, type, additionalProperties.toMutableMap())
             }
 
-            class Type
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            private var validated: Boolean = false
 
+            fun validate(): EmployerContribution = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                amount()
+                name()
+                type()?.validate()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
+
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
                 @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
                 companion object {
 
-                    val STATE = of("state")
+                    val _457 = of("457")
 
-                    val FEDERAL = of("federal")
+                    val _401K = of("401k")
 
-                    val LOCAL = of("local")
+                    val _401K_ROTH = of("401k_roth")
 
-                    val FICA = of("fica")
+                    val _401K_LOAN = of("401k_loan")
+
+                    val _403B = of("403b")
+
+                    val _403B_ROTH = of("403b_roth")
+
+                    val _457_ROTH = of("457_roth")
+
+                    val COMMUTER = of("commuter")
+
+                    val CUSTOM_POST_TAX = of("custom_post_tax")
+
+                    val CUSTOM_PRE_TAX = of("custom_pre_tax")
+
+                    val FSA_DEPENDENT_CARE = of("fsa_dependent_care")
+
+                    val FSA_MEDICAL = of("fsa_medical")
+
+                    val HSA_POST = of("hsa_post")
+
+                    val HSA_PRE = of("hsa_pre")
+
+                    val S125_DENTAL = of("s125_dental")
+
+                    val S125_MEDICAL = of("s125_medical")
+
+                    val S125_VISION = of("s125_vision")
+
+                    val SIMPLE = of("simple")
+
+                    val SIMPLE_IRA = of("simple_ira")
 
                     fun of(value: String) = Type(JsonField.of(value))
                 }
 
+                /** An enum containing [Type]'s known values. */
                 enum class Known {
-                    STATE,
-                    FEDERAL,
-                    LOCAL,
-                    FICA,
+                    _457,
+                    _401K,
+                    _401K_ROTH,
+                    _401K_LOAN,
+                    _403B,
+                    _403B_ROTH,
+                    _457_ROTH,
+                    COMMUTER,
+                    CUSTOM_POST_TAX,
+                    CUSTOM_PRE_TAX,
+                    FSA_DEPENDENT_CARE,
+                    FSA_MEDICAL,
+                    HSA_POST,
+                    HSA_PRE,
+                    S125_DENTAL,
+                    S125_MEDICAL,
+                    S125_VISION,
+                    SIMPLE,
+                    SIMPLE_IRA,
                 }
 
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
                 enum class Value {
-                    STATE,
-                    FEDERAL,
-                    LOCAL,
-                    FICA,
+                    _457,
+                    _401K,
+                    _401K_ROTH,
+                    _401K_LOAN,
+                    _403B,
+                    _403B_ROTH,
+                    _457_ROTH,
+                    COMMUTER,
+                    CUSTOM_POST_TAX,
+                    CUSTOM_PRE_TAX,
+                    FSA_DEPENDENT_CARE,
+                    FSA_MEDICAL,
+                    HSA_POST,
+                    HSA_PRE,
+                    S125_DENTAL,
+                    S125_MEDICAL,
+                    S125_VISION,
+                    SIMPLE,
+                    SIMPLE_IRA,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
                     _UNKNOWN,
                 }
 
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
                 fun value(): Value =
                     when (this) {
-                        STATE -> Value.STATE
-                        FEDERAL -> Value.FEDERAL
-                        LOCAL -> Value.LOCAL
-                        FICA -> Value.FICA
+                        _457 -> Value._457
+                        _401K -> Value._401K
+                        _401K_ROTH -> Value._401K_ROTH
+                        _401K_LOAN -> Value._401K_LOAN
+                        _403B -> Value._403B
+                        _403B_ROTH -> Value._403B_ROTH
+                        _457_ROTH -> Value._457_ROTH
+                        COMMUTER -> Value.COMMUTER
+                        CUSTOM_POST_TAX -> Value.CUSTOM_POST_TAX
+                        CUSTOM_PRE_TAX -> Value.CUSTOM_PRE_TAX
+                        FSA_DEPENDENT_CARE -> Value.FSA_DEPENDENT_CARE
+                        FSA_MEDICAL -> Value.FSA_MEDICAL
+                        HSA_POST -> Value.HSA_POST
+                        HSA_PRE -> Value.HSA_PRE
+                        S125_DENTAL -> Value.S125_DENTAL
+                        S125_MEDICAL -> Value.S125_MEDICAL
+                        S125_VISION -> Value.S125_VISION
+                        SIMPLE -> Value.SIMPLE
+                        SIMPLE_IRA -> Value.SIMPLE_IRA
                         else -> Value._UNKNOWN
                     }
 
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
+                 */
                 fun known(): Known =
                     when (this) {
-                        STATE -> Known.STATE
-                        FEDERAL -> Known.FEDERAL
-                        LOCAL -> Known.LOCAL
-                        FICA -> Known.FICA
+                        _457 -> Known._457
+                        _401K -> Known._401K
+                        _401K_ROTH -> Known._401K_ROTH
+                        _401K_LOAN -> Known._401K_LOAN
+                        _403B -> Known._403B
+                        _403B_ROTH -> Known._403B_ROTH
+                        _457_ROTH -> Known._457_ROTH
+                        COMMUTER -> Known.COMMUTER
+                        CUSTOM_POST_TAX -> Known.CUSTOM_POST_TAX
+                        CUSTOM_PRE_TAX -> Known.CUSTOM_PRE_TAX
+                        FSA_DEPENDENT_CARE -> Known.FSA_DEPENDENT_CARE
+                        FSA_MEDICAL -> Known.FSA_MEDICAL
+                        HSA_POST -> Known.HSA_POST
+                        HSA_PRE -> Known.HSA_PRE
+                        S125_DENTAL -> Known.S125_DENTAL
+                        S125_MEDICAL -> Known.S125_MEDICAL
+                        S125_VISION -> Known.S125_VISION
+                        SIMPLE -> Known.SIMPLE
+                        SIMPLE_IRA -> Known.SIMPLE_IRA
                         else -> throw FinchInvalidDataException("Unknown Type: $value")
                     }
 
-                fun asString(): String = _value().asStringOrThrow()
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1648,75 +2404,662 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Tax && amount == other.amount && currency == other.currency && employer == other.employer && name == other.name && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is EmployerContribution &&
+                    amount == other.amount &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(amount, currency, employer, name, type, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, name, type, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Tax{amount=$amount, currency=$currency, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
+                "EmployerContribution{amount=$amount, name=$name, type=$type, additionalProperties=$additionalProperties}"
         }
 
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class PaymentMethod @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
 
-                val REGULAR_PAYROLL = of("regular_payroll")
+                val CHECK = of("check")
 
-                val OFF_CYCLE_PAYROLL = of("off_cycle_payroll")
+                val DIRECT_DEPOSIT = of("direct_deposit")
 
-                val ONE_TIME_PAYMENT = of("one_time_payment")
+                val OTHER = of("other")
 
-                fun of(value: String) = Type(JsonField.of(value))
+                fun of(value: String) = PaymentMethod(JsonField.of(value))
             }
 
+            /** An enum containing [PaymentMethod]'s known values. */
             enum class Known {
-                REGULAR_PAYROLL,
-                OFF_CYCLE_PAYROLL,
-                ONE_TIME_PAYMENT,
+                CHECK,
+                DIRECT_DEPOSIT,
+                OTHER,
             }
 
+            /**
+             * An enum containing [PaymentMethod]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [PaymentMethod] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
-                REGULAR_PAYROLL,
-                OFF_CYCLE_PAYROLL,
-                ONE_TIME_PAYMENT,
+                CHECK,
+                DIRECT_DEPOSIT,
+                OTHER,
+                /**
+                 * An enum member indicating that [PaymentMethod] was instantiated with an unknown
+                 * value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
-                    REGULAR_PAYROLL -> Value.REGULAR_PAYROLL
-                    OFF_CYCLE_PAYROLL -> Value.OFF_CYCLE_PAYROLL
-                    ONE_TIME_PAYMENT -> Value.ONE_TIME_PAYMENT
+                    CHECK -> Value.CHECK
+                    DIRECT_DEPOSIT -> Value.DIRECT_DEPOSIT
+                    OTHER -> Value.OTHER
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
-                    REGULAR_PAYROLL -> Known.REGULAR_PAYROLL
-                    OFF_CYCLE_PAYROLL -> Known.OFF_CYCLE_PAYROLL
-                    ONE_TIME_PAYMENT -> Known.ONE_TIME_PAYMENT
-                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                    CHECK -> Known.CHECK
+                    DIRECT_DEPOSIT -> Known.DIRECT_DEPOSIT
+                    OTHER -> Known.OTHER
+                    else -> throw FinchInvalidDataException("Unknown PaymentMethod: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): PaymentMethod = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is PaymentMethod && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        class Tax
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val amount: JsonField<Long>,
+            private val employer: JsonField<Boolean>,
+            private val name: JsonField<String>,
+            private val type: JsonField<Type>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("employer")
+                @ExcludeMissing
+                employer: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            ) : this(amount, employer, name, type, mutableMapOf())
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun amount(): Long? = amount.getNullable("amount")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun employer(): Boolean? = employer.getNullable("employer")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun name(): String? = name.getNullable("name")
+
+            /**
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun type(): Type? = type.getNullable("type")
+
+            /**
+             * Returns the raw JSON value of [amount].
+             *
+             * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<Long> = amount
+
+            /**
+             * Returns the raw JSON value of [employer].
+             *
+             * Unlike [employer], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("employer") @ExcludeMissing fun _employer(): JsonField<Boolean> = employer
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /** Returns a mutable builder for constructing an instance of [Tax]. */
+                fun builder() = Builder()
+            }
+
+            /** A builder for [Tax]. */
+            class Builder internal constructor() {
+
+                private var amount: JsonField<Long> = JsonMissing.of()
+                private var employer: JsonField<Boolean> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var type: JsonField<Type> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                internal fun from(tax: Tax) = apply {
+                    amount = tax.amount
+                    employer = tax.employer
+                    name = tax.name
+                    type = tax.type
+                    additionalProperties = tax.additionalProperties.toMutableMap()
+                }
+
+                fun amount(amount: Long) = amount(JsonField.of(amount))
+
+                /**
+                 * Sets [Builder.amount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.amount] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+
+                fun employer(employer: Boolean) = employer(JsonField.of(employer))
+
+                /**
+                 * Sets [Builder.employer] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.employer] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
+
+                fun name(name: String) = name(JsonField.of(name))
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                fun type(type: Type) = type(JsonField.of(type))
+
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [Tax].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): Tax =
+                    Tax(amount, employer, name, type, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Tax = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                amount()
+                employer()
+                name()
+                type()?.validate()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int =
+                (if (amount.asKnown() == null) 0 else 1) +
+                    (if (employer.asKnown() == null) 0 else 1) +
+                    (if (name.asKnown() == null) 0 else 1) +
+                    (type.asKnown()?.validity() ?: 0)
+
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    val FEDERAL = of("federal")
+
+                    val FICA = of("fica")
+
+                    val LOCAL = of("local")
+
+                    val STATE = of("state")
+
+                    fun of(value: String) = Type(JsonField.of(value))
+                }
+
+                /** An enum containing [Type]'s known values. */
+                enum class Known {
+                    FEDERAL,
+                    FICA,
+                    LOCAL,
+                    STATE,
+                }
+
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    FEDERAL,
+                    FICA,
+                    LOCAL,
+                    STATE,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        FEDERAL -> Value.FEDERAL
+                        FICA -> Value.FICA
+                        LOCAL -> Value.LOCAL
+                        STATE -> Value.STATE
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value is a not a known
+                 *   member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        FEDERAL -> Known.FEDERAL
+                        FICA -> Known.FICA
+                        LOCAL -> Known.LOCAL
+                        STATE -> Known.STATE
+                        else -> throw FinchInvalidDataException("Unknown Type: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws FinchInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+                private var validated: Boolean = false
+
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Type && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Tax &&
+                    amount == other.amount &&
+                    employer == other.employer &&
+                    name == other.name &&
+                    type == other.type &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(amount, employer, name, type, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "Tax{amount=$amount, employer=$employer, name=$name, type=$type, additionalProperties=$additionalProperties}"
+        }
+
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                val OFF_CYCLE_PAYROLL = of("off_cycle_payroll")
+
+                val ONE_TIME_PAYMENT = of("one_time_payment")
+
+                val REGULAR_PAYROLL = of("regular_payroll")
+
+                fun of(value: String) = Type(JsonField.of(value))
+            }
+
+            /** An enum containing [Type]'s known values. */
+            enum class Known {
+                OFF_CYCLE_PAYROLL,
+                ONE_TIME_PAYMENT,
+                REGULAR_PAYROLL,
+            }
+
+            /**
+             * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Type] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                OFF_CYCLE_PAYROLL,
+                ONE_TIME_PAYMENT,
+                REGULAR_PAYROLL,
+                /** An enum member indicating that [Type] was instantiated with an unknown value. */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    OFF_CYCLE_PAYROLL -> Value.OFF_CYCLE_PAYROLL
+                    ONE_TIME_PAYMENT -> Value.ONE_TIME_PAYMENT
+                    REGULAR_PAYROLL -> Value.REGULAR_PAYROLL
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    OFF_CYCLE_PAYROLL -> Known.OFF_CYCLE_PAYROLL
+                    ONE_TIME_PAYMENT -> Known.ONE_TIME_PAYMENT
+                    REGULAR_PAYROLL -> Known.REGULAR_PAYROLL
+                    else -> throw FinchInvalidDataException("Unknown Type: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1729,17 +3072,40 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is PayStatement && earnings == other.earnings && employeeDeductions == other.employeeDeductions && employerContributions == other.employerContributions && grossPay == other.grossPay && individualId == other.individualId && netPay == other.netPay && paymentMethod == other.paymentMethod && taxes == other.taxes && totalHours == other.totalHours && type == other.type && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is PayStatement &&
+                individualId == other.individualId &&
+                earnings == other.earnings &&
+                employeeDeductions == other.employeeDeductions &&
+                employerContributions == other.employerContributions &&
+                grossPay == other.grossPay &&
+                netPay == other.netPay &&
+                paymentMethod == other.paymentMethod &&
+                taxes == other.taxes &&
+                totalHours == other.totalHours &&
+                type == other.type &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(earnings, employeeDeductions, employerContributions, grossPay, individualId, netPay, paymentMethod, taxes, totalHours, type, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                individualId,
+                earnings,
+                employeeDeductions,
+                employerContributions,
+                grossPay,
+                netPay,
+                paymentMethod,
+                taxes,
+                totalHours,
+                type,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "PayStatement{earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, individualId=$individualId, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
+            "PayStatement{individualId=$individualId, earnings=$earnings, employeeDeductions=$employeeDeductions, employerContributions=$employerContributions, grossPay=$grossPay, netPay=$netPay, paymentMethod=$paymentMethod, taxes=$taxes, totalHours=$totalHours, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -1747,10 +3113,13 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is SandboxPaymentCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SandboxPaymentCreateParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SandboxPaymentCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

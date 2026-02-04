@@ -4,14 +4,19 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
+import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.core.json
-import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.json
+import com.tryfinch.api.core.http.parseable
+import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.CompanyBenefit
 import com.tryfinch.api.models.CreateCompanyBenefitsResponse
 import com.tryfinch.api.models.HrisBenefitCreateParams
@@ -26,169 +31,253 @@ import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsyncImpl
 
-class BenefitServiceAsyncImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : BenefitServiceAsync {
+class BenefitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    BenefitServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: BenefitServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val individuals: IndividualServiceAsync by lazy {
         IndividualServiceAsyncImpl(clientOptions)
     }
 
+    override fun withRawResponse(): BenefitServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): BenefitServiceAsync =
+        BenefitServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override fun individuals(): IndividualServiceAsync = individuals
 
-    private val createHandler: Handler<CreateCompanyBenefitsResponse> =
-        jsonHandler<CreateCompanyBenefitsResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /**
-     * Creates a new company-wide deduction or contribution. Please use the `/providers` endpoint to
-     * view available types for each provider.
-     */
     override suspend fun create(
         params: HrisBenefitCreateParams,
-        requestOptions: RequestOptions
-    ): CreateCompanyBenefitsResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("employer", "benefits")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { createHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
-                }
-        }
-    }
+        requestOptions: RequestOptions,
+    ): CreateCompanyBenefitsResponse =
+        // post /employer/benefits
+        withRawResponse().create(params, requestOptions).parse()
 
-    private val retrieveHandler: Handler<CompanyBenefit> =
-        jsonHandler<CompanyBenefit>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-    /** Lists deductions and contributions information for a given item */
     override suspend fun retrieve(
         params: HrisBenefitRetrieveParams,
-        requestOptions: RequestOptions
-    ): CompanyBenefit {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "benefits", params.getPathParam(0))
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { retrieveHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
-                }
-        }
-    }
+        requestOptions: RequestOptions,
+    ): CompanyBenefit =
+        // get /employer/benefits/{benefit_id}
+        withRawResponse().retrieve(params, requestOptions).parse()
 
-    private val updateHandler: Handler<UpdateCompanyBenefitResponse> =
-        jsonHandler<UpdateCompanyBenefitResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Updates an existing company-wide deduction or contribution */
     override suspend fun update(
         params: HrisBenefitUpdateParams,
-        requestOptions: RequestOptions
-    ): UpdateCompanyBenefitResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("employer", "benefits", params.getPathParam(0))
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { updateHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
-                }
-        }
-    }
+        requestOptions: RequestOptions,
+    ): UpdateCompanyBenefitResponse =
+        // post /employer/benefits/{benefit_id}
+        withRawResponse().update(params, requestOptions).parse()
 
-    private val listHandler: Handler<List<CompanyBenefit>> =
-        jsonHandler<List<CompanyBenefit>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-    /** List all company-wide deductions and contributions. */
     override suspend fun list(
         params: HrisBenefitListParams,
-        requestOptions: RequestOptions
-    ): HrisBenefitListPageAsync {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "benefits")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
-                    }
-                }
-                .let { HrisBenefitListPageAsync.Response.Builder().items(it).build() }
-                .let { HrisBenefitListPageAsync.of(this, params, it) }
-        }
-    }
+        requestOptions: RequestOptions,
+    ): HrisBenefitListPageAsync =
+        // get /employer/benefits
+        withRawResponse().list(params, requestOptions).parse()
 
-    private val listSupportedBenefitsHandler: Handler<List<SupportedBenefit>> =
-        jsonHandler<List<SupportedBenefit>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-    /** Get deductions metadata */
     override suspend fun listSupportedBenefits(
         params: HrisBenefitListSupportedBenefitsParams,
-        requestOptions: RequestOptions
-    ): HrisBenefitListSupportedBenefitsPageAsync {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "benefits", "meta")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listSupportedBenefitsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        forEach { it.validate() }
+        requestOptions: RequestOptions,
+    ): HrisBenefitListSupportedBenefitsPageAsync =
+        // get /employer/benefits/meta
+        withRawResponse().listSupportedBenefits(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        BenefitServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        private val individuals: IndividualServiceAsync.WithRawResponse by lazy {
+            IndividualServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): BenefitServiceAsync.WithRawResponse =
+            BenefitServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
+        override fun individuals(): IndividualServiceAsync.WithRawResponse = individuals
+
+        private val createHandler: Handler<CreateCompanyBenefitsResponse> =
+            jsonHandler<CreateCompanyBenefitsResponse>(clientOptions.jsonMapper)
+
+        override suspend fun create(
+            params: HrisBenefitCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<CreateCompanyBenefitsResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
                     }
-                }
-                .let {
-                    HrisBenefitListSupportedBenefitsPageAsync.Response.Builder().items(it).build()
-                }
-                .let { HrisBenefitListSupportedBenefitsPageAsync.of(this, params, it) }
+            }
+        }
+
+        private val retrieveHandler: Handler<CompanyBenefit> =
+            jsonHandler<CompanyBenefit>(clientOptions.jsonMapper)
+
+        override suspend fun retrieve(
+            params: HrisBenefitRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<CompanyBenefit> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", params._pathParam(0))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val updateHandler: Handler<UpdateCompanyBenefitResponse> =
+            jsonHandler<UpdateCompanyBenefitResponse>(clientOptions.jsonMapper)
+
+        override suspend fun update(
+            params: HrisBenefitUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<UpdateCompanyBenefitResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("benefitId", params.benefitId())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listHandler: Handler<List<CompanyBenefit>> =
+            jsonHandler<List<CompanyBenefit>>(clientOptions.jsonMapper)
+
+        override suspend fun list(
+            params: HrisBenefitListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisBenefitListPageAsync> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits")
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+                    .let {
+                        HrisBenefitListPageAsync.builder()
+                            .service(BenefitServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
+                    }
+            }
+        }
+
+        private val listSupportedBenefitsHandler: Handler<List<SupportedBenefit>?> =
+            jsonHandler<List<SupportedBenefit>?>(clientOptions.jsonMapper)
+
+        override suspend fun listSupportedBenefits(
+            params: HrisBenefitListSupportedBenefitsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "benefits", "meta")
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listSupportedBenefitsHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it?.forEach { it.validate() }
+                        }
+                    }
+                    .let {
+                        HrisBenefitListSupportedBenefitsPageAsync.builder()
+                            .service(BenefitServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .items(it)
+                            .build()
+                    }
+            }
         }
     }
 }

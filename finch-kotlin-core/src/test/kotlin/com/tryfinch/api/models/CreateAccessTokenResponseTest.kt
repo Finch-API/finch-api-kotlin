@@ -2,38 +2,70 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class CreateAccessTokenResponseTest {
+internal class CreateAccessTokenResponseTest {
 
     @Test
-    fun createCreateAccessTokenResponse() {
+    fun create() {
         val createAccessTokenResponse =
             CreateAccessTokenResponse.builder()
                 .accessToken("access_token")
-                .accountId("account_id")
-                .clientType(CreateAccessTokenResponse.ClientType.PRODUCTION)
-                .companyId("company_id")
+                .clientType(CreateAccessTokenResponse.ClientType.DEVELOPMENT)
                 .connectionId("connection_id")
-                .connectionType(CreateAccessTokenResponse.ConnectionType.PROVIDER)
-                .products(listOf("string"))
+                .connectionType(CreateAccessTokenResponse.ConnectionType.FINCH)
+                .addEntityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addProduct("string")
                 .providerId("provider_id")
-                .customerId("customer_id")
                 .tokenType("token_type")
+                .accountId("account_id")
+                .companyId("company_id")
+                .customerId("customer_id")
                 .build()
-        assertThat(createAccessTokenResponse).isNotNull
+
         assertThat(createAccessTokenResponse.accessToken()).isEqualTo("access_token")
-        assertThat(createAccessTokenResponse.accountId()).isEqualTo("account_id")
         assertThat(createAccessTokenResponse.clientType())
-            .isEqualTo(CreateAccessTokenResponse.ClientType.PRODUCTION)
-        assertThat(createAccessTokenResponse.companyId()).isEqualTo("company_id")
+            .isEqualTo(CreateAccessTokenResponse.ClientType.DEVELOPMENT)
         assertThat(createAccessTokenResponse.connectionId()).isEqualTo("connection_id")
         assertThat(createAccessTokenResponse.connectionType())
-            .isEqualTo(CreateAccessTokenResponse.ConnectionType.PROVIDER)
+            .isEqualTo(CreateAccessTokenResponse.ConnectionType.FINCH)
+        assertThat(createAccessTokenResponse.entityIds())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(createAccessTokenResponse.products()).containsExactly("string")
         assertThat(createAccessTokenResponse.providerId()).isEqualTo("provider_id")
-        assertThat(createAccessTokenResponse.customerId()).isEqualTo("customer_id")
         assertThat(createAccessTokenResponse.tokenType()).isEqualTo("token_type")
+        assertThat(createAccessTokenResponse.accountId()).isEqualTo("account_id")
+        assertThat(createAccessTokenResponse.companyId()).isEqualTo("company_id")
+        assertThat(createAccessTokenResponse.customerId()).isEqualTo("customer_id")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val createAccessTokenResponse =
+            CreateAccessTokenResponse.builder()
+                .accessToken("access_token")
+                .clientType(CreateAccessTokenResponse.ClientType.DEVELOPMENT)
+                .connectionId("connection_id")
+                .connectionType(CreateAccessTokenResponse.ConnectionType.FINCH)
+                .addEntityId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .addProduct("string")
+                .providerId("provider_id")
+                .tokenType("token_type")
+                .accountId("account_id")
+                .companyId("company_id")
+                .customerId("customer_id")
+                .build()
+
+        val roundtrippedCreateAccessTokenResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(createAccessTokenResponse),
+                jacksonTypeRef<CreateAccessTokenResponse>(),
+            )
+
+        assertThat(roundtrippedCreateAccessTokenResponse).isEqualTo(createAccessTokenResponse)
     }
 }

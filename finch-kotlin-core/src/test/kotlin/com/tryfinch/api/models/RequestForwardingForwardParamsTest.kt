@@ -6,47 +6,73 @@ import com.tryfinch.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RequestForwardingForwardParamsTest {
+internal class RequestForwardingForwardParamsTest {
 
     @Test
-    fun createRequestForwardingForwardParams() {
+    fun create() {
         RequestForwardingForwardParams.builder()
-            .method("POST")
-            .route("/people/search")
-            .data(null)
-            .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-            .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+            .method("method")
+            .route("route")
+            .data("data")
+            .params(
+                RequestForwardingForwardParams.Params.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+            .requestHeaders(
+                RequestForwardingForwardParams.RequestHeaders.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             RequestForwardingForwardParams.builder()
-                .method("POST")
-                .route("/people/search")
-                .data(null)
-                .headers(JsonValue.from(mapOf("content-type" to "application/json")))
-                .params(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+                .method("method")
+                .route("route")
+                .data("data")
+                .params(
+                    RequestForwardingForwardParams.Params.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
+                .requestHeaders(
+                    RequestForwardingForwardParams.RequestHeaders.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("POST")
-        assertThat(body.route()).isEqualTo("/people/search")
-        assertThat(body.data()).isNull()
-        assertThat(body._headers())
-            .isEqualTo(JsonValue.from(mapOf("content-type" to "application/json")))
-        assertThat(body._params())
-            .isEqualTo(JsonValue.from(mapOf("showInactive" to true, "humanReadable" to true)))
+
+        val body = params._body()
+
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
+        assertThat(body.data()).isEqualTo("data")
+        assertThat(body.params())
+            .isEqualTo(
+                RequestForwardingForwardParams.Params.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
+        assertThat(body.requestHeaders())
+            .isEqualTo(
+                RequestForwardingForwardParams.RequestHeaders.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
-            RequestForwardingForwardParams.builder().method("POST").route("/people/search").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
-        assertThat(body.method()).isEqualTo("POST")
-        assertThat(body.route()).isEqualTo("/people/search")
+            RequestForwardingForwardParams.builder().method("method").route("route").build()
+
+        val body = params._body()
+
+        assertThat(body.method()).isEqualTo("method")
+        assertThat(body.route()).isEqualTo("route")
     }
 }

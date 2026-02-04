@@ -2,46 +2,41 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
 /** Get an automated job by `job_id`. */
 class JobAutomatedRetrieveParams
-constructor(
-    private val jobId: String,
+private constructor(
+    private val jobId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    fun jobId(): String = jobId
+    fun jobId(): String? = jobId
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> jobId
-            else -> ""
-        }
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): JobAutomatedRetrieveParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [JobAutomatedRetrieveParams].
+         */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [JobAutomatedRetrieveParams]. */
+    class Builder internal constructor() {
 
         private var jobId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -53,7 +48,7 @@ constructor(
             additionalQueryParams = jobAutomatedRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun jobId(jobId: String) = apply { this.jobId = jobId }
+        fun jobId(jobId: String?) = apply { this.jobId = jobId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -153,23 +148,41 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [JobAutomatedRetrieveParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): JobAutomatedRetrieveParams =
             JobAutomatedRetrieveParams(
-                checkRequired("jobId", jobId),
+                jobId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> jobId ?: ""
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is JobAutomatedRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is JobAutomatedRetrieveParams &&
+            jobId == other.jobId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(jobId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "JobAutomatedRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

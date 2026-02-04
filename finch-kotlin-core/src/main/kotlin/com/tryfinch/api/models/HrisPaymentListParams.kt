@@ -2,69 +2,103 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
+import com.tryfinch.api.core.toImmutable
 import java.time.LocalDate
 import java.util.Objects
 
 /** Read payroll and contractor related payments by the company. */
 class HrisPaymentListParams
-constructor(
+private constructor(
     private val endDate: LocalDate,
     private val startDate: LocalDate,
+    private val entityIds: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+    /**
+     * The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. Filters
+     * payments by their **pay_date** field.
+     */
     fun endDate(): LocalDate = endDate
 
-    /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+    /**
+     * The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. Filters
+     * payments by their **pay_date** field.
+     */
     fun startDate(): LocalDate = startDate
 
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
+
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.endDate.let { queryParams.put("end_date", listOf(it.toString())) }
-        this.startDate.let { queryParams.put("start_date", listOf(it.toString())) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [HrisPaymentListParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .endDate()
+         * .startDate()
+         * ```
+         */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [HrisPaymentListParams]. */
+    class Builder internal constructor() {
 
         private var endDate: LocalDate? = null
         private var startDate: LocalDate? = null
+        private var entityIds: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(hrisPaymentListParams: HrisPaymentListParams) = apply {
             endDate = hrisPaymentListParams.endDate
             startDate = hrisPaymentListParams.startDate
+            entityIds = hrisPaymentListParams.entityIds?.toMutableList()
             additionalHeaders = hrisPaymentListParams.additionalHeaders.toBuilder()
             additionalQueryParams = hrisPaymentListParams.additionalQueryParams.toBuilder()
         }
 
-        /** The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        /**
+         * The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
+         * Filters payments by their **pay_date** field.
+         */
         fun endDate(endDate: LocalDate) = apply { this.endDate = endDate }
 
-        /** The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format. */
+        /**
+         * The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
+         * Filters payments by their **pay_date** field.
+         */
         fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -164,25 +198,57 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [HrisPaymentListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .endDate()
+         * .startDate()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
                 checkRequired("endDate", endDate),
                 checkRequired("startDate", startDate),
+                entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("end_date", endDate.toString())
+                put("start_date", startDate.toString())
+                entityIds?.forEach { put("entity_ids[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is HrisPaymentListParams && endDate == other.endDate && startDate == other.startDate && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is HrisPaymentListParams &&
+            endDate == other.endDate &&
+            startDate == other.startDate &&
+            entityIds == other.entityIds &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endDate, startDate, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(endDate, startDate, entityIds, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "HrisPaymentListParams{endDate=$endDate, startDate=$startDate, entityIds=$entityIds, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

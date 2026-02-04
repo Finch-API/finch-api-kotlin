@@ -5,42 +5,44 @@ package com.tryfinch.api.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ConnectSessionReauthenticateParamsTest {
+internal class ConnectSessionReauthenticateParamsTest {
 
     @Test
-    fun createConnectSessionReauthenticateParams() {
+    fun create() {
         ConnectSessionReauthenticateParams.builder()
             .connectionId("connection_id")
             .minutesToExpire(0L)
-            .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
             .redirectUri("https://example.com")
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             ConnectSessionReauthenticateParams.builder()
                 .connectionId("connection_id")
                 .minutesToExpire(0L)
-                .products(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+                .addProduct(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
                 .redirectUri("https://example.com")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.connectionId()).isEqualTo("connection_id")
         assertThat(body.minutesToExpire()).isEqualTo(0L)
         assertThat(body.products())
-            .isEqualTo(listOf(ConnectSessionReauthenticateParams.ConnectProducts.COMPANY))
+            .containsExactly(ConnectSessionReauthenticateParams.ConnectProducts.BENEFITS)
         assertThat(body.redirectUri()).isEqualTo("https://example.com")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             ConnectSessionReauthenticateParams.builder().connectionId("connection_id").build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
         assertThat(body.connectionId()).isEqualTo("connection_id")
     }
 }

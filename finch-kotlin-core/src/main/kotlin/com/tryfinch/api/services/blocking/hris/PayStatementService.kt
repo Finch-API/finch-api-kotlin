@@ -2,11 +2,26 @@
 
 package com.tryfinch.api.services.blocking.hris
 
+import com.google.errorprone.annotations.MustBeClosed
+import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyPage
 import com.tryfinch.api.models.HrisPayStatementRetrieveManyParams
 
 interface PayStatementService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: (ClientOptions.Builder) -> Unit): PayStatementService
 
     /**
      * Read detailed pay statements for each individual.
@@ -15,6 +30,31 @@ interface PayStatementService {
      */
     fun retrieveMany(
         params: HrisPayStatementRetrieveManyParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisPayStatementRetrieveManyPage
+
+    /**
+     * A view of [PayStatementService] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): PayStatementService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /employer/pay-statement`, but is otherwise the same
+         * as [PayStatementService.retrieveMany].
+         */
+        @MustBeClosed
+        fun retrieveMany(
+            params: HrisPayStatementRetrieveManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<HrisPayStatementRetrieveManyPage>
+    }
 }

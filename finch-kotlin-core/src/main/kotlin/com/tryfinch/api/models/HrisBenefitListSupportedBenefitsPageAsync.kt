@@ -2,160 +2,112 @@
 
 package com.tryfinch.api.models
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.tryfinch.api.core.ExcludeMissing
-import com.tryfinch.api.core.JsonField
-import com.tryfinch.api.core.JsonMissing
-import com.tryfinch.api.core.JsonValue
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.immutableEmptyMap
-import com.tryfinch.api.core.toImmutable
+import com.tryfinch.api.core.AutoPagerAsync
+import com.tryfinch.api.core.PageAsync
+import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.services.async.hris.BenefitServiceAsync
 import java.util.Objects
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 
+/** @see BenefitServiceAsync.listSupportedBenefits */
 class HrisBenefitListSupportedBenefitsPageAsync
 private constructor(
-    private val benefitsService: BenefitServiceAsync,
+    private val service: BenefitServiceAsync,
     private val params: HrisBenefitListSupportedBenefitsParams,
-    private val response: Response,
-) {
+    private val items: List<SupportedBenefit>,
+) : PageAsync<SupportedBenefit> {
 
-    fun response(): Response = response
+    override fun hasNextPage(): Boolean = false
 
-    fun items(): List<SupportedBenefit> = response().items()
+    fun nextPageParams(): HrisBenefitListSupportedBenefitsParams =
+        throw IllegalStateException("Cannot construct next page params")
+
+    override suspend fun nextPage(): HrisBenefitListSupportedBenefitsPageAsync =
+        service.listSupportedBenefits(nextPageParams())
+
+    fun autoPager(): AutoPagerAsync<SupportedBenefit> = AutoPagerAsync.from(this)
+
+    /** The parameters that were used to request this page. */
+    fun params(): HrisBenefitListSupportedBenefitsParams = params
+
+    /** The response that this page was parsed from. */
+    override fun items(): List<SupportedBenefit> = items
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [HrisBenefitListSupportedBenefitsPageAsync].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         */
+        fun builder() = Builder()
+    }
+
+    /** A builder for [HrisBenefitListSupportedBenefitsPageAsync]. */
+    class Builder internal constructor() {
+
+        private var service: BenefitServiceAsync? = null
+        private var params: HrisBenefitListSupportedBenefitsParams? = null
+        private var items: List<SupportedBenefit>? = null
+
+        internal fun from(
+            hrisBenefitListSupportedBenefitsPageAsync: HrisBenefitListSupportedBenefitsPageAsync
+        ) = apply {
+            service = hrisBenefitListSupportedBenefitsPageAsync.service
+            params = hrisBenefitListSupportedBenefitsPageAsync.params
+            items = hrisBenefitListSupportedBenefitsPageAsync.items
+        }
+
+        fun service(service: BenefitServiceAsync) = apply { this.service = service }
+
+        /** The parameters that were used to request this page. */
+        fun params(params: HrisBenefitListSupportedBenefitsParams) = apply { this.params = params }
+
+        /** The response that this page was parsed from. */
+        fun items(items: List<SupportedBenefit>?) = apply { this.items = items }
+
+        /**
+         * Returns an immutable instance of [HrisBenefitListSupportedBenefitsPageAsync].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .service()
+         * .params()
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): HrisBenefitListSupportedBenefitsPageAsync =
+            HrisBenefitListSupportedBenefitsPageAsync(
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items) ?: emptyList(),
+            )
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is HrisBenefitListSupportedBenefitsPageAsync && benefitsService == other.benefitsService && params == other.params && response == other.response /* spotless:on */
+        return other is HrisBenefitListSupportedBenefitsPageAsync &&
+            service == other.service &&
+            params == other.params &&
+            items == other.items
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(benefitsService, params, response) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(service, params, items)
 
     override fun toString() =
-        "HrisBenefitListSupportedBenefitsPageAsync{benefitsService=$benefitsService, params=$params, response=$response}"
-
-    fun hasNextPage(): Boolean {
-        return !items().isEmpty()
-    }
-
-    fun getNextPageParams(): HrisBenefitListSupportedBenefitsParams? {
-        return null
-    }
-
-    suspend fun getNextPage(): HrisBenefitListSupportedBenefitsPageAsync? {
-        return getNextPageParams()?.let { benefitsService.listSupportedBenefits(it) }
-    }
-
-    fun autoPager(): AutoPager = AutoPager(this)
-
-    companion object {
-
-        fun of(
-            benefitsService: BenefitServiceAsync,
-            params: HrisBenefitListSupportedBenefitsParams,
-            response: Response
-        ) =
-            HrisBenefitListSupportedBenefitsPageAsync(
-                benefitsService,
-                params,
-                response,
-            )
-    }
-
-    @NoAutoDetect
-    class Response
-    @JsonCreator
-    constructor(
-        @JsonProperty("items")
-        private val items: JsonField<List<SupportedBenefit>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        fun items(): List<SupportedBenefit> = items.getNullable("items") ?: listOf()
-
-        @JsonProperty("items") fun _items(): JsonField<List<SupportedBenefit>>? = items
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Response = apply {
-            if (validated) {
-                return@apply
-            }
-
-            items().map { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Response && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-
-        override fun toString() =
-            "Response{items=$items, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var items: JsonField<List<SupportedBenefit>> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            internal fun from(page: Response) = apply {
-                this.items = page.items
-                this.additionalProperties.putAll(page.additionalProperties)
-            }
-
-            fun items(items: List<SupportedBenefit>) = items(JsonField.of(items))
-
-            fun items(items: JsonField<List<SupportedBenefit>>) = apply { this.items = items }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun build() = Response(items, additionalProperties.toImmutable())
-        }
-    }
-
-    class AutoPager
-    constructor(
-        private val firstPage: HrisBenefitListSupportedBenefitsPageAsync,
-    ) : Flow<SupportedBenefit> {
-
-        override suspend fun collect(collector: FlowCollector<SupportedBenefit>) {
-            var page = firstPage
-            var index = 0
-            while (true) {
-                while (index < page.items().size) {
-                    collector.emit(page.items()[index++])
-                }
-                page = page.getNextPage() ?: break
-                index = 0
-            }
-        }
-    }
+        "HrisBenefitListSupportedBenefitsPageAsync{service=$service, params=$params, items=$items}"
 }

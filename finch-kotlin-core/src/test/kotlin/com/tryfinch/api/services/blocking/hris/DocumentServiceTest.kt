@@ -10,41 +10,48 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DocumentServiceTest {
+internal class DocumentServiceTest {
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val documentService = client.hris().documents()
-        val documentListResponse =
+
+        val documents =
             documentService.list(
                 HrisDocumentListParams.builder()
-                    .individualIds(listOf("string"))
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .addIndividualId("string")
                     .limit(0L)
                     .offset(0L)
-                    .types(listOf(HrisDocumentListParams.Type.W4_2020))
+                    .addType(HrisDocumentListParams.Type.W4_2020)
                     .build()
             )
-        println(documentListResponse)
-        documentListResponse.validate()
+
+        documents.validate()
     }
 
     @Test
-    fun callRetreive() {
+    fun retreive() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val documentService = client.hris().documents()
-        val documentRetreiveResponse =
+
+        val response =
             documentService.retreive(
-                HrisDocumentRetreiveParams.builder().documentId("document_id").build()
+                HrisDocumentRetreiveParams.builder()
+                    .documentId("document_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .build()
             )
-        println(documentRetreiveResponse)
+
+        response.validate()
     }
 }

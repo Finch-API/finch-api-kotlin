@@ -4,83 +4,131 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.errors.FinchError
-import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.parseable
+import com.tryfinch.api.core.prepareAsync
+import com.tryfinch.api.models.DirectoryListIndividualsResponse
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
+import com.tryfinch.api.models.HrisDirectoryListPageResponse
 import com.tryfinch.api.models.HrisDirectoryListParams
 
-class DirectoryServiceAsyncImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : DirectoryServiceAsync {
+class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    DirectoryServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
-
-    private val listHandler: Handler<HrisDirectoryListPageAsync.Response> =
-        jsonHandler<HrisDirectoryListPageAsync.Response>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Read company directory and organization structure */
-    override suspend fun list(
-        params: HrisDirectoryListParams,
-        requestOptions: RequestOptions
-    ): HrisDirectoryListPageAsync {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "directory")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
-                }
-                .let { HrisDirectoryListPageAsync.of(this, params, it) }
-        }
+    private val withRawResponse: DirectoryServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
     }
 
-    private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageAsync.Response> =
-        jsonHandler<HrisDirectoryListIndividualsPageAsync.Response>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): DirectoryServiceAsync.WithRawResponse = withRawResponse
 
-    /** Read company directory and organization structure */
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): DirectoryServiceAsync =
+        DirectoryServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
+    override suspend fun list(
+        params: HrisDirectoryListParams,
+        requestOptions: RequestOptions,
+    ): HrisDirectoryListPageAsync =
+        // get /employer/directory
+        withRawResponse().list(params, requestOptions).parse()
+
     @Deprecated("use `list` instead")
     override suspend fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
-        requestOptions: RequestOptions
-    ): HrisDirectoryListIndividualsPageAsync {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("employer", "directory")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { listIndividualsHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+        requestOptions: RequestOptions,
+    ): DirectoryListIndividualsResponse =
+        // get /employer/directory
+        withRawResponse().listIndividuals(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        DirectoryServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): DirectoryServiceAsync.WithRawResponse =
+            DirectoryServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
+        private val listHandler: Handler<HrisDirectoryListPageResponse> =
+            jsonHandler<HrisDirectoryListPageResponse>(clientOptions.jsonMapper)
+
+        override suspend fun list(
+            params: HrisDirectoryListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisDirectoryListPageAsync> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "directory")
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
                     }
-                }
-                .let { HrisDirectoryListIndividualsPageAsync.of(this, params, it) }
+                    .let {
+                        HrisDirectoryListPageAsync.builder()
+                            .service(DirectoryServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
+            }
+        }
+
+        private val listIndividualsHandler: Handler<DirectoryListIndividualsResponse> =
+            jsonHandler<DirectoryListIndividualsResponse>(clientOptions.jsonMapper)
+
+        @Deprecated("use `list` instead")
+        override suspend fun listIndividuals(
+            params: HrisDirectoryListIndividualsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DirectoryListIndividualsResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "directory")
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listIndividualsHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
         }
     }
 }

@@ -5,38 +5,44 @@ package com.tryfinch.api.services.blocking.hris
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
-import com.tryfinch.api.models.HrisDirectoryListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class DirectoryServiceTest {
+internal class DirectoryServiceTest {
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val directoryService = client.hris().directory()
-        val getDirectoryResponse = directoryService.list(HrisDirectoryListParams.builder().build())
-        println(getDirectoryResponse)
-        getDirectoryResponse.individuals().forEach { it.validate() }
+
+        val page = directoryService.list()
+
+        page.response().validate()
     }
 
     @Test
-    fun callListIndividuals() {
+    fun listIndividuals() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val directoryService = client.hris().directory()
-        @Suppress("DEPRECATION")
-        val getDirectoryResponse =
-            directoryService.listIndividuals(HrisDirectoryListIndividualsParams.builder().build())
-        println(getDirectoryResponse)
-        getDirectoryResponse.individuals().forEach { it.validate() }
+
+        val response =
+            directoryService.listIndividuals(
+                HrisDirectoryListIndividualsParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .limit(0L)
+                    .offset(0L)
+                    .build()
+            )
+
+        response.validate()
     }
 }

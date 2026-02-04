@@ -2,7 +2,7 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -10,51 +10,68 @@ import java.util.Objects
 
 /** Read company pay groups and frequencies */
 class PayrollPayGroupListParams
-constructor(
+private constructor(
+    private val entityIds: List<String>?,
     private val individualId: String?,
     private val payFrequencies: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
+
+    /** The entity IDs to specify which entities' data to access. */
+    fun entityIds(): List<String>? = entityIds
 
     fun individualId(): String? = individualId
 
     fun payFrequencies(): List<String>? = payFrequencies
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.individualId?.let { queryParams.put("individual_id", listOf(it.toString())) }
-        this.payFrequencies?.let { queryParams.put("pay_frequencies[]", it.map(Any::toString)) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): PayrollPayGroupListParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [PayrollPayGroupListParams].
+         */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [PayrollPayGroupListParams]. */
+    class Builder internal constructor() {
 
+        private var entityIds: MutableList<String>? = null
         private var individualId: String? = null
         private var payFrequencies: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(payrollPayGroupListParams: PayrollPayGroupListParams) = apply {
+            entityIds = payrollPayGroupListParams.entityIds?.toMutableList()
             individualId = payrollPayGroupListParams.individualId
             payFrequencies = payrollPayGroupListParams.payFrequencies?.toMutableList()
             additionalHeaders = payrollPayGroupListParams.additionalHeaders.toBuilder()
             additionalQueryParams = payrollPayGroupListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** The entity IDs to specify which entities' data to access. */
+        fun entityIds(entityIds: List<String>?) = apply {
+            this.entityIds = entityIds?.toMutableList()
+        }
+
+        /**
+         * Adds a single [String] to [entityIds].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addEntityId(entityId: String) = apply {
+            entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
         fun individualId(individualId: String?) = apply { this.individualId = individualId }
@@ -63,6 +80,11 @@ constructor(
             this.payFrequencies = payFrequencies?.toMutableList()
         }
 
+        /**
+         * Adds a single [String] to [payFrequencies].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addPayFrequency(payFrequency: String) = apply {
             payFrequencies = (payFrequencies ?: mutableListOf()).apply { add(payFrequency) }
         }
@@ -165,8 +187,14 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [PayrollPayGroupListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): PayrollPayGroupListParams =
             PayrollPayGroupListParams(
+                entityIds?.toImmutable(),
                 individualId,
                 payFrequencies?.toImmutable(),
                 additionalHeaders.build(),
@@ -174,16 +202,40 @@ constructor(
             )
     }
 
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                entityIds?.forEach { put("entity_ids[]", it) }
+                individualId?.let { put("individual_id", it) }
+                payFrequencies?.forEach { put("pay_frequencies[]", it) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is PayrollPayGroupListParams && individualId == other.individualId && payFrequencies == other.payFrequencies && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is PayrollPayGroupListParams &&
+            entityIds == other.entityIds &&
+            individualId == other.individualId &&
+            payFrequencies == other.payFrequencies &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(individualId, payFrequencies, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            entityIds,
+            individualId,
+            payFrequencies,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
-        "PayrollPayGroupListParams{individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PayrollPayGroupListParams{entityIds=$entityIds, individualId=$individualId, payFrequencies=$payFrequencies, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

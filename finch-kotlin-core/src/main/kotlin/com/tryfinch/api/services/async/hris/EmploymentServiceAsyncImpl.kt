@@ -4,52 +4,91 @@ package com.tryfinch.api.services.async.hris
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
+import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
-import com.tryfinch.api.core.handlers.withErrorHandler
 import com.tryfinch.api.core.http.HttpMethod
 import com.tryfinch.api.core.http.HttpRequest
+import com.tryfinch.api.core.http.HttpResponse
 import com.tryfinch.api.core.http.HttpResponse.Handler
-import com.tryfinch.api.core.json
-import com.tryfinch.api.errors.FinchError
+import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.core.http.json
+import com.tryfinch.api.core.http.parseable
+import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageAsync
+import com.tryfinch.api.models.HrisEmploymentRetrieveManyPageResponse
 import com.tryfinch.api.models.HrisEmploymentRetrieveManyParams
 
-class EmploymentServiceAsyncImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : EmploymentServiceAsync {
+class EmploymentServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    EmploymentServiceAsync {
 
-    private val errorHandler: Handler<FinchError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: EmploymentServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageAsync.Response> =
-        jsonHandler<HrisEmploymentRetrieveManyPageAsync.Response>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): EmploymentServiceAsync.WithRawResponse = withRawResponse
 
-    /** Read individual employment and income data */
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): EmploymentServiceAsync =
+        EmploymentServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
     override suspend fun retrieveMany(
         params: HrisEmploymentRetrieveManyParams,
-        requestOptions: RequestOptions
-    ): HrisEmploymentRetrieveManyPageAsync {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("employer", "employment")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
-                .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).let { response ->
-            response
-                .use { retrieveManyHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+        requestOptions: RequestOptions,
+    ): HrisEmploymentRetrieveManyPageAsync =
+        // post /employer/employment
+        withRawResponse().retrieveMany(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        EmploymentServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): EmploymentServiceAsync.WithRawResponse =
+            EmploymentServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
+        private val retrieveManyHandler: Handler<HrisEmploymentRetrieveManyPageResponse> =
+            jsonHandler<HrisEmploymentRetrieveManyPageResponse>(clientOptions.jsonMapper)
+
+        override suspend fun retrieveMany(
+            params: HrisEmploymentRetrieveManyParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<HrisEmploymentRetrieveManyPageAsync> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("employer", "employment")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveManyHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
                     }
-                }
-                .let { HrisEmploymentRetrieveManyPageAsync.of(this, params, it) }
+                    .let {
+                        HrisEmploymentRetrieveManyPageAsync.builder()
+                            .service(EmploymentServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
+            }
         }
     }
 }

@@ -7,39 +7,54 @@ import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class HrisPaymentListParamsTest {
+internal class HrisPaymentListParamsTest {
 
     @Test
-    fun createHrisPaymentListParams() {
+    fun create() {
         HrisPaymentListParams.builder()
             .endDate(LocalDate.parse("2021-01-01"))
             .startDate(LocalDate.parse("2021-01-01"))
+            .addEntityId("550e8400-e29b-41d4-a716-446655440000")
             .build()
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             HrisPaymentListParams.builder()
                 .endDate(LocalDate.parse("2021-01-01"))
                 .startDate(LocalDate.parse("2021-01-01"))
+                .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("end_date", "2021-01-01")
-        expected.put("start_date", "2021-01-01")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("end_date", "2021-01-01")
+                    .put("start_date", "2021-01-01")
+                    .put("entity_ids[]", "550e8400-e29b-41d4-a716-446655440000")
+                    .build()
+            )
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             HrisPaymentListParams.builder()
                 .endDate(LocalDate.parse("2021-01-01"))
                 .startDate(LocalDate.parse("2021-01-01"))
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("end_date", "2021-01-01")
-        expected.put("start_date", "2021-01-01")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("end_date", "2021-01-01")
+                    .put("start_date", "2021-01-01")
+                    .build()
+            )
     }
 }

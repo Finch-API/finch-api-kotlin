@@ -2,25 +2,26 @@
 
 package com.tryfinch.api.models
 
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.tryfinch.api.core.JsonValue
+import com.tryfinch.api.core.jsonMapper
+import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class EmploymentUpdateResponseTest {
+internal class EmploymentUpdateResponseTest {
 
     @Test
-    fun createEmploymentUpdateResponse() {
+    fun create() {
         val employmentUpdateResponse =
             EmploymentUpdateResponse.builder()
-                .id("id")
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .classCode("class_code")
-                .customFields(
-                    listOf(
-                        EmploymentUpdateResponse.CustomField.builder()
-                            .name("name")
-                            .value(JsonValue.from(mapOf<String, Any>()))
-                            .build()
-                    )
+                .addCustomField(
+                    EmploymentUpdateResponse.CustomField.builder()
+                        .name("name")
+                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .build()
                 )
                 .department(EmploymentUpdateResponse.Department.builder().name("name").build())
                 .employment(
@@ -36,19 +37,17 @@ class EmploymentUpdateResponseTest {
                     Income.builder()
                         .amount(0L)
                         .currency("currency")
-                        .effectiveDate("effective_date")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
                         .unit(Income.Unit.YEARLY)
                         .build()
                 )
-                .incomeHistory(
-                    listOf(
-                        Income.builder()
-                            .amount(0L)
-                            .currency("currency")
-                            .effectiveDate("effective_date")
-                            .unit(Income.Unit.YEARLY)
-                            .build()
-                    )
+                .addIncomeHistory(
+                    Income.builder()
+                        .amount(0L)
+                        .currency("currency")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
+                        .unit(Income.Unit.YEARLY)
+                        .build()
                 )
                 .isActive(true)
                 .lastName("last_name")
@@ -59,20 +58,24 @@ class EmploymentUpdateResponseTest {
                         .country("country")
                         .line1("line1")
                         .line2("line2")
-                        .name("name")
                         .postalCode("postal_code")
-                        .sourceId("source_id")
                         .state("state")
+                        .name("name")
+                        .sourceId("source_id")
                         .build()
                 )
-                .manager(EmploymentUpdateResponse.Manager.builder().id("id").build())
+                .manager(
+                    EmploymentUpdateResponse.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
                 .middleName("middle_name")
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
                 .build()
-        assertThat(employmentUpdateResponse).isNotNull
-        assertThat(employmentUpdateResponse.id()).isEqualTo("id")
+
+        assertThat(employmentUpdateResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(employmentUpdateResponse.classCode()).isEqualTo("class_code")
         assertThat(employmentUpdateResponse.customFields())
             .containsExactly(
@@ -99,7 +102,7 @@ class EmploymentUpdateResponseTest {
                 Income.builder()
                     .amount(0L)
                     .currency("currency")
-                    .effectiveDate("effective_date")
+                    .effectiveDate(LocalDate.parse("2019-12-27"))
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
@@ -108,7 +111,7 @@ class EmploymentUpdateResponseTest {
                 Income.builder()
                     .amount(0L)
                     .currency("currency")
-                    .effectiveDate("effective_date")
+                    .effectiveDate(LocalDate.parse("2019-12-27"))
                     .unit(Income.Unit.YEARLY)
                     .build()
             )
@@ -122,17 +125,95 @@ class EmploymentUpdateResponseTest {
                     .country("country")
                     .line1("line1")
                     .line2("line2")
-                    .name("name")
                     .postalCode("postal_code")
-                    .sourceId("source_id")
                     .state("state")
+                    .name("name")
+                    .sourceId("source_id")
                     .build()
             )
         assertThat(employmentUpdateResponse.manager())
-            .isEqualTo(EmploymentUpdateResponse.Manager.builder().id("id").build())
+            .isEqualTo(
+                EmploymentUpdateResponse.Manager.builder()
+                    .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .build()
+            )
         assertThat(employmentUpdateResponse.middleName()).isEqualTo("middle_name")
         assertThat(employmentUpdateResponse.sourceId()).isEqualTo("source_id")
         assertThat(employmentUpdateResponse.startDate()).isEqualTo("start_date")
         assertThat(employmentUpdateResponse.title()).isEqualTo("title")
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val employmentUpdateResponse =
+            EmploymentUpdateResponse.builder()
+                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .classCode("class_code")
+                .addCustomField(
+                    EmploymentUpdateResponse.CustomField.builder()
+                        .name("name")
+                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .build()
+                )
+                .department(EmploymentUpdateResponse.Department.builder().name("name").build())
+                .employment(
+                    EmploymentUpdateResponse.Employment.builder()
+                        .subtype(EmploymentUpdateResponse.Employment.Subtype.FULL_TIME)
+                        .type(EmploymentUpdateResponse.Employment.Type.EMPLOYEE)
+                        .build()
+                )
+                .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
+                .endDate("end_date")
+                .firstName("first_name")
+                .income(
+                    Income.builder()
+                        .amount(0L)
+                        .currency("currency")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
+                        .unit(Income.Unit.YEARLY)
+                        .build()
+                )
+                .addIncomeHistory(
+                    Income.builder()
+                        .amount(0L)
+                        .currency("currency")
+                        .effectiveDate(LocalDate.parse("2019-12-27"))
+                        .unit(Income.Unit.YEARLY)
+                        .build()
+                )
+                .isActive(true)
+                .lastName("last_name")
+                .latestRehireDate("latest_rehire_date")
+                .location(
+                    Location.builder()
+                        .city("city")
+                        .country("country")
+                        .line1("line1")
+                        .line2("line2")
+                        .postalCode("postal_code")
+                        .state("state")
+                        .name("name")
+                        .sourceId("source_id")
+                        .build()
+                )
+                .manager(
+                    EmploymentUpdateResponse.Manager.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .build()
+                )
+                .middleName("middle_name")
+                .sourceId("source_id")
+                .startDate("start_date")
+                .title("title")
+                .build()
+
+        val roundtrippedEmploymentUpdateResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(employmentUpdateResponse),
+                jacksonTypeRef<EmploymentUpdateResponse>(),
+            )
+
+        assertThat(roundtrippedEmploymentUpdateResponse).isEqualTo(employmentUpdateResponse)
     }
 }

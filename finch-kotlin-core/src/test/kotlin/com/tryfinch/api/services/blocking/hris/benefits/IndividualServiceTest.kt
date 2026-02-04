@@ -5,61 +5,65 @@ package com.tryfinch.api.services.blocking.hris.benefits
 import com.tryfinch.api.TestServerExtension
 import com.tryfinch.api.client.okhttp.FinchOkHttpClient
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
-import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
 import com.tryfinch.api.models.HrisBenefitIndividualUnenrollManyParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class IndividualServiceTest {
+internal class IndividualServiceTest {
 
     @Test
-    fun callEnrolledIds() {
+    fun enrolledIds() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val individualService = client.hris().benefits().individuals()
-        val individualEnrolledIdsResponse =
+
+        val response =
             individualService.enrolledIds(
-                HrisBenefitIndividualEnrolledIdsParams.builder().benefitId("benefit_id").build()
-            )
-        println(individualEnrolledIdsResponse)
-        individualEnrolledIdsResponse.validate()
-    }
-
-    @Test
-    fun callRetrieveManyBenefits() {
-        val client =
-            FinchOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
-        val individualService = client.hris().benefits().individuals()
-        val individualBenefits =
-            individualService.retrieveManyBenefits(
-                HrisBenefitIndividualRetrieveManyBenefitsParams.builder()
+                HrisBenefitIndividualEnrolledIdsParams.builder()
                     .benefitId("benefit_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
                     .build()
             )
-        println(individualBenefits)
-        individualBenefits.items().forEach { it.validate() }
+
+        response.validate()
     }
 
     @Test
-    fun callUnenrollMany() {
+    fun retrieveManyBenefits() {
         val client =
             FinchOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .accessToken("My Access Token")
                 .build()
         val individualService = client.hris().benefits().individuals()
-        val unenrollIndividualBenefitResponse =
+
+        val page = individualService.retrieveManyBenefits("benefit_id")
+
+        page.items().forEach { it.validate() }
+    }
+
+    @Test
+    fun unenrollMany() {
+        val client =
+            FinchOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val individualService = client.hris().benefits().individuals()
+
+        val unenrolledIndividualBenefitResponse =
             individualService.unenrollMany(
-                HrisBenefitIndividualUnenrollManyParams.builder().benefitId("benefit_id").build()
+                HrisBenefitIndividualUnenrollManyParams.builder()
+                    .benefitId("benefit_id")
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .addIndividualId("string")
+                    .build()
             )
-        println(unenrollIndividualBenefitResponse)
-        unenrollIndividualBenefitResponse.items().forEach { it.validate() }
+
+        unenrolledIndividualBenefitResponse.validate()
     }
 }

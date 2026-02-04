@@ -2,49 +2,42 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.NoAutoDetect
-import com.tryfinch.api.core.checkRequired
+import com.tryfinch.api.core.Params
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import java.util.Objects
 
 /**
- * Get a manual job by `job_id`. Manual jobs are completed by a human and include Assisted Benefits
- * jobs.
+ * Check the status and outcome of a job by `job_id`. This includes all deductions jobs including
+ * those for both automated and assisted integrations.
  */
 class JobManualRetrieveParams
-constructor(
-    private val jobId: String,
+private constructor(
+    private val jobId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
-    fun jobId(): String = jobId
+    fun jobId(): String? = jobId
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    internal fun getHeaders(): Headers = additionalHeaders
-
-    internal fun getQueryParams(): QueryParams = additionalQueryParams
-
-    fun getPathParam(index: Int): String {
-        return when (index) {
-            0 -> jobId
-            else -> ""
-        }
-    }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        fun none(): JobManualRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobManualRetrieveParams]. */
         fun builder() = Builder()
     }
 
-    @NoAutoDetect
-    class Builder {
+    /** A builder for [JobManualRetrieveParams]. */
+    class Builder internal constructor() {
 
         private var jobId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -56,7 +49,7 @@ constructor(
             additionalQueryParams = jobManualRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun jobId(jobId: String) = apply { this.jobId = jobId }
+        fun jobId(jobId: String?) = apply { this.jobId = jobId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -156,23 +149,37 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [JobManualRetrieveParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): JobManualRetrieveParams =
-            JobManualRetrieveParams(
-                checkRequired("jobId", jobId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            JobManualRetrieveParams(jobId, additionalHeaders.build(), additionalQueryParams.build())
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> jobId ?: ""
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is JobManualRetrieveParams && jobId == other.jobId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is JobManualRetrieveParams &&
+            jobId == other.jobId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(jobId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(jobId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "JobManualRetrieveParams{jobId=$jobId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
