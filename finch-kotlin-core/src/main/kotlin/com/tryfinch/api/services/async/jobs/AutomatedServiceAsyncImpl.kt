@@ -82,7 +82,7 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                     .method(HttpMethod.POST)
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("jobs", "automated")
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
+                    .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepareAsync(
                         clientOptions,

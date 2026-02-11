@@ -45,12 +45,12 @@ import java.util.Objects
  */
 class JobAutomatedCreateParams
 private constructor(
-    private val body: Body?,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun body(): Body? = body
+    fun body(): Body = body
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -62,9 +62,14 @@ private constructor(
 
     companion object {
 
-        fun none(): JobAutomatedCreateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [JobAutomatedCreateParams].
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * ```
+         */
         fun builder() = Builder()
     }
 
@@ -81,7 +86,7 @@ private constructor(
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun body(body: Body?) = apply { this.body = body }
+        fun body(body: Body) = apply { this.body = body }
 
         /** Alias for calling [body] with `Body.ofDataSyncAll()`. */
         fun bodyDataSyncAll() = body(Body.ofDataSyncAll())
@@ -203,12 +208,23 @@ private constructor(
          * Returns an immutable instance of [JobAutomatedCreateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```kotlin
+         * .body()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): JobAutomatedCreateParams =
-            JobAutomatedCreateParams(body, additionalHeaders.build(), additionalQueryParams.build())
+            JobAutomatedCreateParams(
+                checkRequired("body", body),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
-    fun _body(): Body? = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
