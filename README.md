@@ -412,6 +412,26 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .build()
 ```
 
+### Connection pooling
+
+To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
+
+```kotlin
+import com.tryfinch.api.client.FinchClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import java.time.Duration
+
+val client: FinchClient = FinchOkHttpClient.builder()
+    .fromEnv()
+    // If `maxIdleConnections` is set, then `keepAliveDuration` must be set, and vice versa.
+    .maxIdleConnections(10)
+    .keepAliveDuration(Duration.ofMinutes(2))
+    .accessToken("My Access Token")
+    .build()
+```
+
+If both options are unset, OkHttp's default connection pool settings are used.
+
 ### HTTPS
 
 > [!NOTE]
