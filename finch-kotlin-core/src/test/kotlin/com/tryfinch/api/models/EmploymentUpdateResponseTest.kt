@@ -33,6 +33,7 @@ internal class EmploymentUpdateResponseTest {
                 .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -97,6 +98,8 @@ internal class EmploymentUpdateResponseTest {
             .isEqualTo(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
         assertThat(employmentUpdateResponse.endDate()).isEqualTo("end_date")
         assertThat(employmentUpdateResponse.firstName()).isEqualTo("first_name")
+        assertThat(employmentUpdateResponse.flsaStatus())
+            .isEqualTo(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
         assertThat(employmentUpdateResponse.income())
             .isEqualTo(
                 Income.builder()
@@ -166,6 +169,7 @@ internal class EmploymentUpdateResponseTest {
                 .employmentStatus(EmploymentUpdateResponse.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)

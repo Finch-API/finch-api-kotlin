@@ -43,13 +43,26 @@ interface AutomatedServiceAsync {
      * endpoint, please contact your Finch account manager.
      */
     suspend fun create(
-        params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+        params: JobAutomatedCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse
 
     /** @see create */
-    suspend fun create(requestOptions: RequestOptions): AutomatedCreateResponse =
-        create(JobAutomatedCreateParams.none(), requestOptions)
+    suspend fun create(
+        body: JobAutomatedCreateParams.Body,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): AutomatedCreateResponse =
+        create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
+
+    /** @see create */
+    suspend fun create(
+        w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): AutomatedCreateResponse =
+        create(
+            JobAutomatedCreateParams.Body.ofW4FormEmployeeSync(w4FormEmployeeSync),
+            requestOptions,
+        )
 
     /** Get an automated job by `job_id`. */
     suspend fun retrieve(
@@ -102,16 +115,28 @@ interface AutomatedServiceAsync {
          */
         @MustBeClosed
         suspend fun create(
-            params: JobAutomatedCreateParams = JobAutomatedCreateParams.none(),
+            params: JobAutomatedCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse>
 
         /** @see create */
         @MustBeClosed
         suspend fun create(
-            requestOptions: RequestOptions
+            body: JobAutomatedCreateParams.Body,
+            requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse> =
-            create(JobAutomatedCreateParams.none(), requestOptions)
+            create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
+
+        /** @see create */
+        @MustBeClosed
+        suspend fun create(
+            w4FormEmployeeSync: JobAutomatedCreateParams.Body.W4FormEmployeeSync,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<AutomatedCreateResponse> =
+            create(
+                JobAutomatedCreateParams.Body.ofW4FormEmployeeSync(w4FormEmployeeSync),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated/{job_id}`, but is otherwise the same

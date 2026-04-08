@@ -30,6 +30,13 @@ interface DirectoryServiceAsync {
     ): List<DirectoryCreateResponse>
 
     /** @see create */
+    suspend fun create(
+        body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<DirectoryCreateResponse> =
+        create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
+
+    /** @see create */
     suspend fun create(requestOptions: RequestOptions): List<DirectoryCreateResponse> =
         create(SandboxDirectoryCreateParams.none(), requestOptions)
 
@@ -56,6 +63,14 @@ interface DirectoryServiceAsync {
             params: SandboxDirectoryCreateParams = SandboxDirectoryCreateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<List<DirectoryCreateResponse>>
+
+        /** @see create */
+        @MustBeClosed
+        suspend fun create(
+            body: List<SandboxDirectoryCreateParams.IndividualOrEmployment>,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<DirectoryCreateResponse>> =
+            create(SandboxDirectoryCreateParams.builder().body(body).build(), requestOptions)
 
         /** @see create */
         @MustBeClosed

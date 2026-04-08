@@ -284,17 +284,25 @@ private constructor(
 
         override fun ObjectCodec.deserialize(node: JsonNode): WebhookEvent {
             val json = JsonValue.fromJsonNode(node)
+            val eventType = json.asObject()?.get("event_type")?.asString()
+
+            when (eventType) {
+                "account.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
+                        WebhookEvent(accountUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+                "company.updated" -> {
+                    return tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
+                        WebhookEvent(companyUpdated = it, _json = json)
+                    } ?: WebhookEvent(_json = json)
+                }
+            }
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<AccountUpdateEvent>())?.let {
-                            WebhookEvent(accountUpdated = it, _json = json)
-                        },
                         tryDeserialize(node, jacksonTypeRef<JobCompletionEvent>())?.let {
                             WebhookEvent(jobCompletion = it, _json = json)
-                        },
-                        tryDeserialize(node, jacksonTypeRef<CompanyEvent>())?.let {
-                            WebhookEvent(companyUpdated = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<DirectoryEvent>())?.let {
                             WebhookEvent(directory = it, _json = json)
