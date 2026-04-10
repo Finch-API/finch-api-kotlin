@@ -46,7 +46,9 @@ private constructor(
     fun minutesToExpire(): Long? = body.minutesToExpire()
 
     /**
-     * The products to request access to (optional for reauthentication)
+     * The products to request access to (optional for reauthentication). Use `benefits` to access
+     * deductions endpoints — `deduction` is a deprecated alias that is still accepted but should
+     * not be combined with `benefits`.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -170,7 +172,11 @@ private constructor(
             body.minutesToExpire(minutesToExpire)
         }
 
-        /** The products to request access to (optional for reauthentication) */
+        /**
+         * The products to request access to (optional for reauthentication). Use `benefits` to
+         * access deductions endpoints — `deduction` is a deprecated alias that is still accepted
+         * but should not be combined with `benefits`.
+         */
         fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
         /**
@@ -387,7 +393,9 @@ private constructor(
         fun minutesToExpire(): Long? = minutesToExpire.getNullable("minutes_to_expire")
 
         /**
-         * The products to request access to (optional for reauthentication)
+         * The products to request access to (optional for reauthentication). Use `benefits` to
+         * access deductions endpoints — `deduction` is a deprecated alias that is still accepted
+         * but should not be combined with `benefits`.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -514,7 +522,11 @@ private constructor(
                 this.minutesToExpire = minutesToExpire
             }
 
-            /** The products to request access to (optional for reauthentication) */
+            /**
+             * The products to request access to (optional for reauthentication). Use `benefits` to
+             * access deductions endpoints — `deduction` is a deprecated alias that is still
+             * accepted but should not be combined with `benefits`.
+             */
             fun products(products: List<ConnectProducts>?) =
                 products(JsonField.ofNullable(products))
 
@@ -653,7 +665,6 @@ private constructor(
             "ReauthenticateRequest{connectionId=$connectionId, minutesToExpire=$minutesToExpire, products=$products, redirectUri=$redirectUri, additionalProperties=$additionalProperties}"
     }
 
-    /** The Finch products that can be requested during the Connect flow. */
     class ConnectProducts @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
