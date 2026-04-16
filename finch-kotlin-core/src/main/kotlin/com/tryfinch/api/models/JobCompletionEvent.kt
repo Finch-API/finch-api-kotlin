@@ -541,6 +541,13 @@ private constructor(
 
             val JOB_DATA_SYNC_ALL_COMPLETED = of("job.data_sync_all.completed")
 
+            val JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED = of("job.w4_form_employee_sync.completed")
+
+            val JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED = of("job.initial_data_sync_org.succeeded")
+
+            val JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED =
+                of("job.initial_data_sync_payroll.succeeded")
+
             fun of(value: String) = EventType(JsonField.of(value))
         }
 
@@ -552,6 +559,9 @@ private constructor(
             JOB_BENEFIT_UNENROLL_COMPLETED,
             JOB_BENEFIT_UPDATE_COMPLETED,
             JOB_DATA_SYNC_ALL_COMPLETED,
+            JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED,
+            JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED,
+            JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED,
         }
 
         /**
@@ -570,6 +580,9 @@ private constructor(
             JOB_BENEFIT_UNENROLL_COMPLETED,
             JOB_BENEFIT_UPDATE_COMPLETED,
             JOB_DATA_SYNC_ALL_COMPLETED,
+            JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED,
+            JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED,
+            JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED,
             /**
              * An enum member indicating that [EventType] was instantiated with an unknown value.
              */
@@ -591,6 +604,10 @@ private constructor(
                 JOB_BENEFIT_UNENROLL_COMPLETED -> Value.JOB_BENEFIT_UNENROLL_COMPLETED
                 JOB_BENEFIT_UPDATE_COMPLETED -> Value.JOB_BENEFIT_UPDATE_COMPLETED
                 JOB_DATA_SYNC_ALL_COMPLETED -> Value.JOB_DATA_SYNC_ALL_COMPLETED
+                JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED -> Value.JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED
+                JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED -> Value.JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED
+                JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED ->
+                    Value.JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED
                 else -> Value._UNKNOWN
             }
 
@@ -610,6 +627,10 @@ private constructor(
                 JOB_BENEFIT_UNENROLL_COMPLETED -> Known.JOB_BENEFIT_UNENROLL_COMPLETED
                 JOB_BENEFIT_UPDATE_COMPLETED -> Known.JOB_BENEFIT_UPDATE_COMPLETED
                 JOB_DATA_SYNC_ALL_COMPLETED -> Known.JOB_DATA_SYNC_ALL_COMPLETED
+                JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED -> Known.JOB_W4_FORM_EMPLOYEE_SYNC_COMPLETED
+                JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED -> Known.JOB_INITIAL_DATA_SYNC_ORG_SUCCEEDED
+                JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED ->
+                    Known.JOB_INITIAL_DATA_SYNC_PAYROLL_SUCCEEDED
                 else -> throw FinchInvalidDataException("Unknown EventType: $value")
             }
 
