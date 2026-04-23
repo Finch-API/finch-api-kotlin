@@ -16,6 +16,7 @@ internal class AccountUpdateEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     AccountUpdateEvent.Data.builder()
                         .authenticationMethod(
@@ -942,6 +943,7 @@ internal class AccountUpdateEventTest {
         assertThat(accountUpdateEvent.accountId()).isEqualTo("account_id")
         assertThat(accountUpdateEvent.companyId()).isEqualTo("company_id")
         assertThat(accountUpdateEvent.connectionId()).isEqualTo("connection_id")
+        assertThat(accountUpdateEvent.entityId()).isEqualTo("entity_id")
         assertThat(accountUpdateEvent.data())
             .isEqualTo(
                 AccountUpdateEvent.Data.builder()
@@ -1814,6 +1816,7 @@ internal class AccountUpdateEventTest {
                 .accountId("account_id")
                 .companyId("company_id")
                 .connectionId("connection_id")
+                .entityId("entity_id")
                 .data(
                     AccountUpdateEvent.Data.builder()
                         .authenticationMethod(
