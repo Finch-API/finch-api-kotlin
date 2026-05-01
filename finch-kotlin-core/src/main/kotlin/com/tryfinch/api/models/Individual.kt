@@ -33,20 +33,20 @@ import java.util.Objects
 @JsonSerialize(using = Individual.Serializer::class)
 class Individual
 private constructor(
-    private val unionMember0: UnionMember0? = null,
+    private val individual: InnerIndividual? = null,
     private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun unionMember0(): UnionMember0? = unionMember0
+    fun individual(): InnerIndividual? = individual
 
     fun batchError(): BatchError? = batchError
 
-    fun isUnionMember0(): Boolean = unionMember0 != null
+    fun isIndividual(): Boolean = individual != null
 
     fun isBatchError(): Boolean = batchError != null
 
-    fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+    fun asIndividual(): InnerIndividual = individual.getOrThrow("individual")
 
     fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -54,7 +54,7 @@ private constructor(
 
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+            individual != null -> visitor.visitIndividual(individual)
             batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
@@ -68,8 +68,8 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) {
-                    unionMember0.validate()
+                override fun visitIndividual(individual: InnerIndividual) {
+                    individual.validate()
                 }
 
                 override fun visitBatchError(batchError: BatchError) {
@@ -96,7 +96,7 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) = unionMember0.validity()
+                override fun visitIndividual(individual: InnerIndividual) = individual.validity()
 
                 override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -110,15 +110,15 @@ private constructor(
         }
 
         return other is Individual &&
-            unionMember0 == other.unionMember0 &&
+            individual == other.individual &&
             batchError == other.batchError
     }
 
-    override fun hashCode(): Int = Objects.hash(unionMember0, batchError)
+    override fun hashCode(): Int = Objects.hash(individual, batchError)
 
     override fun toString(): String =
         when {
-            unionMember0 != null -> "Individual{unionMember0=$unionMember0}"
+            individual != null -> "Individual{individual=$individual}"
             batchError != null -> "Individual{batchError=$batchError}"
             _json != null -> "Individual{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid Individual")
@@ -126,7 +126,7 @@ private constructor(
 
     companion object {
 
-        fun ofUnionMember0(unionMember0: UnionMember0) = Individual(unionMember0 = unionMember0)
+        fun ofIndividual(individual: InnerIndividual) = Individual(individual = individual)
 
         fun ofBatchError(batchError: BatchError) = Individual(batchError = batchError)
     }
@@ -134,7 +134,7 @@ private constructor(
     /** An interface that defines how to map each variant of [Individual] to a value of type [T]. */
     interface Visitor<out T> {
 
-        fun visitUnionMember0(unionMember0: UnionMember0): T
+        fun visitIndividual(individual: InnerIndividual): T
 
         fun visitBatchError(batchError: BatchError): T
 
@@ -159,8 +159,8 @@ private constructor(
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                            Individual(unionMember0 = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<InnerIndividual>())?.let {
+                            Individual(individual = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                             Individual(batchError = it, _json = json)
@@ -189,7 +189,7 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                value.individual != null -> generator.writeObject(value.individual)
                 value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid Individual")
@@ -197,7 +197,7 @@ private constructor(
         }
     }
 
-    class UnionMember0
+    class InnerIndividual
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
@@ -485,7 +485,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [UnionMember0].
+             * Returns a mutable builder for constructing an instance of [InnerIndividual].
              *
              * The following fields are required:
              * ```kotlin
@@ -504,7 +504,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [UnionMember0]. */
+        /** A builder for [InnerIndividual]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -522,21 +522,21 @@ private constructor(
             private var ssn: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(unionMember0: UnionMember0) = apply {
-                id = unionMember0.id
-                dob = unionMember0.dob
-                ethnicity = unionMember0.ethnicity
-                firstName = unionMember0.firstName
-                gender = unionMember0.gender
-                lastName = unionMember0.lastName
-                middleName = unionMember0.middleName
-                phoneNumbers = unionMember0.phoneNumbers.map { it.toMutableList() }
-                preferredName = unionMember0.preferredName
-                residence = unionMember0.residence
-                emails = unionMember0.emails.map { it.toMutableList() }
-                encryptedSsn = unionMember0.encryptedSsn
-                ssn = unionMember0.ssn
-                additionalProperties = unionMember0.additionalProperties.toMutableMap()
+            internal fun from(innerIndividual: InnerIndividual) = apply {
+                id = innerIndividual.id
+                dob = innerIndividual.dob
+                ethnicity = innerIndividual.ethnicity
+                firstName = innerIndividual.firstName
+                gender = innerIndividual.gender
+                lastName = innerIndividual.lastName
+                middleName = innerIndividual.middleName
+                phoneNumbers = innerIndividual.phoneNumbers.map { it.toMutableList() }
+                preferredName = innerIndividual.preferredName
+                residence = innerIndividual.residence
+                emails = innerIndividual.emails.map { it.toMutableList() }
+                encryptedSsn = innerIndividual.encryptedSsn
+                ssn = innerIndividual.ssn
+                additionalProperties = innerIndividual.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -754,7 +754,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [UnionMember0].
+             * Returns an immutable instance of [InnerIndividual].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -774,8 +774,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): UnionMember0 =
-                UnionMember0(
+            fun build(): InnerIndividual =
+                InnerIndividual(
                     checkRequired("id", id),
                     checkRequired("dob", dob),
                     checkRequired("ethnicity", ethnicity),
@@ -795,7 +795,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): UnionMember0 = apply {
+        fun validate(): InnerIndividual = apply {
             if (validated) {
                 return@apply
             }
@@ -1797,7 +1797,7 @@ private constructor(
                 return true
             }
 
-            return other is UnionMember0 &&
+            return other is InnerIndividual &&
                 id == other.id &&
                 dob == other.dob &&
                 ethnicity == other.ethnicity &&
@@ -1836,7 +1836,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember0{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
+            "InnerIndividual{id=$id, dob=$dob, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, lastName=$lastName, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, emails=$emails, encryptedSsn=$encryptedSsn, ssn=$ssn, additionalProperties=$additionalProperties}"
     }
 
     class BatchError

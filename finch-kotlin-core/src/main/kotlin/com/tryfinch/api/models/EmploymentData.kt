@@ -33,20 +33,20 @@ import java.util.Objects
 @JsonSerialize(using = EmploymentData.Serializer::class)
 class EmploymentData
 private constructor(
-    private val unionMember0: UnionMember0? = null,
+    private val employmentData: InnerEmploymentData? = null,
     private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun unionMember0(): UnionMember0? = unionMember0
+    fun employmentData(): InnerEmploymentData? = employmentData
 
     fun batchError(): BatchError? = batchError
 
-    fun isUnionMember0(): Boolean = unionMember0 != null
+    fun isEmploymentData(): Boolean = employmentData != null
 
     fun isBatchError(): Boolean = batchError != null
 
-    fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+    fun asEmploymentData(): InnerEmploymentData = employmentData.getOrThrow("employmentData")
 
     fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -54,7 +54,7 @@ private constructor(
 
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+            employmentData != null -> visitor.visitEmploymentData(employmentData)
             batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
@@ -68,8 +68,8 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) {
-                    unionMember0.validate()
+                override fun visitEmploymentData(employmentData: InnerEmploymentData) {
+                    employmentData.validate()
                 }
 
                 override fun visitBatchError(batchError: BatchError) {
@@ -96,7 +96,8 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitUnionMember0(unionMember0: UnionMember0) = unionMember0.validity()
+                override fun visitEmploymentData(employmentData: InnerEmploymentData) =
+                    employmentData.validity()
 
                 override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -110,15 +111,15 @@ private constructor(
         }
 
         return other is EmploymentData &&
-            unionMember0 == other.unionMember0 &&
+            employmentData == other.employmentData &&
             batchError == other.batchError
     }
 
-    override fun hashCode(): Int = Objects.hash(unionMember0, batchError)
+    override fun hashCode(): Int = Objects.hash(employmentData, batchError)
 
     override fun toString(): String =
         when {
-            unionMember0 != null -> "EmploymentData{unionMember0=$unionMember0}"
+            employmentData != null -> "EmploymentData{employmentData=$employmentData}"
             batchError != null -> "EmploymentData{batchError=$batchError}"
             _json != null -> "EmploymentData{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid EmploymentData")
@@ -126,7 +127,8 @@ private constructor(
 
     companion object {
 
-        fun ofUnionMember0(unionMember0: UnionMember0) = EmploymentData(unionMember0 = unionMember0)
+        fun ofEmploymentData(employmentData: InnerEmploymentData) =
+            EmploymentData(employmentData = employmentData)
 
         fun ofBatchError(batchError: BatchError) = EmploymentData(batchError = batchError)
     }
@@ -136,7 +138,7 @@ private constructor(
      */
     interface Visitor<out T> {
 
-        fun visitUnionMember0(unionMember0: UnionMember0): T
+        fun visitEmploymentData(employmentData: InnerEmploymentData): T
 
         fun visitBatchError(batchError: BatchError): T
 
@@ -162,8 +164,8 @@ private constructor(
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                            EmploymentData(unionMember0 = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<InnerEmploymentData>())?.let {
+                            EmploymentData(employmentData = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                             EmploymentData(batchError = it, _json = json)
@@ -192,7 +194,7 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                value.employmentData != null -> generator.writeObject(value.employmentData)
                 value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid EmploymentData")
@@ -200,7 +202,7 @@ private constructor(
         }
     }
 
-    class UnionMember0
+    class InnerEmploymentData
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
@@ -654,7 +656,7 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [UnionMember0].
+             * Returns a mutable builder for constructing an instance of [InnerEmploymentData].
              *
              * The following fields are required:
              * ```kotlin
@@ -679,7 +681,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [UnionMember0]. */
+        /** A builder for [InnerEmploymentData]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -705,29 +707,29 @@ private constructor(
             private var workId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(unionMember0: UnionMember0) = apply {
-                id = unionMember0.id
-                classCode = unionMember0.classCode
-                department = unionMember0.department
-                employment = unionMember0.employment
-                employmentStatus = unionMember0.employmentStatus
-                endDate = unionMember0.endDate
-                firstName = unionMember0.firstName
-                flsaStatus = unionMember0.flsaStatus
-                isActive = unionMember0.isActive
-                lastName = unionMember0.lastName
-                latestRehireDate = unionMember0.latestRehireDate
-                location = unionMember0.location
-                manager = unionMember0.manager
-                middleName = unionMember0.middleName
-                startDate = unionMember0.startDate
-                title = unionMember0.title
-                customFields = unionMember0.customFields.map { it.toMutableList() }
-                income = unionMember0.income
-                incomeHistory = unionMember0.incomeHistory.map { it.toMutableList() }
-                sourceId = unionMember0.sourceId
-                workId = unionMember0.workId
-                additionalProperties = unionMember0.additionalProperties.toMutableMap()
+            internal fun from(innerEmploymentData: InnerEmploymentData) = apply {
+                id = innerEmploymentData.id
+                classCode = innerEmploymentData.classCode
+                department = innerEmploymentData.department
+                employment = innerEmploymentData.employment
+                employmentStatus = innerEmploymentData.employmentStatus
+                endDate = innerEmploymentData.endDate
+                firstName = innerEmploymentData.firstName
+                flsaStatus = innerEmploymentData.flsaStatus
+                isActive = innerEmploymentData.isActive
+                lastName = innerEmploymentData.lastName
+                latestRehireDate = innerEmploymentData.latestRehireDate
+                location = innerEmploymentData.location
+                manager = innerEmploymentData.manager
+                middleName = innerEmploymentData.middleName
+                startDate = innerEmploymentData.startDate
+                title = innerEmploymentData.title
+                customFields = innerEmploymentData.customFields.map { it.toMutableList() }
+                income = innerEmploymentData.income
+                incomeHistory = innerEmploymentData.incomeHistory.map { it.toMutableList() }
+                sourceId = innerEmploymentData.sourceId
+                workId = innerEmploymentData.workId
+                additionalProperties = innerEmploymentData.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -1059,7 +1061,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [UnionMember0].
+             * Returns an immutable instance of [InnerEmploymentData].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -1085,8 +1087,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): UnionMember0 =
-                UnionMember0(
+            fun build(): InnerEmploymentData =
+                InnerEmploymentData(
                     checkRequired("id", id),
                     checkRequired("classCode", classCode),
                     checkRequired("department", department),
@@ -1114,7 +1116,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): UnionMember0 = apply {
+        fun validate(): InnerEmploymentData = apply {
             if (validated) {
                 return@apply
             }
@@ -2722,7 +2724,7 @@ private constructor(
                 return true
             }
 
-            return other is UnionMember0 &&
+            return other is InnerEmploymentData &&
                 id == other.id &&
                 classCode == other.classCode &&
                 department == other.department &&
@@ -2777,7 +2779,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "UnionMember0{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
+            "InnerEmploymentData{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
