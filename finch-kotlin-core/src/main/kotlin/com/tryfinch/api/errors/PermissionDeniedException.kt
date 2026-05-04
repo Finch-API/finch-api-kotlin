@@ -5,10 +5,14 @@ package com.tryfinch.api.errors
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.checkRequired
 import com.tryfinch.api.core.http.Headers
+import com.tryfinch.api.core.jsonMapper
 
 class PermissionDeniedException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    FinchServiceException("403: $body", cause) {
+    FinchServiceException(
+        "403: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 403
 
