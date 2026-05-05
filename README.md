@@ -412,6 +412,22 @@ val client: FinchClient = FinchOkHttpClient.builder()
     .build()
 ```
 
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```kotlin
+import com.tryfinch.api.client.FinchClient
+import com.tryfinch.api.client.okhttp.FinchOkHttpClient
+import com.tryfinch.api.core.http.ProxyAuthenticator
+
+val client: FinchClient = FinchOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
+    .accessToken("My Access Token")
+    .build()
+```
+
 ### Connection pooling
 
 To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
