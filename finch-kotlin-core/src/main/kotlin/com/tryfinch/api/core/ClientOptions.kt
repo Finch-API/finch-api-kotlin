@@ -5,6 +5,7 @@ package com.tryfinch.api.core
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpClient
+import com.tryfinch.api.core.http.LoggingHttpClient
 import com.tryfinch.api.core.http.PhantomReachableClosingHttpClient
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.http.RetryingHttpClient
@@ -95,6 +96,14 @@ private constructor(
      * Defaults to 2.
      */
     val maxRetries: Int,
+    /**
+     * The level at which to log request and response information.
+     *
+     * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+     *
+     * Defaults to [LogLevel.fromEnv].
+     */
+    val logLevel: LogLevel,
     val accessToken: String?,
     val clientId: String?,
     val clientSecret: String?,
@@ -152,6 +161,7 @@ private constructor(
         private var responseValidation: Boolean = false
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
+        private var logLevel: LogLevel = LogLevel.fromEnv()
         private var accessToken: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
@@ -169,6 +179,7 @@ private constructor(
             responseValidation = clientOptions.responseValidation
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
+            logLevel = clientOptions.logLevel
             accessToken = clientOptions.accessToken
             clientId = clientOptions.clientId
             clientSecret = clientOptions.clientSecret
@@ -279,6 +290,15 @@ private constructor(
          */
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { this.logLevel = logLevel }
+
         fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
         fun clientId(clientId: String?) = apply { this.clientId = clientId }
@@ -384,6 +404,7 @@ private constructor(
          * System properties take precedence over environment variables.
          */
         fun fromEnv() = apply {
+            logLevel(LogLevel.fromEnv())
             (System.getProperty("finch.baseUrl") ?: System.getenv("FINCH_BASE_URL"))?.let {
                 baseUrl(it)
             }
@@ -438,7 +459,13 @@ private constructor(
             return ClientOptions(
                 httpClient,
                 RetryingHttpClient.builder()
-                    .httpClient(httpClient)
+                    .httpClient(
+                        LoggingHttpClient.builder()
+                            .httpClient(httpClient)
+                            .clock(clock)
+                            .level(logLevel)
+                            .build()
+                    )
                     .sleeper(sleeper)
                     .clock(clock)
                     .maxRetries(maxRetries)
@@ -453,6 +480,7 @@ private constructor(
                 responseValidation,
                 timeout,
                 maxRetries,
+                logLevel,
                 accessToken,
                 clientId,
                 clientSecret,
