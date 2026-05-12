@@ -33,20 +33,20 @@ import java.util.Objects
 @JsonSerialize(using = EmploymentData.Serializer::class)
 class EmploymentData
 private constructor(
-    private val employmentData: InnerEmploymentData? = null,
+    private val responseBody: EmploymentDataResponseBody? = null,
     private val batchError: BatchError? = null,
     private val _json: JsonValue? = null,
 ) {
 
-    fun employmentData(): InnerEmploymentData? = employmentData
+    fun responseBody(): EmploymentDataResponseBody? = responseBody
 
     fun batchError(): BatchError? = batchError
 
-    fun isEmploymentData(): Boolean = employmentData != null
+    fun isResponseBody(): Boolean = responseBody != null
 
     fun isBatchError(): Boolean = batchError != null
 
-    fun asEmploymentData(): InnerEmploymentData = employmentData.getOrThrow("employmentData")
+    fun asResponseBody(): EmploymentDataResponseBody = responseBody.getOrThrow("responseBody")
 
     fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -62,7 +62,7 @@ private constructor(
      * import com.tryfinch.api.core.JsonValue
      *
      * val result: String? = employmentData.accept(object : EmploymentData.Visitor<String?> {
-     *     override fun visitEmploymentData(employmentData: InnerEmploymentData): String? = employmentData.toString()
+     *     override fun visitResponseBody(responseBody: EmploymentDataResponseBody): String? = responseBody.toString()
      *
      *     // ...
      *
@@ -78,7 +78,7 @@ private constructor(
      */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
-            employmentData != null -> visitor.visitEmploymentData(employmentData)
+            responseBody != null -> visitor.visitResponseBody(responseBody)
             batchError != null -> visitor.visitBatchError(batchError)
             else -> visitor.unknown(_json)
         }
@@ -100,8 +100,8 @@ private constructor(
 
         accept(
             object : Visitor<Unit> {
-                override fun visitEmploymentData(employmentData: InnerEmploymentData) {
-                    employmentData.validate()
+                override fun visitResponseBody(responseBody: EmploymentDataResponseBody) {
+                    responseBody.validate()
                 }
 
                 override fun visitBatchError(batchError: BatchError) {
@@ -128,8 +128,8 @@ private constructor(
     internal fun validity(): Int =
         accept(
             object : Visitor<Int> {
-                override fun visitEmploymentData(employmentData: InnerEmploymentData) =
-                    employmentData.validity()
+                override fun visitResponseBody(responseBody: EmploymentDataResponseBody) =
+                    responseBody.validity()
 
                 override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -143,15 +143,15 @@ private constructor(
         }
 
         return other is EmploymentData &&
-            employmentData == other.employmentData &&
+            responseBody == other.responseBody &&
             batchError == other.batchError
     }
 
-    override fun hashCode(): Int = Objects.hash(employmentData, batchError)
+    override fun hashCode(): Int = Objects.hash(responseBody, batchError)
 
     override fun toString(): String =
         when {
-            employmentData != null -> "EmploymentData{employmentData=$employmentData}"
+            responseBody != null -> "EmploymentData{responseBody=$responseBody}"
             batchError != null -> "EmploymentData{batchError=$batchError}"
             _json != null -> "EmploymentData{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid EmploymentData")
@@ -159,8 +159,8 @@ private constructor(
 
     companion object {
 
-        fun ofEmploymentData(employmentData: InnerEmploymentData) =
-            EmploymentData(employmentData = employmentData)
+        fun ofResponseBody(responseBody: EmploymentDataResponseBody) =
+            EmploymentData(responseBody = responseBody)
 
         fun ofBatchError(batchError: BatchError) = EmploymentData(batchError = batchError)
     }
@@ -170,7 +170,7 @@ private constructor(
      */
     interface Visitor<out T> {
 
-        fun visitEmploymentData(employmentData: InnerEmploymentData): T
+        fun visitResponseBody(responseBody: EmploymentDataResponseBody): T
 
         fun visitBatchError(batchError: BatchError): T
 
@@ -196,8 +196,8 @@ private constructor(
 
             val bestMatches =
                 sequenceOf(
-                        tryDeserialize(node, jacksonTypeRef<InnerEmploymentData>())?.let {
-                            EmploymentData(employmentData = it, _json = json)
+                        tryDeserialize(node, jacksonTypeRef<EmploymentDataResponseBody>())?.let {
+                            EmploymentData(responseBody = it, _json = json)
                         },
                         tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                             EmploymentData(batchError = it, _json = json)
@@ -226,7 +226,7 @@ private constructor(
             provider: SerializerProvider,
         ) {
             when {
-                value.employmentData != null -> generator.writeObject(value.employmentData)
+                value.responseBody != null -> generator.writeObject(value.responseBody)
                 value.batchError != null -> generator.writeObject(value.batchError)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid EmploymentData")
@@ -234,7 +234,7 @@ private constructor(
         }
     }
 
-    class InnerEmploymentData
+    class EmploymentDataResponseBody
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
@@ -688,7 +688,8 @@ private constructor(
         companion object {
 
             /**
-             * Returns a mutable builder for constructing an instance of [InnerEmploymentData].
+             * Returns a mutable builder for constructing an instance of
+             * [EmploymentDataResponseBody].
              *
              * The following fields are required:
              * ```kotlin
@@ -713,7 +714,7 @@ private constructor(
             fun builder() = Builder()
         }
 
-        /** A builder for [InnerEmploymentData]. */
+        /** A builder for [EmploymentDataResponseBody]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -739,29 +740,30 @@ private constructor(
             private var workId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-            internal fun from(innerEmploymentData: InnerEmploymentData) = apply {
-                id = innerEmploymentData.id
-                classCode = innerEmploymentData.classCode
-                department = innerEmploymentData.department
-                employment = innerEmploymentData.employment
-                employmentStatus = innerEmploymentData.employmentStatus
-                endDate = innerEmploymentData.endDate
-                firstName = innerEmploymentData.firstName
-                flsaStatus = innerEmploymentData.flsaStatus
-                isActive = innerEmploymentData.isActive
-                lastName = innerEmploymentData.lastName
-                latestRehireDate = innerEmploymentData.latestRehireDate
-                location = innerEmploymentData.location
-                manager = innerEmploymentData.manager
-                middleName = innerEmploymentData.middleName
-                startDate = innerEmploymentData.startDate
-                title = innerEmploymentData.title
-                customFields = innerEmploymentData.customFields.map { it.toMutableList() }
-                income = innerEmploymentData.income
-                incomeHistory = innerEmploymentData.incomeHistory.map { it.toMutableList() }
-                sourceId = innerEmploymentData.sourceId
-                workId = innerEmploymentData.workId
-                additionalProperties = innerEmploymentData.additionalProperties.toMutableMap()
+            internal fun from(employmentDataResponseBody: EmploymentDataResponseBody) = apply {
+                id = employmentDataResponseBody.id
+                classCode = employmentDataResponseBody.classCode
+                department = employmentDataResponseBody.department
+                employment = employmentDataResponseBody.employment
+                employmentStatus = employmentDataResponseBody.employmentStatus
+                endDate = employmentDataResponseBody.endDate
+                firstName = employmentDataResponseBody.firstName
+                flsaStatus = employmentDataResponseBody.flsaStatus
+                isActive = employmentDataResponseBody.isActive
+                lastName = employmentDataResponseBody.lastName
+                latestRehireDate = employmentDataResponseBody.latestRehireDate
+                location = employmentDataResponseBody.location
+                manager = employmentDataResponseBody.manager
+                middleName = employmentDataResponseBody.middleName
+                startDate = employmentDataResponseBody.startDate
+                title = employmentDataResponseBody.title
+                customFields = employmentDataResponseBody.customFields.map { it.toMutableList() }
+                income = employmentDataResponseBody.income
+                incomeHistory = employmentDataResponseBody.incomeHistory.map { it.toMutableList() }
+                sourceId = employmentDataResponseBody.sourceId
+                workId = employmentDataResponseBody.workId
+                additionalProperties =
+                    employmentDataResponseBody.additionalProperties.toMutableMap()
             }
 
             /** A stable Finch `id` (UUID v4) for an individual in the company. */
@@ -1093,7 +1095,7 @@ private constructor(
             }
 
             /**
-             * Returns an immutable instance of [InnerEmploymentData].
+             * Returns an immutable instance of [EmploymentDataResponseBody].
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              *
@@ -1119,8 +1121,8 @@ private constructor(
              *
              * @throws IllegalStateException if any required field is unset.
              */
-            fun build(): InnerEmploymentData =
-                InnerEmploymentData(
+            fun build(): EmploymentDataResponseBody =
+                EmploymentDataResponseBody(
                     checkRequired("id", id),
                     checkRequired("classCode", classCode),
                     checkRequired("department", department),
@@ -1157,7 +1159,7 @@ private constructor(
          * @throws FinchInvalidDataException if any value type in this object doesn't match its
          *   expected type.
          */
-        fun validate(): InnerEmploymentData = apply {
+        fun validate(): EmploymentDataResponseBody = apply {
             if (validated) {
                 return@apply
             }
@@ -2880,7 +2882,7 @@ private constructor(
                 return true
             }
 
-            return other is InnerEmploymentData &&
+            return other is EmploymentDataResponseBody &&
                 id == other.id &&
                 classCode == other.classCode &&
                 department == other.department &&
@@ -2935,7 +2937,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "InnerEmploymentData{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
+            "EmploymentDataResponseBody{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
