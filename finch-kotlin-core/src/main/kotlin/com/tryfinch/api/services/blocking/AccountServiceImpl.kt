@@ -15,8 +15,10 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepare
+import com.tryfinch.api.models.AccountDisconnectEntityParams
 import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
+import com.tryfinch.api.models.DisconnectEntityResponse
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 
@@ -38,6 +40,13 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
     ): DisconnectResponse =
         // post /disconnect
         withRawResponse().disconnect(params, requestOptions).parse()
+
+    override fun disconnectEntity(
+        params: AccountDisconnectEntityParams,
+        requestOptions: RequestOptions,
+    ): DisconnectEntityResponse =
+        // post /disconnect-entity
+        withRawResponse().disconnectEntity(params, requestOptions).parse()
 
     override fun introspect(
         params: AccountIntrospectParams,
@@ -79,6 +88,38 @@ class AccountServiceImpl internal constructor(private val clientOptions: ClientO
             return errorHandler.handle(response).parseable {
                 response
                     .use { disconnectHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val disconnectEntityHandler: Handler<DisconnectEntityResponse> =
+            jsonHandler<DisconnectEntityResponse>(clientOptions.jsonMapper)
+
+        override fun disconnectEntity(
+            params: AccountDisconnectEntityParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DisconnectEntityResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("disconnect-entity")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { disconnectEntityHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
