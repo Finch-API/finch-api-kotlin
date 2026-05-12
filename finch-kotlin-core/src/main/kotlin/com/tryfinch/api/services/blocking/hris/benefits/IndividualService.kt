@@ -6,6 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.EnrolledIndividualBenefitResponse
+import com.tryfinch.api.models.HrisBenefitIndividualEnrollManyParams
 import com.tryfinch.api.models.HrisBenefitIndividualEnrolledIdsParams
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsPage
 import com.tryfinch.api.models.HrisBenefitIndividualRetrieveManyBenefitsParams
@@ -26,6 +28,33 @@ interface IndividualService {
      * The original service is not modified.
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): IndividualService
+
+    /**
+     * Enroll an individual into a deduction or contribution. This is an overwrite operation. If the
+     * employee is already enrolled, the enrollment amounts will be adjusted. Making the same
+     * request multiple times will not create new enrollments, but will continue to set the state of
+     * the existing enrollment.
+     */
+    fun enrollMany(
+        benefitId: String,
+        params: HrisBenefitIndividualEnrollManyParams =
+            HrisBenefitIndividualEnrollManyParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnrolledIndividualBenefitResponse =
+        enrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+    /** @see enrollMany */
+    fun enrollMany(
+        params: HrisBenefitIndividualEnrollManyParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): EnrolledIndividualBenefitResponse
+
+    /** @see enrollMany */
+    fun enrollMany(
+        benefitId: String,
+        requestOptions: RequestOptions,
+    ): EnrolledIndividualBenefitResponse =
+        enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none(), requestOptions)
 
     /** Lists individuals currently enrolled in a given deduction. */
     fun enrolledIds(
@@ -108,6 +137,34 @@ interface IndividualService {
         fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): IndividualService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}/individuals`, but
+         * is otherwise the same as [IndividualService.enrollMany].
+         */
+        @MustBeClosed
+        fun enrollMany(
+            benefitId: String,
+            params: HrisBenefitIndividualEnrollManyParams =
+                HrisBenefitIndividualEnrollManyParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnrolledIndividualBenefitResponse> =
+            enrollMany(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+
+        /** @see enrollMany */
+        @MustBeClosed
+        fun enrollMany(
+            params: HrisBenefitIndividualEnrollManyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<EnrolledIndividualBenefitResponse>
+
+        /** @see enrollMany */
+        @MustBeClosed
+        fun enrollMany(
+            benefitId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<EnrolledIndividualBenefitResponse> =
+            enrollMany(benefitId, HrisBenefitIndividualEnrollManyParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}/enrolled`, but is
