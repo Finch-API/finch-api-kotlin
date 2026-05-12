@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
 import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,7 +16,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .addCustomField(
                 SandboxEmploymentUpdateParams.CustomField.builder()
                     .name("name")
-                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .value("string")
                     .build()
             )
             .department(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
@@ -30,6 +29,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
             .endDate("end_date")
             .firstName("first_name")
+            .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
             .income(
                 Income.builder()
                     .amount(0L)
@@ -68,7 +68,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             )
             .middleName("middle_name")
             .sourceId("source_id")
-            .startDate("start_date")
+            .startDate("3/4/2020")
             .title("title")
             .build()
     }
@@ -91,7 +91,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                 .addCustomField(
                     SandboxEmploymentUpdateParams.CustomField.builder()
                         .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value("string")
                         .build()
                 )
                 .department(SandboxEmploymentUpdateParams.Department.builder().name("name").build())
@@ -104,6 +104,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                 .employmentStatus(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
                 .endDate("end_date")
                 .firstName("first_name")
+                .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -142,7 +143,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                 )
                 .middleName("middle_name")
                 .sourceId("source_id")
-                .startDate("start_date")
+                .startDate("3/4/2020")
                 .title("title")
                 .build()
 
@@ -153,7 +154,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .containsExactly(
                 SandboxEmploymentUpdateParams.CustomField.builder()
                     .name("name")
-                    .value(JsonValue.from(mapOf<String, Any>()))
+                    .value("string")
                     .build()
             )
         assertThat(body.department())
@@ -169,6 +170,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .isEqualTo(SandboxEmploymentUpdateParams.EmploymentStatus.ACTIVE)
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.firstName()).isEqualTo("first_name")
+        assertThat(body.flsaStatus()).isEqualTo(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
         assertThat(body.income())
             .isEqualTo(
                 Income.builder()
@@ -211,7 +213,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             )
         assertThat(body.middleName()).isEqualTo("middle_name")
         assertThat(body.sourceId()).isEqualTo("source_id")
-        assertThat(body.startDate()).isEqualTo("start_date")
+        assertThat(body.startDate()).isEqualTo("3/4/2020")
         assertThat(body.title()).isEqualTo("title")
     }
 

@@ -6,13 +6,24 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.tryfinch.api.core.BaseDeserializer
+import com.tryfinch.api.core.BaseSerializer
 import com.tryfinch.api.core.Enum
 import com.tryfinch.api.core.ExcludeMissing
 import com.tryfinch.api.core.JsonField
 import com.tryfinch.api.core.JsonMissing
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.Params
+import com.tryfinch.api.core.allMaxBy
 import com.tryfinch.api.core.checkKnown
+import com.tryfinch.api.core.getOrThrow
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.toImmutable
@@ -211,6 +222,7 @@ private constructor(
         private val endDate: JsonField<String>,
         private val ethnicity: JsonField<Ethnicity>,
         private val firstName: JsonField<String>,
+        private val flsaStatus: JsonField<FlsaStatus>,
         private val gender: JsonField<Gender>,
         private val income: JsonField<Income>,
         private val incomeHistory: JsonField<List<Income?>>,
@@ -261,6 +273,9 @@ private constructor(
             @JsonProperty("first_name")
             @ExcludeMissing
             firstName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("flsa_status")
+            @ExcludeMissing
+            flsaStatus: JsonField<FlsaStatus> = JsonMissing.of(),
             @JsonProperty("gender") @ExcludeMissing gender: JsonField<Gender> = JsonMissing.of(),
             @JsonProperty("income") @ExcludeMissing income: JsonField<Income> = JsonMissing.of(),
             @JsonProperty("income_history")
@@ -311,6 +326,7 @@ private constructor(
             endDate,
             ethnicity,
             firstName,
+            flsaStatus,
             gender,
             income,
             incomeHistory,
@@ -415,6 +431,14 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun firstName(): String? = firstName.getNullable("first_name")
+
+        /**
+         * The FLSA status of the individual. Available options: `exempt`, `non_exempt`, `unknown`.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun flsaStatus(): FlsaStatus? = flsaStatus.getNullable("flsa_status")
 
         /**
          * The gender of the individual.
@@ -631,6 +655,15 @@ private constructor(
         @JsonProperty("first_name") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
 
         /**
+         * Returns the raw JSON value of [flsaStatus].
+         *
+         * Unlike [flsaStatus], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("flsa_status")
+        @ExcludeMissing
+        fun _flsaStatus(): JsonField<FlsaStatus> = flsaStatus
+
+        /**
          * Returns the raw JSON value of [gender].
          *
          * Unlike [gender], this method doesn't throw if the JSON field has an unexpected type.
@@ -790,6 +823,7 @@ private constructor(
             private var endDate: JsonField<String> = JsonMissing.of()
             private var ethnicity: JsonField<Ethnicity> = JsonMissing.of()
             private var firstName: JsonField<String> = JsonMissing.of()
+            private var flsaStatus: JsonField<FlsaStatus> = JsonMissing.of()
             private var gender: JsonField<Gender> = JsonMissing.of()
             private var income: JsonField<Income> = JsonMissing.of()
             private var incomeHistory: JsonField<MutableList<Income?>>? = null
@@ -820,6 +854,7 @@ private constructor(
                 endDate = individualOrEmployment.endDate
                 ethnicity = individualOrEmployment.ethnicity
                 firstName = individualOrEmployment.firstName
+                flsaStatus = individualOrEmployment.flsaStatus
                 gender = individualOrEmployment.gender
                 income = individualOrEmployment.income
                 incomeHistory = individualOrEmployment.incomeHistory.map { it.toMutableList() }
@@ -1013,6 +1048,23 @@ private constructor(
              * supported value.
              */
             fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
+
+            /**
+             * The FLSA status of the individual. Available options: `exempt`, `non_exempt`,
+             * `unknown`.
+             */
+            fun flsaStatus(flsaStatus: FlsaStatus?) = flsaStatus(JsonField.ofNullable(flsaStatus))
+
+            /**
+             * Sets [Builder.flsaStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.flsaStatus] with a well-typed [FlsaStatus] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun flsaStatus(flsaStatus: JsonField<FlsaStatus>) = apply {
+                this.flsaStatus = flsaStatus
+            }
 
             /** The gender of the individual. */
             fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
@@ -1289,6 +1341,7 @@ private constructor(
                     endDate,
                     ethnicity,
                     firstName,
+                    flsaStatus,
                     gender,
                     income,
                     (incomeHistory ?: JsonMissing.of()).map { it.toImmutable() },
@@ -1311,6 +1364,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws FinchInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): IndividualOrEmployment = apply {
             if (validated) {
                 return@apply
@@ -1327,6 +1389,7 @@ private constructor(
             endDate()
             ethnicity()?.validate()
             firstName()
+            flsaStatus()?.validate()
             gender()?.validate()
             income()?.validate()
             incomeHistory()?.forEach { it?.validate() }
@@ -1372,6 +1435,7 @@ private constructor(
                 (if (endDate.asKnown() == null) 0 else 1) +
                 (ethnicity.asKnown()?.validity() ?: 0) +
                 (if (firstName.asKnown() == null) 0 else 1) +
+                (flsaStatus.asKnown()?.validity() ?: 0) +
                 (gender.asKnown()?.validity() ?: 0) +
                 (income.asKnown()?.validity() ?: 0) +
                 (incomeHistory.asKnown()?.sumOf { (it?.validity() ?: 0).toInt() } ?: 0) +
@@ -1393,14 +1457,14 @@ private constructor(
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val name: JsonField<String>,
-            private val value: JsonValue,
+            private val value: JsonField<Value>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
             @JsonCreator
             private constructor(
                 @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("value") @ExcludeMissing value: JsonValue = JsonMissing.of(),
+                @JsonProperty("value") @ExcludeMissing value: JsonField<Value> = JsonMissing.of(),
             ) : this(name, value, mutableMapOf())
 
             /**
@@ -1410,13 +1474,10 @@ private constructor(
             fun name(): String? = name.getNullable("name")
 
             /**
-             * This arbitrary value can be deserialized into a custom type using the `convert`
-             * method:
-             * ```kotlin
-             * val myObject: MyClass = customField.value().convert(MyClass::class.java)
-             * ```
+             * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
              */
-            @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
+            fun value(): Value? = value.getNullable("value")
 
             /**
              * Returns the raw JSON value of [name].
@@ -1424,6 +1485,13 @@ private constructor(
              * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [value].
+             *
+             * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1447,7 +1515,7 @@ private constructor(
             class Builder internal constructor() {
 
                 private var name: JsonField<String> = JsonMissing.of()
-                private var value: JsonValue = JsonMissing.of()
+                private var value: JsonField<Value> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 internal fun from(customField: CustomField) = apply {
@@ -1467,7 +1535,32 @@ private constructor(
                  */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
-                fun value(value: JsonValue) = apply { this.value = value }
+                fun value(value: Value?) = value(JsonField.ofNullable(value))
+
+                /**
+                 * Sets [Builder.value] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.value] with a well-typed [Value] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun value(value: JsonField<Value>) = apply { this.value = value }
+
+                /** Alias for calling [value] with `Value.ofString(string)`. */
+                fun value(string: String) = value(Value.ofString(string))
+
+                /** Alias for calling [value] with `Value.ofJsonValues(jsonValues)`. */
+                fun valueOfJsonValues(jsonValues: List<JsonValue>) =
+                    value(Value.ofJsonValues(jsonValues))
+
+                /** Alias for calling [value] with `Value.ofJson(json)`. */
+                fun value(json: JsonValue) = value(Value.ofJson(json))
+
+                /** Alias for calling [value] with `Value.ofDouble(double)`. */
+                fun value(double: Double) = value(Value.ofDouble(double))
+
+                /** Alias for calling [value] with `Value.ofBoolean(boolean)`. */
+                fun value(boolean: Boolean) = value(Value.ofBoolean(boolean))
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1502,12 +1595,23 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): CustomField = apply {
                 if (validated) {
                     return@apply
                 }
 
                 name()
+                value()?.validate()
                 validated = true
             }
 
@@ -1525,7 +1629,283 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int = (if (name.asKnown() == null) 0 else 1)
+            internal fun validity(): Int =
+                (if (name.asKnown() == null) 0 else 1) + (value.asKnown()?.validity() ?: 0)
+
+            @JsonDeserialize(using = Value.Deserializer::class)
+            @JsonSerialize(using = Value.Serializer::class)
+            class Value
+            private constructor(
+                private val string: String? = null,
+                private val jsonValues: List<JsonValue>? = null,
+                private val json: JsonValue? = null,
+                private val double: Double? = null,
+                private val boolean: Boolean? = null,
+                private val _json: JsonValue? = null,
+            ) {
+
+                fun string(): String? = string
+
+                fun jsonValues(): List<JsonValue>? = jsonValues
+
+                fun json(): JsonValue? = json
+
+                fun double(): Double? = double
+
+                fun boolean(): Boolean? = boolean
+
+                fun isString(): Boolean = string != null
+
+                fun isJsonValues(): Boolean = jsonValues != null
+
+                fun isJson(): Boolean = json != null
+
+                fun isDouble(): Boolean = double != null
+
+                fun isBoolean(): Boolean = boolean != null
+
+                fun asString(): String = string.getOrThrow("string")
+
+                fun asJsonValues(): List<JsonValue> = jsonValues.getOrThrow("jsonValues")
+
+                fun asJson(): JsonValue = json.getOrThrow("json")
+
+                fun asDouble(): Double = double.getOrThrow("double")
+
+                fun asBoolean(): Boolean = boolean.getOrThrow("boolean")
+
+                fun _json(): JsonValue? = _json
+
+                /**
+                 * Maps this instance's current variant to a value of type [T] using the given
+                 * [visitor].
+                 *
+                 * Note that this method is _not_ forwards compatible with new variants from the
+                 * API, unless [visitor] overrides [Visitor.unknown]. To handle variants not known
+                 * to this version of the SDK gracefully, consider overriding [Visitor.unknown]:
+                 * ```kotlin
+                 * import com.tryfinch.api.core.JsonValue
+                 *
+                 * val result: String? = value.accept(object : Value.Visitor<String?> {
+                 *     override fun visitString(string: String): String? = string.toString()
+                 *
+                 *     // ...
+                 *
+                 *     override fun unknown(json: JsonValue?): String? {
+                 *         // Or inspect the `json`.
+                 *         return null
+                 *     }
+                 * })
+                 * ```
+                 *
+                 * @throws FinchInvalidDataException if [Visitor.unknown] is not overridden in
+                 *   [visitor] and the current variant is unknown.
+                 */
+                fun <T> accept(visitor: Visitor<T>): T =
+                    when {
+                        string != null -> visitor.visitString(string)
+                        jsonValues != null -> visitor.visitJsonValues(jsonValues)
+                        json != null -> visitor.visitJson(json)
+                        double != null -> visitor.visitDouble(double)
+                        boolean != null -> visitor.visitBoolean(boolean)
+                        else -> visitor.unknown(_json)
+                    }
+
+                private var validated: Boolean = false
+
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
+                fun validate(): Value = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    accept(
+                        object : Visitor<Unit> {
+                            override fun visitString(string: String) {}
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) {}
+
+                            override fun visitJson(json: JsonValue) {}
+
+                            override fun visitDouble(double: Double) {}
+
+                            override fun visitBoolean(boolean: Boolean) {}
+                        }
+                    )
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: FinchInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                internal fun validity(): Int =
+                    accept(
+                        object : Visitor<Int> {
+                            override fun visitString(string: String) = 1
+
+                            override fun visitJsonValues(jsonValues: List<JsonValue>) =
+                                jsonValues.size
+
+                            override fun visitJson(json: JsonValue) = 1
+
+                            override fun visitDouble(double: Double) = 1
+
+                            override fun visitBoolean(boolean: Boolean) = 1
+
+                            override fun unknown(json: JsonValue?) = 0
+                        }
+                    )
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Value &&
+                        string == other.string &&
+                        jsonValues == other.jsonValues &&
+                        json == other.json &&
+                        double == other.double &&
+                        boolean == other.boolean
+                }
+
+                override fun hashCode(): Int =
+                    Objects.hash(string, jsonValues, json, double, boolean)
+
+                override fun toString(): String =
+                    when {
+                        string != null -> "Value{string=$string}"
+                        jsonValues != null -> "Value{jsonValues=$jsonValues}"
+                        json != null -> "Value{json=$json}"
+                        double != null -> "Value{double=$double}"
+                        boolean != null -> "Value{boolean=$boolean}"
+                        _json != null -> "Value{_unknown=$_json}"
+                        else -> throw IllegalStateException("Invalid Value")
+                    }
+
+                companion object {
+
+                    fun ofString(string: String) = Value(string = string)
+
+                    fun ofJsonValues(jsonValues: List<JsonValue>) =
+                        Value(jsonValues = jsonValues.toImmutable())
+
+                    fun ofJson(json: JsonValue) = Value(json = json)
+
+                    fun ofDouble(double: Double) = Value(double = double)
+
+                    fun ofBoolean(boolean: Boolean) = Value(boolean = boolean)
+                }
+
+                /**
+                 * An interface that defines how to map each variant of [Value] to a value of type
+                 * [T].
+                 */
+                interface Visitor<out T> {
+
+                    fun visitString(string: String): T
+
+                    fun visitJsonValues(jsonValues: List<JsonValue>): T
+
+                    fun visitJson(json: JsonValue): T
+
+                    fun visitDouble(double: Double): T
+
+                    fun visitBoolean(boolean: Boolean): T
+
+                    /**
+                     * Maps an unknown variant of [Value] to a value of type [T].
+                     *
+                     * An instance of [Value] can contain an unknown variant if it was deserialized
+                     * from data that doesn't match any known variant. For example, if the SDK is on
+                     * an older version than the API, then the API may respond with new variants
+                     * that the SDK is unaware of.
+                     *
+                     * @throws FinchInvalidDataException in the default implementation.
+                     */
+                    fun unknown(json: JsonValue?): T {
+                        throw FinchInvalidDataException("Unknown Value: $json")
+                    }
+                }
+
+                internal class Deserializer : BaseDeserializer<Value>(Value::class) {
+
+                    override fun ObjectCodec.deserialize(node: JsonNode): Value {
+                        val json = JsonValue.fromJsonNode(node)
+
+                        val bestMatches =
+                            sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                        Value(string = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<List<JsonValue>>())?.let {
+                                        Value(jsonValues = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Double>())?.let {
+                                        Value(double = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
+                                        Value(boolean = it, _json = json)
+                                    },
+                                    tryDeserialize(node, jacksonTypeRef<JsonValue>())?.let {
+                                        Value(json = it, _json = json)
+                                    },
+                                )
+                                .filterNotNull()
+                                .allMaxBy { it.validity() }
+                                .toList()
+                        return when (bestMatches.size) {
+                            // This can happen if what we're deserializing is completely
+                            // incompatible with all the possible variants.
+                            0 -> Value(_json = json)
+                            1 -> bestMatches.single()
+                            // If there's more than one match with the highest validity, then use
+                            // the first completely valid match, or simply the first match if none
+                            // are completely valid.
+                            else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                        }
+                    }
+                }
+
+                internal class Serializer : BaseSerializer<Value>(Value::class) {
+
+                    override fun serialize(
+                        value: Value,
+                        generator: JsonGenerator,
+                        provider: SerializerProvider,
+                    ) {
+                        when {
+                            value.string != null -> generator.writeObject(value.string)
+                            value.jsonValues != null -> generator.writeObject(value.jsonValues)
+                            value.json != null -> generator.writeObject(value.json)
+                            value.double != null -> generator.writeObject(value.double)
+                            value.boolean != null -> generator.writeObject(value.boolean)
+                            value._json != null -> generator.writeObject(value._json)
+                            else -> throw IllegalStateException("Invalid Value")
+                        }
+                    }
+                }
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1647,6 +2027,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Department = apply {
                 if (validated) {
                     return@apply
@@ -1815,6 +2205,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Email = apply {
                 if (validated) {
                     return@apply
@@ -1932,6 +2332,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -2128,6 +2538,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Employment = apply {
                 if (validated) {
                     return@apply
@@ -2274,6 +2694,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Subtype = apply {
                     if (validated) {
                         return@apply
@@ -2403,6 +2833,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -2584,6 +3024,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): EmploymentStatus = apply {
                 if (validated) {
                     return@apply
@@ -2750,6 +3200,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Ethnicity = apply {
                 if (validated) {
                     return@apply
@@ -2781,6 +3241,154 @@ private constructor(
                 }
 
                 return other is Ethnicity && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        /**
+         * The FLSA status of the individual. Available options: `exempt`, `non_exempt`, `unknown`.
+         */
+        class FlsaStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                val EXEMPT = of("exempt")
+
+                val NON_EXEMPT = of("non_exempt")
+
+                val UNKNOWN = of("unknown")
+
+                fun of(value: String) = FlsaStatus(JsonField.of(value))
+            }
+
+            /** An enum containing [FlsaStatus]'s known values. */
+            enum class Known {
+                EXEMPT,
+                NON_EXEMPT,
+                UNKNOWN,
+            }
+
+            /**
+             * An enum containing [FlsaStatus]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [FlsaStatus] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                EXEMPT,
+                NON_EXEMPT,
+                UNKNOWN,
+                /**
+                 * An enum member indicating that [FlsaStatus] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    EXEMPT -> Value.EXEMPT
+                    NON_EXEMPT -> Value.NON_EXEMPT
+                    UNKNOWN -> Value.UNKNOWN
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws FinchInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    EXEMPT -> Known.EXEMPT
+                    NON_EXEMPT -> Known.NON_EXEMPT
+                    UNKNOWN -> Known.UNKNOWN
+                    else -> throw FinchInvalidDataException("Unknown FlsaStatus: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws FinchInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString() ?: throw FinchInvalidDataException("Value is not a String")
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
+            fun validate(): FlsaStatus = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: FinchInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is FlsaStatus && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2890,6 +3498,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Gender = apply {
                 if (validated) {
                     return@apply
@@ -3029,6 +3647,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Manager = apply {
                 if (validated) {
                     return@apply
@@ -3197,6 +3825,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws FinchInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): PhoneNumber = apply {
                 if (validated) {
                     return@apply
@@ -3314,6 +3952,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws FinchInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -3388,6 +4036,7 @@ private constructor(
                 endDate == other.endDate &&
                 ethnicity == other.ethnicity &&
                 firstName == other.firstName &&
+                flsaStatus == other.flsaStatus &&
                 gender == other.gender &&
                 income == other.income &&
                 incomeHistory == other.incomeHistory &&
@@ -3420,6 +4069,7 @@ private constructor(
                 endDate,
                 ethnicity,
                 firstName,
+                flsaStatus,
                 gender,
                 income,
                 incomeHistory,
@@ -3443,7 +4093,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
+            "IndividualOrEmployment{classCode=$classCode, customFields=$customFields, department=$department, dob=$dob, emails=$emails, employment=$employment, employmentStatus=$employmentStatus, encryptedSsn=$encryptedSsn, endDate=$endDate, ethnicity=$ethnicity, firstName=$firstName, flsaStatus=$flsaStatus, gender=$gender, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, phoneNumbers=$phoneNumbers, preferredName=$preferredName, residence=$residence, sourceId=$sourceId, ssn=$ssn, startDate=$startDate, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

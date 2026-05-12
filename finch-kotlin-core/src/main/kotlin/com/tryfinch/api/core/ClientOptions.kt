@@ -5,6 +5,7 @@ package com.tryfinch.api.core
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.tryfinch.api.core.http.Headers
 import com.tryfinch.api.core.http.HttpClient
+import com.tryfinch.api.core.http.LoggingHttpClient
 import com.tryfinch.api.core.http.PhantomReachableClosingHttpClient
 import com.tryfinch.api.core.http.QueryParams
 import com.tryfinch.api.core.http.RetryingHttpClient
@@ -65,6 +66,9 @@ private constructor(
     /**
      * Whether to call `validate` on every response before returning it.
      *
+     * Setting this to `true` is _not_ forwards compatible with new types from the API for existing
+     * fields.
+     *
      * Defaults to false, which means the shape of the response will not be validated upfront.
      * Instead, validation will only occur for the parts of the response that are accessed.
      */
@@ -92,6 +96,14 @@ private constructor(
      * Defaults to 2.
      */
     val maxRetries: Int,
+    /**
+     * The level at which to log request and response information.
+     *
+     * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+     *
+     * Defaults to [LogLevel.fromEnv].
+     */
+    val logLevel: LogLevel,
     val accessToken: String?,
     val clientId: String?,
     val clientSecret: String?,
@@ -149,6 +161,7 @@ private constructor(
         private var responseValidation: Boolean = false
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
+        private var logLevel: LogLevel = LogLevel.fromEnv()
         private var accessToken: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
@@ -166,6 +179,7 @@ private constructor(
             responseValidation = clientOptions.responseValidation
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
+            logLevel = clientOptions.logLevel
             accessToken = clientOptions.accessToken
             clientId = clientOptions.clientId
             clientSecret = clientOptions.clientSecret
@@ -232,6 +246,9 @@ private constructor(
         /**
          * Whether to call `validate` on every response before returning it.
          *
+         * Setting this to `true` is _not_ forwards compatible with new types from the API for
+         * existing fields.
+         *
          * Defaults to false, which means the shape of the response will not be validated upfront.
          * Instead, validation will only occur for the parts of the response that are accessed.
          */
@@ -272,6 +289,15 @@ private constructor(
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { this.logLevel = logLevel }
 
         fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
 
@@ -378,6 +404,7 @@ private constructor(
          * System properties take precedence over environment variables.
          */
         fun fromEnv() = apply {
+            logLevel(LogLevel.fromEnv())
             (System.getProperty("finch.baseUrl") ?: System.getenv("FINCH_BASE_URL"))?.let {
                 baseUrl(it)
             }
@@ -388,6 +415,14 @@ private constructor(
                 ?.let { clientSecret(it) }
             (System.getProperty("finch.webhookSecret") ?: System.getenv("FINCH_WEBHOOK_SECRET"))
                 ?.let { webhookSecret(it) }
+            System.getenv("FINCH_CUSTOM_HEADERS")?.let { customHeadersEnv ->
+                for (line in customHeadersEnv.split("\n")) {
+                    val colon = line.indexOf(':')
+                    if (colon >= 0) {
+                        putHeader(line.substring(0, colon).trim(), line.substring(colon + 1).trim())
+                    }
+                }
+            }
         }
 
         /**
@@ -417,28 +452,20 @@ private constructor(
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             headers.put("X-Stainless-Kotlin-Version", KotlinVersion.CURRENT.toString())
             headers.put("Finch-API-Version", "2020-09-17")
-            clientId?.let { username ->
-                clientSecret?.let { password ->
-                    if (!username.isEmpty() && !password.isEmpty()) {
-                        headers.put(
-                            "Authorization",
-                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
-                        )
-                    }
-                }
-            }
-            accessToken?.let {
-                if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
-                }
-            }
+            // We replace after all the default headers to allow end-users to overwrite them.
             headers.replaceAll(this.headers.build())
             queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
                 httpClient,
                 RetryingHttpClient.builder()
-                    .httpClient(httpClient)
+                    .httpClient(
+                        LoggingHttpClient.builder()
+                            .httpClient(httpClient)
+                            .clock(clock)
+                            .level(logLevel)
+                            .build()
+                    )
                     .sleeper(sleeper)
                     .clock(clock)
                     .maxRetries(maxRetries)
@@ -453,6 +480,7 @@ private constructor(
                 responseValidation,
                 timeout,
                 maxRetries,
+                logLevel,
                 accessToken,
                 clientId,
                 clientSecret,
@@ -474,5 +502,29 @@ private constructor(
     fun close() {
         httpClient.close()
         sleeper.close()
+    }
+
+    internal fun securityHeaders(security: SecurityOptions): Headers {
+        val headers = Headers.builder()
+        if (security.bearerAuth) {
+            accessToken?.let {
+                if (!it.isEmpty()) {
+                    headers.replace("Authorization", "Bearer $it")
+                }
+            }
+        }
+        if (security.basicAuth) {
+            clientId?.let { username ->
+                clientSecret?.let { password ->
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        headers.replace(
+                            "Authorization",
+                            "Basic ${Base64.getEncoder().encodeToString("$username:$password".toByteArray())}",
+                        )
+                    }
+                }
+            }
+        }
+        return headers.build()
     }
 }

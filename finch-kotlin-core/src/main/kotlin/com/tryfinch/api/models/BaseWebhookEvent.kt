@@ -21,6 +21,7 @@ private constructor(
     private val accountId: JsonField<String>,
     private val companyId: JsonField<String>,
     private val connectionId: JsonField<String>,
+    private val entityId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -31,7 +32,8 @@ private constructor(
         @JsonProperty("connection_id")
         @ExcludeMissing
         connectionId: JsonField<String> = JsonMissing.of(),
-    ) : this(accountId, companyId, connectionId, mutableMapOf())
+        @JsonProperty("entity_id") @ExcludeMissing entityId: JsonField<String> = JsonMissing.of(),
+    ) : this(accountId, companyId, connectionId, entityId, mutableMapOf())
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -58,6 +60,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun connectionId(): String? = connectionId.getNullable("connection_id")
+
+    /**
+     * Unique Finch id of the entity for which data has been updated.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun entityId(): String? = entityId.getNullable("entity_id")
 
     /**
      * Returns the raw JSON value of [accountId].
@@ -87,6 +97,13 @@ private constructor(
     @JsonProperty("connection_id")
     @ExcludeMissing
     fun _connectionId(): JsonField<String> = connectionId
+
+    /**
+     * Returns the raw JSON value of [entityId].
+     *
+     * Unlike [entityId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("entity_id") @ExcludeMissing fun _entityId(): JsonField<String> = entityId
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -120,12 +137,14 @@ private constructor(
         private var accountId: JsonField<String>? = null
         private var companyId: JsonField<String>? = null
         private var connectionId: JsonField<String> = JsonMissing.of()
+        private var entityId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(baseWebhookEvent: BaseWebhookEvent) = apply {
             accountId = baseWebhookEvent.accountId
             companyId = baseWebhookEvent.companyId
             connectionId = baseWebhookEvent.connectionId
+            entityId = baseWebhookEvent.entityId
             additionalProperties = baseWebhookEvent.additionalProperties.toMutableMap()
         }
 
@@ -177,6 +196,17 @@ private constructor(
             this.connectionId = connectionId
         }
 
+        /** Unique Finch id of the entity for which data has been updated. */
+        fun entityId(entityId: String) = entityId(JsonField.of(entityId))
+
+        /**
+         * Sets [Builder.entityId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -214,12 +244,21 @@ private constructor(
                 checkRequired("accountId", accountId),
                 checkRequired("companyId", companyId),
                 connectionId,
+                entityId,
                 additionalProperties.toMutableMap(),
             )
     }
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): BaseWebhookEvent = apply {
         if (validated) {
             return@apply
@@ -228,6 +267,7 @@ private constructor(
         accountId()
         companyId()
         connectionId()
+        entityId()
         validated = true
     }
 
@@ -247,7 +287,8 @@ private constructor(
     internal fun validity(): Int =
         (if (accountId.asKnown() == null) 0 else 1) +
             (if (companyId.asKnown() == null) 0 else 1) +
-            (if (connectionId.asKnown() == null) 0 else 1)
+            (if (connectionId.asKnown() == null) 0 else 1) +
+            (if (entityId.asKnown() == null) 0 else 1)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -258,15 +299,16 @@ private constructor(
             accountId == other.accountId &&
             companyId == other.companyId &&
             connectionId == other.connectionId &&
+            entityId == other.entityId &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(accountId, companyId, connectionId, additionalProperties)
+        Objects.hash(accountId, companyId, connectionId, entityId, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "BaseWebhookEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, additionalProperties=$additionalProperties}"
+        "BaseWebhookEvent{accountId=$accountId, companyId=$companyId, connectionId=$connectionId, entityId=$entityId, additionalProperties=$additionalProperties}"
 }

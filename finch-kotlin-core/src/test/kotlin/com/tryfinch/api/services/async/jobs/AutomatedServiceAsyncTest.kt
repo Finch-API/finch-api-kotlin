@@ -21,10 +21,7 @@ internal class AutomatedServiceAsyncTest {
                 .build()
         val automatedServiceAsync = client.jobs().automated()
 
-        val automated =
-            automatedServiceAsync.create(
-                JobAutomatedCreateParams.builder().bodyDataSyncAll().build()
-            )
+        val automated = automatedServiceAsync.create(JobAutomatedCreateParams.Body.ofDataSyncAll())
 
         automated.validate()
     }
