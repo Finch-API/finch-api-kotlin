@@ -2,7 +2,6 @@
 
 package com.tryfinch.api.models
 
-import com.tryfinch.api.core.JsonValue
 import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -18,7 +17,7 @@ internal class SandboxDirectoryCreateParamsTest {
                     .addCustomField(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField.builder()
                             .name("name")
-                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .value("string")
                             .build()
                     )
                     .department(
@@ -138,7 +137,7 @@ internal class SandboxDirectoryCreateParamsTest {
                             SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField
                                 .builder()
                                 .name("name")
-                                .value(JsonValue.from(mapOf<String, Any>()))
+                                .value("string")
                                 .build()
                         )
                         .department(
@@ -262,7 +261,7 @@ internal class SandboxDirectoryCreateParamsTest {
                     .addCustomField(
                         SandboxDirectoryCreateParams.IndividualOrEmployment.CustomField.builder()
                             .name("name")
-                            .value(JsonValue.from(mapOf<String, Any>()))
+                            .value("string")
                             .build()
                     )
                     .department(

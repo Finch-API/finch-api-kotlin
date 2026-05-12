@@ -3,7 +3,6 @@
 package com.tryfinch.api.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.jsonMapper
 import java.time.LocalDate
 import org.assertj.core.api.Assertions.assertThat
@@ -20,7 +19,7 @@ internal class EmploymentUpdateResponseTest {
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
                         .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value("string")
                         .build()
                 )
                 .department(EmploymentUpdateResponse.Department.builder().name("name").build())
@@ -80,10 +79,7 @@ internal class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.classCode()).isEqualTo("class_code")
         assertThat(employmentUpdateResponse.customFields())
             .containsExactly(
-                EmploymentUpdateResponse.CustomField.builder()
-                    .name("name")
-                    .value(JsonValue.from(mapOf<String, Any>()))
-                    .build()
+                EmploymentUpdateResponse.CustomField.builder().name("name").value("string").build()
             )
         assertThat(employmentUpdateResponse.department())
             .isEqualTo(EmploymentUpdateResponse.Department.builder().name("name").build())
@@ -156,7 +152,7 @@ internal class EmploymentUpdateResponseTest {
                 .addCustomField(
                     EmploymentUpdateResponse.CustomField.builder()
                         .name("name")
-                        .value(JsonValue.from(mapOf<String, Any>()))
+                        .value("string")
                         .build()
                 )
                 .department(EmploymentUpdateResponse.Department.builder().name("name").build())
