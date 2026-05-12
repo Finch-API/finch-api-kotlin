@@ -1,5 +1,49 @@
 # Changelog
 
+## 8.6.0 (2026-05-12)
+
+Full Changelog: [v8.5.0...v8.6.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.5.0...v8.6.0)
+
+### Features
+
+* **api:** api update ([68ca045](https://github.com/Finch-API/finch-api-kotlin/commit/68ca045eaca1cd98b060e2c8e7f57bba29d2c68c))
+* **api:** api update ([9bab9c1](https://github.com/Finch-API/finch-api-kotlin/commit/9bab9c1f05bf4d57902d0a0e6ffbed87aa86e173))
+* **api:** api update ([4c05803](https://github.com/Finch-API/finch-api-kotlin/commit/4c058036a13c1a1ec21d6170b16bd15981f14f12))
+* **api:** api update ([f3241e4](https://github.com/Finch-API/finch-api-kotlin/commit/f3241e4931b673c91c26247a724bc9954ef1c59e))
+* **api:** api update ([daa74ec](https://github.com/Finch-API/finch-api-kotlin/commit/daa74ec575c45e93fcf046d6d5a0793306a9dfd1))
+* **api:** manual updates ([7d9ea64](https://github.com/Finch-API/finch-api-kotlin/commit/7d9ea64ef7397e88731c28dd1fdefb678a4a0974))
+* **client:** improve logging ([5807a19](https://github.com/Finch-API/finch-api-kotlin/commit/5807a19bcadfd042d7576642e622a9f0c7a38e5c))
+* **client:** more robust error parsing ([d8a4f7f](https://github.com/Finch-API/finch-api-kotlin/commit/d8a4f7fa40a0528a5ea4ee9f58f58c31df42d8e2))
+* **client:** support proxy authentication ([8319ffe](https://github.com/Finch-API/finch-api-kotlin/commit/8319ffeaf852fef42e97029528618701e4db7a0d))
+* support setting headers via env ([408296c](https://github.com/Finch-API/finch-api-kotlin/commit/408296c2c52902bf1cbf98fb083e164301e6555e))
+
+
+### Bug Fixes
+
+* restore SecurityOptions.kt referenced by ClientOptions.securityHeaders ([ddebddb](https://github.com/Finch-API/finch-api-kotlin/commit/ddebddbf24a7c9dd108c60e85cf5089654f25007))
+
+
+### Performance Improvements
+
+* **client:** create one json mapper ([d4ebc8d](https://github.com/Finch-API/finch-api-kotlin/commit/d4ebc8d84e40457b0110922479957a8df231c083))
+
+
+### Chores
+
+* clean up custom code ([77494f4](https://github.com/Finch-API/finch-api-kotlin/commit/77494f41add0f7ea1f02419faf4c3efdb40d08b9))
+* **internal:** codegen related update ([95796d3](https://github.com/Finch-API/finch-api-kotlin/commit/95796d31c412bb7edb00b2bfd17869d77e6e5f97))
+* **internal:** codegen related update ([31cb838](https://github.com/Finch-API/finch-api-kotlin/commit/31cb838300ab36e645178a52b0eff3365d1f1853))
+* **internal:** codegen related update ([a28b92c](https://github.com/Finch-API/finch-api-kotlin/commit/a28b92c515f5b916d9ed66d29f2d90455c7c1b57))
+* **internal:** codegen related update ([5d33b36](https://github.com/Finch-API/finch-api-kotlin/commit/5d33b36689e4a717f06d7801158887ed3e206019))
+* redact api-key headers in debug logs ([087aaa3](https://github.com/Finch-API/finch-api-kotlin/commit/087aaa33dec17b7e82be861d1642c91554c38d8e))
+* remove duplicated dokka setup ([bc065c6](https://github.com/Finch-API/finch-api-kotlin/commit/bc065c602f93d047c1866431c8d616e12724b5c6))
+* update version in release manifest ([84c0231](https://github.com/Finch-API/finch-api-kotlin/commit/84c02313aab25f7074df39d714432ffce070ac77))
+
+
+### Documentation
+
+* clarify forwards compat behavior ([9425d5a](https://github.com/Finch-API/finch-api-kotlin/commit/9425d5aa40f6ce623858e030a3fbffd6ae8d720a))
+
 ## 8.4.0 (2025-08-25)
 
 Full Changelog: [v8.3.2...v8.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.3.2...v8.4.0)
