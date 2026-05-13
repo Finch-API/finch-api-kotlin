@@ -6,7 +6,7 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
-import com.tryfinch.api.models.DirectoryListIndividualsResponse
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPage
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPage
 import com.tryfinch.api.models.HrisDirectoryListParams
@@ -40,11 +40,11 @@ interface DirectoryService {
     fun listIndividuals(
         params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): DirectoryListIndividualsResponse
+    ): HrisDirectoryListIndividualsPage
 
     /** @see listIndividuals */
     @Deprecated("use `list` instead")
-    fun listIndividuals(requestOptions: RequestOptions): DirectoryListIndividualsResponse =
+    fun listIndividuals(requestOptions: RequestOptions): HrisDirectoryListIndividualsPage =
         listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 
     /** A view of [DirectoryService] that provides access to raw HTTP responses for each method. */
@@ -81,14 +81,14 @@ interface DirectoryService {
         fun listIndividuals(
             params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<DirectoryListIndividualsResponse>
+        ): HttpResponseFor<HrisDirectoryListIndividualsPage>
 
         /** @see listIndividuals */
         @Deprecated("use `list` instead")
         @MustBeClosed
         fun listIndividuals(
             requestOptions: RequestOptions
-        ): HttpResponseFor<DirectoryListIndividualsResponse> =
+        ): HttpResponseFor<HrisDirectoryListIndividualsPage> =
             listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
     }
 }
