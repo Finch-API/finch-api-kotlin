@@ -6,7 +6,7 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
-import com.tryfinch.api.models.DirectoryListIndividualsResponse
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
 import com.tryfinch.api.models.HrisDirectoryListParams
@@ -40,11 +40,13 @@ interface DirectoryServiceAsync {
     suspend fun listIndividuals(
         params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): DirectoryListIndividualsResponse
+    ): HrisDirectoryListIndividualsPageAsync
 
     /** @see listIndividuals */
     @Deprecated("use `list` instead")
-    suspend fun listIndividuals(requestOptions: RequestOptions): DirectoryListIndividualsResponse =
+    suspend fun listIndividuals(
+        requestOptions: RequestOptions
+    ): HrisDirectoryListIndividualsPageAsync =
         listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 
     /**
@@ -87,14 +89,14 @@ interface DirectoryServiceAsync {
         suspend fun listIndividuals(
             params: HrisDirectoryListIndividualsParams = HrisDirectoryListIndividualsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<DirectoryListIndividualsResponse>
+        ): HttpResponseFor<HrisDirectoryListIndividualsPageAsync>
 
         /** @see listIndividuals */
         @Deprecated("use `list` instead")
         @MustBeClosed
         suspend fun listIndividuals(
             requestOptions: RequestOptions
-        ): HttpResponseFor<DirectoryListIndividualsResponse> =
+        ): HttpResponseFor<HrisDirectoryListIndividualsPageAsync> =
             listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
     }
 }

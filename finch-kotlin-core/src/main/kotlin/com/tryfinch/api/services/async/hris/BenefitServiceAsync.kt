@@ -13,8 +13,10 @@ import com.tryfinch.api.models.HrisBenefitListPageAsync
 import com.tryfinch.api.models.HrisBenefitListParams
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsPageAsync
 import com.tryfinch.api.models.HrisBenefitListSupportedBenefitsParams
+import com.tryfinch.api.models.HrisBenefitRegisterParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
+import com.tryfinch.api.models.RegisterCompanyBenefitResponse
 import com.tryfinch.api.models.UpdateCompanyBenefitResponse
 import com.tryfinch.api.services.async.hris.benefits.IndividualServiceAsync
 
@@ -107,6 +109,19 @@ interface BenefitServiceAsync {
         requestOptions: RequestOptions
     ): HrisBenefitListSupportedBenefitsPageAsync =
         listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+
+    /**
+     * Register existing benefits from the customer on the provider, on Finch's end. Please use the
+     * `/provider` endpoint to view available types for each provider.
+     */
+    suspend fun register(
+        params: HrisBenefitRegisterParams = HrisBenefitRegisterParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RegisterCompanyBenefitResponse
+
+    /** @see register */
+    suspend fun register(requestOptions: RequestOptions): RegisterCompanyBenefitResponse =
+        register(HrisBenefitRegisterParams.none(), requestOptions)
 
     /**
      * A view of [BenefitServiceAsync] that provides access to raw HTTP responses for each method.
@@ -229,5 +244,22 @@ interface BenefitServiceAsync {
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPageAsync> =
             listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /employer/benefits/register`, but is otherwise the
+         * same as [BenefitServiceAsync.register].
+         */
+        @MustBeClosed
+        suspend fun register(
+            params: HrisBenefitRegisterParams = HrisBenefitRegisterParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RegisterCompanyBenefitResponse>
+
+        /** @see register */
+        @MustBeClosed
+        suspend fun register(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<RegisterCompanyBenefitResponse> =
+            register(HrisBenefitRegisterParams.none(), requestOptions)
     }
 }
