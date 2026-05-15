@@ -1,5 +1,19 @@
 # Changelog
 
+## 8.7.0 (2026-05-15)
+
+Full Changelog: [v8.6.0...v8.7.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.6.0...v8.7.0)
+
+### Features
+
+* **api:** add register benefits method ([5f4a519](https://github.com/Finch-API/finch-api-kotlin/commit/5f4a51924f5d1a6a4aa2347324d94e6c68a683cb))
+* **api:** manual updates ([ecf7d0a](https://github.com/Finch-API/finch-api-kotlin/commit/ecf7d0add3df750e0a7263b506d018bc33d62b0b))
+
+
+### Chores
+
+* **internal:** codegen related update ([2a13666](https://github.com/Finch-API/finch-api-kotlin/commit/2a136664de926088bc45f7b1ef3b9460a71a953d))
+
 ## 8.6.0 (2026-05-12)
 
 Full Changelog: [v8.5.0...v8.6.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.5.0...v8.6.0)
