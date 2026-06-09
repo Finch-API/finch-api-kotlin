@@ -707,6 +707,8 @@ private constructor(
 
             val PAY_STATEMENT = of("pay_statement")
 
+            val RECORDKEEPING = of("recordkeeping")
+
             val SSN = of("ssn")
 
             fun of(value: String) = ConnectProducts(JsonField.of(value))
@@ -723,6 +725,7 @@ private constructor(
             INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
+            RECORDKEEPING,
             SSN,
         }
 
@@ -745,6 +748,7 @@ private constructor(
             INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
+            RECORDKEEPING,
             SSN,
             /**
              * An enum member indicating that [ConnectProducts] was instantiated with an unknown
@@ -771,6 +775,7 @@ private constructor(
                 INDIVIDUAL -> Value.INDIVIDUAL
                 PAYMENT -> Value.PAYMENT
                 PAY_STATEMENT -> Value.PAY_STATEMENT
+                RECORDKEEPING -> Value.RECORDKEEPING
                 SSN -> Value.SSN
                 else -> Value._UNKNOWN
             }
@@ -794,6 +799,7 @@ private constructor(
                 INDIVIDUAL -> Known.INDIVIDUAL
                 PAYMENT -> Known.PAYMENT
                 PAY_STATEMENT -> Known.PAY_STATEMENT
+                RECORDKEEPING -> Known.RECORDKEEPING
                 SSN -> Known.SSN
                 else -> throw FinchInvalidDataException("Unknown ConnectProducts: $value")
             }
