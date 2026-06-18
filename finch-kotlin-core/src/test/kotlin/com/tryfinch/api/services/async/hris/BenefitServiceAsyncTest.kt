@@ -7,6 +7,7 @@ import com.tryfinch.api.client.okhttp.FinchOkHttpClientAsync
 import com.tryfinch.api.models.BenefitFrequency
 import com.tryfinch.api.models.BenefitType
 import com.tryfinch.api.models.HrisBenefitCreateParams
+import com.tryfinch.api.models.HrisBenefitRegisterParams
 import com.tryfinch.api.models.HrisBenefitRetrieveParams
 import com.tryfinch.api.models.HrisBenefitUpdateParams
 import org.junit.jupiter.api.Test
@@ -118,5 +119,27 @@ internal class BenefitServiceAsyncTest {
         val page = benefitServiceAsync.listSupportedBenefits()
 
         page.items().forEach { it.validate() }
+    }
+
+    @Test
+    suspend fun register() {
+        val client =
+            FinchOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .accessToken("My Access Token")
+                .build()
+        val benefitServiceAsync = client.hris().benefits()
+
+        val registerCompanyBenefitResponse =
+            benefitServiceAsync.register(
+                HrisBenefitRegisterParams.builder()
+                    .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                    .description("description")
+                    .frequency(BenefitFrequency.EVERY_PAYCHECK)
+                    .type(BenefitType._457)
+                    .build()
+            )
+
+        registerCompanyBenefitResponse.validate()
     }
 }

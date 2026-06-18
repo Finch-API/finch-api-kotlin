@@ -6,8 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
+import com.tryfinch.api.models.AccountDisconnectEntityParams
 import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
+import com.tryfinch.api.models.DisconnectEntityResponse
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 
@@ -34,6 +36,15 @@ interface AccountServiceAsync {
     /** @see disconnect */
     suspend fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
         disconnect(AccountDisconnectParams.none(), requestOptions)
+
+    /**
+     * Disconnect entity(s) from a connection without affecting other entities associated with the
+     * same connection.
+     */
+    suspend fun disconnectEntity(
+        params: AccountDisconnectEntityParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DisconnectEntityResponse
 
     /** Read account information associated with an `access_token` */
     suspend fun introspect(
@@ -75,6 +86,16 @@ interface AccountServiceAsync {
             requestOptions: RequestOptions
         ): HttpResponseFor<DisconnectResponse> =
             disconnect(AccountDisconnectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /disconnect-entity`, but is otherwise the same as
+         * [AccountServiceAsync.disconnectEntity].
+         */
+        @MustBeClosed
+        suspend fun disconnectEntity(
+            params: AccountDisconnectEntityParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DisconnectEntityResponse>
 
         /**
          * Returns a raw HTTP response for `get /introspect`, but is otherwise the same as

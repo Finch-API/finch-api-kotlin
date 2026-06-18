@@ -4,6 +4,7 @@ package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -15,8 +16,10 @@ import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.json
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
+import com.tryfinch.api.models.AccountDisconnectEntityParams
 import com.tryfinch.api.models.AccountDisconnectParams
 import com.tryfinch.api.models.AccountIntrospectParams
+import com.tryfinch.api.models.DisconnectEntityResponse
 import com.tryfinch.api.models.DisconnectResponse
 import com.tryfinch.api.models.Introspection
 
@@ -38,6 +41,13 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
     ): DisconnectResponse =
         // post /disconnect
         withRawResponse().disconnect(params, requestOptions).parse()
+
+    override suspend fun disconnectEntity(
+        params: AccountDisconnectEntityParams,
+        requestOptions: RequestOptions,
+    ): DisconnectEntityResponse =
+        // post /disconnect-entity
+        withRawResponse().disconnectEntity(params, requestOptions).parse()
 
     override suspend fun introspect(
         params: AccountIntrospectParams,
@@ -79,6 +89,38 @@ class AccountServiceAsyncImpl internal constructor(private val clientOptions: Cl
             return errorHandler.handle(response).parseable {
                 response
                     .use { disconnectHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val disconnectEntityHandler: Handler<DisconnectEntityResponse> =
+            jsonHandler<DisconnectEntityResponse>(clientOptions.jsonMapper)
+
+        override suspend fun disconnectEntity(
+            params: AccountDisconnectEntityParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DisconnectEntityResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("disconnect-entity")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { disconnectEntityHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

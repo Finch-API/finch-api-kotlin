@@ -14,7 +14,8 @@ import com.tryfinch.api.core.http.HttpResponse.Handler
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
-import com.tryfinch.api.models.DirectoryListIndividualsResponse
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPageAsync
+import com.tryfinch.api.models.HrisDirectoryListIndividualsPageResponse
 import com.tryfinch.api.models.HrisDirectoryListIndividualsParams
 import com.tryfinch.api.models.HrisDirectoryListPageAsync
 import com.tryfinch.api.models.HrisDirectoryListPageResponse
@@ -43,7 +44,7 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
     override suspend fun listIndividuals(
         params: HrisDirectoryListIndividualsParams,
         requestOptions: RequestOptions,
-    ): DirectoryListIndividualsResponse =
+    ): HrisDirectoryListIndividualsPageAsync =
         // get /employer/directory
         withRawResponse().listIndividuals(params, requestOptions).parse()
 
@@ -94,14 +95,14 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
             }
         }
 
-        private val listIndividualsHandler: Handler<DirectoryListIndividualsResponse> =
-            jsonHandler<DirectoryListIndividualsResponse>(clientOptions.jsonMapper)
+        private val listIndividualsHandler: Handler<HrisDirectoryListIndividualsPageResponse> =
+            jsonHandler<HrisDirectoryListIndividualsPageResponse>(clientOptions.jsonMapper)
 
         @Deprecated("use `list` instead")
         override suspend fun listIndividuals(
             params: HrisDirectoryListIndividualsParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<DirectoryListIndividualsResponse> {
+        ): HttpResponseFor<HrisDirectoryListIndividualsPageAsync> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -118,6 +119,13 @@ class DirectoryServiceAsyncImpl internal constructor(private val clientOptions: 
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
+                    }
+                    .let {
+                        HrisDirectoryListIndividualsPageAsync.builder()
+                            .service(DirectoryServiceAsyncImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }
