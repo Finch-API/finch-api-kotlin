@@ -15,6 +15,8 @@ import com.tryfinch.api.services.blocking.hris.EmploymentService
 import com.tryfinch.api.services.blocking.hris.EmploymentServiceImpl
 import com.tryfinch.api.services.blocking.hris.IndividualService
 import com.tryfinch.api.services.blocking.hris.IndividualServiceImpl
+import com.tryfinch.api.services.blocking.hris.PayStatementItemService
+import com.tryfinch.api.services.blocking.hris.PayStatementItemServiceImpl
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PayStatementServiceImpl
 import com.tryfinch.api.services.blocking.hris.PaymentService
@@ -27,6 +29,10 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     private val company: CompanyService by lazy { CompanyServiceImpl(clientOptions) }
+
+    private val payStatementItem: PayStatementItemService by lazy {
+        PayStatementItemServiceImpl(clientOptions)
+    }
 
     private val directory: DirectoryService by lazy { DirectoryServiceImpl(clientOptions) }
 
@@ -51,6 +57,8 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
 
     override fun company(): CompanyService = company
 
+    override fun payStatementItem(): PayStatementItemService = payStatementItem
+
     override fun directory(): DirectoryService = directory
 
     override fun individuals(): IndividualService = individuals
@@ -70,6 +78,10 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val company: CompanyService.WithRawResponse by lazy {
             CompanyServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val payStatementItem: PayStatementItemService.WithRawResponse by lazy {
+            PayStatementItemServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val directory: DirectoryService.WithRawResponse by lazy {
@@ -106,6 +118,8 @@ class HrisServiceImpl internal constructor(private val clientOptions: ClientOpti
             HrisServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
         override fun company(): CompanyService.WithRawResponse = company
+
+        override fun payStatementItem(): PayStatementItemService.WithRawResponse = payStatementItem
 
         override fun directory(): DirectoryService.WithRawResponse = directory
 

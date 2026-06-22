@@ -17,8 +17,6 @@ import com.tryfinch.api.core.http.parseable
 import com.tryfinch.api.core.prepareAsync
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
-import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsync
-import com.tryfinch.api.services.async.hris.company.PayStatementItemServiceAsyncImpl
 
 class CompanyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     CompanyServiceAsync {
@@ -27,16 +25,10 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         WithRawResponseImpl(clientOptions)
     }
 
-    private val payStatementItem: PayStatementItemServiceAsync by lazy {
-        PayStatementItemServiceAsyncImpl(clientOptions)
-    }
-
     override fun withRawResponse(): CompanyServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyServiceAsync =
         CompanyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
-
-    override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
 
     override suspend fun retrieve(
         params: HrisCompanyRetrieveParams,
@@ -51,19 +43,12 @@ class CompanyServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
-            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): CompanyServiceAsync.WithRawResponse =
             CompanyServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier).build()
             )
-
-        override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
-            payStatementItem
 
         private val retrieveHandler: Handler<Company> =
             jsonHandler<Company>(clientOptions.jsonMapper)
