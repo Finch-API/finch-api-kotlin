@@ -133,9 +133,9 @@ private constructor(
          */
         fun body(body: JsonField<Body>) = apply { this.body = body }
 
-        /** Alias for calling [body] with `Body.ofPayStatementResponse(payStatementResponse)`. */
-        fun body(payStatementResponse: PayStatementResponseBody) =
-            body(Body.ofPayStatementResponse(payStatementResponse))
+        /** Alias for calling [body] with `Body.ofPayStatementData(payStatementData)`. */
+        fun body(payStatementData: PayStatementData) =
+            body(Body.ofPayStatementData(payStatementData))
 
         /** Alias for calling [body] with `Body.ofBatchError(batchError)`. */
         fun body(batchError: Body.BatchError) = body(Body.ofBatchError(batchError))
@@ -253,27 +253,26 @@ private constructor(
     @JsonSerialize(using = Body.Serializer::class)
     class Body
     private constructor(
-        private val payStatementResponse: PayStatementResponseBody? = null,
+        private val payStatementData: PayStatementData? = null,
         private val batchError: BatchError? = null,
         private val payStatementDataSyncInProgress: PayStatementDataSyncInProgress? = null,
         private val _json: JsonValue? = null,
     ) {
 
-        fun payStatementResponse(): PayStatementResponseBody? = payStatementResponse
+        fun payStatementData(): PayStatementData? = payStatementData
 
         fun batchError(): BatchError? = batchError
 
         fun payStatementDataSyncInProgress(): PayStatementDataSyncInProgress? =
             payStatementDataSyncInProgress
 
-        fun isPayStatementResponse(): Boolean = payStatementResponse != null
+        fun isPayStatementData(): Boolean = payStatementData != null
 
         fun isBatchError(): Boolean = batchError != null
 
         fun isPayStatementDataSyncInProgress(): Boolean = payStatementDataSyncInProgress != null
 
-        fun asPayStatementResponse(): PayStatementResponseBody =
-            payStatementResponse.getOrThrow("payStatementResponse")
+        fun asPayStatementData(): PayStatementData = payStatementData.getOrThrow("payStatementData")
 
         fun asBatchError(): BatchError = batchError.getOrThrow("batchError")
 
@@ -292,7 +291,7 @@ private constructor(
          * import com.tryfinch.api.core.JsonValue
          *
          * val result: String? = body.accept(object : Body.Visitor<String?> {
-         *     override fun visitPayStatementResponse(payStatementResponse: PayStatementResponseBody): String? = payStatementResponse.toString()
+         *     override fun visitPayStatementData(payStatementData: PayStatementData): String? = payStatementData.toString()
          *
          *     // ...
          *
@@ -308,8 +307,7 @@ private constructor(
          */
         fun <T> accept(visitor: Visitor<T>): T =
             when {
-                payStatementResponse != null ->
-                    visitor.visitPayStatementResponse(payStatementResponse)
+                payStatementData != null -> visitor.visitPayStatementData(payStatementData)
                 batchError != null -> visitor.visitBatchError(batchError)
                 payStatementDataSyncInProgress != null ->
                     visitor.visitPayStatementDataSyncInProgress(payStatementDataSyncInProgress)
@@ -334,10 +332,8 @@ private constructor(
 
             accept(
                 object : Visitor<Unit> {
-                    override fun visitPayStatementResponse(
-                        payStatementResponse: PayStatementResponseBody
-                    ) {
-                        payStatementResponse.validate()
+                    override fun visitPayStatementData(payStatementData: PayStatementData) {
+                        payStatementData.validate()
                     }
 
                     override fun visitBatchError(batchError: BatchError) {
@@ -371,9 +367,8 @@ private constructor(
         internal fun validity(): Int =
             accept(
                 object : Visitor<Int> {
-                    override fun visitPayStatementResponse(
-                        payStatementResponse: PayStatementResponseBody
-                    ) = payStatementResponse.validity()
+                    override fun visitPayStatementData(payStatementData: PayStatementData) =
+                        payStatementData.validity()
 
                     override fun visitBatchError(batchError: BatchError) = batchError.validity()
 
@@ -391,17 +386,17 @@ private constructor(
             }
 
             return other is Body &&
-                payStatementResponse == other.payStatementResponse &&
+                payStatementData == other.payStatementData &&
                 batchError == other.batchError &&
                 payStatementDataSyncInProgress == other.payStatementDataSyncInProgress
         }
 
         override fun hashCode(): Int =
-            Objects.hash(payStatementResponse, batchError, payStatementDataSyncInProgress)
+            Objects.hash(payStatementData, batchError, payStatementDataSyncInProgress)
 
         override fun toString(): String =
             when {
-                payStatementResponse != null -> "Body{payStatementResponse=$payStatementResponse}"
+                payStatementData != null -> "Body{payStatementData=$payStatementData}"
                 batchError != null -> "Body{batchError=$batchError}"
                 payStatementDataSyncInProgress != null ->
                     "Body{payStatementDataSyncInProgress=$payStatementDataSyncInProgress}"
@@ -411,8 +406,8 @@ private constructor(
 
         companion object {
 
-            fun ofPayStatementResponse(payStatementResponse: PayStatementResponseBody) =
-                Body(payStatementResponse = payStatementResponse)
+            fun ofPayStatementData(payStatementData: PayStatementData) =
+                Body(payStatementData = payStatementData)
 
             fun ofBatchError(batchError: BatchError) = Body(batchError = batchError)
 
@@ -424,7 +419,7 @@ private constructor(
         /** An interface that defines how to map each variant of [Body] to a value of type [T]. */
         interface Visitor<out T> {
 
-            fun visitPayStatementResponse(payStatementResponse: PayStatementResponseBody): T
+            fun visitPayStatementData(payStatementData: PayStatementData): T
 
             fun visitBatchError(batchError: BatchError): T
 
@@ -453,8 +448,8 @@ private constructor(
 
                 val bestMatches =
                     sequenceOf(
-                            tryDeserialize(node, jacksonTypeRef<PayStatementResponseBody>())?.let {
-                                Body(payStatementResponse = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<PayStatementData>())?.let {
+                                Body(payStatementData = it, _json = json)
                             },
                             tryDeserialize(node, jacksonTypeRef<BatchError>())?.let {
                                 Body(batchError = it, _json = json)
@@ -486,8 +481,7 @@ private constructor(
                 provider: SerializerProvider,
             ) {
                 when {
-                    value.payStatementResponse != null ->
-                        generator.writeObject(value.payStatementResponse)
+                    value.payStatementData != null -> generator.writeObject(value.payStatementData)
                     value.batchError != null -> generator.writeObject(value.batchError)
                     value.payStatementDataSyncInProgress != null ->
                         generator.writeObject(value.payStatementDataSyncInProgress)

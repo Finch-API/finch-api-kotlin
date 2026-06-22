@@ -9,6 +9,7 @@ import com.tryfinch.api.services.async.hris.DirectoryServiceAsync
 import com.tryfinch.api.services.async.hris.DocumentServiceAsync
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
+import com.tryfinch.api.services.async.hris.PayStatementItemServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
 
@@ -27,6 +28,8 @@ interface HrisServiceAsync {
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisServiceAsync
 
     fun company(): CompanyServiceAsync
+
+    fun payStatementItem(): PayStatementItemServiceAsync
 
     fun directory(): DirectoryServiceAsync
 
@@ -53,6 +56,8 @@ interface HrisServiceAsync {
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisServiceAsync.WithRawResponse
 
         fun company(): CompanyServiceAsync.WithRawResponse
+
+        fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse
 
         fun directory(): DirectoryServiceAsync.WithRawResponse
 

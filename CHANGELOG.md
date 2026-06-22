@@ -1,5 +1,18 @@
 # Changelog
 
+## 9.0.0 (2026-06-22)
+
+Full Changelog: [v8.7.0...v9.0.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.7.0...v9.0.0)
+
+### Features
+
+* **api:** manual updates ([7b00905](https://github.com/Finch-API/finch-api-kotlin/commit/7b00905235ecc69f4c4d2e899fa2a622b39dc4f4))
+
+
+### Bug Fixes
+
+* **payroll:** pay_statement_item is now a direct subresource of hris instead of company ([357dcc6](https://github.com/Finch-API/finch-api-kotlin/commit/357dcc63f772e099fab97b2326fdd25c23f7d217))
+
 ## 8.7.0 (2026-06-18)
 
 Full Changelog: [v8.6.0...v8.7.0](https://github.com/Finch-API/finch-api-kotlin/compare/v8.6.0...v8.7.0)

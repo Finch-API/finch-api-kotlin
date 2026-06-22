@@ -8,7 +8,6 @@ import com.tryfinch.api.core.RequestOptions
 import com.tryfinch.api.core.http.HttpResponseFor
 import com.tryfinch.api.models.Company
 import com.tryfinch.api.models.HrisCompanyRetrieveParams
-import com.tryfinch.api.services.blocking.hris.company.PayStatementItemService
 
 interface CompanyService {
 
@@ -23,8 +22,6 @@ interface CompanyService {
      * The original service is not modified.
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyService
-
-    fun payStatementItem(): PayStatementItemService
 
     /** Read basic company data */
     fun retrieve(
@@ -45,8 +42,6 @@ interface CompanyService {
          * The original service is not modified.
          */
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): CompanyService.WithRawResponse
-
-        fun payStatementItem(): PayStatementItemService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /employer/company`, but is otherwise the same as

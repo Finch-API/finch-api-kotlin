@@ -9,6 +9,7 @@ import com.tryfinch.api.services.blocking.hris.DirectoryService
 import com.tryfinch.api.services.blocking.hris.DocumentService
 import com.tryfinch.api.services.blocking.hris.EmploymentService
 import com.tryfinch.api.services.blocking.hris.IndividualService
+import com.tryfinch.api.services.blocking.hris.PayStatementItemService
 import com.tryfinch.api.services.blocking.hris.PayStatementService
 import com.tryfinch.api.services.blocking.hris.PaymentService
 
@@ -27,6 +28,8 @@ interface HrisService {
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisService
 
     fun company(): CompanyService
+
+    fun payStatementItem(): PayStatementItemService
 
     fun directory(): DirectoryService
 
@@ -53,6 +56,8 @@ interface HrisService {
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): HrisService.WithRawResponse
 
         fun company(): CompanyService.WithRawResponse
+
+        fun payStatementItem(): PayStatementItemService.WithRawResponse
 
         fun directory(): DirectoryService.WithRawResponse
 

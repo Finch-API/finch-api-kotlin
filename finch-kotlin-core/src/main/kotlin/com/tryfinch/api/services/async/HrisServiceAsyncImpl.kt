@@ -15,6 +15,8 @@ import com.tryfinch.api.services.async.hris.EmploymentServiceAsync
 import com.tryfinch.api.services.async.hris.EmploymentServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.IndividualServiceAsync
 import com.tryfinch.api.services.async.hris.IndividualServiceAsyncImpl
+import com.tryfinch.api.services.async.hris.PayStatementItemServiceAsync
+import com.tryfinch.api.services.async.hris.PayStatementItemServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsync
 import com.tryfinch.api.services.async.hris.PayStatementServiceAsyncImpl
 import com.tryfinch.api.services.async.hris.PaymentServiceAsync
@@ -28,6 +30,10 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
     }
 
     private val company: CompanyServiceAsync by lazy { CompanyServiceAsyncImpl(clientOptions) }
+
+    private val payStatementItem: PayStatementItemServiceAsync by lazy {
+        PayStatementItemServiceAsyncImpl(clientOptions)
+    }
 
     private val directory: DirectoryServiceAsync by lazy {
         DirectoryServiceAsyncImpl(clientOptions)
@@ -58,6 +64,8 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
     override fun company(): CompanyServiceAsync = company
 
+    override fun payStatementItem(): PayStatementItemServiceAsync = payStatementItem
+
     override fun directory(): DirectoryServiceAsync = directory
 
     override fun individuals(): IndividualServiceAsync = individuals
@@ -77,6 +85,10 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
         private val company: CompanyServiceAsync.WithRawResponse by lazy {
             CompanyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val payStatementItem: PayStatementItemServiceAsync.WithRawResponse by lazy {
+            PayStatementItemServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val directory: DirectoryServiceAsync.WithRawResponse by lazy {
@@ -115,6 +127,9 @@ class HrisServiceAsyncImpl internal constructor(private val clientOptions: Clien
             )
 
         override fun company(): CompanyServiceAsync.WithRawResponse = company
+
+        override fun payStatementItem(): PayStatementItemServiceAsync.WithRawResponse =
+            payStatementItem
 
         override fun directory(): DirectoryServiceAsync.WithRawResponse = directory
 
