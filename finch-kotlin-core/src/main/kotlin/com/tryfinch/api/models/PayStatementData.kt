@@ -17,7 +17,7 @@ import com.tryfinch.api.errors.FinchInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
-class PayStatementResponseBody
+class PayStatementData
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val paging: JsonField<Paging>,
@@ -76,7 +76,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [PayStatementResponseBody].
+         * Returns a mutable builder for constructing an instance of [PayStatementData].
          *
          * The following fields are required:
          * ```kotlin
@@ -87,17 +87,17 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [PayStatementResponseBody]. */
+    /** A builder for [PayStatementData]. */
     class Builder internal constructor() {
 
         private var paging: JsonField<Paging>? = null
         private var payStatements: JsonField<MutableList<PayStatement>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(payStatementResponseBody: PayStatementResponseBody) = apply {
-            paging = payStatementResponseBody.paging
-            payStatements = payStatementResponseBody.payStatements.map { it.toMutableList() }
-            additionalProperties = payStatementResponseBody.additionalProperties.toMutableMap()
+        internal fun from(payStatementData: PayStatementData) = apply {
+            paging = payStatementData.paging
+            payStatements = payStatementData.payStatements.map { it.toMutableList() }
+            additionalProperties = payStatementData.additionalProperties.toMutableMap()
         }
 
         fun paging(paging: Paging) = paging(JsonField.of(paging))
@@ -156,7 +156,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PayStatementResponseBody].
+         * Returns an immutable instance of [PayStatementData].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -168,8 +168,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): PayStatementResponseBody =
-            PayStatementResponseBody(
+        fun build(): PayStatementData =
+            PayStatementData(
                 checkRequired("paging", paging),
                 checkRequired("payStatements", payStatements).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
@@ -186,7 +186,7 @@ private constructor(
      * @throws FinchInvalidDataException if any value type in this object doesn't match its expected
      *   type.
      */
-    fun validate(): PayStatementResponseBody = apply {
+    fun validate(): PayStatementData = apply {
         if (validated) {
             return@apply
         }
@@ -416,7 +416,7 @@ private constructor(
             return true
         }
 
-        return other is PayStatementResponseBody &&
+        return other is PayStatementData &&
             paging == other.paging &&
             payStatements == other.payStatements &&
             additionalProperties == other.additionalProperties
@@ -427,5 +427,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PayStatementResponseBody{paging=$paging, payStatements=$payStatements, additionalProperties=$additionalProperties}"
+        "PayStatementData{paging=$paging, payStatements=$payStatements, additionalProperties=$additionalProperties}"
 }
