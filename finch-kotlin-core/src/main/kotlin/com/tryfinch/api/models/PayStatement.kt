@@ -636,7 +636,7 @@ private constructor(
         fun hours(): Double? = hours.getNullable("hours")
 
         /**
-         * The exact name of the deduction from the pay statement.
+         * The exact name of the earning from the pay statement.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -804,7 +804,7 @@ private constructor(
              */
             fun hours(hours: JsonField<Double>) = apply { this.hours = hours }
 
-            /** The exact name of the deduction from the pay statement. */
+            /** The exact name of the earning from the pay statement. */
             fun name(name: String?) = name(JsonField.ofNullable(name))
 
             /**
