@@ -33,7 +33,7 @@ private constructor(
     fun entityIds(): List<String>? = entityIds
 
     /**
-     * The array of batch requests.
+     * The array of batch requests. Maximum 10000 items per request.
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -111,7 +111,7 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** The array of batch requests. */
+        /** The array of batch requests. Maximum 10000 items per request. */
         fun requests(requests: List<Request>) = apply { body.requests(requests) }
 
         /**
@@ -296,7 +296,7 @@ private constructor(
         ) : this(requests, mutableMapOf())
 
         /**
-         * The array of batch requests.
+         * The array of batch requests. Maximum 10000 items per request.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -348,7 +348,7 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** The array of batch requests. */
+            /** The array of batch requests. Maximum 10000 items per request. */
             fun requests(requests: List<Request>) = requests(JsonField.of(requests))
 
             /**
@@ -481,9 +481,7 @@ private constructor(
         ) : this(individualId, mutableMapOf())
 
         /**
-         * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to the
-         * number of `individual_id` to send per request. It is preferantial to send all ids in a
-         * single request for Finch to optimize provider rate-limits.
+         * A stable Finch `id` (UUID v4) for an individual in the company.
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -536,11 +534,7 @@ private constructor(
                 additionalProperties = request.additionalProperties.toMutableMap()
             }
 
-            /**
-             * A stable Finch `id` (UUID v4) for an individual in the company. There is no limit to
-             * the number of `individual_id` to send per request. It is preferantial to send all ids
-             * in a single request for Finch to optimize provider rate-limits.
-             */
+            /** A stable Finch `id` (UUID v4) for an individual in the company. */
             fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
             /**

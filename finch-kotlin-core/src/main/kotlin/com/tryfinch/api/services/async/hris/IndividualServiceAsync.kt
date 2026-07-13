@@ -25,13 +25,9 @@ interface IndividualServiceAsync {
 
     /** Read individual data, excluding income and employment data */
     suspend fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+        params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPageAsync
-
-    /** @see retrieveMany */
-    suspend fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPageAsync =
-        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
     /**
      * A view of [IndividualServiceAsync] that provides access to raw HTTP responses for each
@@ -54,15 +50,8 @@ interface IndividualServiceAsync {
          */
         @MustBeClosed
         suspend fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+            params: HrisIndividualRetrieveManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPageAsync>
-
-        /** @see retrieveMany */
-        @MustBeClosed
-        suspend fun retrieveMany(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<HrisIndividualRetrieveManyPageAsync> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
     }
 }

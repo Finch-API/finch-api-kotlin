@@ -12,13 +12,13 @@ internal class HrisIndividualRetrieveManyParamsTest {
     fun create() {
         HrisIndividualRetrieveManyParams.builder()
             .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-            .options(
-                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
-            )
             .addRequest(
                 HrisIndividualRetrieveManyParams.Request.builder()
                     .individualId("individual_id")
                     .build()
+            )
+            .options(
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
             )
             .build()
     }
@@ -28,13 +28,13 @@ internal class HrisIndividualRetrieveManyParamsTest {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
-                .options(
-                    HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
-                )
                 .addRequest(
                     HrisIndividualRetrieveManyParams.Request.builder()
                         .individualId("individual_id")
                         .build()
+                )
+                .options(
+                    HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
                 )
                 .build()
 
@@ -50,7 +50,14 @@ internal class HrisIndividualRetrieveManyParamsTest {
 
     @Test
     fun queryParamsWithoutOptionalFields() {
-        val params = HrisIndividualRetrieveManyParams.builder().build()
+        val params =
+            HrisIndividualRetrieveManyParams.builder()
+                .addRequest(
+                    HrisIndividualRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
+                )
+                .build()
 
         val queryParams = params._queryParams()
 
@@ -62,9 +69,34 @@ internal class HrisIndividualRetrieveManyParamsTest {
         val params =
             HrisIndividualRetrieveManyParams.builder()
                 .addEntityId("550e8400-e29b-41d4-a716-446655440000")
+                .addRequest(
+                    HrisIndividualRetrieveManyParams.Request.builder()
+                        .individualId("individual_id")
+                        .build()
+                )
                 .options(
                     HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
                 )
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.requests())
+            .containsExactly(
+                HrisIndividualRetrieveManyParams.Request.builder()
+                    .individualId("individual_id")
+                    .build()
+            )
+        assertThat(body.options())
+            .isEqualTo(
+                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
+            )
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            HrisIndividualRetrieveManyParams.builder()
                 .addRequest(
                     HrisIndividualRetrieveManyParams.Request.builder()
                         .individualId("individual_id")
@@ -74,22 +106,11 @@ internal class HrisIndividualRetrieveManyParamsTest {
 
         val body = params._body()
 
-        assertThat(body.options())
-            .isEqualTo(
-                HrisIndividualRetrieveManyParams.Options.builder().addInclude("string").build()
-            )
         assertThat(body.requests())
             .containsExactly(
                 HrisIndividualRetrieveManyParams.Request.builder()
                     .individualId("individual_id")
                     .build()
             )
-    }
-
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params = HrisIndividualRetrieveManyParams.builder().build()
-
-        val body = params._body()
     }
 }
