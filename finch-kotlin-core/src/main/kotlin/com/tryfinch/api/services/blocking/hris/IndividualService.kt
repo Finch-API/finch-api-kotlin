@@ -25,13 +25,9 @@ interface IndividualService {
 
     /** Read individual data, excluding income and employment data */
     fun retrieveMany(
-        params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+        params: HrisIndividualRetrieveManyParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): HrisIndividualRetrieveManyPage
-
-    /** @see retrieveMany */
-    fun retrieveMany(requestOptions: RequestOptions): HrisIndividualRetrieveManyPage =
-        retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
 
     /** A view of [IndividualService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -51,15 +47,8 @@ interface IndividualService {
          */
         @MustBeClosed
         fun retrieveMany(
-            params: HrisIndividualRetrieveManyParams = HrisIndividualRetrieveManyParams.none(),
+            params: HrisIndividualRetrieveManyParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<HrisIndividualRetrieveManyPage>
-
-        /** @see retrieveMany */
-        @MustBeClosed
-        fun retrieveMany(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<HrisIndividualRetrieveManyPage> =
-            retrieveMany(HrisIndividualRetrieveManyParams.none(), requestOptions)
     }
 }
