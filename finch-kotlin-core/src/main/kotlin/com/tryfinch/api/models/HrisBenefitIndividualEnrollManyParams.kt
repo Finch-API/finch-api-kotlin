@@ -39,7 +39,10 @@ private constructor(
 
     fun benefitId(): String? = benefitId
 
-    /** The entity IDs to specify which entities' data to access. */
+    /**
+     * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
+     * request; a maximum of one is accepted.
+     */
     fun entityIds(): List<String>? = entityIds
 
     /** Array of the individual_id to enroll and a configuration object. */
@@ -86,7 +89,10 @@ private constructor(
 
         fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
-        /** The entity IDs to specify which entities' data to access. */
+        /**
+         * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
+         * per request; a maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }

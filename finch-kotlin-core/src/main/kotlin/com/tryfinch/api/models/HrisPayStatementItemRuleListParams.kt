@@ -16,7 +16,10 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The entity IDs to retrieve rules for. */
+    /**
+     * The entity IDs to retrieve rules for. Provide exactly one entity ID per request; a maximum of
+     * one is accepted.
+     */
     fun entityIds(): List<String>? = entityIds
 
     /** Additional headers to send with the request. */
@@ -53,7 +56,10 @@ private constructor(
                     hrisPayStatementItemRuleListParams.additionalQueryParams.toBuilder()
             }
 
-        /** The entity IDs to retrieve rules for. */
+        /**
+         * The entity IDs to retrieve rules for. Provide exactly one entity ID per request; a
+         * maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }

@@ -38,7 +38,10 @@ private constructor(
      */
     fun endDate(): LocalDate? = endDate
 
-    /** The entity IDs to specify which entities' data to access. */
+    /**
+     * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
+     * request; a maximum of one is accepted.
+     */
     fun entityIds(): List<String>? = entityIds
 
     /** Case-insensitive partial match search by pay statement item name. */
@@ -118,7 +121,10 @@ private constructor(
          */
         fun endDate(endDate: LocalDate?) = apply { this.endDate = endDate }
 
-        /** The entity IDs to specify which entities' data to access. */
+        /**
+         * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
+         * per request; a maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }
