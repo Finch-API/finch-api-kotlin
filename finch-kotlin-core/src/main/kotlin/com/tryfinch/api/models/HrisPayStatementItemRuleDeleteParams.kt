@@ -21,7 +21,10 @@ private constructor(
 
     fun ruleId(): String? = ruleId
 
-    /** The entity IDs to delete the rule for. */
+    /**
+     * The entity IDs to delete the rule for. Provide exactly one entity ID per request; a maximum
+     * of one is accepted.
+     */
     fun entityIds(): List<String>? = entityIds
 
     /** Additional body properties to send with the request. */
@@ -69,7 +72,10 @@ private constructor(
 
         fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
 
-        /** The entity IDs to delete the rule for. */
+        /**
+         * The entity IDs to delete the rule for. Provide exactly one entity ID per request; a
+         * maximum of one is accepted.
+         */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
         }
