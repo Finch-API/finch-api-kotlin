@@ -23,6 +23,7 @@ internal class SandboxIndividualUpdateParamsTest {
             .firstName("first_name")
             .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
             .lastName("last_name")
+            .maritalStatus(SandboxIndividualUpdateParams.MaritalStatus.SINGLE)
             .middleName("middle_name")
             .addPhoneNumber(
                 SandboxIndividualUpdateParams.PhoneNumber.builder()
@@ -73,6 +74,7 @@ internal class SandboxIndividualUpdateParamsTest {
                 .firstName("first_name")
                 .gender(SandboxIndividualUpdateParams.Gender.FEMALE)
                 .lastName("last_name")
+                .maritalStatus(SandboxIndividualUpdateParams.MaritalStatus.SINGLE)
                 .middleName("middle_name")
                 .addPhoneNumber(
                     SandboxIndividualUpdateParams.PhoneNumber.builder()
@@ -111,6 +113,8 @@ internal class SandboxIndividualUpdateParamsTest {
         assertThat(body.firstName()).isEqualTo("first_name")
         assertThat(body.gender()).isEqualTo(SandboxIndividualUpdateParams.Gender.FEMALE)
         assertThat(body.lastName()).isEqualTo("last_name")
+        assertThat(body.maritalStatus())
+            .isEqualTo(SandboxIndividualUpdateParams.MaritalStatus.SINGLE)
         assertThat(body.middleName()).isEqualTo("middle_name")
         assertThat(body.phoneNumbers())
             .containsExactly(
