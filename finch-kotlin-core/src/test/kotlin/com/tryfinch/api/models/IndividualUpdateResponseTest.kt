@@ -26,6 +26,7 @@ internal class IndividualUpdateResponseTest {
                 .firstName("first_name")
                 .gender(IndividualUpdateResponse.Gender.FEMALE)
                 .lastName("last_name")
+                .maritalStatus(IndividualUpdateResponse.MaritalStatus.SINGLE)
                 .middleName("middle_name")
                 .addPhoneNumber(
                     IndividualUpdateResponse.PhoneNumber.builder()
@@ -65,6 +66,8 @@ internal class IndividualUpdateResponseTest {
         assertThat(individualUpdateResponse.gender())
             .isEqualTo(IndividualUpdateResponse.Gender.FEMALE)
         assertThat(individualUpdateResponse.lastName()).isEqualTo("last_name")
+        assertThat(individualUpdateResponse.maritalStatus())
+            .isEqualTo(IndividualUpdateResponse.MaritalStatus.SINGLE)
         assertThat(individualUpdateResponse.middleName()).isEqualTo("middle_name")
         assertThat(individualUpdateResponse.phoneNumbers())
             .containsExactly(
@@ -108,6 +111,7 @@ internal class IndividualUpdateResponseTest {
                 .firstName("first_name")
                 .gender(IndividualUpdateResponse.Gender.FEMALE)
                 .lastName("last_name")
+                .maritalStatus(IndividualUpdateResponse.MaritalStatus.SINGLE)
                 .middleName("middle_name")
                 .addPhoneNumber(
                     IndividualUpdateResponse.PhoneNumber.builder()

@@ -30,6 +30,7 @@ internal class SandboxEmploymentUpdateParamsTest {
             .endDate("end_date")
             .firstName("first_name")
             .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
+            .highlyCompensatedEmployee(true)
             .income(
                 Income.builder()
                     .amount(0L)
@@ -47,6 +48,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
             .isActive(true)
+            .keyEmployee(true)
             .lastName("last_name")
             .latestRehireDate("latest_rehire_date")
             .location(
@@ -70,6 +72,8 @@ internal class SandboxEmploymentUpdateParamsTest {
             .sourceId("source_id")
             .startDate("3/4/2020")
             .title("title")
+            .unionCode("union_code")
+            .unionLocal("union_local")
             .build()
     }
 
@@ -105,6 +109,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                 .endDate("end_date")
                 .firstName("first_name")
                 .flsaStatus(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
+                .highlyCompensatedEmployee(true)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -122,6 +127,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                         .build()
                 )
                 .isActive(true)
+                .keyEmployee(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
                 .location(
@@ -145,6 +151,8 @@ internal class SandboxEmploymentUpdateParamsTest {
                 .sourceId("source_id")
                 .startDate("3/4/2020")
                 .title("title")
+                .unionCode("union_code")
+                .unionLocal("union_local")
                 .build()
 
         val body = params._body()
@@ -171,6 +179,7 @@ internal class SandboxEmploymentUpdateParamsTest {
         assertThat(body.endDate()).isEqualTo("end_date")
         assertThat(body.firstName()).isEqualTo("first_name")
         assertThat(body.flsaStatus()).isEqualTo(SandboxEmploymentUpdateParams.FlsaStatus.EXEMPT)
+        assertThat(body.highlyCompensatedEmployee()).isEqualTo(true)
         assertThat(body.income())
             .isEqualTo(
                 Income.builder()
@@ -190,6 +199,7 @@ internal class SandboxEmploymentUpdateParamsTest {
                     .build()
             )
         assertThat(body.isActive()).isEqualTo(true)
+        assertThat(body.keyEmployee()).isEqualTo(true)
         assertThat(body.lastName()).isEqualTo("last_name")
         assertThat(body.latestRehireDate()).isEqualTo("latest_rehire_date")
         assertThat(body.location())
@@ -215,6 +225,8 @@ internal class SandboxEmploymentUpdateParamsTest {
         assertThat(body.sourceId()).isEqualTo("source_id")
         assertThat(body.startDate()).isEqualTo("3/4/2020")
         assertThat(body.title()).isEqualTo("title")
+        assertThat(body.unionCode()).isEqualTo("union_code")
+        assertThat(body.unionLocal()).isEqualTo("union_local")
     }
 
     @Test
