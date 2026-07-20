@@ -33,6 +33,7 @@ internal class EmploymentUpdateResponseTest {
                 .endDate("end_date")
                 .firstName("first_name")
                 .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
+                .highlyCompensatedEmployee(true)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -50,6 +51,7 @@ internal class EmploymentUpdateResponseTest {
                         .build()
                 )
                 .isActive(true)
+                .keyEmployee(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
                 .location(
@@ -73,6 +75,8 @@ internal class EmploymentUpdateResponseTest {
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
+                .unionCode("union_code")
+                .unionLocal("union_local")
                 .build()
 
         assertThat(employmentUpdateResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -96,6 +100,7 @@ internal class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.firstName()).isEqualTo("first_name")
         assertThat(employmentUpdateResponse.flsaStatus())
             .isEqualTo(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
+        assertThat(employmentUpdateResponse.highlyCompensatedEmployee()).isEqualTo(true)
         assertThat(employmentUpdateResponse.income())
             .isEqualTo(
                 Income.builder()
@@ -115,6 +120,7 @@ internal class EmploymentUpdateResponseTest {
                     .build()
             )
         assertThat(employmentUpdateResponse.isActive()).isEqualTo(true)
+        assertThat(employmentUpdateResponse.keyEmployee()).isEqualTo(true)
         assertThat(employmentUpdateResponse.lastName()).isEqualTo("last_name")
         assertThat(employmentUpdateResponse.latestRehireDate()).isEqualTo("latest_rehire_date")
         assertThat(employmentUpdateResponse.location())
@@ -140,6 +146,8 @@ internal class EmploymentUpdateResponseTest {
         assertThat(employmentUpdateResponse.sourceId()).isEqualTo("source_id")
         assertThat(employmentUpdateResponse.startDate()).isEqualTo("start_date")
         assertThat(employmentUpdateResponse.title()).isEqualTo("title")
+        assertThat(employmentUpdateResponse.unionCode()).isEqualTo("union_code")
+        assertThat(employmentUpdateResponse.unionLocal()).isEqualTo("union_local")
     }
 
     @Test
@@ -166,6 +174,7 @@ internal class EmploymentUpdateResponseTest {
                 .endDate("end_date")
                 .firstName("first_name")
                 .flsaStatus(EmploymentUpdateResponse.FlsaStatus.EXEMPT)
+                .highlyCompensatedEmployee(true)
                 .income(
                     Income.builder()
                         .amount(0L)
@@ -183,6 +192,7 @@ internal class EmploymentUpdateResponseTest {
                         .build()
                 )
                 .isActive(true)
+                .keyEmployee(true)
                 .lastName("last_name")
                 .latestRehireDate("latest_rehire_date")
                 .location(
@@ -206,6 +216,8 @@ internal class EmploymentUpdateResponseTest {
                 .sourceId("source_id")
                 .startDate("start_date")
                 .title("title")
+                .unionCode("union_code")
+                .unionLocal("union_local")
                 .build()
 
         val roundtrippedEmploymentUpdateResponse =

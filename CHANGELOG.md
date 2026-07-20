@@ -1,5 +1,14 @@
 # Changelog
 
+## 9.4.0 (2026-07-17)
+
+Full Changelog: [v9.3.0...v9.4.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.3.0...v9.4.0)
+
+### Features
+
+* **api:** api update ([13ee082](https://github.com/Finch-API/finch-api-kotlin/commit/13ee08204dc152300fe27e7ecf806f3050c5afd8))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([86e69ad](https://github.com/Finch-API/finch-api-kotlin/commit/86e69ada9999bb241d6d367f7fe0fe67e46ad1b2))
+
 ## 9.3.0 (2026-07-15)
 
 Full Changelog: [v9.2.0...v9.3.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.2.0...v9.3.0)
