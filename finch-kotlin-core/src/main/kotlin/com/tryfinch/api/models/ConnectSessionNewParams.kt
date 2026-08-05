@@ -1100,6 +1100,12 @@ private constructor(
 
             val PAY_STATEMENT = of("pay_statement")
 
+            val PLANS = of("plans")
+
+            val PLANS_DEPENDENTS = of("plans_dependents")
+
+            val PLANS_ENROLLMENTS = of("plans_enrollments")
+
             val RECORDKEEPING = of("recordkeeping")
 
             val SSN = of("ssn")
@@ -1118,6 +1124,9 @@ private constructor(
             INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
+            PLANS,
+            PLANS_DEPENDENTS,
+            PLANS_ENROLLMENTS,
             RECORDKEEPING,
             SSN,
         }
@@ -1141,6 +1150,9 @@ private constructor(
             INDIVIDUAL,
             PAYMENT,
             PAY_STATEMENT,
+            PLANS,
+            PLANS_DEPENDENTS,
+            PLANS_ENROLLMENTS,
             RECORDKEEPING,
             SSN,
             /**
@@ -1168,6 +1180,9 @@ private constructor(
                 INDIVIDUAL -> Value.INDIVIDUAL
                 PAYMENT -> Value.PAYMENT
                 PAY_STATEMENT -> Value.PAY_STATEMENT
+                PLANS -> Value.PLANS
+                PLANS_DEPENDENTS -> Value.PLANS_DEPENDENTS
+                PLANS_ENROLLMENTS -> Value.PLANS_ENROLLMENTS
                 RECORDKEEPING -> Value.RECORDKEEPING
                 SSN -> Value.SSN
                 else -> Value._UNKNOWN
@@ -1192,6 +1207,9 @@ private constructor(
                 INDIVIDUAL -> Known.INDIVIDUAL
                 PAYMENT -> Known.PAYMENT
                 PAY_STATEMENT -> Known.PAY_STATEMENT
+                PLANS -> Known.PLANS
+                PLANS_DEPENDENTS -> Known.PLANS_DEPENDENTS
+                PLANS_ENROLLMENTS -> Known.PLANS_ENROLLMENTS
                 RECORDKEEPING -> Known.RECORDKEEPING
                 SSN -> Known.SSN
                 else -> throw FinchInvalidDataException("Unknown ConnectProducts: $value")
