@@ -74,12 +74,10 @@ private constructor(
     fun accessToken(): String = accessToken.getRequired("access_token")
 
     /**
-     * [DEPRECATED] Use `connection_id` to associate a connection with an access token
-     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    @Deprecated("deprecated") fun accountId(): String = accountId.getRequired("account_id")
+    fun accountId(): String = accountId.getRequired("account_id")
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -89,24 +87,18 @@ private constructor(
         authenticationType.getRequired("authentication_type")
 
     /**
-     * The Finch UUID of the company associated with the `access_token`.
-     *
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
-     *   missing or null (e.g. if the server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun companyId(): String = companyId.getRequired("company_id")
+    fun companyId(): String? = companyId.getNullable("company_id")
 
     /**
-     * The ID of the new connection
-     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun connectionId(): String = connectionId.getRequired("connection_id")
 
     /**
-     * The ID of the entity for this connection
-     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -119,18 +111,16 @@ private constructor(
     fun products(): List<String> = products.getRequired("products")
 
     /**
-     * The ID of the provider associated with the `access_token`.
-     *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun providerId(): String = providerId.getRequired("provider_id")
 
     /**
-     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun tokenType(): String? = tokenType.getNullable("token_type")
+    fun tokenType(): String = tokenType.getRequired("token_type")
 
     /**
      * Returns the raw JSON value of [accessToken].
@@ -146,10 +136,7 @@ private constructor(
      *
      * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @Deprecated("deprecated")
-    @JsonProperty("account_id")
-    @ExcludeMissing
-    fun _accountId(): JsonField<String> = accountId
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * Returns the raw JSON value of [authenticationType].
@@ -232,6 +219,7 @@ private constructor(
          * .entityId()
          * .products()
          * .providerId()
+         * .tokenType()
          * ```
          */
         fun builder() = Builder()
@@ -248,7 +236,7 @@ private constructor(
         private var entityId: JsonField<String>? = null
         private var products: JsonField<MutableList<String>>? = null
         private var providerId: JsonField<String>? = null
-        private var tokenType: JsonField<String> = JsonMissing.of()
+        private var tokenType: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(connectionCreateResponse: ConnectionCreateResponse) = apply {
@@ -275,8 +263,6 @@ private constructor(
          */
         fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
 
-        /** [DEPRECATED] Use `connection_id` to associate a connection with an access token */
-        @Deprecated("deprecated")
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
         /**
@@ -286,7 +272,6 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        @Deprecated("deprecated")
         fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         fun authenticationType(authenticationType: AuthenticationType) =
@@ -303,8 +288,7 @@ private constructor(
             this.authenticationType = authenticationType
         }
 
-        /** The Finch UUID of the company associated with the `access_token`. */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+        fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
 
         /**
          * Sets [Builder.companyId] to an arbitrary JSON value.
@@ -315,7 +299,6 @@ private constructor(
          */
         fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
-        /** The ID of the new connection */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
 
         /**
@@ -329,7 +312,6 @@ private constructor(
             this.connectionId = connectionId
         }
 
-        /** The ID of the entity for this connection */
         fun entityId(entityId: String) = entityId(JsonField.of(entityId))
 
         /**
@@ -365,7 +347,6 @@ private constructor(
                 }
         }
 
-        /** The ID of the provider associated with the `access_token`. */
         fun providerId(providerId: String) = providerId(JsonField.of(providerId))
 
         /**
@@ -422,6 +403,7 @@ private constructor(
          * .entityId()
          * .products()
          * .providerId()
+         * .tokenType()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -436,7 +418,7 @@ private constructor(
                 checkRequired("entityId", entityId),
                 checkRequired("products", products).map { it.toImmutable() },
                 checkRequired("providerId", providerId),
-                tokenType,
+                checkRequired("tokenType", tokenType),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -508,23 +490,23 @@ private constructor(
 
         companion object {
 
-            val CREDENTIAL = of("credential")
-
             val API_TOKEN = of("api_token")
 
-            val OAUTH = of("oauth")
-
             val ASSISTED = of("assisted")
+
+            val CREDENTIAL = of("credential")
+
+            val OAUTH = of("oauth")
 
             fun of(value: String) = AuthenticationType(JsonField.of(value))
         }
 
         /** An enum containing [AuthenticationType]'s known values. */
         enum class Known {
-            CREDENTIAL,
             API_TOKEN,
-            OAUTH,
             ASSISTED,
+            CREDENTIAL,
+            OAUTH,
         }
 
         /**
@@ -537,10 +519,10 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            CREDENTIAL,
             API_TOKEN,
-            OAUTH,
             ASSISTED,
+            CREDENTIAL,
+            OAUTH,
             /**
              * An enum member indicating that [AuthenticationType] was instantiated with an unknown
              * value.
@@ -557,10 +539,10 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                CREDENTIAL -> Value.CREDENTIAL
                 API_TOKEN -> Value.API_TOKEN
-                OAUTH -> Value.OAUTH
                 ASSISTED -> Value.ASSISTED
+                CREDENTIAL -> Value.CREDENTIAL
+                OAUTH -> Value.OAUTH
                 else -> Value._UNKNOWN
             }
 
@@ -574,10 +556,10 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                CREDENTIAL -> Known.CREDENTIAL
                 API_TOKEN -> Known.API_TOKEN
-                OAUTH -> Known.OAUTH
                 ASSISTED -> Known.ASSISTED
+                CREDENTIAL -> Known.CREDENTIAL
+                OAUTH -> Known.OAUTH
                 else -> throw FinchInvalidDataException("Unknown AuthenticationType: $value")
             }
 
