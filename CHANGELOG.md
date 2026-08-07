@@ -1,5 +1,13 @@
 # Changelog
 
+## 9.7.0 (2026-08-07)
+
+Full Changelog: [v9.6.0...v9.7.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.6.0...v9.7.0)
+
+### Features
+
+* **api:** api update ([abc53fc](https://github.com/Finch-API/finch-api-kotlin/commit/abc53fc2ef71be1099c879ffbcb5285b90de5a46))
+
 ## 9.6.0 (2026-08-07)
 
 Full Changelog: [v9.5.0...v9.6.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.5.0...v9.6.0)
