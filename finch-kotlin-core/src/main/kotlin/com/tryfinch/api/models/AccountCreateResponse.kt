@@ -476,23 +476,23 @@ private constructor(
 
         companion object {
 
-            val CREDENTIAL = of("credential")
-
             val API_TOKEN = of("api_token")
 
-            val OAUTH = of("oauth")
-
             val ASSISTED = of("assisted")
+
+            val CREDENTIAL = of("credential")
+
+            val OAUTH = of("oauth")
 
             fun of(value: String) = AuthenticationType(JsonField.of(value))
         }
 
         /** An enum containing [AuthenticationType]'s known values. */
         enum class Known {
-            CREDENTIAL,
             API_TOKEN,
-            OAUTH,
             ASSISTED,
+            CREDENTIAL,
+            OAUTH,
         }
 
         /**
@@ -505,10 +505,10 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            CREDENTIAL,
             API_TOKEN,
-            OAUTH,
             ASSISTED,
+            CREDENTIAL,
+            OAUTH,
             /**
              * An enum member indicating that [AuthenticationType] was instantiated with an unknown
              * value.
@@ -525,10 +525,10 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                CREDENTIAL -> Value.CREDENTIAL
                 API_TOKEN -> Value.API_TOKEN
-                OAUTH -> Value.OAUTH
                 ASSISTED -> Value.ASSISTED
+                CREDENTIAL -> Value.CREDENTIAL
+                OAUTH -> Value.OAUTH
                 else -> Value._UNKNOWN
             }
 
@@ -542,10 +542,10 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                CREDENTIAL -> Known.CREDENTIAL
                 API_TOKEN -> Known.API_TOKEN
-                OAUTH -> Known.OAUTH
                 ASSISTED -> Known.ASSISTED
+                CREDENTIAL -> Known.CREDENTIAL
+                OAUTH -> Known.OAUTH
                 else -> throw FinchInvalidDataException("Unknown AuthenticationType: $value")
             }
 
