@@ -1,5 +1,25 @@
 # Changelog
 
+## 9.8.0 (2026-08-17)
+
+Full Changelog: [v9.7.0...v9.8.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.7.0...v9.8.0)
+
+### Features
+
+* **api:** api update ([b8ead24](https://github.com/Finch-API/finch-api-kotlin/commit/b8ead241b152b16b7cde94600c0d213fcd57e124))
+* **api:** api update ([42f12f4](https://github.com/Finch-API/finch-api-kotlin/commit/42f12f449f34999a689151e8915422facb3b6cf2))
+* **api:** api update ([dfb7bc2](https://github.com/Finch-API/finch-api-kotlin/commit/dfb7bc27c01906911a87741993a7bf5467744f24))
+
+
+### Bug Fixes
+
+* **docs:** link the javadoc badge so the version stays current after release ([afdc011](https://github.com/Finch-API/finch-api-kotlin/commit/afdc01182f0538679b5f5e22c60b5c0b979c6a19))
+
+
+### Chores
+
+* **internal:** codegen related update ([83b85e1](https://github.com/Finch-API/finch-api-kotlin/commit/83b85e16479ec4f920d2646a8b8280c1f56c5dc2))
+
 ## 9.7.0 (2026-08-07)
 
 Full Changelog: [v9.6.0...v9.7.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.6.0...v9.7.0)
