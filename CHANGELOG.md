@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.8.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.7.0...v9.8.0) (2026-08-20)
+
+
+### Features
+
+* **stainless:** migrate SDK generation from Stainless SaaS to self-hosted stlc - PLAT-3989 ([c55cb7d](https://github.com/Finch-API/finch-api-kotlin/commit/c55cb7dd42b6dbb17c940469055fac47e43ac3c7))
+
 ## 9.7.0 (2026-08-07)
 
 Full Changelog: [v9.6.0...v9.7.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.6.0...v9.7.0)
