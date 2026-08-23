@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.8.1](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.0...v9.8.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* **stainless:** prevent codegen release deadlock - PLAT-3989 ([d079221](https://github.com/Finch-API/finch-api-kotlin/commit/d079221030534c17c1c68a41a38dd32432ac6e15))
+
 ## [9.8.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.7.0...v9.8.0) (2026-08-20)
 
 
