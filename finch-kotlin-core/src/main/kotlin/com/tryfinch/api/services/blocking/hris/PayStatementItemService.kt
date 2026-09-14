@@ -36,7 +36,10 @@ interface PayStatementItemService {
 
     /** @see list */
     fun list(requestOptions: RequestOptions): HrisPayStatementItemListPage =
-        list(HrisPayStatementItemListParams.none(), requestOptions)
+        list(
+            HrisPayStatementItemListParams.none(),
+            requestOptions,
+        )
 
     /**
      * A view of [PayStatementItemService] that provides access to raw HTTP responses for each
@@ -68,6 +71,9 @@ interface PayStatementItemService {
         /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisPayStatementItemListPage> =
-            list(HrisPayStatementItemListParams.none(), requestOptions)
+            list(
+                HrisPayStatementItemListParams.none(),
+                requestOptions,
+            )
     }
 }

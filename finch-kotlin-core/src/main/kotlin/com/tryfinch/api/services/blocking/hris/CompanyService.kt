@@ -31,7 +31,10 @@ interface CompanyService {
 
     /** @see retrieve */
     fun retrieve(requestOptions: RequestOptions): Company =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+        retrieve(
+            HrisCompanyRetrieveParams.none(),
+            requestOptions,
+        )
 
     /** A view of [CompanyService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -56,6 +59,9 @@ interface CompanyService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+            retrieve(
+                HrisCompanyRetrieveParams.none(),
+                requestOptions,
+            )
     }
 }

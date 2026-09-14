@@ -116,7 +116,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -166,7 +168,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -190,7 +194,9 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach {
+                    put("entity_ids[]", it)
+                }
                 putAll(additionalQueryParams)
             }
             .build()

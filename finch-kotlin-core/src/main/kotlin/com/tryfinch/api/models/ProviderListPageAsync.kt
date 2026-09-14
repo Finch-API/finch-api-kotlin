@@ -61,13 +61,19 @@ private constructor(
             items = providerListPageAsync.items
         }
 
-        fun service(service: ProviderServiceAsync) = apply { this.service = service }
+        fun service(service: ProviderServiceAsync) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: ProviderListParams) = apply { this.params = params }
+        fun params(params: ProviderListParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<ProviderListResponse>) = apply { this.items = items }
+        fun items(items: List<ProviderListResponse>) = apply {
+            this.items = items
+        }
 
         /**
          * Returns an immutable instance of [ProviderListPageAsync].
@@ -85,9 +91,18 @@ private constructor(
          */
         fun build(): ProviderListPageAsync =
             ProviderListPageAsync(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("items", items),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "items",
+                    items,
+                ),
             )
     }
 

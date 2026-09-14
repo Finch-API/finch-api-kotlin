@@ -80,7 +80,9 @@ private constructor(
             entityIds = (entityIds ?: mutableListOf()).apply { add(entityId) }
         }
 
-        fun individualId(individualId: String?) = apply { this.individualId = individualId }
+        fun individualId(individualId: String?) = apply {
+            this.individualId = individualId
+        }
 
         fun payFrequencies(payFrequencies: List<String>?) = apply {
             this.payFrequencies = payFrequencies?.toMutableList()
@@ -137,7 +139,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -187,7 +191,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -213,9 +219,13 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach {
+                    put("entity_ids[]", it)
+                }
                 individualId?.let { put("individual_id", it) }
-                payFrequencies?.forEach { put("pay_frequencies[]", it) }
+                payFrequencies?.forEach {
+                    put("pay_frequencies[]", it)
+                }
                 putAll(additionalQueryParams)
             }
             .build()

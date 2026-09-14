@@ -83,7 +83,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -133,7 +135,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -145,7 +149,10 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): AccountIntrospectParams =
-            AccountIntrospectParams(additionalHeaders.build(), additionalQueryParams.build())
+            AccountIntrospectParams(
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
     override fun _headers(): Headers = additionalHeaders

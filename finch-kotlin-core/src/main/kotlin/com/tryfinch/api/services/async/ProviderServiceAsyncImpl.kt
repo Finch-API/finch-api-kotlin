@@ -63,12 +63,32 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
+<<<<<<< HEAD
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.none(),
+                    )
+||||||| parent of 907c97c (Apply custom code)
+                    .prepareAsync(
+                        clientOptions,
+                        params,
+                        SecurityOptions.builder().bearerAuth(true).build(),
+                    )
+=======
                     .prepareAsync(clientOptions, params)
+>>>>>>> 907c97c (Apply custom code)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            val response =
+                clientOptions.httpClient.executeAsync(
+                    request,
+                    requestOptions,
+                )
             return errorHandler.handle(response).parseable {
                 response
-                    .use { listHandler.handle(it) }
+                    .use {
+                        listHandler.handle(it)
+                    }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }

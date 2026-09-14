@@ -6,7 +6,14 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.http.Headers
 
 abstract class FinchServiceException
-protected constructor(message: String, cause: Throwable? = null) : FinchException(message, cause) {
+protected constructor(
+    message: String,
+    cause: Throwable? = null,
+) :
+    FinchException(
+        message,
+        cause,
+    ) {
 
     abstract fun statusCode(): Int
 

@@ -29,7 +29,11 @@ private constructor(
         @ExcludeMissing
         connectUrl: JsonField<String> = JsonMissing.of(),
         @JsonProperty("session_id") @ExcludeMissing sessionId: JsonField<String> = JsonMissing.of(),
-    ) : this(connectUrl, sessionId, mutableMapOf())
+    ) : this(
+        connectUrl,
+        sessionId,
+        mutableMapOf(),
+    )
 
     /**
      * The Connect URL to redirect the user to for authentication
@@ -110,7 +114,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun connectUrl(connectUrl: JsonField<String>) = apply { this.connectUrl = connectUrl }
+        fun connectUrl(connectUrl: JsonField<String>) = apply {
+            this.connectUrl = connectUrl
+        }
 
         /** The unique identifier for the created connect session */
         fun sessionId(sessionId: String) = sessionId(JsonField.of(sessionId))
@@ -122,7 +128,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun sessionId(sessionId: JsonField<String>) = apply { this.sessionId = sessionId }
+        fun sessionId(sessionId: JsonField<String>) = apply {
+            this.sessionId = sessionId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -137,7 +145,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -158,8 +168,14 @@ private constructor(
          */
         fun build(): SessionNewResponse =
             SessionNewResponse(
-                checkRequired("connectUrl", connectUrl),
-                checkRequired("sessionId", sessionId),
+                checkRequired(
+                    "connectUrl",
+                    connectUrl,
+                ),
+                checkRequired(
+                    "sessionId",
+                    sessionId,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

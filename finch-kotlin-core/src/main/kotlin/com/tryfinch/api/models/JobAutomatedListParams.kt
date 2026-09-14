@@ -58,7 +58,9 @@ private constructor(
         }
 
         /** Number of items to return */
-        fun limit(limit: Long?) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply {
+            this.limit = limit
+        }
 
         /**
          * Alias for [Builder.limit].
@@ -68,7 +70,9 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long?) = apply { this.offset = offset }
+        fun offset(offset: Long?) = apply {
+            this.offset = offset
+        }
 
         /**
          * Alias for [Builder.offset].
@@ -119,7 +123,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -169,7 +175,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)

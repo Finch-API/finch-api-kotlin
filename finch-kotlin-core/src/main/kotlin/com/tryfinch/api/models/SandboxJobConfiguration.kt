@@ -30,7 +30,11 @@ private constructor(
         @ExcludeMissing
         completionStatus: JsonField<CompletionStatus> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-    ) : this(completionStatus, type, mutableMapOf())
+    ) : this(
+        completionStatus,
+        type,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -122,7 +126,9 @@ private constructor(
          * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
+        fun type(type: JsonField<Type>) = apply {
+            this.type = type
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -137,7 +143,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -158,8 +166,14 @@ private constructor(
          */
         fun build(): SandboxJobConfiguration =
             SandboxJobConfiguration(
-                checkRequired("completionStatus", completionStatus),
-                checkRequired("type", type),
+                checkRequired(
+                    "completionStatus",
+                    completionStatus,
+                ),
+                checkRequired(
+                    "type",
+                    type,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -238,9 +252,11 @@ private constructor(
          * An enum containing [CompletionStatus]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [CompletionStatus] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -377,9 +393,11 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

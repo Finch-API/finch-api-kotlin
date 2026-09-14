@@ -119,10 +119,14 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [requests]
          */
-        fun body(body: Body) = apply { this.body = body.toBuilder() }
+        fun body(body: Body) = apply {
+            this.body = body.toBuilder()
+        }
 
         /** The array of batch requests. Maximum 10 payment_ids per request. */
-        fun requests(requests: List<Request>) = apply { body.requests(requests) }
+        fun requests(requests: List<Request>) = apply {
+            body.requests(requests)
+        }
 
         /**
          * Sets [Builder.requests] to an arbitrary JSON value.
@@ -131,21 +135,28 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun requests(requests: JsonField<List<Request>>) = apply { body.requests(requests) }
+        fun requests(requests: JsonField<List<Request>>) = apply {
+            body.requests(requests)
+        }
 
         /**
          * Adds a single [Request] to [requests].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addRequest(request: Request) = apply { body.addRequest(request) }
+        fun addRequest(request: Request) = apply {
+            body.addRequest(request)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
+            body.putAdditionalProperty(
+                key,
+                value,
+            )
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -153,7 +164,9 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            body.removeAdditionalProperty(key)
+        }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -201,7 +214,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -251,7 +266,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -285,7 +302,9 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach {
+                    put("entity_ids[]", it)
+                }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -302,7 +321,10 @@ private constructor(
             @JsonProperty("requests")
             @ExcludeMissing
             requests: JsonField<List<Request>> = JsonMissing.of()
-        ) : this(requests, mutableMapOf())
+        ) : this(
+            requests,
+            mutableMapOf(),
+        )
 
         /**
          * The array of batch requests. Maximum 10 payment_ids per request.
@@ -396,7 +418,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -416,7 +440,11 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    checkRequired("requests", requests).map { it.toImmutable() },
+                    checkRequired(
+                            "requests",
+                            requests,
+                        )
+                        .map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -491,7 +519,12 @@ private constructor(
             paymentId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
-        ) : this(paymentId, limit, offset, mutableMapOf())
+        ) : this(
+            paymentId,
+            limit,
+            offset,
+            mutableMapOf(),
+        )
 
         /**
          * A stable Finch `id` (UUID v4) for a payment.
@@ -588,7 +621,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
+            fun paymentId(paymentId: JsonField<String>) = apply {
+                this.paymentId = paymentId
+            }
 
             /** Number of pay statements to return (defaults to 100, maximum 5000). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -600,7 +635,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
+            fun limit(limit: JsonField<Long>) = apply {
+                this.limit = limit
+            }
 
             /** Index to start from. */
             fun offset(offset: Long) = offset(JsonField.of(offset))
@@ -612,7 +649,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+            fun offset(offset: JsonField<Long>) = apply {
+                this.offset = offset
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -627,7 +666,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -647,7 +688,10 @@ private constructor(
              */
             fun build(): Request =
                 Request(
-                    checkRequired("paymentId", paymentId),
+                    checkRequired(
+                        "paymentId",
+                        paymentId,
+                    ),
                     limit,
                     offset,
                     additionalProperties.toMutableMap(),

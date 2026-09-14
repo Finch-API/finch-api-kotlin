@@ -31,7 +31,11 @@ private constructor(
         @JsonProperty("individual_ids")
         @ExcludeMissing
         individualIds: JsonField<List<String>> = JsonMissing.of(),
-    ) : this(benefitId, individualIds, mutableMapOf())
+    ) : this(
+        benefitId,
+        individualIds,
+        mutableMapOf(),
+    )
 
     /**
      * The id of the benefit.
@@ -113,7 +117,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: JsonField<String>) = apply {
+            this.benefitId = benefitId
+        }
 
         fun individualIds(individualIds: List<String>) = individualIds(JsonField.of(individualIds))
 
@@ -153,7 +159,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -174,8 +182,15 @@ private constructor(
          */
         fun build(): IndividualEnrolledIdsResponse =
             IndividualEnrolledIdsResponse(
-                checkRequired("benefitId", benefitId),
-                checkRequired("individualIds", individualIds).map { it.toImmutable() },
+                checkRequired(
+                    "benefitId",
+                    benefitId,
+                ),
+                checkRequired(
+                        "individualIds",
+                        individualIds,
+                    )
+                    .map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }

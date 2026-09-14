@@ -259,7 +259,9 @@ private constructor(
             additionalQueryParams = sandboxIndividualUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun individualId(individualId: String?) = apply { this.individualId = individualId }
+        fun individualId(individualId: String?) = apply {
+            this.individualId = individualId
+        }
 
         /**
          * Sets the entire request body.
@@ -273,9 +275,13 @@ private constructor(
          * - [firstName]
          * - etc.
          */
-        fun body(body: IndividualWithoutId) = apply { this.body = body.toBuilder() }
+        fun body(body: IndividualWithoutId) = apply {
+            this.body = body.toBuilder()
+        }
 
-        fun dob(dob: String?) = apply { body.dob(dob) }
+        fun dob(dob: String?) = apply {
+            body.dob(dob)
+        }
 
         /**
          * Sets [Builder.dob] to an arbitrary JSON value.
@@ -283,9 +289,13 @@ private constructor(
          * You should usually call [Builder.dob] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun dob(dob: JsonField<String>) = apply { body.dob(dob) }
+        fun dob(dob: JsonField<String>) = apply {
+            body.dob(dob)
+        }
 
-        fun emails(emails: List<Email>?) = apply { body.emails(emails) }
+        fun emails(emails: List<Email>?) = apply {
+            body.emails(emails)
+        }
 
         /**
          * Sets [Builder.emails] to an arbitrary JSON value.
@@ -294,21 +304,27 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun emails(emails: JsonField<List<Email>>) = apply { body.emails(emails) }
+        fun emails(emails: JsonField<List<Email>>) = apply {
+            body.emails(emails)
+        }
 
         /**
          * Adds a single [Email] to [emails].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addEmail(email: Email) = apply { body.addEmail(email) }
+        fun addEmail(email: Email) = apply {
+            body.addEmail(email)
+        }
 
         /**
          * Social Security Number of the individual in **encrypted** format. This field is only
          * available with the `ssn` scope enabled and the `options: { include: ['ssn'] }` param set
          * in the body.
          */
-        fun encryptedSsn(encryptedSsn: String?) = apply { body.encryptedSsn(encryptedSsn) }
+        fun encryptedSsn(encryptedSsn: String?) = apply {
+            body.encryptedSsn(encryptedSsn)
+        }
 
         /**
          * Sets [Builder.encryptedSsn] to an arbitrary JSON value.
@@ -322,7 +338,9 @@ private constructor(
         }
 
         /** The EEOC-defined ethnicity of the individual. */
-        fun ethnicity(ethnicity: Ethnicity?) = apply { body.ethnicity(ethnicity) }
+        fun ethnicity(ethnicity: Ethnicity?) = apply {
+            body.ethnicity(ethnicity)
+        }
 
         /**
          * Sets [Builder.ethnicity] to an arbitrary JSON value.
@@ -331,10 +349,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { body.ethnicity(ethnicity) }
+        fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply {
+            body.ethnicity(ethnicity)
+        }
 
         /** The legal first name of the individual. */
-        fun firstName(firstName: String?) = apply { body.firstName(firstName) }
+        fun firstName(firstName: String?) = apply {
+            body.firstName(firstName)
+        }
 
         /**
          * Sets [Builder.firstName] to an arbitrary JSON value.
@@ -343,10 +365,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun firstName(firstName: JsonField<String>) = apply { body.firstName(firstName) }
+        fun firstName(firstName: JsonField<String>) = apply {
+            body.firstName(firstName)
+        }
 
         /** The gender of the individual. */
-        fun gender(gender: Gender?) = apply { body.gender(gender) }
+        fun gender(gender: Gender?) = apply {
+            body.gender(gender)
+        }
 
         /**
          * Sets [Builder.gender] to an arbitrary JSON value.
@@ -354,10 +380,14 @@ private constructor(
          * You should usually call [Builder.gender] with a well-typed [Gender] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun gender(gender: JsonField<Gender>) = apply { body.gender(gender) }
+        fun gender(gender: JsonField<Gender>) = apply {
+            body.gender(gender)
+        }
 
         /** The legal last name of the individual. */
-        fun lastName(lastName: String?) = apply { body.lastName(lastName) }
+        fun lastName(lastName: String?) = apply {
+            body.lastName(lastName)
+        }
 
         /**
          * Sets [Builder.lastName] to an arbitrary JSON value.
@@ -365,7 +395,9 @@ private constructor(
          * You should usually call [Builder.lastName] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
+        fun lastName(lastName: JsonField<String>) = apply {
+            body.lastName(lastName)
+        }
 
         /**
          * The employee's marital status, used for beneficiary designation and spousal consent
@@ -387,7 +419,9 @@ private constructor(
         }
 
         /** The legal middle name of the individual. */
-        fun middleName(middleName: String?) = apply { body.middleName(middleName) }
+        fun middleName(middleName: String?) = apply {
+            body.middleName(middleName)
+        }
 
         /**
          * Sets [Builder.middleName] to an arbitrary JSON value.
@@ -396,7 +430,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun middleName(middleName: JsonField<String>) = apply { body.middleName(middleName) }
+        fun middleName(middleName: JsonField<String>) = apply {
+            body.middleName(middleName)
+        }
 
         fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) = apply {
             body.phoneNumbers(phoneNumbers)
@@ -418,10 +454,14 @@ private constructor(
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addPhoneNumber(phoneNumber: PhoneNumber) = apply { body.addPhoneNumber(phoneNumber) }
+        fun addPhoneNumber(phoneNumber: PhoneNumber) = apply {
+            body.addPhoneNumber(phoneNumber)
+        }
 
         /** The preferred name of the individual. */
-        fun preferredName(preferredName: String?) = apply { body.preferredName(preferredName) }
+        fun preferredName(preferredName: String?) = apply {
+            body.preferredName(preferredName)
+        }
 
         /**
          * Sets [Builder.preferredName] to an arbitrary JSON value.
@@ -434,7 +474,9 @@ private constructor(
             body.preferredName(preferredName)
         }
 
-        fun residence(residence: Location?) = apply { body.residence(residence) }
+        fun residence(residence: Location?) = apply {
+            body.residence(residence)
+        }
 
         /**
          * Sets [Builder.residence] to an arbitrary JSON value.
@@ -443,14 +485,18 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun residence(residence: JsonField<Location>) = apply { body.residence(residence) }
+        fun residence(residence: JsonField<Location>) = apply {
+            body.residence(residence)
+        }
 
         /**
          * Social Security Number of the individual. This field is only available with the `ssn`
          * scope enabled and the `options: { include: ['ssn'] }` param set in the body.
          * [Click here to learn more about enabling the SSN field](/developer-resources/Enable-SSN-Field).
          */
-        fun ssn(ssn: String?) = apply { body.ssn(ssn) }
+        fun ssn(ssn: String?) = apply {
+            body.ssn(ssn)
+        }
 
         /**
          * Sets [Builder.ssn] to an arbitrary JSON value.
@@ -458,14 +504,19 @@ private constructor(
          * You should usually call [Builder.ssn] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun ssn(ssn: JsonField<String>) = apply { body.ssn(ssn) }
+        fun ssn(ssn: JsonField<String>) = apply {
+            body.ssn(ssn)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
+            body.putAdditionalProperty(
+                key,
+                value,
+            )
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -473,7 +524,9 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            body.removeAdditionalProperty(key)
+        }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -521,7 +574,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -571,7 +626,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -944,7 +1001,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun dob(dob: JsonField<String>) = apply { this.dob = dob }
+            fun dob(dob: JsonField<String>) = apply {
+                this.dob = dob
+            }
 
             fun emails(emails: List<Email>?) = emails(JsonField.ofNullable(emails))
 
@@ -1000,7 +1059,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply { this.ethnicity = ethnicity }
+            fun ethnicity(ethnicity: JsonField<Ethnicity>) = apply {
+                this.ethnicity = ethnicity
+            }
 
             /** The legal first name of the individual. */
             fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
@@ -1012,7 +1073,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
+            fun firstName(firstName: JsonField<String>) = apply {
+                this.firstName = firstName
+            }
 
             /** The gender of the individual. */
             fun gender(gender: Gender?) = gender(JsonField.ofNullable(gender))
@@ -1024,7 +1087,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun gender(gender: JsonField<Gender>) = apply { this.gender = gender }
+            fun gender(gender: JsonField<Gender>) = apply {
+                this.gender = gender
+            }
 
             /** The legal last name of the individual. */
             fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
@@ -1036,7 +1101,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
+            fun lastName(lastName: JsonField<String>) = apply {
+                this.lastName = lastName
+            }
 
             /**
              * The employee's marital status, used for beneficiary designation and spousal consent
@@ -1066,7 +1133,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
+            fun middleName(middleName: JsonField<String>) = apply {
+                this.middleName = middleName
+            }
 
             fun phoneNumbers(phoneNumbers: List<PhoneNumber?>?) =
                 phoneNumbers(JsonField.ofNullable(phoneNumbers))
@@ -1118,7 +1187,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun residence(residence: JsonField<Location>) = apply { this.residence = residence }
+            fun residence(residence: JsonField<Location>) = apply {
+                this.residence = residence
+            }
 
             /**
              * Social Security Number of the individual. This field is only available with the `ssn`
@@ -1134,7 +1205,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun ssn(ssn: JsonField<String>) = apply { this.ssn = ssn }
+            fun ssn(ssn: JsonField<String>) = apply {
+                this.ssn = ssn
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1149,7 +1222,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1299,7 +1374,11 @@ private constructor(
         private constructor(
             @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-        ) : this(data, type, mutableMapOf())
+        ) : this(
+            data,
+            type,
+            mutableMapOf(),
+        )
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -1367,7 +1446,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun data(data: JsonField<String>) = apply { this.data = data }
+            fun data(data: JsonField<String>) = apply {
+                this.data = data
+            }
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
@@ -1378,7 +1459,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) = apply {
+                this.type = type
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1393,7 +1476,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1404,7 +1489,12 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Email = Email(data, type, additionalProperties.toMutableMap())
+            fun build(): Email =
+                Email(
+                    data,
+                    type,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -1476,9 +1566,11 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1649,9 +1741,11 @@ private constructor(
          * An enum containing [Ethnicity]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Ethnicity] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1809,9 +1903,11 @@ private constructor(
          * An enum containing [Gender]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Gender] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1965,9 +2061,11 @@ private constructor(
          * An enum containing [MaritalStatus]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [MaritalStatus] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -2094,7 +2192,11 @@ private constructor(
         private constructor(
             @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-        ) : this(data, type, mutableMapOf())
+        ) : this(
+            data,
+            type,
+            mutableMapOf(),
+        )
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -2162,7 +2264,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun data(data: JsonField<String>) = apply { this.data = data }
+            fun data(data: JsonField<String>) = apply {
+                this.data = data
+            }
 
             fun type(type: Type?) = type(JsonField.ofNullable(type))
 
@@ -2173,7 +2277,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) = apply {
+                this.type = type
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -2188,7 +2294,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -2199,7 +2307,12 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): PhoneNumber = PhoneNumber(data, type, additionalProperties.toMutableMap())
+            fun build(): PhoneNumber =
+                PhoneNumber(
+                    data,
+                    type,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -2271,9 +2384,11 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {

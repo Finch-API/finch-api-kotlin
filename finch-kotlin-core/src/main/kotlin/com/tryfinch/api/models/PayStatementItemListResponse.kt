@@ -33,7 +33,12 @@ private constructor(
         attributes: JsonField<Attributes> = JsonMissing.of(),
         @JsonProperty("category") @ExcludeMissing category: JsonField<Category> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-    ) : this(attributes, category, name, mutableMapOf())
+    ) : this(
+        attributes,
+        category,
+        name,
+        mutableMapOf(),
+    )
 
     /**
      * The attributes of the pay statement item.
@@ -134,7 +139,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun attributes(attributes: JsonField<Attributes>) = apply { this.attributes = attributes }
+        fun attributes(attributes: JsonField<Attributes>) = apply {
+            this.attributes = attributes
+        }
 
         /** The category of the pay statement item. */
         fun category(category: Category) = category(JsonField.of(category))
@@ -146,7 +153,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun category(category: JsonField<Category>) = apply { this.category = category }
+        fun category(category: JsonField<Category>) = apply {
+            this.category = category
+        }
 
         /** The name of the pay statement item. */
         fun name(name: String) = name(JsonField.of(name))
@@ -157,7 +166,9 @@ private constructor(
          * You should usually call [Builder.name] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun name(name: JsonField<String>) = apply { this.name = name }
+        fun name(name: JsonField<String>) = apply {
+            this.name = name
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -172,7 +183,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -194,9 +207,18 @@ private constructor(
          */
         fun build(): PayStatementItemListResponse =
             PayStatementItemListResponse(
-                checkRequired("attributes", attributes),
-                checkRequired("category", category),
-                checkRequired("name", name),
+                checkRequired(
+                    "attributes",
+                    attributes,
+                ),
+                checkRequired(
+                    "category",
+                    category,
+                ),
+                checkRequired(
+                    "name",
+                    name,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -261,7 +283,13 @@ private constructor(
             employer: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("pre_tax") @ExcludeMissing preTax: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
-        ) : this(metadata, employer, preTax, type, mutableMapOf())
+        ) : this(
+            metadata,
+            employer,
+            preTax,
+            type,
+            mutableMapOf(),
+        )
 
         /**
          * The metadata of the pay statement item derived by the rules engine if available. Each
@@ -380,7 +408,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+            fun metadata(metadata: JsonField<Metadata>) = apply {
+                this.metadata = metadata
+            }
 
             /**
              * `true` if the amount is paid by the employers. This field is only available for
@@ -402,7 +432,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun employer(employer: JsonField<Boolean>) = apply { this.employer = employer }
+            fun employer(employer: JsonField<Boolean>) = apply {
+                this.employer = employer
+            }
 
             /**
              * `true` if the pay statement item is pre-tax. This field is only available for
@@ -424,7 +456,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun preTax(preTax: JsonField<Boolean>) = apply { this.preTax = preTax }
+            fun preTax(preTax: JsonField<Boolean>) = apply {
+                this.preTax = preTax
+            }
 
             /** The type of the pay statement item. */
             fun type(type: String?) = type(JsonField.ofNullable(type))
@@ -436,7 +470,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<String>) = apply { this.type = type }
+            fun type(type: JsonField<String>) = apply {
+                this.type = type
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -451,7 +487,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -471,7 +509,10 @@ private constructor(
              */
             fun build(): Attributes =
                 Attributes(
-                    checkRequired("metadata", metadata),
+                    checkRequired(
+                        "metadata",
+                        metadata,
+                    ),
                     employer,
                     preTax,
                     type,
@@ -618,8 +659,9 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int =
-                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+            internal fun validity(): Int = additionalProperties.count { (_, value) ->
+                !value.isNull() && !value.isMissing()
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -697,9 +739,11 @@ private constructor(
          * An enum containing [Category]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Category] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

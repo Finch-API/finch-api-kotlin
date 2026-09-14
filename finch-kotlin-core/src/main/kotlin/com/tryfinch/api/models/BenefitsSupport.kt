@@ -416,7 +416,9 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
-        fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply { this.hsaPre = hsaPre }
+        fun hsaPre(hsaPre: JsonField<BenefitFeaturesAndOperations>) = apply {
+            this.hsaPre = hsaPre
+        }
 
         fun s125Dental(s125Dental: BenefitFeaturesAndOperations?) =
             s125Dental(JsonField.ofNullable(s125Dental))
@@ -469,7 +471,9 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
-        fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply { this.simple = simple }
+        fun simple(simple: JsonField<BenefitFeaturesAndOperations>) = apply {
+            this.simple = simple
+        }
 
         fun simpleIra(simpleIra: BenefitFeaturesAndOperations?) =
             simpleIra(JsonField.ofNullable(simpleIra))
@@ -498,7 +502,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)

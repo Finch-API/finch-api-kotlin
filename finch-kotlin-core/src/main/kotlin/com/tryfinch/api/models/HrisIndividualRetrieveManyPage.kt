@@ -72,10 +72,14 @@ private constructor(
             response = hrisIndividualRetrieveManyPage.response
         }
 
-        fun service(service: IndividualService) = apply { this.service = service }
+        fun service(service: IndividualService) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisIndividualRetrieveManyParams) = apply { this.params = params }
+        fun params(params: HrisIndividualRetrieveManyParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisIndividualRetrieveManyPageResponse) = apply {
@@ -98,9 +102,18 @@ private constructor(
          */
         fun build(): HrisIndividualRetrieveManyPage =
             HrisIndividualRetrieveManyPage(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("response", response),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "response",
+                    response,
+                ),
             )
     }
 

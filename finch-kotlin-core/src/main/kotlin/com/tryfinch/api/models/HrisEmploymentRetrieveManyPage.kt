@@ -72,10 +72,14 @@ private constructor(
             response = hrisEmploymentRetrieveManyPage.response
         }
 
-        fun service(service: EmploymentService) = apply { this.service = service }
+        fun service(service: EmploymentService) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisEmploymentRetrieveManyParams) = apply { this.params = params }
+        fun params(params: HrisEmploymentRetrieveManyParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisEmploymentRetrieveManyPageResponse) = apply {
@@ -98,9 +102,18 @@ private constructor(
          */
         fun build(): HrisEmploymentRetrieveManyPage =
             HrisEmploymentRetrieveManyPage(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("response", response),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "response",
+                    response,
+                ),
             )
     }
 

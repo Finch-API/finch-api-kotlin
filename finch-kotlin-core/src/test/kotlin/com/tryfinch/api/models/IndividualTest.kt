@@ -157,7 +157,14 @@ internal class IndividualTest {
         STRING(JsonValue.from("invalid")),
         INTEGER(JsonValue.from(-1)),
         FLOAT(JsonValue.from(3.14)),
-        ARRAY(JsonValue.from(listOf("invalid", "array"))),
+        ARRAY(
+            JsonValue.from(
+                listOf(
+                    "invalid",
+                    "array",
+                )
+            )
+        ),
     }
 
     @ParameterizedTest
@@ -165,7 +172,10 @@ internal class IndividualTest {
     fun incompatibleJsonShapeDeserializesToUnknown(testCase: IncompatibleJsonShapeTestCase) {
         val individual = jsonMapper().convertValue(testCase.value, jacksonTypeRef<Individual>())
 
-        val e = assertThrows<FinchInvalidDataException> { individual.validate() }
+        val e =
+            assertThrows<FinchInvalidDataException> {
+                individual.validate()
+            }
         assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }

@@ -34,7 +34,12 @@ private constructor(
         @JsonProperty("pay_frequencies")
         @ExcludeMissing
         payFrequencies: JsonField<List<PayFrequency>> = JsonMissing.of(),
-    ) : this(id, name, payFrequencies, mutableMapOf())
+    ) : this(
+        id,
+        name,
+        payFrequencies,
+        mutableMapOf(),
+    )
 
     /**
      * Finch id (uuidv4) for the pay group
@@ -134,7 +139,9 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply {
+            this.id = id
+        }
 
         /** Name of the pay group */
         fun name(name: String) = name(JsonField.of(name))
@@ -145,7 +152,9 @@ private constructor(
          * You should usually call [Builder.name] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun name(name: JsonField<String>) = apply { this.name = name }
+        fun name(name: JsonField<String>) = apply {
+            this.name = name
+        }
 
         /** List of pay frequencies associated with this pay group */
         fun payFrequencies(payFrequencies: List<PayFrequency>) =
@@ -187,7 +196,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -209,9 +220,19 @@ private constructor(
          */
         fun build(): PayGroupListResponse =
             PayGroupListResponse(
-                checkRequired("id", id),
-                checkRequired("name", name),
-                checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
+                checkRequired(
+                    "id",
+                    id,
+                ),
+                checkRequired(
+                    "name",
+                    name,
+                ),
+                checkRequired(
+                        "payFrequencies",
+                        payFrequencies,
+                    )
+                    .map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }
@@ -308,9 +329,11 @@ private constructor(
          * An enum containing [PayFrequency]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [PayFrequency] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

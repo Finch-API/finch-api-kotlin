@@ -87,7 +87,9 @@ private constructor(
                 hrisBenefitIndividualEnrollManyParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: String?) = apply {
+            this.benefitId = benefitId
+        }
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
@@ -162,7 +164,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -212,7 +216,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -246,7 +252,9 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach { put("entity_ids[]", it) }
+                entityIds?.forEach {
+                    put("entity_ids[]", it)
+                }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -267,7 +275,11 @@ private constructor(
             @JsonProperty("individual_id")
             @ExcludeMissing
             individualId: JsonField<String> = JsonMissing.of(),
-        ) : this(configuration, individualId, mutableMapOf())
+        ) : this(
+            configuration,
+            individualId,
+            mutableMapOf(),
+        )
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -375,7 +387,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -387,7 +401,11 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Individual =
-                Individual(configuration, individualId, additionalProperties.toMutableMap())
+                Individual(
+                    configuration,
+                    individualId,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -632,7 +650,9 @@ private constructor(
                  */
                 fun annualContributionLimit(
                     annualContributionLimit: JsonField<AnnualContributionLimit>
-                ) = apply { this.annualContributionLimit = annualContributionLimit }
+                ) = apply {
+                    this.annualContributionLimit = annualContributionLimit
+                }
 
                 /** Maximum annual amount in cents */
                 fun annualMaximum(annualMaximum: Long?) =
@@ -666,7 +686,9 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
+                fun catchUp(catchUp: JsonField<Boolean>) = apply {
+                    this.catchUp = catchUp
+                }
 
                 fun companyContribution(companyContribution: CompanyContribution) =
                     companyContribution(JsonField.of(companyContribution))
@@ -837,9 +859,11 @@ private constructor(
                  *
                  * An instance of [AnnualContributionLimit] can contain an unknown value in a couple
                  * of cases:
+                 *
                  * - It was deserialized from data that doesn't match any known member. For example,
                  *   if the SDK is on an older version than the API, then the API may respond with
                  *   new members that the SDK is unaware of.
+                 *
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -965,7 +989,12 @@ private constructor(
                     @ExcludeMissing
                     tiers: JsonField<List<Tier>> = JsonMissing.of(),
                     @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-                ) : this(amount, tiers, type, mutableMapOf())
+                ) : this(
+                    amount,
+                    tiers,
+                    type,
+                    mutableMapOf(),
+                )
 
                 /**
                  * Amount in cents for fixed type or basis points (1/100th of a percent) for percent
@@ -1065,7 +1094,9 @@ private constructor(
                      * instead. This method is primarily for setting the field to an undocumented or
                      * not yet supported value.
                      */
-                    fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+                    fun amount(amount: JsonField<Long>) = apply {
+                        this.amount = amount
+                    }
 
                     /**
                      * Array of tier objects for tiered contribution matching (required when type is
@@ -1105,7 +1136,9 @@ private constructor(
                      * instead. This method is primarily for setting the field to an undocumented or
                      * not yet supported value.
                      */
-                    fun type(type: JsonField<Type>) = apply { this.type = type }
+                    fun type(type: JsonField<Type>) = apply {
+                        this.type = type
+                    }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -1201,7 +1234,11 @@ private constructor(
                         @JsonProperty("threshold")
                         @ExcludeMissing
                         threshold: JsonField<Long> = JsonMissing.of(),
-                    ) : this(match, threshold, mutableMapOf())
+                    ) : this(
+                        match,
+                        threshold,
+                        mutableMapOf(),
+                    )
 
                     /**
                      * The employer match percentage in basis points (0-10000 = 0-100%)
@@ -1289,7 +1326,9 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun match(match: JsonField<Long>) = apply { this.match = match }
+                        fun match(match: JsonField<Long>) = apply {
+                            this.match = match
+                        }
 
                         /**
                          * The employee contribution threshold in basis points (0-10000 = 0-100%)
@@ -1319,7 +1358,9 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+                        ) = apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -1344,8 +1385,14 @@ private constructor(
                          */
                         fun build(): Tier =
                             Tier(
-                                checkRequired("match", match),
-                                checkRequired("threshold", threshold),
+                                checkRequired(
+                                    "match",
+                                    match,
+                                ),
+                                checkRequired(
+                                    "threshold",
+                                    threshold,
+                                ),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -1447,9 +1494,11 @@ private constructor(
                      * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
                      *
                      * An instance of [Type] can contain an unknown value in a couple of cases:
+                     *
                      * - It was deserialized from data that doesn't match any known member. For
                      *   example, if the SDK is on an older version than the API, then the API may
                      *   respond with new members that the SDK is unaware of.
+                     *
                      * - It was constructed with an arbitrary value using the [of] method.
                      */
                     enum class Value {
@@ -1594,7 +1643,11 @@ private constructor(
                     @ExcludeMissing
                     amount: JsonField<Long> = JsonMissing.of(),
                     @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-                ) : this(amount, type, mutableMapOf())
+                ) : this(
+                    amount,
+                    type,
+                    mutableMapOf(),
+                )
 
                 /**
                  * Amount in cents for fixed type or basis points (1/100th of a percent) for percent
@@ -1674,7 +1727,9 @@ private constructor(
                      * instead. This method is primarily for setting the field to an undocumented or
                      * not yet supported value.
                      */
-                    fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+                    fun amount(amount: JsonField<Long>) = apply {
+                        this.amount = amount
+                    }
 
                     fun type(type: Type) = type(JsonField.of(type))
 
@@ -1685,7 +1740,9 @@ private constructor(
                      * instead. This method is primarily for setting the field to an undocumented or
                      * not yet supported value.
                      */
-                    fun type(type: JsonField<Type>) = apply { this.type = type }
+                    fun type(type: JsonField<Type>) = apply {
+                        this.type = type
+                    }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -1715,7 +1772,11 @@ private constructor(
                      * Further updates to this [Builder] will not mutate the returned instance.
                      */
                     fun build(): EmployeeDeduction =
-                        EmployeeDeduction(amount, type, additionalProperties.toMutableMap())
+                        EmployeeDeduction(
+                            amount,
+                            type,
+                            additionalProperties.toMutableMap(),
+                        )
                 }
 
                 private var validated: Boolean = false
@@ -1790,9 +1851,11 @@ private constructor(
                      * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
                      *
                      * An instance of [Type] can contain an unknown value in a couple of cases:
+                     *
                      * - It was deserialized from data that doesn't match any known member. For
                      *   example, if the SDK is on an older version than the API, then the API may
                      *   respond with new members that the SDK is unaware of.
+                     *
                      * - It was constructed with an arbitrary value using the [of] method.
                      */
                     enum class Value {

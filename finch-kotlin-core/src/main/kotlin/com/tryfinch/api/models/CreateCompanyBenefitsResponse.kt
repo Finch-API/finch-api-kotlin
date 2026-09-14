@@ -27,7 +27,11 @@ private constructor(
     private constructor(
         @JsonProperty("benefit_id") @ExcludeMissing benefitId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
-    ) : this(benefitId, jobId, mutableMapOf())
+    ) : this(
+        benefitId,
+        jobId,
+        mutableMapOf(),
+    )
 
     /**
      * The id of the benefit.
@@ -107,7 +111,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun benefitId(benefitId: JsonField<String>) = apply { this.benefitId = benefitId }
+        fun benefitId(benefitId: JsonField<String>) = apply {
+            this.benefitId = benefitId
+        }
 
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
 
@@ -117,7 +123,9 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
+        fun jobId(jobId: JsonField<String>) = apply {
+            this.jobId = jobId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -132,7 +140,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -153,8 +163,14 @@ private constructor(
          */
         fun build(): CreateCompanyBenefitsResponse =
             CreateCompanyBenefitsResponse(
-                checkRequired("benefitId", benefitId),
-                checkRequired("jobId", jobId),
+                checkRequired(
+                    "benefitId",
+                    benefitId,
+                ),
+                checkRequired(
+                    "jobId",
+                    jobId,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

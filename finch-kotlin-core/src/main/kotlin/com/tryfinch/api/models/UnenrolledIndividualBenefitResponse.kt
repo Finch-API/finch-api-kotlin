@@ -25,7 +25,10 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of()
-    ) : this(jobId, mutableMapOf())
+    ) : this(
+        jobId,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -88,7 +91,9 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
+        fun jobId(jobId: JsonField<String>) = apply {
+            this.jobId = jobId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -103,7 +108,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -123,7 +130,10 @@ private constructor(
          */
         fun build(): UnenrolledIndividualBenefitResponse =
             UnenrolledIndividualBenefitResponse(
-                checkRequired("jobId", jobId),
+                checkRequired(
+                    "jobId",
+                    jobId,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

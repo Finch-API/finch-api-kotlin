@@ -75,10 +75,16 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            val response =
+                clientOptions.httpClient.executeAsync(
+                    request,
+                    requestOptions,
+                )
             return errorHandler.handle(response).parseable {
                 response
-                    .use { newHandler.handle(it) }
+                    .use {
+                        newHandler.handle(it)
+                    }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -103,10 +109,16 @@ class SessionServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            val response =
+                clientOptions.httpClient.executeAsync(
+                    request,
+                    requestOptions,
+                )
             return errorHandler.handle(response).parseable {
                 response
-                    .use { reauthenticateHandler.handle(it) }
+                    .use {
+                        reauthenticateHandler.handle(it)
+                    }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

@@ -138,9 +138,13 @@ private constructor(
          * - [authenticationType]
          * - [products]
          */
-        fun body(body: Body) = apply { this.body = body.toBuilder() }
+        fun body(body: Body) = apply {
+            this.body = body.toBuilder()
+        }
 
-        fun companyId(companyId: String) = apply { body.companyId(companyId) }
+        fun companyId(companyId: String) = apply {
+            body.companyId(companyId)
+        }
 
         /**
          * Sets [Builder.companyId] to an arbitrary JSON value.
@@ -149,10 +153,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply { body.companyId(companyId) }
+        fun companyId(companyId: JsonField<String>) = apply {
+            body.companyId(companyId)
+        }
 
         /** The provider associated with the `access_token` */
-        fun providerId(providerId: String) = apply { body.providerId(providerId) }
+        fun providerId(providerId: String) = apply {
+            body.providerId(providerId)
+        }
 
         /**
          * Sets [Builder.providerId] to an arbitrary JSON value.
@@ -161,7 +169,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun providerId(providerId: JsonField<String>) = apply { body.providerId(providerId) }
+        fun providerId(providerId: JsonField<String>) = apply {
+            body.providerId(providerId)
+        }
 
         fun authenticationType(authenticationType: AuthenticationType) = apply {
             body.authenticationType(authenticationType)
@@ -182,7 +192,9 @@ private constructor(
          * Optional, defaults to Organization products (`company`, `directory`, `employment`,
          * `individual`)
          */
-        fun products(products: List<String>) = apply { body.products(products) }
+        fun products(products: List<String>) = apply {
+            body.products(products)
+        }
 
         /**
          * Sets [Builder.products] to an arbitrary JSON value.
@@ -191,21 +203,28 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun products(products: JsonField<List<String>>) = apply { body.products(products) }
+        fun products(products: JsonField<List<String>>) = apply {
+            body.products(products)
+        }
 
         /**
          * Adds a single [String] to [products].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addProduct(product: String) = apply { body.addProduct(product) }
+        fun addProduct(product: String) = apply {
+            body.addProduct(product)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
+            body.putAdditionalProperty(
+                key,
+                value,
+            )
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -213,7 +232,9 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            body.removeAdditionalProperty(key)
+        }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -261,7 +282,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -311,7 +334,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -368,7 +393,13 @@ private constructor(
             @JsonProperty("products")
             @ExcludeMissing
             products: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(companyId, providerId, authenticationType, products, mutableMapOf())
+        ) : this(
+            companyId,
+            providerId,
+            authenticationType,
+            products,
+            mutableMapOf(),
+        )
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -487,7 +518,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+            fun companyId(companyId: JsonField<String>) = apply {
+                this.companyId = companyId
+            }
 
             /** The provider associated with the `access_token` */
             fun providerId(providerId: String) = providerId(JsonField.of(providerId))
@@ -499,7 +532,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+            fun providerId(providerId: JsonField<String>) = apply {
+                this.providerId = providerId
+            }
 
             fun authenticationType(authenticationType: AuthenticationType) =
                 authenticationType(JsonField.of(authenticationType))
@@ -557,7 +592,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -578,8 +615,14 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    checkRequired("companyId", companyId),
-                    checkRequired("providerId", providerId),
+                    checkRequired(
+                        "companyId",
+                        companyId,
+                    ),
+                    checkRequired(
+                        "providerId",
+                        providerId,
+                    ),
                     authenticationType,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
@@ -691,9 +734,11 @@ private constructor(
          * An enum containing [AuthenticationType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [AuthenticationType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

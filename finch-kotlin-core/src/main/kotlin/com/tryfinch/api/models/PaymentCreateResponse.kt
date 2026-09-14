@@ -27,7 +27,11 @@ private constructor(
     private constructor(
         @JsonProperty("pay_date") @ExcludeMissing payDate: JsonField<String> = JsonMissing.of(),
         @JsonProperty("payment_id") @ExcludeMissing paymentId: JsonField<String> = JsonMissing.of(),
-    ) : this(payDate, paymentId, mutableMapOf())
+    ) : this(
+        payDate,
+        paymentId,
+        mutableMapOf(),
+    )
 
     /**
      * The date of the payment.
@@ -107,7 +111,9 @@ private constructor(
          * You should usually call [Builder.payDate] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
+        fun payDate(payDate: JsonField<String>) = apply {
+            this.payDate = payDate
+        }
 
         /** The ID of the payment. */
         fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
@@ -119,7 +125,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
+        fun paymentId(paymentId: JsonField<String>) = apply {
+            this.paymentId = paymentId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -134,7 +142,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -155,8 +165,14 @@ private constructor(
          */
         fun build(): PaymentCreateResponse =
             PaymentCreateResponse(
-                checkRequired("payDate", payDate),
-                checkRequired("paymentId", paymentId),
+                checkRequired(
+                    "payDate",
+                    payDate,
+                ),
+                checkRequired(
+                    "paymentId",
+                    paymentId,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

@@ -35,7 +35,10 @@ interface AccountServiceAsync {
 
     /** @see disconnect */
     suspend fun disconnect(requestOptions: RequestOptions): DisconnectResponse =
-        disconnect(AccountDisconnectParams.none(), requestOptions)
+        disconnect(
+            AccountDisconnectParams.none(),
+            requestOptions,
+        )
 
     /**
      * Disconnect entity(s) from a connection without affecting other entities associated with the
@@ -54,7 +57,10 @@ interface AccountServiceAsync {
 
     /** @see introspect */
     suspend fun introspect(requestOptions: RequestOptions): Introspection =
-        introspect(AccountIntrospectParams.none(), requestOptions)
+        introspect(
+            AccountIntrospectParams.none(),
+            requestOptions,
+        )
 
     /**
      * A view of [AccountServiceAsync] that provides access to raw HTTP responses for each method.
@@ -85,7 +91,10 @@ interface AccountServiceAsync {
         suspend fun disconnect(
             requestOptions: RequestOptions
         ): HttpResponseFor<DisconnectResponse> =
-            disconnect(AccountDisconnectParams.none(), requestOptions)
+            disconnect(
+                AccountDisconnectParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `post /disconnect-entity`, but is otherwise the same as
@@ -110,6 +119,9 @@ interface AccountServiceAsync {
         /** @see introspect */
         @MustBeClosed
         suspend fun introspect(requestOptions: RequestOptions): HttpResponseFor<Introspection> =
-            introspect(AccountIntrospectParams.none(), requestOptions)
+            introspect(
+                AccountIntrospectParams.none(),
+                requestOptions,
+            )
     }
 }

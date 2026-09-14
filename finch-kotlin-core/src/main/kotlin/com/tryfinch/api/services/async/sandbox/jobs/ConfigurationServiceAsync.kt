@@ -33,7 +33,10 @@ interface ConfigurationServiceAsync {
 
     /** @see retrieve */
     suspend fun retrieve(requestOptions: RequestOptions): List<SandboxJobConfiguration> =
-        retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
+        retrieve(
+            SandboxJobConfigurationRetrieveParams.none(),
+            requestOptions,
+        )
 
     /** Update configurations for sandbox jobs */
     suspend fun update(
@@ -84,7 +87,10 @@ interface ConfigurationServiceAsync {
         suspend fun retrieve(
             requestOptions: RequestOptions
         ): HttpResponseFor<List<SandboxJobConfiguration>> =
-            retrieve(SandboxJobConfigurationRetrieveParams.none(), requestOptions)
+            retrieve(
+                SandboxJobConfigurationRetrieveParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `put /sandbox/jobs/configuration`, but is otherwise the

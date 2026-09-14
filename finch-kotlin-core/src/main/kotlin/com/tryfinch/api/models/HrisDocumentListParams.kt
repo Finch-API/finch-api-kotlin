@@ -117,7 +117,9 @@ private constructor(
         }
 
         /** Number of documents to return (defaults to all) */
-        fun limit(limit: Long?) = apply { this.limit = limit }
+        fun limit(limit: Long?) = apply {
+            this.limit = limit
+        }
 
         /**
          * Alias for [Builder.limit].
@@ -127,7 +129,9 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long?) = apply { this.offset = offset }
+        fun offset(offset: Long?) = apply {
+            this.offset = offset
+        }
 
         /**
          * Alias for [Builder.offset].
@@ -137,14 +141,18 @@ private constructor(
         fun offset(offset: Long) = offset(offset as Long?)
 
         /** Comma-delimited list of document types to filter on. If empty, defaults to all types */
-        fun types(types: List<Type>?) = apply { this.types = types?.toMutableList() }
+        fun types(types: List<Type>?) = apply {
+            this.types = types?.toMutableList()
+        }
 
         /**
          * Adds a single [Type] to [types].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addType(type: Type) = apply { types = (types ?: mutableListOf()).apply { add(type) } }
+        fun addType(type: Type) = apply {
+            types = (types ?: mutableListOf()).apply { add(type) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -188,7 +196,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -238,7 +248,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -266,11 +278,17 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach { put("entity_ids[]", it) }
-                individualIds?.forEach { put("individual_ids[]", it) }
+                entityIds?.forEach {
+                    put("entity_ids[]", it)
+                }
+                individualIds?.forEach {
+                    put("individual_ids[]", it)
+                }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
-                types?.forEach { put("types[]", it.toString()) }
+                types?.forEach {
+                    put("types[]", it.toString())
+                }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -306,9 +324,11 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

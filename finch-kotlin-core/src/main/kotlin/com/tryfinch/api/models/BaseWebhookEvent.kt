@@ -33,7 +33,13 @@ private constructor(
         @ExcludeMissing
         connectionId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("entity_id") @ExcludeMissing entityId: JsonField<String> = JsonMissing.of(),
-    ) : this(accountId, companyId, connectionId, entityId, mutableMapOf())
+    ) : this(
+        accountId,
+        companyId,
+        connectionId,
+        entityId,
+        mutableMapOf(),
+    )
 
     /**
      * [DEPRECATED] Unique Finch ID of the employer account used to make this connection. Use
@@ -159,7 +165,9 @@ private constructor(
          * value.
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        fun accountId(accountId: JsonField<String>) = apply {
+            this.accountId = accountId
+        }
 
         /** Unique Finch ID of the company for which data has been updated. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -171,7 +179,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+        fun companyId(companyId: JsonField<String>) = apply {
+            this.companyId = companyId
+        }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -196,7 +206,9 @@ private constructor(
          * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
+        fun entityId(entityId: JsonField<String>) = apply {
+            this.entityId = entityId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -211,7 +223,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -232,8 +246,14 @@ private constructor(
          */
         fun build(): BaseWebhookEvent =
             BaseWebhookEvent(
-                checkRequired("accountId", accountId),
-                checkRequired("companyId", companyId),
+                checkRequired(
+                    "accountId",
+                    accountId,
+                ),
+                checkRequired(
+                    "companyId",
+                    companyId,
+                ),
                 connectionId,
                 entityId,
                 additionalProperties.toMutableMap(),

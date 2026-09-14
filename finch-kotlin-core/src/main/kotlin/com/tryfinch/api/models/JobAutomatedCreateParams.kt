@@ -86,7 +86,9 @@ private constructor(
             additionalQueryParams = jobAutomatedCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun body(body: Body) = apply { this.body = body }
+        fun body(body: Body) = apply {
+            this.body = body
+        }
 
         /** Alias for calling [body] with `Body.ofDataSyncAll()`. */
         fun bodyDataSyncAll() = body(Body.ofDataSyncAll())
@@ -148,7 +150,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -198,7 +202,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -218,7 +224,10 @@ private constructor(
          */
         fun build(): JobAutomatedCreateParams =
             JobAutomatedCreateParams(
-                checkRequired("body", body),
+                checkRequired(
+                    "body",
+                    body,
+                ),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -338,10 +347,9 @@ private constructor(
         internal fun validity(): Int =
             accept(
                 object : Visitor<Int> {
-                    override fun visitDataSyncAll(dataSyncAll: JsonValue) =
-                        dataSyncAll.let {
-                            if (it == JsonValue.from(mapOf("type" to "data_sync_all"))) 1 else 0
-                        }
+                    override fun visitDataSyncAll(dataSyncAll: JsonValue) = dataSyncAll.let {
+                        if (it == JsonValue.from(mapOf("type" to "data_sync_all"))) 1 else 0
+                    }
 
                     override fun visitW4FormEmployeeSync(w4FormEmployeeSync: W4FormEmployeeSync) =
                         w4FormEmployeeSync.validity()
@@ -409,7 +417,9 @@ private constructor(
                 when (type) {
                     "data_sync_all" -> {
                         return tryDeserialize(node, jacksonTypeRef<JsonValue>())
-                            ?.let { Body(dataSyncAll = it, _json = json) }
+                            ?.let {
+                                Body(dataSyncAll = it, _json = json)
+                            }
                             ?.takeIf { it.isValid() } ?: Body(_json = json)
                     }
                     "w4_form_employee_sync" -> {
@@ -454,7 +464,11 @@ private constructor(
                 @ExcludeMissing
                 params: JsonField<Params> = JsonMissing.of(),
                 @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
-            ) : this(params, type, mutableMapOf())
+            ) : this(
+                params,
+                type,
+                mutableMapOf(),
+            )
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -530,7 +544,9 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun params(params: JsonField<Params>) = apply { this.params = params }
+                fun params(params: JsonField<Params>) = apply {
+                    this.params = params
+                }
 
                 /**
                  * Sets the field to an arbitrary JSON value.
@@ -544,7 +560,9 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun type(type: JsonValue) = apply { this.type = type }
+                fun type(type: JsonValue) = apply {
+                    this.type = type
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -582,7 +600,10 @@ private constructor(
                  */
                 fun build(): W4FormEmployeeSync =
                     W4FormEmployeeSync(
-                        checkRequired("params", params),
+                        checkRequired(
+                            "params",
+                            params,
+                        ),
                         type,
                         additionalProperties.toMutableMap(),
                     )
@@ -630,7 +651,9 @@ private constructor(
              */
             internal fun validity(): Int =
                 (params.asKnown()?.validity() ?: 0) +
-                    type.let { if (it == JsonValue.from("w4_form_employee_sync")) 1 else 0 }
+                    type.let {
+                        if (it == JsonValue.from("w4_form_employee_sync")) 1 else 0
+                    }
 
             class Params
             @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -644,7 +667,10 @@ private constructor(
                     @JsonProperty("individual_id")
                     @ExcludeMissing
                     individualId: JsonField<String> = JsonMissing.of()
-                ) : this(individualId, mutableMapOf())
+                ) : this(
+                    individualId,
+                    mutableMapOf(),
+                )
 
                 /**
                  * The unique ID of the individual for W-4 data sync.
@@ -752,7 +778,10 @@ private constructor(
                      */
                     fun build(): Params =
                         Params(
-                            checkRequired("individualId", individualId),
+                            checkRequired(
+                                "individualId",
+                                individualId,
+                            ),
                             additionalProperties.toMutableMap(),
                         )
                 }

@@ -358,7 +358,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: JsonField<String>) = apply {
+            this.accessToken = accessToken
+        }
 
         /** The type of application associated with a token. */
         fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
@@ -370,7 +372,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
+        fun clientType(clientType: JsonField<ClientType>) = apply {
+            this.clientType = clientType
+        }
 
         /** The Finch UUID of the connection associated with the `access_token` */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -467,7 +471,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+        fun providerId(providerId: JsonField<String>) = apply {
+            this.providerId = providerId
+        }
 
         /** The RFC 8693 token type (Finch uses `bearer` tokens) */
         fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
@@ -479,7 +485,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
+        fun tokenType(tokenType: JsonField<String>) = apply {
+            this.tokenType = tokenType
+        }
 
         /**
          * [DEPRECATED] Use `connection_id` to identify the connection instead of this account ID
@@ -495,7 +503,9 @@ private constructor(
          * value.
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        fun accountId(accountId: JsonField<String>) = apply {
+            this.accountId = accountId
+        }
 
         /** The Finch UUID of the company associated with the `access_token`. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -507,7 +517,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+        fun companyId(companyId: JsonField<String>) = apply {
+            this.companyId = companyId
+        }
 
         /**
          * The ID of your customer you provided to Finch when a connect session was created for this
@@ -522,7 +534,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+        fun customerId(customerId: JsonField<String>) = apply {
+            this.customerId = customerId
+        }
 
         /**
          * The name of your customer you provided to Finch when a connect session was created for
@@ -554,7 +568,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -581,14 +597,40 @@ private constructor(
          */
         fun build(): CreateAccessTokenResponse =
             CreateAccessTokenResponse(
-                checkRequired("accessToken", accessToken),
-                checkRequired("clientType", clientType),
-                checkRequired("connectionId", connectionId),
-                checkRequired("connectionType", connectionType),
-                checkRequired("entityIds", entityIds).map { it.toImmutable() },
-                checkRequired("products", products).map { it.toImmutable() },
-                checkRequired("providerId", providerId),
-                checkRequired("tokenType", tokenType),
+                checkRequired(
+                    "accessToken",
+                    accessToken,
+                ),
+                checkRequired(
+                    "clientType",
+                    clientType,
+                ),
+                checkRequired(
+                    "connectionId",
+                    connectionId,
+                ),
+                checkRequired(
+                    "connectionType",
+                    connectionType,
+                ),
+                checkRequired(
+                        "entityIds",
+                        entityIds,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                        "products",
+                        products,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "providerId",
+                    providerId,
+                ),
+                checkRequired(
+                    "tokenType",
+                    tokenType,
+                ),
                 accountId,
                 companyId,
                 customerId,
@@ -689,9 +731,11 @@ private constructor(
          * An enum containing [ClientType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ClientType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -833,9 +877,11 @@ private constructor(
          * An enum containing [ConnectionType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ConnectionType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

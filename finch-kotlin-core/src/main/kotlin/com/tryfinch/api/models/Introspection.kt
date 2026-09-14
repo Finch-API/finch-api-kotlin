@@ -509,7 +509,9 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply {
+            this.id = id
+        }
 
         /** The client ID of the application associated with the `access_token` */
         fun clientId(clientId: String) = clientId(JsonField.of(clientId))
@@ -520,7 +522,9 @@ private constructor(
          * You should usually call [Builder.clientId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
+        fun clientId(clientId: JsonField<String>) = apply {
+            this.clientId = clientId
+        }
 
         /** The type of application associated with a token. */
         fun clientType(clientType: ClientType) = clientType(JsonField.of(clientType))
@@ -532,7 +536,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun clientType(clientType: JsonField<ClientType>) = apply { this.clientType = clientType }
+        fun clientType(clientType: JsonField<ClientType>) = apply {
+            this.clientType = clientType
+        }
 
         /** The Finch UUID of the connection associated with the `access_token` */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -617,7 +623,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+        fun providerId(providerId: JsonField<String>) = apply {
+            this.providerId = providerId
+        }
 
         /**
          * [DEPRECATED] Use `connection_id` to associate tokens with a Finch connection instead of
@@ -634,7 +642,9 @@ private constructor(
          * value.
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        fun accountId(accountId: JsonField<String>) = apply {
+            this.accountId = accountId
+        }
 
         fun authenticationMethods(authenticationMethods: List<AuthenticationMethodDetail>) =
             authenticationMethods(JsonField.of(authenticationMethods))
@@ -648,7 +658,9 @@ private constructor(
          */
         fun authenticationMethods(
             authenticationMethods: JsonField<List<AuthenticationMethodDetail>>
-        ) = apply { this.authenticationMethods = authenticationMethods.map { it.toMutableList() } }
+        ) = apply {
+            this.authenticationMethods = authenticationMethods.map { it.toMutableList() }
+        }
 
         /**
          * Adds a single [AuthenticationMethodDetail] to [authenticationMethods].
@@ -672,7 +684,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+        fun companyId(companyId: JsonField<String>) = apply {
+            this.companyId = companyId
+        }
 
         /**
          * The email of your customer you provided to Finch when a connect session was created for
@@ -705,7 +719,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+        fun customerId(customerId: JsonField<String>) = apply {
+            this.customerId = customerId
+        }
 
         /**
          * The name of your customer you provided to Finch when a connect session was created for
@@ -762,7 +778,9 @@ private constructor(
          * You should usually call [Builder.manual] with a well-typed [Boolean] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
+        fun manual(manual: JsonField<Boolean>) = apply {
+            this.manual = manual
+        }
 
         /**
          * [DEPRECATED] Use `provider_id` to identify the provider instead of this payroll provider
@@ -793,7 +811,9 @@ private constructor(
          * You should usually call [Builder.username] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun username(username: JsonField<String>) = apply { this.username = username }
+        fun username(username: JsonField<String>) = apply {
+            this.username = username
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -808,7 +828,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -835,14 +857,39 @@ private constructor(
          */
         fun build(): Introspection =
             Introspection(
-                checkRequired("id", id),
-                checkRequired("clientId", clientId),
-                checkRequired("clientType", clientType),
-                checkRequired("connectionId", connectionId),
-                checkRequired("connectionStatus", connectionStatus),
-                checkRequired("connectionType", connectionType),
-                checkRequired("products", products).map { it.toImmutable() },
-                checkRequired("providerId", providerId),
+                checkRequired(
+                    "id",
+                    id,
+                ),
+                checkRequired(
+                    "clientId",
+                    clientId,
+                ),
+                checkRequired(
+                    "clientType",
+                    clientType,
+                ),
+                checkRequired(
+                    "connectionId",
+                    connectionId,
+                ),
+                checkRequired(
+                    "connectionStatus",
+                    connectionStatus,
+                ),
+                checkRequired(
+                    "connectionType",
+                    connectionType,
+                ),
+                checkRequired(
+                        "products",
+                        products,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "providerId",
+                    providerId,
+                ),
                 accountId,
                 (authenticationMethods ?: JsonMissing.of()).map { it.toImmutable() },
                 companyId,
@@ -961,9 +1008,11 @@ private constructor(
          * An enum containing [ClientType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ClientType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1086,7 +1135,12 @@ private constructor(
             @ExcludeMissing
             lastSuccessfulSync: JsonField<LastSuccessfulSync> = JsonMissing.of(),
             @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
-        ) : this(status, lastSuccessfulSync, message, mutableMapOf())
+        ) : this(
+            status,
+            lastSuccessfulSync,
+            message,
+            mutableMapOf(),
+        )
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -1184,7 +1238,9 @@ private constructor(
              * value instead. This method is primarily for setting the field to an undocumented or
              * not yet supported value.
              */
-            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
+            fun status(status: JsonField<ConnectionStatusType>) = apply {
+                this.status = status
+            }
 
             /** The datetime when the connection was last successfully synced */
             fun lastSuccessfulSync(lastSuccessfulSync: LastSuccessfulSync?) =
@@ -1223,7 +1279,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun message(message: JsonField<String>) = apply { this.message = message }
+            fun message(message: JsonField<String>) = apply {
+                this.message = message
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1238,7 +1296,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1258,7 +1318,10 @@ private constructor(
              */
             fun build(): ConnectionStatusDetail =
                 ConnectionStatusDetail(
-                    checkRequired("status", status),
+                    checkRequired(
+                        "status",
+                        status,
+                    ),
                     lastSuccessfulSync,
                     message,
                     additionalProperties.toMutableMap(),
@@ -1575,9 +1638,11 @@ private constructor(
          * An enum containing [ConnectionType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ConnectionType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1698,7 +1763,12 @@ private constructor(
             @JsonProperty("products")
             @ExcludeMissing
             products: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(type, connectionStatus, products, mutableMapOf())
+        ) : this(
+            type,
+            connectionStatus,
+            products,
+            mutableMapOf(),
+        )
 
         /**
          * The type of authentication method
@@ -1801,7 +1871,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) = apply {
+                this.type = type
+            }
 
             fun connectionStatus(connectionStatus: ConnectionStatusDetail) =
                 connectionStatus(JsonField.of(connectionStatus))
@@ -1856,7 +1928,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1876,7 +1950,10 @@ private constructor(
              */
             fun build(): AuthenticationMethodDetail =
                 AuthenticationMethodDetail(
-                    checkRequired("type", type),
+                    checkRequired(
+                        "type",
+                        type,
+                    ),
                     connectionStatus,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
@@ -1965,9 +2042,11 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -2098,7 +2177,12 @@ private constructor(
                 @JsonProperty("message")
                 @ExcludeMissing
                 message: JsonField<String> = JsonMissing.of(),
-            ) : this(status, lastSuccessfulSync, message, mutableMapOf())
+            ) : this(
+                status,
+                lastSuccessfulSync,
+                message,
+                mutableMapOf(),
+            )
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -2199,7 +2283,9 @@ private constructor(
                  * value instead. This method is primarily for setting the field to an undocumented
                  * or not yet supported value.
                  */
-                fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
+                fun status(status: JsonField<ConnectionStatusType>) = apply {
+                    this.status = status
+                }
 
                 /** The datetime when the connection was last successfully synced */
                 fun lastSuccessfulSync(lastSuccessfulSync: LastSuccessfulSync?) =
@@ -2239,7 +2325,9 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun message(message: JsonField<String>) = apply { this.message = message }
+                fun message(message: JsonField<String>) = apply {
+                    this.message = message
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -2277,7 +2365,10 @@ private constructor(
                  */
                 fun build(): ConnectionStatusDetail =
                     ConnectionStatusDetail(
-                        checkRequired("status", status),
+                        checkRequired(
+                            "status",
+                            status,
+                        ),
                         lastSuccessfulSync,
                         message,
                         additionalProperties.toMutableMap(),
@@ -2603,7 +2694,13 @@ private constructor(
             @JsonProperty("status")
             @ExcludeMissing
             status: JsonField<EntityConnectionStatus> = JsonMissing.of(),
-        ) : this(id, name, sourceId, status, mutableMapOf())
+        ) : this(
+            id,
+            name,
+            sourceId,
+            status,
+            mutableMapOf(),
+        )
 
         /**
          * The connection account ID for this entity
@@ -2722,7 +2819,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun id(id: JsonField<String>) = apply { this.id = id }
+            fun id(id: JsonField<String>) = apply {
+                this.id = id
+            }
 
             /** The name of the entity (payroll provider company name) */
             fun name(name: String?) = name(JsonField.ofNullable(name))
@@ -2734,7 +2833,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun name(name: JsonField<String>) = apply { this.name = name }
+            fun name(name: JsonField<String>) = apply {
+                this.name = name
+            }
 
             /** The source ID of the entity */
             fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
@@ -2746,7 +2847,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
+            fun sourceId(sourceId: JsonField<String>) = apply {
+                this.sourceId = sourceId
+            }
 
             /** The status of the entity connection */
             fun status(status: EntityConnectionStatus) = status(JsonField.of(status))
@@ -2758,7 +2861,9 @@ private constructor(
              * value instead. This method is primarily for setting the field to an undocumented or
              * not yet supported value.
              */
-            fun status(status: JsonField<EntityConnectionStatus>) = apply { this.status = status }
+            fun status(status: JsonField<EntityConnectionStatus>) = apply {
+                this.status = status
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -2773,7 +2878,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -2796,10 +2903,22 @@ private constructor(
              */
             fun build(): MultiAccountEntity =
                 MultiAccountEntity(
-                    checkRequired("id", id),
-                    checkRequired("name", name),
-                    checkRequired("sourceId", sourceId),
-                    checkRequired("status", status),
+                    checkRequired(
+                        "id",
+                        id,
+                    ),
+                    checkRequired(
+                        "name",
+                        name,
+                    ),
+                    checkRequired(
+                        "sourceId",
+                        sourceId,
+                    ),
+                    checkRequired(
+                        "status",
+                        status,
+                    ),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -2898,9 +3017,11 @@ private constructor(
              *
              * An instance of [EntityConnectionStatus] can contain an unknown value in a couple of
              * cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {

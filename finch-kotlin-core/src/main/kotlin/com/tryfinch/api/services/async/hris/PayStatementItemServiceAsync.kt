@@ -36,7 +36,10 @@ interface PayStatementItemServiceAsync {
 
     /** @see list */
     suspend fun list(requestOptions: RequestOptions): HrisPayStatementItemListPageAsync =
-        list(HrisPayStatementItemListParams.none(), requestOptions)
+        list(
+            HrisPayStatementItemListParams.none(),
+            requestOptions,
+        )
 
     /**
      * A view of [PayStatementItemServiceAsync] that provides access to raw HTTP responses for each
@@ -70,6 +73,9 @@ interface PayStatementItemServiceAsync {
         suspend fun list(
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisPayStatementItemListPageAsync> =
-            list(HrisPayStatementItemListParams.none(), requestOptions)
+            list(
+                HrisPayStatementItemListParams.none(),
+                requestOptions,
+            )
     }
 }

@@ -31,7 +31,11 @@ private constructor(
         @ExcludeMissing
         data: JsonField<List<AutomatedAsyncJob>> = JsonMissing.of(),
         @JsonProperty("meta") @ExcludeMissing meta: JsonField<Meta> = JsonMissing.of(),
-    ) : this(data, meta, mutableMapOf())
+    ) : this(
+        data,
+        meta,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -131,7 +135,9 @@ private constructor(
          * You should usually call [Builder.meta] with a well-typed [Meta] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun meta(meta: JsonField<Meta>) = apply { this.meta = meta }
+        fun meta(meta: JsonField<Meta>) = apply {
+            this.meta = meta
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -146,7 +152,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -167,8 +175,15 @@ private constructor(
          */
         fun build(): AutomatedListResponse =
             AutomatedListResponse(
-                checkRequired("data", data).map { it.toImmutable() },
-                checkRequired("meta", meta),
+                checkRequired(
+                        "data",
+                        data,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "meta",
+                    meta,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -219,7 +234,10 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("quotas") @ExcludeMissing quotas: JsonField<Quotas> = JsonMissing.of()
-        ) : this(quotas, mutableMapOf())
+        ) : this(
+            quotas,
+            mutableMapOf(),
+        )
 
         /**
          * Information about remaining quotas for this connection. Only applicable for customers
@@ -281,7 +299,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun quotas(quotas: JsonField<Quotas>) = apply { this.quotas = quotas }
+            fun quotas(quotas: JsonField<Quotas>) = apply {
+                this.quotas = quotas
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -296,7 +316,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -307,7 +329,11 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Meta = Meta(quotas, additionalProperties.toMutableMap())
+            fun build(): Meta =
+                Meta(
+                    quotas,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -363,7 +389,10 @@ private constructor(
                 @JsonProperty("data_sync_all")
                 @ExcludeMissing
                 dataSyncAll: JsonField<DataSyncAll> = JsonMissing.of()
-            ) : this(dataSyncAll, mutableMapOf())
+            ) : this(
+                dataSyncAll,
+                mutableMapOf(),
+            )
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -450,7 +479,11 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Quotas = Quotas(dataSyncAll, additionalProperties.toMutableMap())
+                fun build(): Quotas =
+                    Quotas(
+                        dataSyncAll,
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
@@ -506,7 +539,11 @@ private constructor(
                     @JsonProperty("remaining_refreshes")
                     @ExcludeMissing
                     remainingRefreshes: JsonField<Long> = JsonMissing.of(),
-                ) : this(allowedRefreshes, remainingRefreshes, mutableMapOf())
+                ) : this(
+                    allowedRefreshes,
+                    remainingRefreshes,
+                    mutableMapOf(),
+                )
 
                 /**
                  * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g.

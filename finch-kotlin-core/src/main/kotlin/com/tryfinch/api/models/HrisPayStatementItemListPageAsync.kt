@@ -74,10 +74,14 @@ private constructor(
                 response = hrisPayStatementItemListPageAsync.response
             }
 
-        fun service(service: PayStatementItemServiceAsync) = apply { this.service = service }
+        fun service(service: PayStatementItemServiceAsync) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisPayStatementItemListParams) = apply { this.params = params }
+        fun params(params: HrisPayStatementItemListParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisPayStatementItemListPageResponse) = apply {
@@ -100,9 +104,18 @@ private constructor(
          */
         fun build(): HrisPayStatementItemListPageAsync =
             HrisPayStatementItemListPageAsync(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("response", response),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "response",
+                    response,
+                ),
             )
     }
 

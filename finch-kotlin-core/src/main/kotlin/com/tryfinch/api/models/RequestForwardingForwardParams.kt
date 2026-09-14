@@ -162,13 +162,17 @@ private constructor(
          * - [requestHeaders]
          * - etc.
          */
-        fun body(body: ForwardRequest) = apply { this.body = body.toBuilder() }
+        fun body(body: ForwardRequest) = apply {
+            this.body = body.toBuilder()
+        }
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
          * `DELETE` , and `PATCH`.
          */
-        fun method(method: String) = apply { body.method(method) }
+        fun method(method: String) = apply {
+            body.method(method)
+        }
 
         /**
          * Sets [Builder.method] to an arbitrary JSON value.
@@ -176,13 +180,17 @@ private constructor(
          * You should usually call [Builder.method] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun method(method: JsonField<String>) = apply { body.method(method) }
+        fun method(method: JsonField<String>) = apply {
+            body.method(method)
+        }
 
         /**
          * The URL route path for the forwarded request. This value must begin with a forward-slash
          * ( / ) and may only contain alphanumeric characters, hyphens, and underscores.
          */
-        fun route(route: String) = apply { body.route(route) }
+        fun route(route: String) = apply {
+            body.route(route)
+        }
 
         /**
          * Sets [Builder.route] to an arbitrary JSON value.
@@ -190,13 +198,17 @@ private constructor(
          * You should usually call [Builder.route] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun route(route: JsonField<String>) = apply { body.route(route) }
+        fun route(route: JsonField<String>) = apply {
+            body.route(route)
+        }
 
         /**
          * The body for the forwarded request. This value must be specified as either a string or a
          * valid JSON object.
          */
-        fun data(data: String?) = apply { body.data(data) }
+        fun data(data: String?) = apply {
+            body.data(data)
+        }
 
         /**
          * Sets [Builder.data] to an arbitrary JSON value.
@@ -204,13 +216,17 @@ private constructor(
          * You should usually call [Builder.data] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<String>) = apply { body.data(data) }
+        fun data(data: JsonField<String>) = apply {
+            body.data(data)
+        }
 
         /**
          * The query parameters for the forwarded request. This value must be specified as a valid
          * JSON object rather than a query string.
          */
-        fun params(params: Params?) = apply { body.params(params) }
+        fun params(params: Params?) = apply {
+            body.params(params)
+        }
 
         /**
          * Sets [Builder.params] to an arbitrary JSON value.
@@ -218,7 +234,9 @@ private constructor(
          * You should usually call [Builder.params] with a well-typed [Params] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun params(params: JsonField<Params>) = apply { body.params(params) }
+        fun params(params: JsonField<Params>) = apply {
+            body.params(params)
+        }
 
         /**
          * The HTTP headers to include on the forwarded request. This value must be specified as an
@@ -245,7 +263,10 @@ private constructor(
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
+            body.putAdditionalProperty(
+                key,
+                value,
+            )
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -253,7 +274,9 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            body.removeAdditionalProperty(key)
+        }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -301,7 +324,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -351,7 +376,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -404,7 +431,14 @@ private constructor(
             @JsonProperty("request_headers")
             @ExcludeMissing
             requestHeaders: JsonField<RequestHeaders> = JsonMissing.of(),
-        ) : this(method, route, data, params, requestHeaders, mutableMapOf())
+        ) : this(
+            method,
+            route,
+            data,
+            params,
+            requestHeaders,
+            mutableMapOf(),
+        )
 
         /**
          * The HTTP method for the forwarded request. Valid values include: `GET` , `POST` , `PUT` ,
@@ -548,7 +582,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun method(method: JsonField<String>) = apply { this.method = method }
+            fun method(method: JsonField<String>) = apply {
+                this.method = method
+            }
 
             /**
              * The URL route path for the forwarded request. This value must begin with a
@@ -564,7 +600,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun route(route: JsonField<String>) = apply { this.route = route }
+            fun route(route: JsonField<String>) = apply {
+                this.route = route
+            }
 
             /**
              * The body for the forwarded request. This value must be specified as either a string
@@ -579,7 +617,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun data(data: JsonField<String>) = apply { this.data = data }
+            fun data(data: JsonField<String>) = apply {
+                this.data = data
+            }
 
             /**
              * The query parameters for the forwarded request. This value must be specified as a
@@ -594,7 +634,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun params(params: JsonField<Params>) = apply { this.params = params }
+            fun params(params: JsonField<Params>) = apply {
+                this.params = params
+            }
 
             /**
              * The HTTP headers to include on the forwarded request. This value must be specified as
@@ -628,7 +670,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -649,8 +693,14 @@ private constructor(
              */
             fun build(): ForwardRequest =
                 ForwardRequest(
-                    checkRequired("method", method),
-                    checkRequired("route", route),
+                    checkRequired(
+                        "method",
+                        method,
+                    ),
+                    checkRequired(
+                        "route",
+                        route,
+                    ),
                     data,
                     params,
                     requestHeaders,
@@ -772,7 +822,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -819,8 +871,9 @@ private constructor(
          *
          * Used for best match union deserialization.
          */
-        internal fun validity(): Int =
-            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+        internal fun validity(): Int = additionalProperties.count { (_, value) ->
+            !value.isNull() && !value.isMissing()
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -883,7 +936,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -930,8 +985,9 @@ private constructor(
          *
          * Used for best match union deserialization.
          */
-        internal fun validity(): Int =
-            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+        internal fun validity(): Int = additionalProperties.count { (_, value) ->
+            !value.isNull() && !value.isMissing()
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

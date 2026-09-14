@@ -40,7 +40,12 @@ private constructor(
         @JsonProperty("body") @ExcludeMissing body: JsonField<Body> = JsonMissing.of(),
         @JsonProperty("code") @ExcludeMissing code: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("payment_id") @ExcludeMissing paymentId: JsonField<String> = JsonMissing.of(),
-    ) : this(body, code, paymentId, mutableMapOf())
+    ) : this(
+        body,
+        code,
+        paymentId,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -131,7 +136,9 @@ private constructor(
          * You should usually call [Builder.body] with a well-typed [Body] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun body(body: JsonField<Body>) = apply { this.body = body }
+        fun body(body: JsonField<Body>) = apply {
+            this.body = body
+        }
 
         /** Alias for calling [body] with `Body.ofPayStatementData(payStatementData)`. */
         fun body(payStatementData: PayStatementData) =
@@ -155,7 +162,9 @@ private constructor(
          * You should usually call [Builder.code] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun code(code: JsonField<Long>) = apply { this.code = code }
+        fun code(code: JsonField<Long>) = apply {
+            this.code = code
+        }
 
         fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
 
@@ -166,7 +175,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
+        fun paymentId(paymentId: JsonField<String>) = apply {
+            this.paymentId = paymentId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -181,7 +192,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -203,9 +216,18 @@ private constructor(
          */
         fun build(): PayStatementResponse =
             PayStatementResponse(
-                checkRequired("body", body),
-                checkRequired("code", code),
-                checkRequired("paymentId", paymentId),
+                checkRequired(
+                    "body",
+                    body,
+                ),
+                checkRequired(
+                    "code",
+                    code,
+                ),
+                checkRequired(
+                    "paymentId",
+                    paymentId,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -455,7 +477,9 @@ private constructor(
                                 Body(batchError = it, _json = json)
                             },
                             tryDeserialize(node, jacksonTypeRef<PayStatementDataSyncInProgress>())
-                                ?.let { Body(payStatementDataSyncInProgress = it, _json = json) },
+                                ?.let {
+                                    Body(payStatementDataSyncInProgress = it, _json = json)
+                                },
                         )
                         .filterNotNull()
                         .allMaxBy { it.validity() }
@@ -511,7 +535,13 @@ private constructor(
                 @JsonProperty("finch_code")
                 @ExcludeMissing
                 finchCode: JsonField<String> = JsonMissing.of(),
-            ) : this(code, message, name, finchCode, mutableMapOf())
+            ) : this(
+                code,
+                message,
+                name,
+                finchCode,
+                mutableMapOf(),
+            )
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -624,7 +654,9 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun code(code: JsonField<Double>) = apply { this.code = code }
+                fun code(code: JsonField<Double>) = apply {
+                    this.code = code
+                }
 
                 fun message(message: String) = message(JsonField.of(message))
 
@@ -635,7 +667,9 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun message(message: JsonField<String>) = apply { this.message = message }
+                fun message(message: JsonField<String>) = apply {
+                    this.message = message
+                }
 
                 fun name(name: String) = name(JsonField.of(name))
 
@@ -646,7 +680,9 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun name(name: JsonField<String>) = apply { this.name = name }
+                fun name(name: JsonField<String>) = apply {
+                    this.name = name
+                }
 
                 fun finchCode(finchCode: String) = finchCode(JsonField.of(finchCode))
 
@@ -657,7 +693,9 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
+                fun finchCode(finchCode: JsonField<String>) = apply {
+                    this.finchCode = finchCode
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -697,9 +735,18 @@ private constructor(
                  */
                 fun build(): BatchError =
                     BatchError(
-                        checkRequired("code", code),
-                        checkRequired("message", message),
-                        checkRequired("name", name),
+                        checkRequired(
+                            "code",
+                            code,
+                        ),
+                        checkRequired(
+                            "message",
+                            message,
+                        ),
+                        checkRequired(
+                            "name",
+                            name,
+                        ),
                         finchCode,
                         additionalProperties.toMutableMap(),
                     )

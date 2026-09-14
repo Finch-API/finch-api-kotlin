@@ -260,7 +260,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun accessToken(accessToken: JsonField<String>) = apply { this.accessToken = accessToken }
+        fun accessToken(accessToken: JsonField<String>) = apply {
+            this.accessToken = accessToken
+        }
 
         fun accountId(accountId: String) = accountId(JsonField.of(accountId))
 
@@ -271,7 +273,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
+        fun accountId(accountId: JsonField<String>) = apply {
+            this.accountId = accountId
+        }
 
         fun authenticationType(authenticationType: AuthenticationType) =
             authenticationType(JsonField.of(authenticationType))
@@ -308,7 +312,9 @@ private constructor(
          * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
+        fun entityId(entityId: JsonField<String>) = apply {
+            this.entityId = entityId
+        }
 
         fun products(products: List<String>) = products(JsonField.of(products))
 
@@ -344,7 +350,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun providerId(providerId: JsonField<String>) = apply { this.providerId = providerId }
+        fun providerId(providerId: JsonField<String>) = apply {
+            this.providerId = providerId
+        }
 
         fun tokenType(tokenType: String) = tokenType(JsonField.of(tokenType))
 
@@ -355,7 +363,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun tokenType(tokenType: JsonField<String>) = apply { this.tokenType = tokenType }
+        fun tokenType(tokenType: JsonField<String>) = apply {
+            this.tokenType = tokenType
+        }
 
         fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
 
@@ -366,7 +376,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
+        fun companyId(companyId: JsonField<String>) = apply {
+            this.companyId = companyId
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -381,7 +393,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -408,14 +422,39 @@ private constructor(
          */
         fun build(): ConnectionCreateResponse =
             ConnectionCreateResponse(
-                checkRequired("accessToken", accessToken),
-                checkRequired("accountId", accountId),
-                checkRequired("authenticationType", authenticationType),
-                checkRequired("connectionId", connectionId),
-                checkRequired("entityId", entityId),
-                checkRequired("products", products).map { it.toImmutable() },
-                checkRequired("providerId", providerId),
-                checkRequired("tokenType", tokenType),
+                checkRequired(
+                    "accessToken",
+                    accessToken,
+                ),
+                checkRequired(
+                    "accountId",
+                    accountId,
+                ),
+                checkRequired(
+                    "authenticationType",
+                    authenticationType,
+                ),
+                checkRequired(
+                    "connectionId",
+                    connectionId,
+                ),
+                checkRequired(
+                    "entityId",
+                    entityId,
+                ),
+                checkRequired(
+                        "products",
+                        products,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "providerId",
+                    providerId,
+                ),
+                checkRequired(
+                    "tokenType",
+                    tokenType,
+                ),
                 companyId,
                 additionalProperties.toMutableMap(),
             )
@@ -511,9 +550,11 @@ private constructor(
          * An enum containing [AuthenticationType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [AuthenticationType] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

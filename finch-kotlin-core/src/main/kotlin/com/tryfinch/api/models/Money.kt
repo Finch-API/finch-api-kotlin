@@ -27,7 +27,11 @@ private constructor(
     private constructor(
         @JsonProperty("amount") @ExcludeMissing amount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("currency") @ExcludeMissing currency: JsonField<String> = JsonMissing.of(),
-    ) : this(amount, currency, mutableMapOf())
+    ) : this(
+        amount,
+        currency,
+        mutableMapOf(),
+    )
 
     /**
      * Amount for money object (in cents)
@@ -112,7 +116,9 @@ private constructor(
          * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
+        fun amount(amount: JsonField<Long>) = apply {
+            this.amount = amount
+        }
 
         fun currency(currency: String) = currency(JsonField.of(currency))
 
@@ -122,7 +128,9 @@ private constructor(
          * You should usually call [Builder.currency] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+        fun currency(currency: JsonField<String>) = apply {
+            this.currency = currency
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -137,7 +145,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -158,8 +168,14 @@ private constructor(
          */
         fun build(): Money =
             Money(
-                checkRequired("amount", amount),
-                checkRequired("currency", currency),
+                checkRequired(
+                    "amount",
+                    amount,
+                ),
+                checkRequired(
+                    "currency",
+                    currency,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

@@ -31,7 +31,11 @@ private constructor(
         @ExcludeMissing
         documents: JsonField<List<DocumentResponse>> = JsonMissing.of(),
         @JsonProperty("paging") @ExcludeMissing paging: JsonField<Paging> = JsonMissing.of(),
-    ) : this(documents, paging, mutableMapOf())
+    ) : this(
+        documents,
+        paging,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -133,7 +137,9 @@ private constructor(
          * You should usually call [Builder.paging] with a well-typed [Paging] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
+        fun paging(paging: JsonField<Paging>) = apply {
+            this.paging = paging
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -148,7 +154,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -169,8 +177,15 @@ private constructor(
          */
         fun build(): DocumentListResponse =
             DocumentListResponse(
-                checkRequired("documents", documents).map { it.toImmutable() },
-                checkRequired("paging", paging),
+                checkRequired(
+                        "documents",
+                        documents,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "paging",
+                    paging,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

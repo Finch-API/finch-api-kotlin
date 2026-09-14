@@ -91,12 +91,28 @@ class AccessTokenServiceImpl internal constructor(private val clientOptions: Cli
                     .putAllHeaders(modifiedParams._headers())
                     .body(json(clientOptions.jsonMapper, modifiedParams._body()))
                     .build()
+<<<<<<< HEAD
+                    .prepare(
+                        clientOptions,
+                        params,
+                        SecurityOptions.none(),
+                    )
+||||||| parent of 907c97c (Apply custom code)
+                    .prepare(clientOptions, params, SecurityOptions.none())
+=======
                     .prepare(clientOptions, modifiedParams)
+>>>>>>> 907c97c (Apply custom code)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
+            val response =
+                clientOptions.httpClient.execute(
+                    request,
+                    requestOptions,
+                )
             return errorHandler.handle(response).parseable {
                 response
-                    .use { createHandler.handle(it) }
+                    .use {
+                        createHandler.handle(it)
+                    }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

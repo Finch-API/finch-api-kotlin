@@ -134,7 +134,14 @@ internal class BenefitContributionTest {
         STRING(JsonValue.from("invalid")),
         INTEGER(JsonValue.from(-1)),
         FLOAT(JsonValue.from(3.14)),
-        ARRAY(JsonValue.from(listOf("invalid", "array"))),
+        ARRAY(
+            JsonValue.from(
+                listOf(
+                    "invalid",
+                    "array",
+                )
+            )
+        ),
     }
 
     @ParameterizedTest
@@ -143,7 +150,10 @@ internal class BenefitContributionTest {
         val benefitContribution =
             jsonMapper().convertValue(testCase.value, jacksonTypeRef<BenefitContribution>())
 
-        val e = assertThrows<FinchInvalidDataException> { benefitContribution.validate() }
+        val e =
+            assertThrows<FinchInvalidDataException> {
+                benefitContribution.validate()
+            }
         assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }

@@ -36,7 +36,13 @@ private constructor(
         @JsonProperty("update")
         @ExcludeMissing
         update: JsonField<OperationSupport> = JsonMissing.of(),
-    ) : this(create, delete, read, update, mutableMapOf())
+    ) : this(
+        create,
+        delete,
+        read,
+        update,
+        mutableMapOf(),
+    )
 
     /**
      * - `supported`: This operation is supported by both the provider and Finch
@@ -175,7 +181,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun create(create: JsonField<OperationSupport>) = apply { this.create = create }
+        fun create(create: JsonField<OperationSupport>) = apply {
+            this.create = create
+        }
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
@@ -195,7 +203,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun delete(delete: JsonField<OperationSupport>) = apply { this.delete = delete }
+        fun delete(delete: JsonField<OperationSupport>) = apply {
+            this.delete = delete
+        }
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
@@ -215,7 +225,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun read(read: JsonField<OperationSupport>) = apply { this.read = read }
+        fun read(read: JsonField<OperationSupport>) = apply {
+            this.read = read
+        }
 
         /**
          * - `supported`: This operation is supported by both the provider and Finch
@@ -235,7 +247,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun update(update: JsonField<OperationSupport>) = apply { this.update = update }
+        fun update(update: JsonField<OperationSupport>) = apply {
+            this.update = update
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -250,7 +264,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)

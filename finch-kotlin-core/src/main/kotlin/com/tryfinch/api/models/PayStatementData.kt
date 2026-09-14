@@ -31,7 +31,11 @@ private constructor(
         @JsonProperty("pay_statements")
         @ExcludeMissing
         payStatements: JsonField<List<PayStatement>> = JsonMissing.of(),
-    ) : this(paging, payStatements, mutableMapOf())
+    ) : this(
+        paging,
+        payStatements,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -108,7 +112,9 @@ private constructor(
          * You should usually call [Builder.paging] with a well-typed [Paging] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
+        fun paging(paging: JsonField<Paging>) = apply {
+            this.paging = paging
+        }
 
         fun payStatements(payStatements: List<PayStatement>) =
             payStatements(JsonField.of(payStatements))
@@ -149,7 +155,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -170,8 +178,15 @@ private constructor(
          */
         fun build(): PayStatementData =
             PayStatementData(
-                checkRequired("paging", paging),
-                checkRequired("payStatements", payStatements).map { it.toImmutable() },
+                checkRequired(
+                    "paging",
+                    paging,
+                ),
+                checkRequired(
+                        "payStatements",
+                        payStatements,
+                    )
+                    .map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }
@@ -225,7 +240,11 @@ private constructor(
         private constructor(
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("count") @ExcludeMissing count: JsonField<Long> = JsonMissing.of(),
-        ) : this(offset, count, mutableMapOf())
+        ) : this(
+            offset,
+            count,
+            mutableMapOf(),
+        )
 
         /**
          * The current start index of the returned list of elements
@@ -305,7 +324,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+            fun offset(offset: JsonField<Long>) = apply {
+                this.offset = offset
+            }
 
             /** The total number of elements for the entire query (not just the given page) */
             fun count(count: Long) = count(JsonField.of(count))
@@ -317,7 +338,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun count(count: JsonField<Long>) = apply { this.count = count }
+            fun count(count: JsonField<Long>) = apply {
+                this.count = count
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -332,7 +355,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -351,7 +376,14 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Paging =
-                Paging(checkRequired("offset", offset), count, additionalProperties.toMutableMap())
+                Paging(
+                    checkRequired(
+                        "offset",
+                        offset,
+                    ),
+                    count,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false

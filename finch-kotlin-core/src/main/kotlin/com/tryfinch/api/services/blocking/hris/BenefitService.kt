@@ -47,14 +47,21 @@ interface BenefitService {
 
     /** @see create */
     fun create(requestOptions: RequestOptions): CreateCompanyBenefitsResponse =
-        create(HrisBenefitCreateParams.none(), requestOptions)
+        create(
+            HrisBenefitCreateParams.none(),
+            requestOptions,
+        )
 
     /** Lists deductions and contributions information for a given item */
     fun retrieve(
         benefitId: String,
         params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompanyBenefit = retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+    ): CompanyBenefit =
+        retrieve(
+            params.toBuilder().benefitId(benefitId).build(),
+            requestOptions,
+        )
 
     /** @see retrieve */
     fun retrieve(
@@ -64,7 +71,11 @@ interface BenefitService {
 
     /** @see retrieve */
     fun retrieve(benefitId: String, requestOptions: RequestOptions): CompanyBenefit =
-        retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
+        retrieve(
+            benefitId,
+            HrisBenefitRetrieveParams.none(),
+            requestOptions,
+        )
 
     /** Updates an existing company-wide deduction or contribution */
     fun update(
@@ -72,7 +83,10 @@ interface BenefitService {
         params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UpdateCompanyBenefitResponse =
-        update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+        update(
+            params.toBuilder().benefitId(benefitId).build(),
+            requestOptions,
+        )
 
     /** @see update */
     fun update(
@@ -82,7 +96,11 @@ interface BenefitService {
 
     /** @see update */
     fun update(benefitId: String, requestOptions: RequestOptions): UpdateCompanyBenefitResponse =
-        update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
+        update(
+            benefitId,
+            HrisBenefitUpdateParams.none(),
+            requestOptions,
+        )
 
     /** List all company-wide deductions and contributions. */
     fun list(
@@ -92,7 +110,10 @@ interface BenefitService {
 
     /** @see list */
     fun list(requestOptions: RequestOptions): HrisBenefitListPage =
-        list(HrisBenefitListParams.none(), requestOptions)
+        list(
+            HrisBenefitListParams.none(),
+            requestOptions,
+        )
 
     /** Get deductions metadata */
     fun listSupportedBenefits(
@@ -105,7 +126,10 @@ interface BenefitService {
     fun listSupportedBenefits(
         requestOptions: RequestOptions
     ): HrisBenefitListSupportedBenefitsPage =
-        listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+        listSupportedBenefits(
+            HrisBenefitListSupportedBenefitsParams.none(),
+            requestOptions,
+        )
 
     /**
      * Register existing benefits from the customer on the provider, on Finch's end. Please use the
@@ -118,7 +142,10 @@ interface BenefitService {
 
     /** @see register */
     fun register(requestOptions: RequestOptions): RegisterCompanyBenefitResponse =
-        register(HrisBenefitRegisterParams.none(), requestOptions)
+        register(
+            HrisBenefitRegisterParams.none(),
+            requestOptions,
+        )
 
     /** A view of [BenefitService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -145,7 +172,10 @@ interface BenefitService {
         /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<CreateCompanyBenefitsResponse> =
-            create(HrisBenefitCreateParams.none(), requestOptions)
+            create(
+                HrisBenefitCreateParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/{benefit_id}`, but is otherwise
@@ -157,7 +187,10 @@ interface BenefitService {
             params: HrisBenefitRetrieveParams = HrisBenefitRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CompanyBenefit> =
-            retrieve(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+            retrieve(
+                params.toBuilder().benefitId(benefitId).build(),
+                requestOptions,
+            )
 
         /** @see retrieve */
         @MustBeClosed
@@ -172,7 +205,11 @@ interface BenefitService {
             benefitId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<CompanyBenefit> =
-            retrieve(benefitId, HrisBenefitRetrieveParams.none(), requestOptions)
+            retrieve(
+                benefitId,
+                HrisBenefitRetrieveParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `post /employer/benefits/{benefit_id}`, but is otherwise
@@ -184,7 +221,10 @@ interface BenefitService {
             params: HrisBenefitUpdateParams = HrisBenefitUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UpdateCompanyBenefitResponse> =
-            update(params.toBuilder().benefitId(benefitId).build(), requestOptions)
+            update(
+                params.toBuilder().benefitId(benefitId).build(),
+                requestOptions,
+            )
 
         /** @see update */
         @MustBeClosed
@@ -199,7 +239,11 @@ interface BenefitService {
             benefitId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<UpdateCompanyBenefitResponse> =
-            update(benefitId, HrisBenefitUpdateParams.none(), requestOptions)
+            update(
+                benefitId,
+                HrisBenefitUpdateParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits`, but is otherwise the same as
@@ -214,7 +258,10 @@ interface BenefitService {
         /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisBenefitListPage> =
-            list(HrisBenefitListParams.none(), requestOptions)
+            list(
+                HrisBenefitListParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get /employer/benefits/meta`, but is otherwise the same
@@ -232,7 +279,10 @@ interface BenefitService {
         fun listSupportedBenefits(
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisBenefitListSupportedBenefitsPage> =
-            listSupportedBenefits(HrisBenefitListSupportedBenefitsParams.none(), requestOptions)
+            listSupportedBenefits(
+                HrisBenefitListSupportedBenefitsParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `post /employer/benefits/register`, but is otherwise the
@@ -249,6 +299,9 @@ interface BenefitService {
         fun register(
             requestOptions: RequestOptions
         ): HttpResponseFor<RegisterCompanyBenefitResponse> =
-            register(HrisBenefitRegisterParams.none(), requestOptions)
+            register(
+                HrisBenefitRegisterParams.none(),
+                requestOptions,
+            )
     }
 }

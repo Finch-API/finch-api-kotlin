@@ -65,13 +65,19 @@ private constructor(
             items = hrisBenefitListSupportedBenefitsPage.items
         }
 
-        fun service(service: BenefitService) = apply { this.service = service }
+        fun service(service: BenefitService) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisBenefitListSupportedBenefitsParams) = apply { this.params = params }
+        fun params(params: HrisBenefitListSupportedBenefitsParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<SupportedBenefit>?) = apply { this.items = items }
+        fun items(items: List<SupportedBenefit>?) = apply {
+            this.items = items
+        }
 
         /**
          * Returns an immutable instance of [HrisBenefitListSupportedBenefitsPage].
@@ -89,9 +95,18 @@ private constructor(
          */
         fun build(): HrisBenefitListSupportedBenefitsPage =
             HrisBenefitListSupportedBenefitsPage(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("items", items) ?: emptyList(),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "items",
+                    items,
+                ) ?: emptyList(),
             )
     }
 

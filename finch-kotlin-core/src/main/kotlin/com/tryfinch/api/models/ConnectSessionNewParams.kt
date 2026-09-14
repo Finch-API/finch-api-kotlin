@@ -234,10 +234,14 @@ private constructor(
          * - [integration]
          * - etc.
          */
-        fun body(body: CreateConnectSessionRequest) = apply { this.body = body.toBuilder() }
+        fun body(body: CreateConnectSessionRequest) = apply {
+            this.body = body.toBuilder()
+        }
 
         /** Unique identifier for the customer */
-        fun customerId(customerId: String) = apply { body.customerId(customerId) }
+        fun customerId(customerId: String) = apply {
+            body.customerId(customerId)
+        }
 
         /**
          * Sets [Builder.customerId] to an arbitrary JSON value.
@@ -246,10 +250,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun customerId(customerId: JsonField<String>) = apply { body.customerId(customerId) }
+        fun customerId(customerId: JsonField<String>) = apply {
+            body.customerId(customerId)
+        }
 
         /** Name of the customer */
-        fun customerName(customerName: String) = apply { body.customerName(customerName) }
+        fun customerName(customerName: String) = apply {
+            body.customerName(customerName)
+        }
 
         /**
          * Sets [Builder.customerName] to an arbitrary JSON value.
@@ -267,7 +275,9 @@ private constructor(
          * `deduction` is a deprecated alias that is still accepted but should not be combined with
          * `benefits`.
          */
-        fun products(products: List<ConnectProducts>) = apply { body.products(products) }
+        fun products(products: List<ConnectProducts>) = apply {
+            body.products(products)
+        }
 
         /**
          * Sets [Builder.products] to an arbitrary JSON value.
@@ -276,17 +286,23 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
-        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
+        fun products(products: JsonField<List<ConnectProducts>>) = apply {
+            body.products(products)
+        }
 
         /**
          * Adds a single [ConnectProducts] to [products].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
+        fun addProduct(product: ConnectProducts) = apply {
+            body.addProduct(product)
+        }
 
         /** Email address of the customer */
-        fun customerEmail(customerEmail: String?) = apply { body.customerEmail(customerEmail) }
+        fun customerEmail(customerEmail: String?) = apply {
+            body.customerEmail(customerEmail)
+        }
 
         /**
          * Sets [Builder.customerEmail] to an arbitrary JSON value.
@@ -300,7 +316,9 @@ private constructor(
         }
 
         /** Integration configuration for the connect session */
-        fun integration(integration: Integration?) = apply { body.integration(integration) }
+        fun integration(integration: Integration?) = apply {
+            body.integration(integration)
+        }
 
         /**
          * Sets [Builder.integration] to an arbitrary JSON value.
@@ -314,7 +332,9 @@ private constructor(
         }
 
         /** Enable manual authentication mode */
-        fun manual(manual: Boolean?) = apply { body.manual(manual) }
+        fun manual(manual: Boolean?) = apply {
+            body.manual(manual)
+        }
 
         /**
          * Alias for [Builder.manual].
@@ -329,7 +349,9 @@ private constructor(
          * You should usually call [Builder.manual] with a well-typed [Boolean] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun manual(manual: JsonField<Boolean>) = apply { body.manual(manual) }
+        fun manual(manual: JsonField<Boolean>) = apply {
+            body.manual(manual)
+        }
 
         /**
          * The number of minutes until the session expires (defaults to 129,600, which is 90 days)
@@ -377,7 +399,9 @@ private constructor(
         }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
+        fun redirectUri(redirectUri: String?) = apply {
+            body.redirectUri(redirectUri)
+        }
 
         /**
          * Sets [Builder.redirectUri] to an arbitrary JSON value.
@@ -386,10 +410,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
+        fun redirectUri(redirectUri: JsonField<String>) = apply {
+            body.redirectUri(redirectUri)
+        }
 
         /** Sandbox mode for testing */
-        fun sandbox(sandbox: Sandbox?) = apply { body.sandbox(sandbox) }
+        fun sandbox(sandbox: Sandbox?) = apply {
+            body.sandbox(sandbox)
+        }
 
         /**
          * Sets [Builder.sandbox] to an arbitrary JSON value.
@@ -397,14 +425,19 @@ private constructor(
          * You should usually call [Builder.sandbox] with a well-typed [Sandbox] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun sandbox(sandbox: JsonField<Sandbox>) = apply { body.sandbox(sandbox) }
+        fun sandbox(sandbox: JsonField<Sandbox>) = apply {
+            body.sandbox(sandbox)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
+            body.putAdditionalProperty(
+                key,
+                value,
+            )
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -412,7 +445,9 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) = apply {
+            body.removeAdditionalProperty(key)
+        }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -460,7 +495,9 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) = apply {
+            additionalHeaders.remove(name)
+        }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -510,7 +547,9 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) = apply {
+            additionalQueryParams.remove(key)
+        }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -844,7 +883,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun customerId(customerId: JsonField<String>) = apply { this.customerId = customerId }
+            fun customerId(customerId: JsonField<String>) = apply {
+                this.customerId = customerId
+            }
 
             /** Name of the customer */
             fun customerName(customerName: String) = customerName(JsonField.of(customerName))
@@ -937,7 +978,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
+            fun manual(manual: JsonField<Boolean>) = apply {
+                this.manual = manual
+            }
 
             /**
              * The number of minutes until the session expires (defaults to 129,600, which is 90
@@ -1008,7 +1051,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun sandbox(sandbox: JsonField<Sandbox>) = apply { this.sandbox = sandbox }
+            fun sandbox(sandbox: JsonField<Sandbox>) = apply {
+                this.sandbox = sandbox
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1023,7 +1068,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1045,9 +1092,19 @@ private constructor(
              */
             fun build(): CreateConnectSessionRequest =
                 CreateConnectSessionRequest(
-                    checkRequired("customerId", customerId),
-                    checkRequired("customerName", customerName),
-                    checkRequired("products", products).map { it.toImmutable() },
+                    checkRequired(
+                        "customerId",
+                        customerId,
+                    ),
+                    checkRequired(
+                        "customerName",
+                        customerName,
+                    ),
+                    checkRequired(
+                            "products",
+                            products,
+                        )
+                        .map { it.toImmutable() },
                     customerEmail,
                     integration,
                     manual,
@@ -1223,9 +1280,11 @@ private constructor(
          * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -1381,7 +1440,11 @@ private constructor(
             @JsonProperty("auth_method")
             @ExcludeMissing
             authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-        ) : this(provider, authMethod, mutableMapOf())
+        ) : this(
+            provider,
+            authMethod,
+            mutableMapOf(),
+        )
 
         /**
          * The provider to integrate with
@@ -1463,7 +1526,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
+            fun provider(provider: JsonField<String>) = apply {
+                this.provider = provider
+            }
 
             /** The authentication method to use */
             fun authMethod(authMethod: AuthMethod?) = authMethod(JsonField.ofNullable(authMethod))
@@ -1492,7 +1557,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1512,7 +1579,10 @@ private constructor(
              */
             fun build(): Integration =
                 Integration(
-                    checkRequired("provider", provider),
+                    checkRequired(
+                        "provider",
+                        provider,
+                    ),
                     authMethod,
                     additionalProperties.toMutableMap(),
                 )
@@ -1595,9 +1665,11 @@ private constructor(
              * An enum containing [AuthMethod]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [AuthMethod] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1748,7 +1820,11 @@ private constructor(
             @ExcludeMissing
             recordkeeper: JsonField<Recordkeeper> = JsonMissing.of(),
             @JsonProperty("plan_id") @ExcludeMissing planId: JsonField<String> = JsonMissing.of(),
-        ) : this(recordkeeper, planId, mutableMapOf())
+        ) : this(
+            recordkeeper,
+            planId,
+            mutableMapOf(),
+        )
 
         /**
          * The recordkeeper to configure for this connection
@@ -1845,7 +1921,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun planId(planId: JsonField<String>) = apply { this.planId = planId }
+            fun planId(planId: JsonField<String>) = apply {
+                this.planId = planId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1860,7 +1938,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1880,7 +1960,10 @@ private constructor(
              */
             fun build(): Recordkeeping =
                 Recordkeeping(
-                    checkRequired("recordkeeper", recordkeeper),
+                    checkRequired(
+                        "recordkeeper",
+                        recordkeeper,
+                    ),
                     planId,
                     additionalProperties.toMutableMap(),
                 )
@@ -1963,9 +2046,11 @@ private constructor(
              * An enum containing [Recordkeeper]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Recordkeeper] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -2129,9 +2214,11 @@ private constructor(
          * An enum containing [Sandbox]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Sandbox] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

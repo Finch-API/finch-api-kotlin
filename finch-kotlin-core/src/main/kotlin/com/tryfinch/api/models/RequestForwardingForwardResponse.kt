@@ -43,7 +43,13 @@ private constructor(
         @JsonProperty("statusCode") @ExcludeMissing statusCode: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("data") @ExcludeMissing data: JsonField<String> = JsonMissing.of(),
         @JsonProperty("headers") @ExcludeMissing headers: JsonField<Headers> = JsonMissing.of(),
-    ) : this(request, statusCode, data, headers, mutableMapOf())
+    ) : this(
+        request,
+        statusCode,
+        data,
+        headers,
+        mutableMapOf(),
+    )
 
     /**
      * An object containing details of your original forwarded request, for your ease of reference.
@@ -167,7 +173,9 @@ private constructor(
          * You should usually call [Builder.request] with a well-typed [Request] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun request(request: JsonField<Request>) = apply { this.request = request }
+        fun request(request: JsonField<Request>) = apply {
+            this.request = request
+        }
 
         /**
          * The HTTP status code of the forwarded request's response, exactly received from the
@@ -181,7 +189,9 @@ private constructor(
          * You should usually call [Builder.statusCode] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun statusCode(statusCode: JsonField<Long>) = apply { this.statusCode = statusCode }
+        fun statusCode(statusCode: JsonField<Long>) = apply {
+            this.statusCode = statusCode
+        }
 
         /**
          * A string representation of the HTTP response body of the forwarded request's response
@@ -196,7 +206,9 @@ private constructor(
          * You should usually call [Builder.data] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<String>) = apply { this.data = data }
+        fun data(data: JsonField<String>) = apply {
+            this.data = data
+        }
 
         /**
          * The HTTP headers of the forwarded request's response, exactly as received from the
@@ -210,7 +222,9 @@ private constructor(
          * You should usually call [Builder.headers] with a well-typed [Headers] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun headers(headers: JsonField<Headers>) = apply { this.headers = headers }
+        fun headers(headers: JsonField<Headers>) = apply {
+            this.headers = headers
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -225,7 +239,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -246,8 +262,14 @@ private constructor(
          */
         fun build(): RequestForwardingForwardResponse =
             RequestForwardingForwardResponse(
-                checkRequired("request", request),
-                checkRequired("statusCode", statusCode),
+                checkRequired(
+                    "request",
+                    request,
+                ),
+                checkRequired(
+                    "statusCode",
+                    statusCode,
+                ),
                 data,
                 headers,
                 additionalProperties.toMutableMap(),
@@ -316,7 +338,14 @@ private constructor(
             @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
             @JsonProperty("headers") @ExcludeMissing headers: JsonField<Headers> = JsonMissing.of(),
             @JsonProperty("params") @ExcludeMissing params: JsonField<Params> = JsonMissing.of(),
-        ) : this(method, route, data, headers, params, mutableMapOf())
+        ) : this(
+            method,
+            route,
+            data,
+            headers,
+            params,
+            mutableMapOf(),
+        )
 
         /**
          * The HTTP method that was specified for the forwarded request. Valid values include: `GET`
@@ -452,7 +481,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun method(method: JsonField<String>) = apply { this.method = method }
+            fun method(method: JsonField<String>) = apply {
+                this.method = method
+            }
 
             /** The URL route path that was specified for the forwarded request. */
             fun route(route: String) = route(JsonField.of(route))
@@ -464,7 +495,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun route(route: JsonField<String>) = apply { this.route = route }
+            fun route(route: JsonField<String>) = apply {
+                this.route = route
+            }
 
             /** The body that was specified for the forwarded request. */
             fun data(data: Data?) = data(JsonField.ofNullable(data))
@@ -476,7 +509,9 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun data(data: JsonField<Data>) = apply { this.data = data }
+            fun data(data: JsonField<Data>) = apply {
+                this.data = data
+            }
 
             /** Alias for calling [data] with `Data.ofString(string)`. */
             fun data(string: String) = data(Data.ofString(string))
@@ -494,7 +529,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun headers(headers: JsonField<Headers>) = apply { this.headers = headers }
+            fun headers(headers: JsonField<Headers>) = apply {
+                this.headers = headers
+            }
 
             /** The query parameters that were specified for the forwarded request. */
             fun params(params: Params?) = params(JsonField.ofNullable(params))
@@ -506,7 +543,9 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun params(params: JsonField<Params>) = apply { this.params = params }
+            fun params(params: JsonField<Params>) = apply {
+                this.params = params
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -521,7 +560,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -542,8 +583,14 @@ private constructor(
              */
             fun build(): Request =
                 Request(
-                    checkRequired("method", method),
-                    checkRequired("route", route),
+                    checkRequired(
+                        "method",
+                        method,
+                    ),
+                    checkRequired(
+                        "route",
+                        route,
+                    ),
                     data,
                     headers,
                     params,
@@ -894,10 +941,9 @@ private constructor(
                  *
                  * Used for best match union deserialization.
                  */
-                internal fun validity(): Int =
-                    additionalProperties.count { (_, value) ->
-                        !value.isNull() && !value.isMissing()
-                    }
+                internal fun validity(): Int = additionalProperties.count { (_, value) ->
+                    !value.isNull() && !value.isMissing()
+                }
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1009,8 +1055,9 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int =
-                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+            internal fun validity(): Int = additionalProperties.count { (_, value) ->
+                !value.isNull() && !value.isMissing()
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1120,8 +1167,9 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int =
-                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+            internal fun validity(): Int = additionalProperties.count { (_, value) ->
+                !value.isNull() && !value.isMissing()
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1207,7 +1255,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1254,8 +1304,9 @@ private constructor(
          *
          * Used for best match union deserialization.
          */
-        internal fun validity(): Int =
-            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+        internal fun validity(): Int = additionalProperties.count { (_, value) ->
+            !value.isNull() && !value.isMissing()
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

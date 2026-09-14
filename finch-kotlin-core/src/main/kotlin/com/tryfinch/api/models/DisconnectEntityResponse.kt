@@ -25,7 +25,10 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("status") @ExcludeMissing status: JsonField<String> = JsonMissing.of()
-    ) : this(status, mutableMapOf())
+    ) : this(
+        status,
+        mutableMapOf(),
+    )
 
     /**
      * If the request is successful, Finch will return "success" (HTTP 200 status).
@@ -87,7 +90,9 @@ private constructor(
          * You should usually call [Builder.status] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun status(status: JsonField<String>) = apply { this.status = status }
+        fun status(status: JsonField<String>) = apply {
+            this.status = status
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -102,7 +107,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -122,7 +129,10 @@ private constructor(
          */
         fun build(): DisconnectEntityResponse =
             DisconnectEntityResponse(
-                checkRequired("status", status),
+                checkRequired(
+                    "status",
+                    status,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }

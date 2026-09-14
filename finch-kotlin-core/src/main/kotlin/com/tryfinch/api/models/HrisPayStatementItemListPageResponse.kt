@@ -29,7 +29,10 @@ private constructor(
         @JsonProperty("responses")
         @ExcludeMissing
         responses: JsonField<List<PayStatementItemListResponse>> = JsonMissing.of()
-    ) : this(responses, mutableMapOf())
+    ) : this(
+        responses,
+        mutableMapOf(),
+    )
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -125,7 +128,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -145,7 +150,11 @@ private constructor(
          */
         fun build(): HrisPayStatementItemListPageResponse =
             HrisPayStatementItemListPageResponse(
-                checkRequired("responses", responses).map { it.toImmutable() },
+                checkRequired(
+                        "responses",
+                        responses,
+                    )
+                    .map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }

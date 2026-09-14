@@ -34,7 +34,12 @@ private constructor(
         @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
         @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
-    ) : this(data, type, year, mutableMapOf())
+    ) : this(
+        data,
+        type,
+        year,
+        mutableMapOf(),
+    )
 
     /**
      * Detailed information specific to the 2005 W4 form.
@@ -132,7 +137,9 @@ private constructor(
          * You should usually call [Builder.data] with a well-typed [Data] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<Data>) = apply { this.data = data }
+        fun data(data: JsonField<Data>) = apply {
+            this.data = data
+        }
 
         /** Specifies the form type, indicating that this document is a 2005 W4 form. */
         fun type(type: Type) = type(JsonField.of(type))
@@ -143,7 +150,9 @@ private constructor(
          * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
+        fun type(type: JsonField<Type>) = apply {
+            this.type = type
+        }
 
         /** The tax year this W4 document applies to. */
         fun year(year: Double) = year(JsonField.of(year))
@@ -154,7 +163,9 @@ private constructor(
          * You should usually call [Builder.year] with a well-typed [Double] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun year(year: JsonField<Double>) = apply { this.year = year }
+        fun year(year: JsonField<Double>) = apply {
+            this.year = year
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -169,7 +180,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -191,9 +204,18 @@ private constructor(
          */
         fun build(): W42005 =
             W42005(
-                checkRequired("data", data),
-                checkRequired("type", type),
-                checkRequired("year", year),
+                checkRequired(
+                    "data",
+                    data,
+                ),
+                checkRequired(
+                    "type",
+                    type,
+                ),
+                checkRequired(
+                    "year",
+                    year,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -439,7 +461,9 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun exemption(exemption: JsonField<Exemption>) = apply { this.exemption = exemption }
+            fun exemption(exemption: JsonField<Exemption>) = apply {
+                this.exemption = exemption
+            }
 
             /** The individual's filing status for tax purposes. */
             fun filingStatus(filingStatus: FilingStatus?) =
@@ -498,7 +522,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -522,11 +548,26 @@ private constructor(
              */
             fun build(): Data =
                 Data(
-                    checkRequired("additionalWithholding", additionalWithholding),
-                    checkRequired("exemption", exemption),
-                    checkRequired("filingStatus", filingStatus),
-                    checkRequired("individualId", individualId),
-                    checkRequired("totalNumberOfAllowances", totalNumberOfAllowances),
+                    checkRequired(
+                        "additionalWithholding",
+                        additionalWithholding,
+                    ),
+                    checkRequired(
+                        "exemption",
+                        exemption,
+                    ),
+                    checkRequired(
+                        "filingStatus",
+                        filingStatus,
+                    ),
+                    checkRequired(
+                        "individualId",
+                        individualId,
+                    ),
+                    checkRequired(
+                        "totalNumberOfAllowances",
+                        totalNumberOfAllowances,
+                    ),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -609,9 +650,11 @@ private constructor(
              * An enum containing [Exemption]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Exemption] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -753,9 +796,11 @@ private constructor(
              * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [FilingStatus] can contain an unknown value in a couple of cases:
+             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -925,9 +970,11 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

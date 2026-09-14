@@ -92,10 +92,14 @@ private constructor(
                 response = hrisDirectoryListIndividualsPage.response
             }
 
-        fun service(service: DirectoryService) = apply { this.service = service }
+        fun service(service: DirectoryService) = apply {
+            this.service = service
+        }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisDirectoryListIndividualsParams) = apply { this.params = params }
+        fun params(params: HrisDirectoryListIndividualsParams) = apply {
+            this.params = params
+        }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisDirectoryListIndividualsPageResponse) = apply {
@@ -118,9 +122,18 @@ private constructor(
          */
         fun build(): HrisDirectoryListIndividualsPage =
             HrisDirectoryListIndividualsPage(
-                checkRequired("service", service),
-                checkRequired("params", params),
-                checkRequired("response", response),
+                checkRequired(
+                    "service",
+                    service,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "response",
+                    response,
+                ),
             )
     }
 

@@ -297,7 +297,9 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun description(description: JsonField<String>) = apply { this.description = description }
+        fun description(description: JsonField<String>) = apply {
+            this.description = description
+        }
 
         /** Supported deduction types. An empty array indicates deductions are not supported. */
         fun employeeDeduction(employeeDeduction: List<EmployeeDeduction?>?) =
@@ -372,7 +374,9 @@ private constructor(
          * You should usually call [Builder.catchUp] with a well-typed [Boolean] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
+        fun catchUp(catchUp: JsonField<Boolean>) = apply {
+            this.catchUp = catchUp
+        }
 
         /**
          * Whether the provider supports HSA contribution limits. Empty if this feature is not
@@ -418,7 +422,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -442,11 +448,29 @@ private constructor(
          */
         fun build(): SupportedBenefit =
             SupportedBenefit(
-                checkRequired("annualMaximum", annualMaximum),
-                checkRequired("companyContribution", companyContribution).map { it.toImmutable() },
-                checkRequired("description", description),
-                checkRequired("employeeDeduction", employeeDeduction).map { it.toImmutable() },
-                checkRequired("frequencies", frequencies).map { it.toImmutable() },
+                checkRequired(
+                    "annualMaximum",
+                    annualMaximum,
+                ),
+                checkRequired(
+                        "companyContribution",
+                        companyContribution,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                    "description",
+                    description,
+                ),
+                checkRequired(
+                        "employeeDeduction",
+                        employeeDeduction,
+                    )
+                    .map { it.toImmutable() },
+                checkRequired(
+                        "frequencies",
+                        frequencies,
+                    )
+                    .map { it.toImmutable() },
                 catchUp,
                 (hsaContributionLimit ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
@@ -536,9 +560,11 @@ private constructor(
          * An enum containing [CompanyContribution]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [CompanyContribution] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -676,9 +702,11 @@ private constructor(
          * An enum containing [EmployeeDeduction]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [EmployeeDeduction] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -815,9 +843,11 @@ private constructor(
          * member.
          *
          * An instance of [HsaContributionLimit] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

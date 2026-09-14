@@ -31,7 +31,10 @@ interface CompanyServiceAsync {
 
     /** @see retrieve */
     suspend fun retrieve(requestOptions: RequestOptions): Company =
-        retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+        retrieve(
+            HrisCompanyRetrieveParams.none(),
+            requestOptions,
+        )
 
     /**
      * A view of [CompanyServiceAsync] that provides access to raw HTTP responses for each method.
@@ -60,6 +63,9 @@ interface CompanyServiceAsync {
         /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(requestOptions: RequestOptions): HttpResponseFor<Company> =
-            retrieve(HrisCompanyRetrieveParams.none(), requestOptions)
+            retrieve(
+                HrisCompanyRetrieveParams.none(),
+                requestOptions,
+            )
     }
 }

@@ -296,7 +296,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
+        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply {
+            this.createdAt = createdAt
+        }
 
         /** The id of the job that has been created. */
         fun jobId(jobId: String) = jobId(JsonField.of(jobId))
@@ -307,7 +309,9 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
+        fun jobId(jobId: JsonField<String>) = apply {
+            this.jobId = jobId
+        }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
@@ -318,7 +322,9 @@ private constructor(
          * You should usually call [Builder.jobUrl] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
+        fun jobUrl(jobUrl: JsonField<String>) = apply {
+            this.jobUrl = jobUrl
+        }
 
         /** The input parameters for the job. */
         fun params(params: Params?) = params(JsonField.ofNullable(params))
@@ -329,7 +335,9 @@ private constructor(
          * You should usually call [Builder.params] with a well-typed [Params] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun params(params: JsonField<Params>) = apply { this.params = params }
+        fun params(params: JsonField<Params>) = apply {
+            this.params = params
+        }
 
         /**
          * The datetime a job is scheduled to be run. For scheduled jobs, this datetime can be in
@@ -360,7 +368,9 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply { this.startedAt = startedAt }
+        fun startedAt(startedAt: JsonField<OffsetDateTime>) = apply {
+            this.startedAt = startedAt
+        }
 
         fun status(status: Status) = status(JsonField.of(status))
 
@@ -370,7 +380,9 @@ private constructor(
          * You should usually call [Builder.status] with a well-typed [Status] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun status(status: JsonField<Status>) = apply { this.status = status }
+        fun status(status: JsonField<Status>) = apply {
+            this.status = status
+        }
 
         /** The type of automated job */
         fun type(type: Type) = type(JsonField.of(type))
@@ -381,7 +393,9 @@ private constructor(
          * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<Type>) = apply { this.type = type }
+        fun type(type: JsonField<Type>) = apply {
+            this.type = type
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -396,7 +410,9 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) = apply {
+            additionalProperties.remove(key)
+        }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -424,15 +440,42 @@ private constructor(
          */
         fun build(): AutomatedAsyncJob =
             AutomatedAsyncJob(
-                checkRequired("completedAt", completedAt),
-                checkRequired("createdAt", createdAt),
-                checkRequired("jobId", jobId),
-                checkRequired("jobUrl", jobUrl),
-                checkRequired("params", params),
-                checkRequired("scheduledAt", scheduledAt),
-                checkRequired("startedAt", startedAt),
-                checkRequired("status", status),
-                checkRequired("type", type),
+                checkRequired(
+                    "completedAt",
+                    completedAt,
+                ),
+                checkRequired(
+                    "createdAt",
+                    createdAt,
+                ),
+                checkRequired(
+                    "jobId",
+                    jobId,
+                ),
+                checkRequired(
+                    "jobUrl",
+                    jobUrl,
+                ),
+                checkRequired(
+                    "params",
+                    params,
+                ),
+                checkRequired(
+                    "scheduledAt",
+                    scheduledAt,
+                ),
+                checkRequired(
+                    "startedAt",
+                    startedAt,
+                ),
+                checkRequired(
+                    "status",
+                    status,
+                ),
+                checkRequired(
+                    "type",
+                    type,
+                ),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -501,7 +544,10 @@ private constructor(
             @JsonProperty("individual_id")
             @ExcludeMissing
             individualId: JsonField<String> = JsonMissing.of()
-        ) : this(individualId, mutableMapOf())
+        ) : this(
+            individualId,
+            mutableMapOf(),
+        )
 
         /**
          * The ID of the individual that the job was completed for.
@@ -577,7 +623,9 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) = apply {
+                additionalProperties.remove(key)
+            }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -588,7 +636,11 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Params = Params(individualId, additionalProperties.toMutableMap())
+            fun build(): Params =
+                Params(
+                    individualId,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -688,9 +740,11 @@ private constructor(
          * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Status] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -834,9 +888,11 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
+         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
