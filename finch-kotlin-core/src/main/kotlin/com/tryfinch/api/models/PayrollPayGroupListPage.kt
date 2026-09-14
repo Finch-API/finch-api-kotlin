@@ -61,19 +61,13 @@ private constructor(
             items = payrollPayGroupListPage.items
         }
 
-        fun service(service: PayGroupService) = apply {
-            this.service = service
-        }
+        fun service(service: PayGroupService) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
-        fun params(params: PayrollPayGroupListParams) = apply {
-            this.params = params
-        }
+        fun params(params: PayrollPayGroupListParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<PayGroupListResponse>) = apply {
-            this.items = items
-        }
+        fun items(items: List<PayGroupListResponse>) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [PayrollPayGroupListPage].
@@ -91,18 +85,9 @@ private constructor(
          */
         fun build(): PayrollPayGroupListPage =
             PayrollPayGroupListPage(
-                checkRequired(
-                    "service",
-                    service,
-                ),
-                checkRequired(
-                    "params",
-                    params,
-                ),
-                checkRequired(
-                    "items",
-                    items,
-                ),
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
             )
     }
 

@@ -31,10 +31,7 @@ interface PaymentService {
 
     /** @see create */
     fun create(requestOptions: RequestOptions): PaymentCreateResponse =
-        create(
-            SandboxPaymentCreateParams.none(),
-            requestOptions,
-        )
+        create(SandboxPaymentCreateParams.none(), requestOptions)
 
     /** A view of [PaymentService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -59,9 +56,6 @@ interface PaymentService {
         /** @see create */
         @MustBeClosed
         fun create(requestOptions: RequestOptions): HttpResponseFor<PaymentCreateResponse> =
-            create(
-                SandboxPaymentCreateParams.none(),
-                requestOptions,
-            )
+            create(SandboxPaymentCreateParams.none(), requestOptions)
     }
 }

@@ -61,19 +61,13 @@ private constructor(
             items = hrisPaymentListPageAsync.items
         }
 
-        fun service(service: PaymentServiceAsync) = apply {
-            this.service = service
-        }
+        fun service(service: PaymentServiceAsync) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisPaymentListParams) = apply {
-            this.params = params
-        }
+        fun params(params: HrisPaymentListParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<Payment>) = apply {
-            this.items = items
-        }
+        fun items(items: List<Payment>) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [HrisPaymentListPageAsync].
@@ -91,18 +85,9 @@ private constructor(
          */
         fun build(): HrisPaymentListPageAsync =
             HrisPaymentListPageAsync(
-                checkRequired(
-                    "service",
-                    service,
-                ),
-                checkRequired(
-                    "params",
-                    params,
-                ),
-                checkRequired(
-                    "items",
-                    items,
-                ),
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
             )
     }
 

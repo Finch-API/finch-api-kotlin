@@ -42,10 +42,7 @@ interface AccountServiceAsync {
 
     /** @see update */
     suspend fun update(requestOptions: RequestOptions): AccountUpdateResponse =
-        update(
-            SandboxConnectionAccountUpdateParams.none(),
-            requestOptions,
-        )
+        update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
     /**
      * A view of [AccountServiceAsync] that provides access to raw HTTP responses for each method.
@@ -85,9 +82,6 @@ interface AccountServiceAsync {
         /** @see update */
         @MustBeClosed
         suspend fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
-            update(
-                SandboxConnectionAccountUpdateParams.none(),
-                requestOptions,
-            )
+            update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
     }
 }

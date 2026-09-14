@@ -87,9 +87,7 @@ private constructor(
         }
 
         /** Number of employees to return (defaults to 100, maximum 10000) */
-        fun limit(limit: Long?) = apply {
-            this.limit = limit
-        }
+        fun limit(limit: Long?) = apply { this.limit = limit }
 
         /**
          * Alias for [Builder.limit].
@@ -99,9 +97,7 @@ private constructor(
         fun limit(limit: Long) = limit(limit as Long?)
 
         /** Index to start from (defaults to 0) */
-        fun offset(offset: Long?) = apply {
-            this.offset = offset
-        }
+        fun offset(offset: Long?) = apply { this.offset = offset }
 
         /**
          * Alias for [Builder.offset].
@@ -152,9 +148,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -204,9 +198,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -232,9 +224,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 limit?.let { put("limit", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 putAll(additionalQueryParams)

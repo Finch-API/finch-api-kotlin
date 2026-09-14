@@ -40,13 +40,7 @@ private constructor(
         @ExcludeMissing
         effectiveDate: JsonField<LocalDate> = JsonMissing.of(),
         @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
-    ) : this(
-        amount,
-        currency,
-        effectiveDate,
-        unit,
-        mutableMapOf(),
-    )
+    ) : this(amount, currency, effectiveDate, unit, mutableMapOf())
 
     /**
      * The income amount in cents.
@@ -172,9 +166,7 @@ private constructor(
          * You should usually call [Builder.amount] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun amount(amount: JsonField<Long>) = apply {
-            this.amount = amount
-        }
+        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
         /** The currency code. */
         fun currency(currency: String?) = currency(JsonField.ofNullable(currency))
@@ -185,9 +177,7 @@ private constructor(
          * You should usually call [Builder.currency] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun currency(currency: JsonField<String>) = apply {
-            this.currency = currency
-        }
+        fun currency(currency: JsonField<String>) = apply { this.currency = currency }
 
         /** The date the income amount went into effect. */
         fun effectiveDate(effectiveDate: LocalDate?) =
@@ -216,9 +206,7 @@ private constructor(
          * You should usually call [Builder.unit] with a well-typed [Unit] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun unit(unit: JsonField<Unit>) = apply {
-            this.unit = unit
-        }
+        fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -233,9 +221,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -258,22 +244,10 @@ private constructor(
          */
         fun build(): Income =
             Income(
-                checkRequired(
-                    "amount",
-                    amount,
-                ),
-                checkRequired(
-                    "currency",
-                    currency,
-                ),
-                checkRequired(
-                    "effectiveDate",
-                    effectiveDate,
-                ),
-                checkRequired(
-                    "unit",
-                    unit,
-                ),
+                checkRequired("amount", amount),
+                checkRequired("currency", currency),
+                checkRequired("effectiveDate", effectiveDate),
+                checkRequired("unit", unit),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -375,11 +349,9 @@ private constructor(
          * An enum containing [Unit]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Unit] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

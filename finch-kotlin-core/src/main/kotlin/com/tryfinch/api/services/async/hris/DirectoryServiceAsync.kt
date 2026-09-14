@@ -33,10 +33,7 @@ interface DirectoryServiceAsync {
 
     /** @see list */
     suspend fun list(requestOptions: RequestOptions): HrisDirectoryListPageAsync =
-        list(
-            HrisDirectoryListParams.none(),
-            requestOptions,
-        )
+        list(HrisDirectoryListParams.none(), requestOptions)
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
@@ -50,10 +47,7 @@ interface DirectoryServiceAsync {
     suspend fun listIndividuals(
         requestOptions: RequestOptions
     ): HrisDirectoryListIndividualsPageAsync =
-        listIndividuals(
-            HrisDirectoryListIndividualsParams.none(),
-            requestOptions,
-        )
+        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 
     /**
      * A view of [DirectoryServiceAsync] that provides access to raw HTTP responses for each method.
@@ -84,10 +78,7 @@ interface DirectoryServiceAsync {
         suspend fun list(
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisDirectoryListPageAsync> =
-            list(
-                HrisDirectoryListParams.none(),
-                requestOptions,
-            )
+            list(HrisDirectoryListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
@@ -106,9 +97,6 @@ interface DirectoryServiceAsync {
         suspend fun listIndividuals(
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisDirectoryListIndividualsPageAsync> =
-            listIndividuals(
-                HrisDirectoryListIndividualsParams.none(),
-                requestOptions,
-            )
+            listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
     }
 }

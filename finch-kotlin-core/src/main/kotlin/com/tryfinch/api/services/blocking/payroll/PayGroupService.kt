@@ -31,10 +31,7 @@ interface PayGroupService {
         params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PayGroupRetrieveResponse =
-        retrieve(
-            params.toBuilder().payGroupId(payGroupId).build(),
-            requestOptions,
-        )
+        retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
     /** @see retrieve */
     fun retrieve(
@@ -44,11 +41,7 @@ interface PayGroupService {
 
     /** @see retrieve */
     fun retrieve(payGroupId: String, requestOptions: RequestOptions): PayGroupRetrieveResponse =
-        retrieve(
-            payGroupId,
-            PayrollPayGroupRetrieveParams.none(),
-            requestOptions,
-        )
+        retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
     /** Read company pay groups and frequencies */
     fun list(
@@ -58,10 +51,7 @@ interface PayGroupService {
 
     /** @see list */
     fun list(requestOptions: RequestOptions): PayrollPayGroupListPage =
-        list(
-            PayrollPayGroupListParams.none(),
-            requestOptions,
-        )
+        list(PayrollPayGroupListParams.none(), requestOptions)
 
     /** A view of [PayGroupService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -83,10 +73,7 @@ interface PayGroupService {
             params: PayrollPayGroupRetrieveParams = PayrollPayGroupRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<PayGroupRetrieveResponse> =
-            retrieve(
-                params.toBuilder().payGroupId(payGroupId).build(),
-                requestOptions,
-            )
+            retrieve(params.toBuilder().payGroupId(payGroupId).build(), requestOptions)
 
         /** @see retrieve */
         @MustBeClosed
@@ -101,11 +88,7 @@ interface PayGroupService {
             payGroupId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<PayGroupRetrieveResponse> =
-            retrieve(
-                payGroupId,
-                PayrollPayGroupRetrieveParams.none(),
-                requestOptions,
-            )
+            retrieve(payGroupId, PayrollPayGroupRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/pay-groups`, but is otherwise the same as
@@ -120,9 +103,6 @@ interface PayGroupService {
         /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<PayrollPayGroupListPage> =
-            list(
-                PayrollPayGroupListParams.none(),
-                requestOptions,
-            )
+            list(PayrollPayGroupListParams.none(), requestOptions)
     }
 }

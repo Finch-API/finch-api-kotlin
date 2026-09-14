@@ -93,14 +93,10 @@ private constructor(
             response = hrisDirectoryListIndividualsPageAsync.response
         }
 
-        fun service(service: DirectoryServiceAsync) = apply {
-            this.service = service
-        }
+        fun service(service: DirectoryServiceAsync) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisDirectoryListIndividualsParams) = apply {
-            this.params = params
-        }
+        fun params(params: HrisDirectoryListIndividualsParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisDirectoryListIndividualsPageResponse) = apply {
@@ -123,18 +119,9 @@ private constructor(
          */
         fun build(): HrisDirectoryListIndividualsPageAsync =
             HrisDirectoryListIndividualsPageAsync(
-                checkRequired(
-                    "service",
-                    service,
-                ),
-                checkRequired(
-                    "params",
-                    params,
-                ),
-                checkRequired(
-                    "response",
-                    response,
-                ),
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
             )
     }
 

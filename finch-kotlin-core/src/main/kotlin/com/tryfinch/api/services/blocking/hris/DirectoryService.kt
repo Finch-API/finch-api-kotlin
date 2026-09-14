@@ -33,10 +33,7 @@ interface DirectoryService {
 
     /** @see list */
     fun list(requestOptions: RequestOptions): HrisDirectoryListPage =
-        list(
-            HrisDirectoryListParams.none(),
-            requestOptions,
-        )
+        list(HrisDirectoryListParams.none(), requestOptions)
 
     /** Read company directory and organization structure */
     @Deprecated("use `list` instead")
@@ -48,10 +45,7 @@ interface DirectoryService {
     /** @see listIndividuals */
     @Deprecated("use `list` instead")
     fun listIndividuals(requestOptions: RequestOptions): HrisDirectoryListIndividualsPage =
-        listIndividuals(
-            HrisDirectoryListIndividualsParams.none(),
-            requestOptions,
-        )
+        listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
 
     /** A view of [DirectoryService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -76,10 +70,7 @@ interface DirectoryService {
         /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<HrisDirectoryListPage> =
-            list(
-                HrisDirectoryListParams.none(),
-                requestOptions,
-            )
+            list(HrisDirectoryListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/directory`, but is otherwise the same as
@@ -98,9 +89,6 @@ interface DirectoryService {
         fun listIndividuals(
             requestOptions: RequestOptions
         ): HttpResponseFor<HrisDirectoryListIndividualsPage> =
-            listIndividuals(
-                HrisDirectoryListIndividualsParams.none(),
-                requestOptions,
-            )
+            listIndividuals(HrisDirectoryListIndividualsParams.none(), requestOptions)
     }
 }

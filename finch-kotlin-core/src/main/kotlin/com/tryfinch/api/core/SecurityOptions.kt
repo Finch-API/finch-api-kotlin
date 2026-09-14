@@ -39,25 +39,17 @@ private constructor(
         }
 
         /** Whether the bearerAuth security scheme is enabled. */
-        fun bearerAuth(bearerAuth: Boolean) = apply {
-            this.bearerAuth = bearerAuth
-        }
+        fun bearerAuth(bearerAuth: Boolean) = apply { this.bearerAuth = bearerAuth }
 
         /** Whether the basicAuth security scheme is enabled. */
-        fun basicAuth(basicAuth: Boolean) = apply {
-            this.basicAuth = basicAuth
-        }
+        fun basicAuth(basicAuth: Boolean) = apply { this.basicAuth = basicAuth }
 
         /**
          * Returns an immutable instance of [SecurityOptions].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): SecurityOptions =
-            SecurityOptions(
-                bearerAuth,
-                basicAuth,
-            )
+        fun build(): SecurityOptions = SecurityOptions(bearerAuth, basicAuth)
     }
 
     override fun equals(other: Any?): Boolean {

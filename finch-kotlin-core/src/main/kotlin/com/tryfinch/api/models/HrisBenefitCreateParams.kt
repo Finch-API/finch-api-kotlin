@@ -162,9 +162,7 @@ private constructor(
          * - [frequency]
          * - [type]
          */
-        fun body(body: Body) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
 
         /** The company match for this benefit. */
         fun companyContribution(companyContribution: BenefitCompanyMatchContribution?) = apply {
@@ -187,9 +185,7 @@ private constructor(
          * Name of the benefit as it appears in the provider and pay statements. Recommend limiting
          * this to <30 characters due to limitations in specific providers (e.g. Justworks).
          */
-        fun description(description: String) = apply {
-            body.description(description)
-        }
+        fun description(description: String) = apply { body.description(description) }
 
         /**
          * Sets [Builder.description] to an arbitrary JSON value.
@@ -198,14 +194,10 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun description(description: JsonField<String>) = apply {
-            body.description(description)
-        }
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** The frequency of the benefit deduction/contribution. */
-        fun frequency(frequency: BenefitFrequency?) = apply {
-            body.frequency(frequency)
-        }
+        fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
         /**
          * Sets [Builder.frequency] to an arbitrary JSON value.
@@ -214,14 +206,10 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
-            body.frequency(frequency)
-        }
+        fun frequency(frequency: JsonField<BenefitFrequency>) = apply { body.frequency(frequency) }
 
         /** Type of benefit. */
-        fun type(type: BenefitType?) = apply {
-            body.type(type)
-        }
+        fun type(type: BenefitType?) = apply { body.type(type) }
 
         /**
          * Sets [Builder.type] to an arbitrary JSON value.
@@ -230,19 +218,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun type(type: JsonField<BenefitType>) = apply {
-            body.type(type)
-        }
+        fun type(type: JsonField<BenefitType>) = apply { body.type(type) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -250,9 +233,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -300,9 +281,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -352,9 +331,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -381,9 +358,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -410,13 +385,7 @@ private constructor(
             @ExcludeMissing
             frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
-        ) : this(
-            companyContribution,
-            description,
-            frequency,
-            type,
-            mutableMapOf(),
-        )
+        ) : this(companyContribution, description, frequency, type, mutableMapOf())
 
         /**
          * The company match for this benefit.
@@ -536,9 +505,7 @@ private constructor(
              */
             fun companyContribution(
                 companyContribution: JsonField<BenefitCompanyMatchContribution>
-            ) = apply {
-                this.companyContribution = companyContribution
-            }
+            ) = apply { this.companyContribution = companyContribution }
 
             /**
              * Name of the benefit as it appears in the provider and pay statements. Recommend
@@ -582,9 +549,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun type(type: JsonField<BenefitType>) = apply {
-                this.type = type
-            }
+            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -599,9 +564,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -701,11 +664,7 @@ private constructor(
         private constructor(
             @JsonProperty("tiers") @ExcludeMissing tiers: JsonField<List<Tier>> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-        ) : this(
-            tiers,
-            type,
-            mutableMapOf(),
-        )
+        ) : this(tiers, type, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -809,9 +768,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply {
-                this.type = type
-            }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -826,9 +783,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -849,15 +804,8 @@ private constructor(
              */
             fun build(): BenefitCompanyMatchContribution =
                 BenefitCompanyMatchContribution(
-                    checkRequired(
-                            "tiers",
-                            tiers,
-                        )
-                        .map { it.toImmutable() },
-                    checkRequired(
-                        "type",
-                        type,
-                    ),
+                    checkRequired("tiers", tiers).map { it.toImmutable() },
+                    checkRequired("type", type),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -915,11 +863,7 @@ private constructor(
                 @JsonProperty("threshold")
                 @ExcludeMissing
                 threshold: JsonField<Long> = JsonMissing.of(),
-            ) : this(
-                match,
-                threshold,
-                mutableMapOf(),
-            )
+            ) : this(match, threshold, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -998,9 +942,7 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun match(match: JsonField<Long>) = apply {
-                    this.match = match
-                }
+                fun match(match: JsonField<Long>) = apply { this.match = match }
 
                 fun threshold(threshold: Long) = threshold(JsonField.of(threshold))
 
@@ -1011,9 +953,7 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun threshold(threshold: JsonField<Long>) = apply {
-                    this.threshold = threshold
-                }
+                fun threshold(threshold: JsonField<Long>) = apply { this.threshold = threshold }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1052,14 +992,8 @@ private constructor(
                  */
                 fun build(): Tier =
                     Tier(
-                        checkRequired(
-                            "match",
-                            match,
-                        ),
-                        checkRequired(
-                            "threshold",
-                            threshold,
-                        ),
+                        checkRequired("match", match),
+                        checkRequired("threshold", threshold),
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -1153,11 +1087,9 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {

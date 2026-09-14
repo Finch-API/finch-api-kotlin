@@ -298,9 +298,7 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** Specifies the fields to be applied when the condition is met. */
         fun attributes(attributes: Attributes) = attributes(JsonField.of(attributes))
@@ -312,9 +310,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun attributes(attributes: JsonField<Attributes>) = apply {
-            this.attributes = attributes
-        }
+        fun attributes(attributes: JsonField<Attributes>) = apply { this.attributes = attributes }
 
         fun conditions(conditions: List<Condition>) = conditions(JsonField.of(conditions))
 
@@ -351,9 +347,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply {
-            this.createdAt = createdAt
-        }
+        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
 
         /** The datetime when the rule was deleted. */
         fun deletedAt(deletedAt: OffsetDateTime) = deletedAt(JsonField.of(deletedAt))
@@ -365,9 +359,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply {
-            this.deletedAt = deletedAt
-        }
+        fun deletedAt(deletedAt: JsonField<OffsetDateTime>) = apply { this.deletedAt = deletedAt }
 
         /** Specifies when the rules should stop applying rules based on the date. */
         fun effectiveEndDate(effectiveEndDate: String?) =
@@ -409,9 +401,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun entityType(entityType: JsonField<EntityType>) = apply {
-            this.entityType = entityType
-        }
+        fun entityType(entityType: JsonField<EntityType>) = apply { this.entityType = entityType }
 
         /** The priority of the rule. */
         fun priority(priority: Long) = priority(JsonField.of(priority))
@@ -422,9 +412,7 @@ private constructor(
          * You should usually call [Builder.priority] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun priority(priority: JsonField<Long>) = apply {
-            this.priority = priority
-        }
+        fun priority(priority: JsonField<Long>) = apply { this.priority = priority }
 
         /** The datetime when the rule was last updated. */
         fun updatedAt(updatedAt: OffsetDateTime) = updatedAt(JsonField.of(updatedAt))
@@ -436,9 +424,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun updatedAt(updatedAt: JsonField<OffsetDateTime>) = apply {
-            this.updatedAt = updatedAt
-        }
+        fun updatedAt(updatedAt: JsonField<OffsetDateTime>) = apply { this.updatedAt = updatedAt }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -453,9 +439,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -548,10 +532,7 @@ private constructor(
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of()
-        ) : this(
-            metadata,
-            mutableMapOf(),
-        )
+        ) : this(metadata, mutableMapOf())
 
         /**
          * The metadata to be attached in the entity. It is a key-value pairs where the values can
@@ -611,9 +592,7 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun metadata(metadata: JsonField<Metadata>) = apply {
-                this.metadata = metadata
-            }
+            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -628,9 +607,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -641,11 +618,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Attributes =
-                Attributes(
-                    metadata,
-                    additionalProperties.toMutableMap(),
-                )
+            fun build(): Attributes = Attributes(metadata, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -780,9 +753,8 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int = additionalProperties.count { (_, value) ->
-                !value.isNull() && !value.isMissing()
-            }
+            internal fun validity(): Int =
+                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -833,12 +805,7 @@ private constructor(
             @ExcludeMissing
             operator: JsonField<Operator> = JsonMissing.of(),
             @JsonProperty("value") @ExcludeMissing value: JsonField<String> = JsonMissing.of(),
-        ) : this(
-            field,
-            operator,
-            value,
-            mutableMapOf(),
-        )
+        ) : this(field, operator, value, mutableMapOf())
 
         /**
          * The field to be checked in the rule.
@@ -928,9 +895,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun field(field: JsonField<String>) = apply {
-                this.field = field
-            }
+            fun field(field: JsonField<String>) = apply { this.field = field }
 
             /** The operator to be used in the rule. */
             fun operator(operator: Operator) = operator(JsonField.of(operator))
@@ -942,9 +907,7 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun operator(operator: JsonField<Operator>) = apply {
-                this.operator = operator
-            }
+            fun operator(operator: JsonField<Operator>) = apply { this.operator = operator }
 
             /** The value of the field to be checked in the rule. */
             fun value(value: String) = value(JsonField.of(value))
@@ -956,9 +919,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun value(value: JsonField<String>) = apply {
-                this.value = value
-            }
+            fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -973,9 +934,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -987,12 +946,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Condition =
-                Condition(
-                    field,
-                    operator,
-                    value,
-                    additionalProperties.toMutableMap(),
-                )
+                Condition(field, operator, value, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -1066,11 +1020,9 @@ private constructor(
              * An enum containing [Operator]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Operator] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1222,11 +1174,9 @@ private constructor(
          * An enum containing [EntityType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [EntityType] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

@@ -119,9 +119,7 @@ private constructor(
          * The end date to retrieve pay statement items by via their last seen pay date in
          * `YYYY-MM-DD` format.
          */
-        fun endDate(endDate: LocalDate?) = apply {
-            this.endDate = endDate
-        }
+        fun endDate(endDate: LocalDate?) = apply { this.endDate = endDate }
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
@@ -141,22 +139,16 @@ private constructor(
         }
 
         /** Case-insensitive partial match search by pay statement item name. */
-        fun name(name: String?) = apply {
-            this.name = name
-        }
+        fun name(name: String?) = apply { this.name = name }
 
         /**
          * The start date to retrieve pay statement items by via their last seen pay date
          * (inclusive) in `YYYY-MM-DD` format.
          */
-        fun startDate(startDate: LocalDate?) = apply {
-            this.startDate = startDate
-        }
+        fun startDate(startDate: LocalDate?) = apply { this.startDate = startDate }
 
         /** String search by pay statement item type. */
-        fun type(type: String?) = apply {
-            this.type = type
-        }
+        fun type(type: String?) = apply { this.type = type }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -200,9 +192,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -252,9 +242,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -283,13 +271,9 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                categories?.forEach {
-                    put("categories[]", it.toString())
-                }
+                categories?.forEach { put("categories[]", it.toString()) }
                 endDate?.let { put("end_date", it.toString()) }
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 name?.let { put("name", it) }
                 startDate?.let { put("start_date", it.toString()) }
                 type?.let { put("type", it) }
@@ -334,11 +318,9 @@ private constructor(
          * An enum containing [Category]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Category] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

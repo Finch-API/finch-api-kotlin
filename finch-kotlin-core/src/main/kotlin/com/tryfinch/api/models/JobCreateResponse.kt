@@ -35,13 +35,7 @@ private constructor(
         @JsonProperty("remaining_refreshes")
         @ExcludeMissing
         remainingRefreshes: JsonField<Long> = JsonMissing.of(),
-    ) : this(
-        allowedRefreshes,
-        jobId,
-        jobUrl,
-        remainingRefreshes,
-        mutableMapOf(),
-    )
+    ) : this(allowedRefreshes, jobId, jobUrl, remainingRefreshes, mutableMapOf())
 
     /**
      * The number of allowed refreshes per hour (per hour, fixed window)
@@ -178,9 +172,7 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply {
-            this.jobId = jobId
-        }
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
@@ -191,9 +183,7 @@ private constructor(
          * You should usually call [Builder.jobUrl] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobUrl(jobUrl: JsonField<String>) = apply {
-            this.jobUrl = jobUrl
-        }
+        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** The number of remaining refreshes available (per hour, fixed window) */
         fun remainingRefreshes(remainingRefreshes: Long) =
@@ -223,9 +213,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -248,22 +236,10 @@ private constructor(
          */
         fun build(): JobCreateResponse =
             JobCreateResponse(
-                checkRequired(
-                    "allowedRefreshes",
-                    allowedRefreshes,
-                ),
-                checkRequired(
-                    "jobId",
-                    jobId,
-                ),
-                checkRequired(
-                    "jobUrl",
-                    jobUrl,
-                ),
-                checkRequired(
-                    "remainingRefreshes",
-                    remainingRefreshes,
-                ),
+                checkRequired("allowedRefreshes", allowedRefreshes),
+                checkRequired("jobId", jobId),
+                checkRequired("jobUrl", jobUrl),
+                checkRequired("remainingRefreshes", remainingRefreshes),
                 additionalProperties.toMutableMap(),
             )
     }

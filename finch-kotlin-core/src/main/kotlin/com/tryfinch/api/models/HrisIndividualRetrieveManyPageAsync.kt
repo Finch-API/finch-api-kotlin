@@ -75,14 +75,10 @@ private constructor(
             response = hrisIndividualRetrieveManyPageAsync.response
         }
 
-        fun service(service: IndividualServiceAsync) = apply {
-            this.service = service
-        }
+        fun service(service: IndividualServiceAsync) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
-        fun params(params: HrisIndividualRetrieveManyParams) = apply {
-            this.params = params
-        }
+        fun params(params: HrisIndividualRetrieveManyParams) = apply { this.params = params }
 
         /** The response that this page was parsed from. */
         fun response(response: HrisIndividualRetrieveManyPageResponse) = apply {
@@ -105,18 +101,9 @@ private constructor(
          */
         fun build(): HrisIndividualRetrieveManyPageAsync =
             HrisIndividualRetrieveManyPageAsync(
-                checkRequired(
-                    "service",
-                    service,
-                ),
-                checkRequired(
-                    "params",
-                    params,
-                ),
-                checkRequired(
-                    "response",
-                    response,
-                ),
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("response", response),
             )
     }
 

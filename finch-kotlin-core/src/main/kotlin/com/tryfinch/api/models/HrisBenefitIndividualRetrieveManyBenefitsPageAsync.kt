@@ -66,9 +66,7 @@ private constructor(
             items = hrisBenefitIndividualRetrieveManyBenefitsPageAsync.items
         }
 
-        fun service(service: IndividualServiceAsync) = apply {
-            this.service = service
-        }
+        fun service(service: IndividualServiceAsync) = apply { this.service = service }
 
         /** The parameters that were used to request this page. */
         fun params(params: HrisBenefitIndividualRetrieveManyBenefitsParams) = apply {
@@ -76,9 +74,7 @@ private constructor(
         }
 
         /** The response that this page was parsed from. */
-        fun items(items: List<IndividualBenefit>) = apply {
-            this.items = items
-        }
+        fun items(items: List<IndividualBenefit>) = apply { this.items = items }
 
         /**
          * Returns an immutable instance of [HrisBenefitIndividualRetrieveManyBenefitsPageAsync].
@@ -96,18 +92,9 @@ private constructor(
          */
         fun build(): HrisBenefitIndividualRetrieveManyBenefitsPageAsync =
             HrisBenefitIndividualRetrieveManyBenefitsPageAsync(
-                checkRequired(
-                    "service",
-                    service,
-                ),
-                checkRequired(
-                    "params",
-                    params,
-                ),
-                checkRequired(
-                    "items",
-                    items,
-                ),
+                checkRequired("service", service),
+                checkRequired("params", params),
+                checkRequired("items", items),
             )
     }
 

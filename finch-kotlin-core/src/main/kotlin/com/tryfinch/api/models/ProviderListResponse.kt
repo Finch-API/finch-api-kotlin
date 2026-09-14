@@ -301,9 +301,7 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The display name of the payroll provider. */
         fun displayName(displayName: String) = displayName(JsonField.of(displayName))
@@ -315,9 +313,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun displayName(displayName: JsonField<String>) = apply {
-            this.displayName = displayName
-        }
+        fun displayName(displayName: JsonField<String>) = apply { this.displayName = displayName }
 
         /** The list of Finch products supported on this payroll provider. */
         fun products(products: List<String>) = products(JsonField.of(products))
@@ -382,9 +378,7 @@ private constructor(
          * You should usually call [Builder.beta] with a well-typed [Boolean] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun beta(beta: JsonField<Boolean>) = apply {
-            this.beta = beta
-        }
+        fun beta(beta: JsonField<Boolean>) = apply { this.beta = beta }
 
         /** The url to the official icon of the payroll provider. */
         fun icon(icon: String) = icon(JsonField.of(icon))
@@ -395,9 +389,7 @@ private constructor(
          * You should usually call [Builder.icon] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun icon(icon: JsonField<String>) = apply {
-            this.icon = icon
-        }
+        fun icon(icon: JsonField<String>) = apply { this.icon = icon }
 
         /** The url to the official logo of the payroll provider. */
         fun logo(logo: String) = logo(JsonField.of(logo))
@@ -408,9 +400,7 @@ private constructor(
          * You should usually call [Builder.logo] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun logo(logo: JsonField<String>) = apply {
-            this.logo = logo
-        }
+        fun logo(logo: JsonField<String>) = apply { this.logo = logo }
 
         /**
          * [DEPRECATED] Whether the Finch integration with this provider uses the Assisted Connect
@@ -426,9 +416,7 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         @Deprecated("deprecated")
-        fun manual(manual: JsonField<Boolean>) = apply {
-            this.manual = manual
-        }
+        fun manual(manual: JsonField<Boolean>) = apply { this.manual = manual }
 
         /** whether MFA is required for the provider. */
         fun mfaRequired(mfaRequired: Boolean) = mfaRequired(JsonField.of(mfaRequired))
@@ -440,9 +428,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun mfaRequired(mfaRequired: JsonField<Boolean>) = apply {
-            this.mfaRequired = mfaRequired
-        }
+        fun mfaRequired(mfaRequired: JsonField<Boolean>) = apply { this.mfaRequired = mfaRequired }
 
         /** The hex code for the primary color of the payroll provider. */
         fun primaryColor(primaryColor: String) = primaryColor(JsonField.of(primaryColor))
@@ -471,9 +457,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -495,19 +479,9 @@ private constructor(
          */
         fun build(): ProviderListResponse =
             ProviderListResponse(
-                checkRequired(
-                    "id",
-                    id,
-                ),
-                checkRequired(
-                    "displayName",
-                    displayName,
-                ),
-                checkRequired(
-                        "products",
-                        products,
-                    )
-                    .map { it.toImmutable() },
+                checkRequired("id", id),
+                checkRequired("displayName", displayName),
+                checkRequired("products", products).map { it.toImmutable() },
                 (authenticationMethods ?: JsonMissing.of()).map { it.toImmutable() },
                 beta,
                 icon,
@@ -590,12 +564,7 @@ private constructor(
             @JsonProperty("supported_fields")
             @ExcludeMissing
             supportedFields: JsonField<SupportedFields> = JsonMissing.of(),
-        ) : this(
-            type,
-            benefitsSupport,
-            supportedFields,
-            mutableMapOf(),
-        )
+        ) : this(type, benefitsSupport, supportedFields, mutableMapOf())
 
         /**
          * The type of authentication method
@@ -698,9 +667,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply {
-                this.type = type
-            }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** The supported benefit types and their configurations */
             fun benefitsSupport(benefitsSupport: BenefitsSupport) =
@@ -745,9 +712,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -767,10 +732,7 @@ private constructor(
              */
             fun build(): AuthenticationMethod =
                 AuthenticationMethod(
-                    checkRequired(
-                        "type",
-                        type,
-                    ),
+                    checkRequired("type", type),
                     benefitsSupport,
                     supportedFields,
                     additionalProperties.toMutableMap(),
@@ -862,11 +824,9 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1073,9 +1033,8 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int = additionalProperties.count { (_, value) ->
-                !value.isNull() && !value.isMissing()
-            }
+            internal fun validity(): Int =
+                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1186,9 +1145,8 @@ private constructor(
              *
              * Used for best match union deserialization.
              */
-            internal fun validity(): Int = additionalProperties.count { (_, value) ->
-                !value.isNull() && !value.isMissing()
-            }
+            internal fun validity(): Int =
+                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

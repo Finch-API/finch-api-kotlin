@@ -36,14 +36,7 @@ private constructor(
         @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
         @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
         @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
-    ) : this(
-        id,
-        individualId,
-        type,
-        url,
-        year,
-        mutableMapOf(),
-    )
+    ) : this(id, individualId, type, url, year, mutableMapOf())
 
     /**
      * A stable Finch id for the document.
@@ -181,9 +174,7 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /**
          * The ID of the individual associated with the document. This will be null for
@@ -211,9 +202,7 @@ private constructor(
          * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<Type>) = apply {
-            this.type = type
-        }
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /**
          * A URL to access the document. Format:
@@ -227,9 +216,7 @@ private constructor(
          * You should usually call [Builder.url] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun url(url: JsonField<String>) = apply {
-            this.url = url
-        }
+        fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** The year the document applies to, if available. */
         fun year(year: Double) = year(JsonField.of(year))
@@ -240,9 +227,7 @@ private constructor(
          * You should usually call [Builder.year] with a well-typed [Double] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun year(year: JsonField<Double>) = apply {
-            this.year = year
-        }
+        fun year(year: JsonField<Double>) = apply { this.year = year }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -257,9 +242,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -283,26 +266,11 @@ private constructor(
          */
         fun build(): DocumentResponse =
             DocumentResponse(
-                checkRequired(
-                    "id",
-                    id,
-                ),
-                checkRequired(
-                    "individualId",
-                    individualId,
-                ),
-                checkRequired(
-                    "type",
-                    type,
-                ),
-                checkRequired(
-                    "url",
-                    url,
-                ),
-                checkRequired(
-                    "year",
-                    year,
-                ),
+                checkRequired("id", id),
+                checkRequired("individualId", individualId),
+                checkRequired("type", type),
+                checkRequired("url", url),
+                checkRequired("year", year),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -382,11 +350,9 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

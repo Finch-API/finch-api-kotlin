@@ -30,11 +30,7 @@ private constructor(
         @JsonProperty("supported_operations")
         @ExcludeMissing
         supportedOperations: JsonField<SupportPerBenefitType> = JsonMissing.of(),
-    ) : this(
-        supportedFeatures,
-        supportedOperations,
-        mutableMapOf(),
-    )
+    ) : this(supportedFeatures, supportedOperations, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -143,9 +139,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)

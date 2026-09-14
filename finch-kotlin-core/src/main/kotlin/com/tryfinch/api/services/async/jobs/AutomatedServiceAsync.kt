@@ -52,10 +52,7 @@ interface AutomatedServiceAsync {
         body: JobAutomatedCreateParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AutomatedCreateResponse =
-        create(
-            JobAutomatedCreateParams.builder().body(body).build(),
-            requestOptions,
-        )
+        create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
 
     /** @see create */
     suspend fun create(
@@ -72,11 +69,7 @@ interface AutomatedServiceAsync {
         jobId: String,
         params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AutomatedAsyncJob =
-        retrieve(
-            params.toBuilder().jobId(jobId).build(),
-            requestOptions,
-        )
+    ): AutomatedAsyncJob = retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
     /** @see retrieve */
     suspend fun retrieve(
@@ -86,11 +79,7 @@ interface AutomatedServiceAsync {
 
     /** @see retrieve */
     suspend fun retrieve(jobId: String, requestOptions: RequestOptions): AutomatedAsyncJob =
-        retrieve(
-            jobId,
-            JobAutomatedRetrieveParams.none(),
-            requestOptions,
-        )
+        retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
     /**
      * Get all automated jobs. Automated jobs are completed by a machine. By default, jobs are
@@ -104,10 +93,7 @@ interface AutomatedServiceAsync {
 
     /** @see list */
     suspend fun list(requestOptions: RequestOptions): AutomatedListResponse =
-        list(
-            JobAutomatedListParams.none(),
-            requestOptions,
-        )
+        list(JobAutomatedListParams.none(), requestOptions)
 
     /**
      * A view of [AutomatedServiceAsync] that provides access to raw HTTP responses for each method.
@@ -139,10 +125,7 @@ interface AutomatedServiceAsync {
             body: JobAutomatedCreateParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedCreateResponse> =
-            create(
-                JobAutomatedCreateParams.builder().body(body).build(),
-                requestOptions,
-            )
+            create(JobAutomatedCreateParams.builder().body(body).build(), requestOptions)
 
         /** @see create */
         @MustBeClosed
@@ -165,10 +148,7 @@ interface AutomatedServiceAsync {
             params: JobAutomatedRetrieveParams = JobAutomatedRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AutomatedAsyncJob> =
-            retrieve(
-                params.toBuilder().jobId(jobId).build(),
-                requestOptions,
-            )
+            retrieve(params.toBuilder().jobId(jobId).build(), requestOptions)
 
         /** @see retrieve */
         @MustBeClosed
@@ -183,11 +163,7 @@ interface AutomatedServiceAsync {
             jobId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<AutomatedAsyncJob> =
-            retrieve(
-                jobId,
-                JobAutomatedRetrieveParams.none(),
-                requestOptions,
-            )
+            retrieve(jobId, JobAutomatedRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /jobs/automated`, but is otherwise the same as
@@ -202,9 +178,6 @@ interface AutomatedServiceAsync {
         /** @see list */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<AutomatedListResponse> =
-            list(
-                JobAutomatedListParams.none(),
-                requestOptions,
-            )
+            list(JobAutomatedListParams.none(), requestOptions)
     }
 }

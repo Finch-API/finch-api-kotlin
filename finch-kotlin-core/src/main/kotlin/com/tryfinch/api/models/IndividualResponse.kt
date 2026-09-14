@@ -31,12 +31,7 @@ private constructor(
         @JsonProperty("individual_id")
         @ExcludeMissing
         individualId: JsonField<String> = JsonMissing.of(),
-    ) : this(
-        body,
-        code,
-        individualId,
-        mutableMapOf(),
-    )
+    ) : this(body, code, individualId, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -129,9 +124,7 @@ private constructor(
          * You should usually call [Builder.body] with a well-typed [Individual] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun body(body: JsonField<Individual>) = apply {
-            this.body = body
-        }
+        fun body(body: JsonField<Individual>) = apply { this.body = body }
 
         /** Alias for calling [body] with `Individual.ofResponseBody(responseBody)`. */
         fun body(responseBody: Individual.IndividualResponseBody) =
@@ -148,9 +141,7 @@ private constructor(
          * You should usually call [Builder.code] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun code(code: JsonField<Long>) = apply {
-            this.code = code
-        }
+        fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
@@ -178,9 +169,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -202,18 +191,9 @@ private constructor(
          */
         fun build(): IndividualResponse =
             IndividualResponse(
-                checkRequired(
-                    "body",
-                    body,
-                ),
-                checkRequired(
-                    "code",
-                    code,
-                ),
-                checkRequired(
-                    "individualId",
-                    individualId,
-                ),
+                checkRequired("body", body),
+                checkRequired("code", code),
+                checkRequired("individualId", individualId),
                 additionalProperties.toMutableMap(),
             )
     }

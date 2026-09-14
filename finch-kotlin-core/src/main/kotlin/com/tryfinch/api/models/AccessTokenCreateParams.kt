@@ -132,14 +132,10 @@ private constructor(
          * - [clientSecret]
          * - [redirectUri]
          */
-        fun body(body: CreateAccessTokenRequest) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: CreateAccessTokenRequest) = apply { this.body = body.toBuilder() }
 
         /** The authorization code received from the authorization server */
-        fun code(code: String) = apply {
-            body.code(code)
-        }
+        fun code(code: String) = apply { body.code(code) }
 
         /**
          * Sets [Builder.code] to an arbitrary JSON value.
@@ -147,14 +143,10 @@ private constructor(
          * You should usually call [Builder.code] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun code(code: JsonField<String>) = apply {
-            body.code(code)
-        }
+        fun code(code: JsonField<String>) = apply { body.code(code) }
 
         /** The client ID for your application */
-        fun clientId(clientId: String) = apply {
-            body.clientId(clientId)
-        }
+        fun clientId(clientId: String) = apply { body.clientId(clientId) }
 
         /**
          * Sets [Builder.clientId] to an arbitrary JSON value.
@@ -162,14 +154,10 @@ private constructor(
          * You should usually call [Builder.clientId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun clientId(clientId: JsonField<String>) = apply {
-            body.clientId(clientId)
-        }
+        fun clientId(clientId: JsonField<String>) = apply { body.clientId(clientId) }
 
         /** The client secret for your application */
-        fun clientSecret(clientSecret: String) = apply {
-            body.clientSecret(clientSecret)
-        }
+        fun clientSecret(clientSecret: String) = apply { body.clientSecret(clientSecret) }
 
         /**
          * Sets [Builder.clientSecret] to an arbitrary JSON value.
@@ -183,9 +171,7 @@ private constructor(
         }
 
         /** The redirect URI used in the authorization request (optional) */
-        fun redirectUri(redirectUri: String) = apply {
-            body.redirectUri(redirectUri)
-        }
+        fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
 
         /**
          * Sets [Builder.redirectUri] to an arbitrary JSON value.
@@ -194,19 +180,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun redirectUri(redirectUri: JsonField<String>) = apply {
-            body.redirectUri(redirectUri)
-        }
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -214,9 +195,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -264,9 +243,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -316,9 +293,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -372,13 +347,7 @@ private constructor(
             @JsonProperty("redirect_uri")
             @ExcludeMissing
             redirectUri: JsonField<String> = JsonMissing.of(),
-        ) : this(
-            code,
-            clientId,
-            clientSecret,
-            redirectUri,
-            mutableMapOf(),
-        )
+        ) : this(code, clientId, clientSecret, redirectUri, mutableMapOf())
 
         /**
          * The authorization code received from the authorization server
@@ -497,9 +466,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun code(code: JsonField<String>) = apply {
-                this.code = code
-            }
+            fun code(code: JsonField<String>) = apply { this.code = code }
 
             /** The client ID for your application */
             fun clientId(clientId: String) = clientId(JsonField.of(clientId))
@@ -511,9 +478,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun clientId(clientId: JsonField<String>) = apply {
-                this.clientId = clientId
-            }
+            fun clientId(clientId: JsonField<String>) = apply { this.clientId = clientId }
 
             /** The client secret for your application */
             fun clientSecret(clientSecret: String) = clientSecret(JsonField.of(clientSecret))
@@ -556,9 +521,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -578,10 +541,7 @@ private constructor(
              */
             fun build(): CreateAccessTokenRequest =
                 CreateAccessTokenRequest(
-                    checkRequired(
-                        "code",
-                        code,
-                    ),
+                    checkRequired("code", code),
                     clientId,
                     clientSecret,
                     redirectUri,

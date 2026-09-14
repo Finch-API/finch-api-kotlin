@@ -34,13 +34,7 @@ private constructor(
         finchCode: JsonField<FinchCode> = JsonMissing.of(),
         @JsonProperty("message") @ExcludeMissing message: JsonField<Message> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<Name> = JsonMissing.of(),
-    ) : this(
-        code,
-        finchCode,
-        message,
-        name,
-        mutableMapOf(),
-    )
+    ) : this(code, finchCode, message, name, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -149,9 +143,7 @@ private constructor(
          * You should usually call [Builder.code] with a well-typed [Code] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun code(code: JsonField<Code>) = apply {
-            this.code = code
-        }
+        fun code(code: JsonField<Code>) = apply { this.code = code }
 
         fun finchCode(finchCode: FinchCode) = finchCode(JsonField.of(finchCode))
 
@@ -162,9 +154,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun finchCode(finchCode: JsonField<FinchCode>) = apply {
-            this.finchCode = finchCode
-        }
+        fun finchCode(finchCode: JsonField<FinchCode>) = apply { this.finchCode = finchCode }
 
         fun message(message: Message) = message(JsonField.of(message))
 
@@ -174,9 +164,7 @@ private constructor(
          * You should usually call [Builder.message] with a well-typed [Message] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun message(message: JsonField<Message>) = apply {
-            this.message = message
-        }
+        fun message(message: JsonField<Message>) = apply { this.message = message }
 
         fun name(name: Name) = name(JsonField.of(name))
 
@@ -186,9 +174,7 @@ private constructor(
          * You should usually call [Builder.name] with a well-typed [Name] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun name(name: JsonField<Name>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<Name>) = apply { this.name = name }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -203,9 +189,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -228,22 +212,10 @@ private constructor(
          */
         fun build(): PayStatementDataSyncInProgress =
             PayStatementDataSyncInProgress(
-                checkRequired(
-                    "code",
-                    code,
-                ),
-                checkRequired(
-                    "finchCode",
-                    finchCode,
-                ),
-                checkRequired(
-                    "message",
-                    message,
-                ),
-                checkRequired(
-                    "name",
-                    name,
-                ),
+                checkRequired("code", code),
+                checkRequired("finchCode", finchCode),
+                checkRequired("message", message),
+                checkRequired("name", name),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -317,11 +289,9 @@ private constructor(
          * An enum containing [Code]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Code] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -444,11 +414,9 @@ private constructor(
          * An enum containing [FinchCode]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [FinchCode] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -578,11 +546,9 @@ private constructor(
          * An enum containing [Message]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Message] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -711,11 +677,9 @@ private constructor(
          * An enum containing [Name]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Name] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

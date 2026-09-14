@@ -233,14 +233,7 @@ internal class EmploymentDataTest {
         STRING(JsonValue.from("invalid")),
         INTEGER(JsonValue.from(-1)),
         FLOAT(JsonValue.from(3.14)),
-        ARRAY(
-            JsonValue.from(
-                listOf(
-                    "invalid",
-                    "array",
-                )
-            )
-        ),
+        ARRAY(JsonValue.from(listOf("invalid", "array"))),
     }
 
     @ParameterizedTest
@@ -249,10 +242,7 @@ internal class EmploymentDataTest {
         val employmentData =
             jsonMapper().convertValue(testCase.value, jacksonTypeRef<EmploymentData>())
 
-        val e =
-            assertThrows<FinchInvalidDataException> {
-                employmentData.validate()
-            }
+        val e = assertThrows<FinchInvalidDataException> { employmentData.validate() }
         assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }

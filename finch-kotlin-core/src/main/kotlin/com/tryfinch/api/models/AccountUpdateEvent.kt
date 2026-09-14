@@ -40,15 +40,7 @@ private constructor(
         @JsonProperty("event_type")
         @ExcludeMissing
         eventType: JsonField<EventType> = JsonMissing.of(),
-    ) : this(
-        accountId,
-        companyId,
-        connectionId,
-        entityId,
-        data,
-        eventType,
-        mutableMapOf(),
-    )
+    ) : this(accountId, companyId, connectionId, entityId, data, eventType, mutableMapOf())
 
     fun toBaseWebhookEvent(): BaseWebhookEvent =
         BaseWebhookEvent.builder()
@@ -212,9 +204,7 @@ private constructor(
          * value.
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: JsonField<String>) = apply {
-            this.accountId = accountId
-        }
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** Unique Finch ID of the company for which data has been updated. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -226,9 +216,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply {
-            this.companyId = companyId
-        }
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -253,9 +241,7 @@ private constructor(
          * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun entityId(entityId: JsonField<String>) = apply {
-            this.entityId = entityId
-        }
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
 
         fun data(data: Data) = data(JsonField.of(data))
 
@@ -265,9 +251,7 @@ private constructor(
          * You should usually call [Builder.data] with a well-typed [Data] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<Data>) = apply {
-            this.data = data
-        }
+        fun data(data: JsonField<Data>) = apply { this.data = data }
 
         fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
 
@@ -278,9 +262,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun eventType(eventType: JsonField<EventType>) = apply {
-            this.eventType = eventType
-        }
+        fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -295,9 +277,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -318,14 +298,8 @@ private constructor(
          */
         fun build(): AccountUpdateEvent =
             AccountUpdateEvent(
-                checkRequired(
-                    "accountId",
-                    accountId,
-                ),
-                checkRequired(
-                    "companyId",
-                    companyId,
-                ),
+                checkRequired("accountId", accountId),
+                checkRequired("companyId", companyId),
                 connectionId,
                 entityId,
                 data,
@@ -395,11 +369,7 @@ private constructor(
             @JsonProperty("status")
             @ExcludeMissing
             status: JsonField<ConnectionStatusType> = JsonMissing.of(),
-        ) : this(
-            authenticationMethod,
-            status,
-            mutableMapOf(),
-        )
+        ) : this(authenticationMethod, status, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -496,9 +466,7 @@ private constructor(
              * value instead. This method is primarily for setting the field to an undocumented or
              * not yet supported value.
              */
-            fun status(status: JsonField<ConnectionStatusType>) = apply {
-                this.status = status
-            }
+            fun status(status: JsonField<ConnectionStatusType>) = apply { this.status = status }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -513,9 +481,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -536,14 +502,8 @@ private constructor(
              */
             fun build(): Data =
                 Data(
-                    checkRequired(
-                        "authenticationMethod",
-                        authenticationMethod,
-                    ),
-                    checkRequired(
-                        "status",
-                        status,
-                    ),
+                    checkRequired("authenticationMethod", authenticationMethod),
+                    checkRequired("status", status),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -604,12 +564,7 @@ private constructor(
                 @ExcludeMissing
                 supportedFields: JsonField<SupportedFields> = JsonMissing.of(),
                 @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-            ) : this(
-                benefitsSupport,
-                supportedFields,
-                type,
-                mutableMapOf(),
-            )
+            ) : this(benefitsSupport, supportedFields, type, mutableMapOf())
 
             /**
              * Each benefit type and their supported features. If the benefit type is not supported,
@@ -743,9 +698,7 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun type(type: JsonField<Type>) = apply {
-                    this.type = type
-                }
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1473,9 +1426,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun id(id: JsonField<Boolean>) = apply {
-                            this.id = id
-                        }
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun accounts(accounts: Accounts) = accounts(JsonField.of(accounts))
 
@@ -1513,9 +1464,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun ein(ein: JsonField<Boolean>) = apply {
-                            this.ein = ein
-                        }
+                        fun ein(ein: JsonField<Boolean>) = apply { this.ein = ein }
 
                         fun entity(entity: Entity) = entity(JsonField.of(entity))
 
@@ -1526,9 +1475,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun entity(entity: JsonField<Entity>) = apply {
-                            this.entity = entity
-                        }
+                        fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
                         fun legalName(legalName: Boolean) = legalName(JsonField.of(legalName))
 
@@ -1596,9 +1543,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -1922,9 +1867,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -2044,11 +1987,7 @@ private constructor(
                             @JsonProperty("parent")
                             @ExcludeMissing
                             parent: JsonField<Parent> = JsonMissing.of(),
-                        ) : this(
-                            name,
-                            parent,
-                            mutableMapOf(),
-                        )
+                        ) : this(name, parent, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -2125,9 +2064,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun name(name: JsonField<Boolean>) = apply {
-                                this.name = name
-                            }
+                            fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                             fun parent(parent: Parent) = parent(JsonField.of(parent))
 
@@ -2138,9 +2075,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun parent(parent: JsonField<Parent>) = apply {
-                                this.parent = parent
-                            }
+                            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2154,9 +2089,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -2173,11 +2106,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Departments =
-                                Departments(
-                                    name,
-                                    parent,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Departments(name, parent, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -2232,10 +2161,7 @@ private constructor(
                                 @JsonProperty("name")
                                 @ExcludeMissing
                                 name: JsonField<Boolean> = JsonMissing.of()
-                            ) : this(
-                                name,
-                                mutableMapOf(),
-                            )
+                            ) : this(name, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -2296,9 +2222,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun name(name: JsonField<Boolean>) = apply {
-                                    this.name = name
-                                }
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -2313,9 +2237,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -2332,10 +2254,7 @@ private constructor(
                                  * instance.
                                  */
                                 fun build(): Parent =
-                                    Parent(
-                                        name,
-                                        additionalProperties.toMutableMap(),
-                                    )
+                                    Parent(name, additionalProperties.toMutableMap())
                             }
 
                             private var validated: Boolean = false
@@ -2432,11 +2351,7 @@ private constructor(
                             @JsonProperty("type")
                             @ExcludeMissing
                             type: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            subtype,
-                            type,
-                            mutableMapOf(),
-                        )
+                        ) : this(subtype, type, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -2524,9 +2439,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun type(type: JsonField<Boolean>) = apply {
-                                this.type = type
-                            }
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2540,9 +2453,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -2559,11 +2470,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Entity =
-                                Entity(
-                                    subtype,
-                                    type,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Entity(subtype, type, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -2659,15 +2566,7 @@ private constructor(
                             @JsonProperty("state")
                             @ExcludeMissing
                             state: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            city,
-                            country,
-                            line1,
-                            line2,
-                            postalCode,
-                            state,
-                            mutableMapOf(),
-                        )
+                        ) : this(city, country, line1, line2, postalCode, state, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -2815,9 +2714,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun city(city: JsonField<Boolean>) = apply {
-                                this.city = city
-                            }
+                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
@@ -2841,9 +2738,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line1(line1: JsonField<Boolean>) = apply {
-                                this.line1 = line1
-                            }
+                            fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
@@ -2854,9 +2749,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line2(line2: JsonField<Boolean>) = apply {
-                                this.line2 = line2
-                            }
+                            fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
@@ -2881,9 +2774,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun state(state: JsonField<Boolean>) = apply {
-                                this.state = state
-                            }
+                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -2897,9 +2788,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -3063,11 +2952,7 @@ private constructor(
                         @JsonProperty("paging")
                         @ExcludeMissing
                         paging: JsonField<Paging> = JsonMissing.of(),
-                    ) : this(
-                        individuals,
-                        paging,
-                        mutableMapOf(),
-                    )
+                    ) : this(individuals, paging, mutableMapOf())
 
                     /**
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type
@@ -3161,9 +3046,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun paging(paging: JsonField<Paging>) = apply {
-                            this.paging = paging
-                        }
+                        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -3177,9 +3060,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -3454,9 +3335,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun id(id: JsonField<Boolean>) = apply {
-                                this.id = id
-                            }
+                            fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                             fun department(department: Boolean) =
                                 department(JsonField.of(department))
@@ -3550,9 +3429,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -3643,10 +3520,7 @@ private constructor(
                                 @JsonProperty("id")
                                 @ExcludeMissing
                                 id: JsonField<Boolean> = JsonMissing.of()
-                            ) : this(
-                                id,
-                                mutableMapOf(),
-                            )
+                            ) : this(id, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -3705,9 +3579,7 @@ private constructor(
                                  * value instead. This method is primarily for setting the field to
                                  * an undocumented or not yet supported value.
                                  */
-                                fun id(id: JsonField<Boolean>) = apply {
-                                    this.id = id
-                                }
+                                fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -3722,9 +3594,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -3741,10 +3611,7 @@ private constructor(
                                  * instance.
                                  */
                                 fun build(): Manager =
-                                    Manager(
-                                        id,
-                                        additionalProperties.toMutableMap(),
-                                    )
+                                    Manager(id, additionalProperties.toMutableMap())
                             }
 
                             private var validated: Boolean = false
@@ -3855,11 +3722,7 @@ private constructor(
                             @JsonProperty("offset")
                             @ExcludeMissing
                             offset: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            count,
-                            offset,
-                            mutableMapOf(),
-                        )
+                        ) : this(count, offset, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -3936,9 +3799,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun count(count: JsonField<Boolean>) = apply {
-                                this.count = count
-                            }
+                            fun count(count: JsonField<Boolean>) = apply { this.count = count }
 
                             fun offset(offset: Boolean) = offset(JsonField.of(offset))
 
@@ -3949,9 +3810,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun offset(offset: JsonField<Boolean>) = apply {
-                                this.offset = offset
-                            }
+                            fun offset(offset: JsonField<Boolean>) = apply { this.offset = offset }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -3965,9 +3824,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -3984,11 +3841,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Paging =
-                                Paging(
-                                    count,
-                                    offset,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Paging(count, offset, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -4515,9 +4368,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun id(id: JsonField<Boolean>) = apply {
-                            this.id = id
-                        }
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun classCode(classCode: Boolean) = classCode(JsonField.of(classCode))
 
@@ -4597,9 +4448,7 @@ private constructor(
                          * value instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun endDate(endDate: JsonField<Boolean>) = apply {
-                            this.endDate = endDate
-                        }
+                        fun endDate(endDate: JsonField<Boolean>) = apply { this.endDate = endDate }
 
                         fun firstName(firstName: Boolean) = firstName(JsonField.of(firstName))
 
@@ -4623,9 +4472,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun income(income: JsonField<Income>) = apply {
-                            this.income = income
-                        }
+                        fun income(income: JsonField<Income>) = apply { this.income = income }
 
                         fun incomeHistory(incomeHistory: Boolean) =
                             incomeHistory(JsonField.of(incomeHistory))
@@ -4689,9 +4536,7 @@ private constructor(
                          * value instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun manager(manager: JsonField<Manager>) = apply {
-                            this.manager = manager
-                        }
+                        fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
                         fun middleName(middleName: Boolean) = middleName(JsonField.of(middleName))
 
@@ -4728,9 +4573,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun title(title: JsonField<Boolean>) = apply {
-                            this.title = title
-                        }
+                        fun title(title: JsonField<Boolean>) = apply { this.title = title }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -4744,9 +4587,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -4866,10 +4707,7 @@ private constructor(
                             @JsonProperty("name")
                             @ExcludeMissing
                             name: JsonField<Boolean> = JsonMissing.of()
-                        ) : this(
-                            name,
-                            mutableMapOf(),
-                        )
+                        ) : this(name, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -4928,9 +4766,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun name(name: JsonField<Boolean>) = apply {
-                                this.name = name
-                            }
+                            fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -4944,9 +4780,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -4963,10 +4797,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Department =
-                                Department(
-                                    name,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Department(name, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -5042,11 +4873,7 @@ private constructor(
                             @JsonProperty("type")
                             @ExcludeMissing
                             type: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            subtype,
-                            type,
-                            mutableMapOf(),
-                        )
+                        ) : this(subtype, type, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -5136,9 +4963,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun type(type: JsonField<Boolean>) = apply {
-                                this.type = type
-                            }
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -5152,9 +4977,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -5171,11 +4994,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Employment =
-                                Employment(
-                                    subtype,
-                                    type,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Employment(subtype, type, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -5259,12 +5078,7 @@ private constructor(
                             @JsonProperty("unit")
                             @ExcludeMissing
                             unit: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            amount,
-                            currency,
-                            unit,
-                            mutableMapOf(),
-                        )
+                        ) : this(amount, currency, unit, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -5357,9 +5171,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun amount(amount: JsonField<Boolean>) = apply {
-                                this.amount = amount
-                            }
+                            fun amount(amount: JsonField<Boolean>) = apply { this.amount = amount }
 
                             fun currency(currency: Boolean) = currency(JsonField.of(currency))
 
@@ -5383,9 +5195,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun unit(unit: JsonField<Boolean>) = apply {
-                                this.unit = unit
-                            }
+                            fun unit(unit: JsonField<Boolean>) = apply { this.unit = unit }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -5399,9 +5209,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -5418,12 +5226,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Income =
-                                Income(
-                                    amount,
-                                    currency,
-                                    unit,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Income(amount, currency, unit, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -5522,15 +5325,7 @@ private constructor(
                             @JsonProperty("state")
                             @ExcludeMissing
                             state: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            city,
-                            country,
-                            line1,
-                            line2,
-                            postalCode,
-                            state,
-                            mutableMapOf(),
-                        )
+                        ) : this(city, country, line1, line2, postalCode, state, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -5677,9 +5472,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun city(city: JsonField<Boolean>) = apply {
-                                this.city = city
-                            }
+                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
@@ -5703,9 +5496,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line1(line1: JsonField<Boolean>) = apply {
-                                this.line1 = line1
-                            }
+                            fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
@@ -5716,9 +5507,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line2(line2: JsonField<Boolean>) = apply {
-                                this.line2 = line2
-                            }
+                            fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
@@ -5743,9 +5532,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun state(state: JsonField<Boolean>) = apply {
-                                this.state = state
-                            }
+                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -5759,9 +5546,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -5882,10 +5667,7 @@ private constructor(
                             @JsonProperty("id")
                             @ExcludeMissing
                             id: JsonField<Boolean> = JsonMissing.of()
-                        ) : this(
-                            id,
-                            mutableMapOf(),
-                        )
+                        ) : this(id, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -5942,9 +5724,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun id(id: JsonField<Boolean>) = apply {
-                                this.id = id
-                            }
+                            fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -5958,9 +5738,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -5976,11 +5754,7 @@ private constructor(
                              * Further updates to this [Builder] will not mutate the returned
                              * instance.
                              */
-                            fun build(): Manager =
-                                Manager(
-                                    id,
-                                    additionalProperties.toMutableMap(),
-                                )
+                            fun build(): Manager = Manager(id, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -6440,9 +6214,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun id(id: JsonField<Boolean>) = apply {
-                            this.id = id
-                        }
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun dob(dob: Boolean) = dob(JsonField.of(dob))
 
@@ -6453,9 +6225,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun dob(dob: JsonField<Boolean>) = apply {
-                            this.dob = dob
-                        }
+                        fun dob(dob: JsonField<Boolean>) = apply { this.dob = dob }
 
                         fun emails(emails: Emails) = emails(JsonField.of(emails))
 
@@ -6466,9 +6236,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun emails(emails: JsonField<Emails>) = apply {
-                            this.emails = emails
-                        }
+                        fun emails(emails: JsonField<Emails>) = apply { this.emails = emails }
 
                         fun encryptedSsn(encryptedSsn: Boolean) =
                             encryptedSsn(JsonField.of(encryptedSsn))
@@ -6519,9 +6287,7 @@ private constructor(
                          * value instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun gender(gender: JsonField<Boolean>) = apply {
-                            this.gender = gender
-                        }
+                        fun gender(gender: JsonField<Boolean>) = apply { this.gender = gender }
 
                         fun lastName(lastName: Boolean) = lastName(JsonField.of(lastName))
 
@@ -6599,9 +6365,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun ssn(ssn: JsonField<Boolean>) = apply {
-                            this.ssn = ssn
-                        }
+                        fun ssn(ssn: JsonField<Boolean>) = apply { this.ssn = ssn }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -6615,9 +6379,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -6729,11 +6491,7 @@ private constructor(
                             @JsonProperty("type")
                             @ExcludeMissing
                             type: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            data,
-                            type,
-                            mutableMapOf(),
-                        )
+                        ) : this(data, type, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -6806,9 +6564,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun data(data: JsonField<Boolean>) = apply {
-                                this.data = data
-                            }
+                            fun data(data: JsonField<Boolean>) = apply { this.data = data }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
@@ -6819,9 +6575,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun type(type: JsonField<Boolean>) = apply {
-                                this.type = type
-                            }
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -6835,9 +6589,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -6854,11 +6606,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): Emails =
-                                Emails(
-                                    data,
-                                    type,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                Emails(data, type, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -6938,11 +6686,7 @@ private constructor(
                             @JsonProperty("type")
                             @ExcludeMissing
                             type: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            data,
-                            type,
-                            mutableMapOf(),
-                        )
+                        ) : this(data, type, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -7017,9 +6761,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun data(data: JsonField<Boolean>) = apply {
-                                this.data = data
-                            }
+                            fun data(data: JsonField<Boolean>) = apply { this.data = data }
 
                             fun type(type: Boolean) = type(JsonField.of(type))
 
@@ -7030,9 +6772,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun type(type: JsonField<Boolean>) = apply {
-                                this.type = type
-                            }
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -7046,9 +6786,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -7065,11 +6803,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): PhoneNumbers =
-                                PhoneNumbers(
-                                    data,
-                                    type,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                PhoneNumbers(data, type, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -7165,15 +6899,7 @@ private constructor(
                             @JsonProperty("state")
                             @ExcludeMissing
                             state: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            city,
-                            country,
-                            line1,
-                            line2,
-                            postalCode,
-                            state,
-                            mutableMapOf(),
-                        )
+                        ) : this(city, country, line1, line2, postalCode, state, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -7321,9 +7047,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun city(city: JsonField<Boolean>) = apply {
-                                this.city = city
-                            }
+                            fun city(city: JsonField<Boolean>) = apply { this.city = city }
 
                             fun country(country: Boolean) = country(JsonField.of(country))
 
@@ -7347,9 +7071,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line1(line1: JsonField<Boolean>) = apply {
-                                this.line1 = line1
-                            }
+                            fun line1(line1: JsonField<Boolean>) = apply { this.line1 = line1 }
 
                             fun line2(line2: Boolean) = line2(JsonField.of(line2))
 
@@ -7360,9 +7082,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun line2(line2: JsonField<Boolean>) = apply {
-                                this.line2 = line2
-                            }
+                            fun line2(line2: JsonField<Boolean>) = apply { this.line2 = line2 }
 
                             fun postalCode(postalCode: Boolean) =
                                 postalCode(JsonField.of(postalCode))
@@ -7387,9 +7107,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun state(state: JsonField<Boolean>) = apply {
-                                this.state = state
-                            }
+                            fun state(state: JsonField<Boolean>) = apply { this.state = state }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -7403,9 +7121,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -7585,13 +7301,7 @@ private constructor(
                         @JsonProperty("pay_frequencies")
                         @ExcludeMissing
                         payFrequencies: JsonField<Boolean> = JsonMissing.of(),
-                    ) : this(
-                        id,
-                        individualIds,
-                        name,
-                        payFrequencies,
-                        mutableMapOf(),
-                    )
+                    ) : this(id, individualIds, name, payFrequencies, mutableMapOf())
 
                     /**
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type
@@ -7703,9 +7413,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun id(id: JsonField<Boolean>) = apply {
-                            this.id = id
-                        }
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun individualIds(individualIds: Boolean) =
                             individualIds(JsonField.of(individualIds))
@@ -7730,9 +7438,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun name(name: JsonField<Boolean>) = apply {
-                            this.name = name
-                        }
+                        fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                         fun payFrequencies(payFrequencies: Boolean) =
                             payFrequencies(JsonField.of(payFrequencies))
@@ -7760,9 +7466,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -7870,11 +7574,7 @@ private constructor(
                         @JsonProperty("pay_statements")
                         @ExcludeMissing
                         payStatements: JsonField<PayStatements> = JsonMissing.of(),
-                    ) : this(
-                        paging,
-                        payStatements,
-                        mutableMapOf(),
-                    )
+                    ) : this(paging, payStatements, mutableMapOf())
 
                     /**
                      * @throws FinchInvalidDataException if the JSON field has an unexpected type
@@ -7956,9 +7656,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun paging(paging: JsonField<Paging>) = apply {
-                            this.paging = paging
-                        }
+                        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
                         fun payStatements(payStatements: PayStatements) =
                             payStatements(JsonField.of(payStatements))
@@ -7986,9 +7684,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -8067,11 +7763,7 @@ private constructor(
                             @JsonProperty("offset")
                             @ExcludeMissing
                             offset: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            count,
-                            offset,
-                            mutableMapOf(),
-                        )
+                        ) : this(count, offset, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -8156,9 +7848,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun count(count: JsonField<Boolean>) = apply {
-                                this.count = count
-                            }
+                            fun count(count: JsonField<Boolean>) = apply { this.count = count }
 
                             fun offset(offset: Boolean) = offset(JsonField.of(offset))
 
@@ -8169,9 +7859,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun offset(offset: JsonField<Boolean>) = apply {
-                                this.offset = offset
-                            }
+                            fun offset(offset: JsonField<Boolean>) = apply { this.offset = offset }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -8185,9 +7873,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -8213,14 +7899,8 @@ private constructor(
                              */
                             fun build(): Paging =
                                 Paging(
-                                    checkRequired(
-                                        "count",
-                                        count,
-                                    ),
-                                    checkRequired(
-                                        "offset",
-                                        offset,
-                                    ),
+                                    checkRequired("count", count),
+                                    checkRequired("offset", offset),
                                     additionalProperties.toMutableMap(),
                                 )
                         }
@@ -8591,9 +8271,7 @@ private constructor(
                              */
                             fun employeeDeductions(
                                 employeeDeductions: JsonField<EmployeeDeductions>
-                            ) = apply {
-                                this.employeeDeductions = employeeDeductions
-                            }
+                            ) = apply { this.employeeDeductions = employeeDeductions }
 
                             fun employerContributions(
                                 employerContributions: EmployerContributions
@@ -8609,9 +8287,7 @@ private constructor(
                              */
                             fun employerContributions(
                                 employerContributions: JsonField<EmployerContributions>
-                            ) = apply {
-                                this.employerContributions = employerContributions
-                            }
+                            ) = apply { this.employerContributions = employerContributions }
 
                             fun grossPay(grossPay: Boolean) = grossPay(JsonField.of(grossPay))
 
@@ -8649,9 +8325,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun netPay(netPay: JsonField<Boolean>) = apply {
-                                this.netPay = netPay
-                            }
+                            fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
 
                             fun paymentMethod(paymentMethod: Boolean) =
                                 paymentMethod(JsonField.of(paymentMethod))
@@ -8676,9 +8350,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun taxes(taxes: JsonField<Taxes>) = apply {
-                                this.taxes = taxes
-                            }
+                            fun taxes(taxes: JsonField<Taxes>) = apply { this.taxes = taxes }
 
                             fun totalHours(totalHours: Boolean) =
                                 totalHours(JsonField.of(totalHours))
@@ -8703,9 +8375,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun type(type: JsonField<Boolean>) = apply {
-                                this.type = type
-                            }
+                            fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
@@ -8719,9 +8389,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -8833,13 +8501,7 @@ private constructor(
                                 @JsonProperty("type")
                                 @ExcludeMissing
                                 type: JsonField<Boolean> = JsonMissing.of(),
-                            ) : this(
-                                amount,
-                                currency,
-                                name,
-                                type,
-                                mutableMapOf(),
-                            )
+                            ) : this(amount, currency, name, type, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -8980,9 +8642,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun name(name: JsonField<Boolean>) = apply {
-                                    this.name = name
-                                }
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun type(type: Boolean) = type(JsonField.of(type))
 
@@ -8993,9 +8653,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun type(type: JsonField<Boolean>) = apply {
-                                    this.type = type
-                                }
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -9010,9 +8668,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -9133,14 +8789,7 @@ private constructor(
                                 @JsonProperty("type")
                                 @ExcludeMissing
                                 type: JsonField<Boolean> = JsonMissing.of(),
-                            ) : this(
-                                amount,
-                                currency,
-                                name,
-                                preTax,
-                                type,
-                                mutableMapOf(),
-                            )
+                            ) : this(amount, currency, name, preTax, type, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -9299,9 +8948,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun name(name: JsonField<Boolean>) = apply {
-                                    this.name = name
-                                }
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun preTax(preTax: Boolean) = preTax(JsonField.of(preTax))
 
@@ -9325,9 +8972,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun type(type: JsonField<Boolean>) = apply {
-                                    this.type = type
-                                }
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -9342,9 +8987,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -9468,12 +9111,7 @@ private constructor(
                                 @JsonProperty("name")
                                 @ExcludeMissing
                                 name: JsonField<Boolean> = JsonMissing.of(),
-                            ) : this(
-                                amount,
-                                currency,
-                                name,
-                                mutableMapOf(),
-                            )
+                            ) : this(amount, currency, name, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -9598,9 +9236,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun name(name: JsonField<Boolean>) = apply {
-                                    this.name = name
-                                }
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -9615,9 +9251,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -9734,14 +9368,7 @@ private constructor(
                                 @JsonProperty("type")
                                 @ExcludeMissing
                                 type: JsonField<Boolean> = JsonMissing.of(),
-                            ) : this(
-                                amount,
-                                currency,
-                                employer,
-                                name,
-                                type,
-                                mutableMapOf(),
-                            )
+                            ) : this(amount, currency, employer, name, type, mutableMapOf())
 
                             /**
                              * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -9912,9 +9539,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun name(name: JsonField<Boolean>) = apply {
-                                    this.name = name
-                                }
+                                fun name(name: JsonField<Boolean>) = apply { this.name = name }
 
                                 fun type(type: Boolean) = type(JsonField.of(type))
 
@@ -9925,9 +9550,7 @@ private constructor(
                                  * [Boolean] value instead. This method is primarily for setting the
                                  * field to an undocumented or not yet supported value.
                                  */
-                                fun type(type: JsonField<Boolean>) = apply {
-                                    this.type = type
-                                }
+                                fun type(type: JsonField<Boolean>) = apply { this.type = type }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -9942,9 +9565,7 @@ private constructor(
 
                                 fun putAllAdditionalProperties(
                                     additionalProperties: Map<String, JsonValue>
-                                ) = apply {
-                                    this.additionalProperties.putAll(additionalProperties)
-                                }
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                                 fun removeAdditionalProperty(key: String) = apply {
                                     additionalProperties.remove(key)
@@ -10437,9 +10058,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun id(id: JsonField<Boolean>) = apply {
-                            this.id = id
-                        }
+                        fun id(id: JsonField<Boolean>) = apply { this.id = id }
 
                         fun companyDebit(companyDebit: Boolean) =
                             companyDebit(JsonField.of(companyDebit))
@@ -10532,9 +10151,7 @@ private constructor(
                          * value instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun netPay(netPay: JsonField<Boolean>) = apply {
-                            this.netPay = netPay
-                        }
+                        fun netPay(netPay: JsonField<Boolean>) = apply { this.netPay = netPay }
 
                         fun payDate(payDate: Boolean) = payDate(JsonField.of(payDate))
 
@@ -10545,9 +10162,7 @@ private constructor(
                          * value instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun payDate(payDate: JsonField<Boolean>) = apply {
-                            this.payDate = payDate
-                        }
+                        fun payDate(payDate: JsonField<Boolean>) = apply { this.payDate = payDate }
 
                         fun payFrequencies(payFrequencies: Boolean) =
                             payFrequencies(JsonField.of(payFrequencies))
@@ -10602,9 +10217,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -10713,11 +10326,7 @@ private constructor(
                             @JsonProperty("start_date")
                             @ExcludeMissing
                             startDate: JsonField<Boolean> = JsonMissing.of(),
-                        ) : this(
-                            endDate,
-                            startDate,
-                            mutableMapOf(),
-                        )
+                        ) : this(endDate, startDate, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -10824,9 +10433,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -10843,11 +10450,7 @@ private constructor(
                              * instance.
                              */
                             fun build(): PayPeriod =
-                                PayPeriod(
-                                    endDate,
-                                    startDate,
-                                    additionalProperties.toMutableMap(),
-                                )
+                                PayPeriod(endDate, startDate, additionalProperties.toMutableMap())
                         }
 
                         private var validated: Boolean = false
@@ -11033,11 +10636,9 @@ private constructor(
                  * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
                  *
                  * An instance of [Type] can contain an unknown value in a couple of cases:
-                 *
                  * - It was deserialized from data that doesn't match any known member. For example,
                  *   if the SDK is on an older version than the API, then the API may respond with
                  *   new members that the SDK is unaware of.
-                 *
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -11221,11 +10822,9 @@ private constructor(
          * An enum containing [EventType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [EventType] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

@@ -42,15 +42,7 @@ private constructor(
         @JsonProperty("event_type")
         @ExcludeMissing
         eventType: JsonField<EventType> = JsonMissing.of(),
-    ) : this(
-        accountId,
-        companyId,
-        connectionId,
-        entityId,
-        data,
-        eventType,
-        mutableMapOf(),
-    )
+    ) : this(accountId, companyId, connectionId, entityId, data, eventType, mutableMapOf())
 
     fun toBaseWebhookEvent(): BaseWebhookEvent =
         BaseWebhookEvent.builder()
@@ -214,9 +206,7 @@ private constructor(
          * value.
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: JsonField<String>) = apply {
-            this.accountId = accountId
-        }
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /** Unique Finch ID of the company for which data has been updated. */
         fun companyId(companyId: String) = companyId(JsonField.of(companyId))
@@ -228,9 +218,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun companyId(companyId: JsonField<String>) = apply {
-            this.companyId = companyId
-        }
+        fun companyId(companyId: JsonField<String>) = apply { this.companyId = companyId }
 
         /** Unique Finch ID of the connection associated with the webhook event. */
         fun connectionId(connectionId: String) = connectionId(JsonField.of(connectionId))
@@ -255,9 +243,7 @@ private constructor(
          * You should usually call [Builder.entityId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun entityId(entityId: JsonField<String>) = apply {
-            this.entityId = entityId
-        }
+        fun entityId(entityId: JsonField<String>) = apply { this.entityId = entityId }
 
         fun data(data: PaymentIdentifiers) = data(JsonField.of(data))
 
@@ -268,9 +254,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun data(data: JsonField<PaymentIdentifiers>) = apply {
-            this.data = data
-        }
+        fun data(data: JsonField<PaymentIdentifiers>) = apply { this.data = data }
 
         fun eventType(eventType: EventType) = eventType(JsonField.of(eventType))
 
@@ -281,9 +265,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun eventType(eventType: JsonField<EventType>) = apply {
-            this.eventType = eventType
-        }
+        fun eventType(eventType: JsonField<EventType>) = apply { this.eventType = eventType }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -298,9 +280,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -321,14 +301,8 @@ private constructor(
          */
         fun build(): PaymentEvent =
             PaymentEvent(
-                checkRequired(
-                    "accountId",
-                    accountId,
-                ),
-                checkRequired(
-                    "companyId",
-                    companyId,
-                ),
+                checkRequired("accountId", accountId),
+                checkRequired("companyId", companyId),
                 connectionId,
                 entityId,
                 data,
@@ -396,11 +370,7 @@ private constructor(
             @JsonProperty("payment_id")
             @ExcludeMissing
             paymentId: JsonField<String> = JsonMissing.of(),
-        ) : this(
-            payDate,
-            paymentId,
-            mutableMapOf(),
-        )
+        ) : this(payDate, paymentId, mutableMapOf())
 
         /**
          * The date of the payment.
@@ -481,9 +451,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun payDate(payDate: JsonField<String>) = apply {
-                this.payDate = payDate
-            }
+            fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
             /** The ID of the payment. */
             fun paymentId(paymentId: String) = paymentId(JsonField.of(paymentId))
@@ -495,9 +463,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun paymentId(paymentId: JsonField<String>) = apply {
-                this.paymentId = paymentId
-            }
+            fun paymentId(paymentId: JsonField<String>) = apply { this.paymentId = paymentId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -512,9 +478,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -535,14 +499,8 @@ private constructor(
              */
             fun build(): PaymentIdentifiers =
                 PaymentIdentifiers(
-                    checkRequired(
-                        "payDate",
-                        payDate,
-                    ),
-                    checkRequired(
-                        "paymentId",
-                        paymentId,
-                    ),
+                    checkRequired("payDate", payDate),
+                    checkRequired("paymentId", paymentId),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -638,11 +596,9 @@ private constructor(
          * An enum containing [EventType]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [EventType] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
