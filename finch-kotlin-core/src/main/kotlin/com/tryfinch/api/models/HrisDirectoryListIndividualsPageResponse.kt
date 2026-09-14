@@ -31,11 +31,7 @@ private constructor(
         @ExcludeMissing
         individuals: JsonField<List<IndividualInDirectory>> = JsonMissing.of(),
         @JsonProperty("paging") @ExcludeMissing paging: JsonField<Paging> = JsonMissing.of(),
-    ) : this(
-        individuals,
-        paging,
-        mutableMapOf(),
-    )
+    ) : this(individuals, paging, mutableMapOf())
 
     /**
      * The array of employees.
@@ -146,9 +142,7 @@ private constructor(
          * You should usually call [Builder.paging] with a well-typed [Paging] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun paging(paging: JsonField<Paging>) = apply {
-            this.paging = paging
-        }
+        fun paging(paging: JsonField<Paging>) = apply { this.paging = paging }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -163,9 +157,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -186,15 +178,8 @@ private constructor(
          */
         fun build(): HrisDirectoryListIndividualsPageResponse =
             HrisDirectoryListIndividualsPageResponse(
-                checkRequired(
-                        "individuals",
-                        individuals,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "paging",
-                    paging,
-                ),
+                checkRequired("individuals", individuals).map { it.toImmutable() },
+                checkRequired("paging", paging),
                 additionalProperties.toMutableMap(),
             )
     }

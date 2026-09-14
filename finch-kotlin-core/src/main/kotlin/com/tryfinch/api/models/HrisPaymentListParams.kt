@@ -81,17 +81,13 @@ private constructor(
          * The end date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
          * Filters payments by their **pay_date** field.
          */
-        fun endDate(endDate: LocalDate) = apply {
-            this.endDate = endDate
-        }
+        fun endDate(endDate: LocalDate) = apply { this.endDate = endDate }
 
         /**
          * The start date to retrieve payments by a company (inclusive) in `YYYY-MM-DD` format.
          * Filters payments by their **pay_date** field.
          */
-        fun startDate(startDate: LocalDate) = apply {
-            this.startDate = startDate
-        }
+        fun startDate(startDate: LocalDate) = apply { this.startDate = startDate }
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
@@ -152,9 +148,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -204,9 +198,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -227,14 +219,8 @@ private constructor(
          */
         fun build(): HrisPaymentListParams =
             HrisPaymentListParams(
-                checkRequired(
-                    "endDate",
-                    endDate,
-                ),
-                checkRequired(
-                    "startDate",
-                    startDate,
-                ),
+                checkRequired("endDate", endDate),
+                checkRequired("startDate", startDate),
                 entityIds?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -248,9 +234,7 @@ private constructor(
             .apply {
                 put("end_date", endDate.toString())
                 put("start_date", startDate.toString())
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()

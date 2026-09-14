@@ -35,10 +35,7 @@ interface DocumentServiceAsync {
 
     /** @see list */
     suspend fun list(requestOptions: RequestOptions): DocumentListResponse =
-        list(
-            HrisDocumentListParams.none(),
-            requestOptions,
-        )
+        list(HrisDocumentListParams.none(), requestOptions)
 
     /**
      * **Beta:** This endpoint is in beta and may change. Retrieve details of a specific document by
@@ -49,10 +46,7 @@ interface DocumentServiceAsync {
         params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DocumentRetreiveResponse =
-        retreive(
-            params.toBuilder().documentId(documentId).build(),
-            requestOptions,
-        )
+        retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
     /** @see retreive */
     suspend fun retreive(
@@ -65,11 +59,7 @@ interface DocumentServiceAsync {
         documentId: String,
         requestOptions: RequestOptions,
     ): DocumentRetreiveResponse =
-        retreive(
-            documentId,
-            HrisDocumentRetreiveParams.none(),
-            requestOptions,
-        )
+        retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
 
     /**
      * A view of [DocumentServiceAsync] that provides access to raw HTTP responses for each method.
@@ -98,10 +88,7 @@ interface DocumentServiceAsync {
         /** @see list */
         @MustBeClosed
         suspend fun list(requestOptions: RequestOptions): HttpResponseFor<DocumentListResponse> =
-            list(
-                HrisDocumentListParams.none(),
-                requestOptions,
-            )
+            list(HrisDocumentListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /employer/documents/{document_id}`, but is otherwise
@@ -113,10 +100,7 @@ interface DocumentServiceAsync {
             params: HrisDocumentRetreiveParams = HrisDocumentRetreiveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<DocumentRetreiveResponse> =
-            retreive(
-                params.toBuilder().documentId(documentId).build(),
-                requestOptions,
-            )
+            retreive(params.toBuilder().documentId(documentId).build(), requestOptions)
 
         /** @see retreive */
         @MustBeClosed
@@ -131,10 +115,6 @@ interface DocumentServiceAsync {
             documentId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<DocumentRetreiveResponse> =
-            retreive(
-                documentId,
-                HrisDocumentRetreiveParams.none(),
-                requestOptions,
-            )
+            retreive(documentId, HrisDocumentRetreiveParams.none(), requestOptions)
     }
 }

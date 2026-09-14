@@ -29,10 +29,7 @@ interface EmploymentService {
         params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): EmploymentUpdateResponse =
-        update(
-            params.toBuilder().individualId(individualId).build(),
-            requestOptions,
-        )
+        update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
     /** @see update */
     fun update(
@@ -42,11 +39,7 @@ interface EmploymentService {
 
     /** @see update */
     fun update(individualId: String, requestOptions: RequestOptions): EmploymentUpdateResponse =
-        update(
-            individualId,
-            SandboxEmploymentUpdateParams.none(),
-            requestOptions,
-        )
+        update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
 
     /** A view of [EmploymentService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -70,10 +63,7 @@ interface EmploymentService {
             params: SandboxEmploymentUpdateParams = SandboxEmploymentUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<EmploymentUpdateResponse> =
-            update(
-                params.toBuilder().individualId(individualId).build(),
-                requestOptions,
-            )
+            update(params.toBuilder().individualId(individualId).build(), requestOptions)
 
         /** @see update */
         @MustBeClosed
@@ -88,10 +78,6 @@ interface EmploymentService {
             individualId: String,
             requestOptions: RequestOptions,
         ): HttpResponseFor<EmploymentUpdateResponse> =
-            update(
-                individualId,
-                SandboxEmploymentUpdateParams.none(),
-                requestOptions,
-            )
+            update(individualId, SandboxEmploymentUpdateParams.none(), requestOptions)
     }
 }

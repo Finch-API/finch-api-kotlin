@@ -94,9 +94,7 @@ private constructor(
                 hrisBenefitIndividualUnenrollManyParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String?) = apply {
-            this.benefitId = benefitId
-        }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
@@ -122,14 +120,10 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [individualIds]
          */
-        fun body(body: Body) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
 
         /** Array of individual_ids to unenroll. */
-        fun individualIds(individualIds: List<String>) = apply {
-            body.individualIds(individualIds)
-        }
+        fun individualIds(individualIds: List<String>) = apply { body.individualIds(individualIds) }
 
         /**
          * Sets [Builder.individualIds] to an arbitrary JSON value.
@@ -147,19 +141,14 @@ private constructor(
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addIndividualId(individualId: String) = apply {
-            body.addIndividualId(individualId)
-        }
+        fun addIndividualId(individualId: String) = apply { body.addIndividualId(individualId) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -167,9 +156,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -217,9 +204,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -269,9 +254,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -305,9 +288,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -324,10 +305,7 @@ private constructor(
             @JsonProperty("individual_ids")
             @ExcludeMissing
             individualIds: JsonField<List<String>> = JsonMissing.of()
-        ) : this(
-            individualIds,
-            mutableMapOf(),
-        )
+        ) : this(individualIds, mutableMapOf())
 
         /**
          * Array of individual_ids to unenroll.
@@ -416,9 +394,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)

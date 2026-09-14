@@ -311,9 +311,7 @@ private constructor(
          * You should usually call [Builder.ein] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun ein(ein: JsonField<String>) = apply {
-            this.ein = ein
-        }
+        fun ein(ein: JsonField<String>) = apply { this.ein = ein }
 
         /** The entity type object. */
         fun entity(entity: Entity?) = entity(JsonField.ofNullable(entity))
@@ -324,9 +322,7 @@ private constructor(
          * You should usually call [Builder.entity] with a well-typed [Entity] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun entity(entity: JsonField<Entity>) = apply {
-            this.entity = entity
-        }
+        fun entity(entity: JsonField<Entity>) = apply { this.entity = entity }
 
         /** The legal name of the company. */
         fun legalName(legalName: String?) = legalName(JsonField.ofNullable(legalName))
@@ -338,9 +334,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun legalName(legalName: JsonField<String>) = apply {
-            this.legalName = legalName
-        }
+        fun legalName(legalName: JsonField<String>) = apply { this.legalName = legalName }
 
         fun locations(locations: List<Location?>?) = locations(JsonField.ofNullable(locations))
 
@@ -412,9 +406,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -441,41 +433,14 @@ private constructor(
          */
         fun build(): CompanyUpdateResponse =
             CompanyUpdateResponse(
-                checkRequired(
-                        "accounts",
-                        accounts,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                        "departments",
-                        departments,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "ein",
-                    ein,
-                ),
-                checkRequired(
-                    "entity",
-                    entity,
-                ),
-                checkRequired(
-                    "legalName",
-                    legalName,
-                ),
-                checkRequired(
-                        "locations",
-                        locations,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "primaryEmail",
-                    primaryEmail,
-                ),
-                checkRequired(
-                    "primaryPhoneNumber",
-                    primaryPhoneNumber,
-                ),
+                checkRequired("accounts", accounts).map { it.toImmutable() },
+                checkRequired("departments", departments).map { it.toImmutable() },
+                checkRequired("ein", ein),
+                checkRequired("entity", entity),
+                checkRequired("legalName", legalName),
+                checkRequired("locations", locations).map { it.toImmutable() },
+                checkRequired("primaryEmail", primaryEmail),
+                checkRequired("primaryPhoneNumber", primaryPhoneNumber),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -781,9 +746,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -883,11 +846,9 @@ private constructor(
              * An enum containing [AccountType]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [AccountType] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1035,11 +996,7 @@ private constructor(
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
             @JsonProperty("parent") @ExcludeMissing parent: JsonField<Parent> = JsonMissing.of(),
-        ) : this(
-            name,
-            parent,
-            mutableMapOf(),
-        )
+        ) : this(name, parent, mutableMapOf())
 
         /**
          * The department name.
@@ -1112,9 +1069,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun name(name: JsonField<String>) = apply {
-                this.name = name
-            }
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The parent department, if present. */
             fun parent(parent: Parent?) = parent(JsonField.ofNullable(parent))
@@ -1126,9 +1081,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun parent(parent: JsonField<Parent>) = apply {
-                this.parent = parent
-            }
+            fun parent(parent: JsonField<Parent>) = apply { this.parent = parent }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1143,9 +1096,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1156,12 +1107,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Department =
-                Department(
-                    name,
-                    parent,
-                    additionalProperties.toMutableMap(),
-                )
+            fun build(): Department = Department(name, parent, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -1213,10 +1159,7 @@ private constructor(
             @JsonCreator
             private constructor(
                 @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
-            ) : this(
-                name,
-                mutableMapOf(),
-            )
+            ) : this(name, mutableMapOf())
 
             /**
              * The parent department's name.
@@ -1272,9 +1215,7 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun name(name: JsonField<String>) = apply {
-                    this.name = name
-                }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -1303,11 +1244,7 @@ private constructor(
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): Parent =
-                    Parent(
-                        name,
-                        additionalProperties.toMutableMap(),
-                    )
+                fun build(): Parent = Parent(name, additionalProperties.toMutableMap())
             }
 
             private var validated: Boolean = false
@@ -1397,11 +1334,7 @@ private constructor(
         private constructor(
             @JsonProperty("subtype") @ExcludeMissing subtype: JsonField<Subtype> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
-        ) : this(
-            subtype,
-            type,
-            mutableMapOf(),
-        )
+        ) : this(subtype, type, mutableMapOf())
 
         /**
          * The tax payer subtype of the company.
@@ -1474,9 +1407,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun subtype(subtype: JsonField<Subtype>) = apply {
-                this.subtype = subtype
-            }
+            fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** The tax payer type of the company. */
             fun type(type: Type?) = type(JsonField.ofNullable(type))
@@ -1488,9 +1419,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<Type>) = apply {
-                this.type = type
-            }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1505,9 +1434,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1518,12 +1445,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Entity =
-                Entity(
-                    subtype,
-                    type,
-                    additionalProperties.toMutableMap(),
-                )
+            fun build(): Entity = Entity(subtype, type, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -1600,11 +1522,9 @@ private constructor(
              * An enum containing [Subtype]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Subtype] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1758,11 +1678,9 @@ private constructor(
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {

@@ -13,11 +13,7 @@ import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.toImmutable
 import java.util.TreeMap
 
-class Headers
-private constructor(
-    private val map: Map<String, List<String>>,
-    val size: Int,
-) {
+class Headers private constructor(private val map: Map<String, List<String>>, val size: Int) {
 
     fun isEmpty(): Boolean = map.isEmpty()
 
@@ -47,9 +43,7 @@ private constructor(
                 is JsonString -> put(name, value.value)
                 is JsonArray -> value.values.forEach { put(name, it) }
                 is JsonObject ->
-                    value.values.forEach { (nestedName, value) ->
-                        put("$name.$nestedName", value)
-                    }
+                    value.values.forEach { (nestedName, value) -> put("$name.$nestedName", value) }
             }
         }
 

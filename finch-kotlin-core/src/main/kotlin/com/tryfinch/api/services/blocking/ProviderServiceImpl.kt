@@ -64,22 +64,12 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.none(),
-                    )
+                    .prepare(clientOptions, params, SecurityOptions.none())
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.execute(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        listHandler.handle(it)
-                    }
+                    .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }

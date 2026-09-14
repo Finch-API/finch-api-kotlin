@@ -84,9 +84,7 @@ private constructor(
                 hrisPayStatementItemRuleUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun ruleId(ruleId: String?) = apply {
-            this.ruleId = ruleId
-        }
+        fun ruleId(ruleId: String?) = apply { this.ruleId = ruleId }
 
         /**
          * The entity IDs to update the rule for. Provide exactly one entity ID per request; a
@@ -112,9 +110,7 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [optionalProperty]
          */
-        fun body(body: UpdateRuleRequest) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: UpdateRuleRequest) = apply { this.body = body.toBuilder() }
 
         fun optionalProperty(optionalProperty: JsonValue) = apply {
             body.optionalProperty(optionalProperty)
@@ -125,10 +121,7 @@ private constructor(
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -136,9 +129,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -186,9 +177,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -238,9 +227,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -274,9 +261,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -293,10 +278,7 @@ private constructor(
             @JsonProperty("optionalProperty")
             @ExcludeMissing
             optionalProperty: JsonValue = JsonMissing.of()
-        ) : this(
-            optionalProperty,
-            mutableMapOf(),
-        )
+        ) : this(optionalProperty, mutableMapOf())
 
         /**
          * This arbitrary value can be deserialized into a custom type using the `convert` method:
@@ -354,9 +336,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -368,10 +348,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): UpdateRuleRequest =
-                UpdateRuleRequest(
-                    optionalProperty,
-                    additionalProperties.toMutableMap(),
-                )
+                UpdateRuleRequest(optionalProperty, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false

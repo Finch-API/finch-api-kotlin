@@ -336,9 +336,7 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         fun companyDebit(companyDebit: Money?) = companyDebit(JsonField.ofNullable(companyDebit))
 
@@ -362,9 +360,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun debitDate(debitDate: JsonField<String>) = apply {
-            this.debitDate = debitDate
-        }
+        fun debitDate(debitDate: JsonField<String>) = apply { this.debitDate = debitDate }
 
         fun employeeTaxes(employeeTaxes: Money?) =
             employeeTaxes(JsonField.ofNullable(employeeTaxes))
@@ -402,9 +398,7 @@ private constructor(
          * You should usually call [Builder.grossPay] with a well-typed [Money] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun grossPay(grossPay: JsonField<Money>) = apply {
-            this.grossPay = grossPay
-        }
+        fun grossPay(grossPay: JsonField<Money>) = apply { this.grossPay = grossPay }
 
         /** Array of every individual on this payment. */
         fun individualIds(individualIds: List<String>?) =
@@ -441,9 +435,7 @@ private constructor(
          * You should usually call [Builder.netPay] with a well-typed [Money] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun netPay(netPay: JsonField<Money>) = apply {
-            this.netPay = netPay
-        }
+        fun netPay(netPay: JsonField<Money>) = apply { this.netPay = netPay }
 
         fun payDate(payDate: String?) = payDate(JsonField.ofNullable(payDate))
 
@@ -453,9 +445,7 @@ private constructor(
          * You should usually call [Builder.payDate] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun payDate(payDate: JsonField<String>) = apply {
-            this.payDate = payDate
-        }
+        fun payDate(payDate: JsonField<String>) = apply { this.payDate = payDate }
 
         /** List of pay frequencies associated with this payment. */
         fun payFrequencies(payFrequencies: List<PayFrequency>?) =
@@ -520,9 +510,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply {
-            this.payPeriod = payPeriod
-        }
+        fun payPeriod(payPeriod: JsonField<PayPeriod>) = apply { this.payPeriod = payPeriod }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -537,9 +525,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -570,57 +556,18 @@ private constructor(
          */
         fun build(): Payment =
             Payment(
-                checkRequired(
-                    "id",
-                    id,
-                ),
-                checkRequired(
-                    "companyDebit",
-                    companyDebit,
-                ),
-                checkRequired(
-                    "debitDate",
-                    debitDate,
-                ),
-                checkRequired(
-                    "employeeTaxes",
-                    employeeTaxes,
-                ),
-                checkRequired(
-                    "employerTaxes",
-                    employerTaxes,
-                ),
-                checkRequired(
-                    "grossPay",
-                    grossPay,
-                ),
-                checkRequired(
-                        "individualIds",
-                        individualIds,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "netPay",
-                    netPay,
-                ),
-                checkRequired(
-                    "payDate",
-                    payDate,
-                ),
-                checkRequired(
-                        "payFrequencies",
-                        payFrequencies,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                        "payGroupIds",
-                        payGroupIds,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "payPeriod",
-                    payPeriod,
-                ),
+                checkRequired("id", id),
+                checkRequired("companyDebit", companyDebit),
+                checkRequired("debitDate", debitDate),
+                checkRequired("employeeTaxes", employeeTaxes),
+                checkRequired("employerTaxes", employerTaxes),
+                checkRequired("grossPay", grossPay),
+                checkRequired("individualIds", individualIds).map { it.toImmutable() },
+                checkRequired("netPay", netPay),
+                checkRequired("payDate", payDate),
+                checkRequired("payFrequencies", payFrequencies).map { it.toImmutable() },
+                checkRequired("payGroupIds", payGroupIds).map { it.toImmutable() },
+                checkRequired("payPeriod", payPeriod),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -735,11 +682,9 @@ private constructor(
          * An enum containing [PayFrequency]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [PayFrequency] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
@@ -877,11 +822,7 @@ private constructor(
             @JsonProperty("start_date")
             @ExcludeMissing
             startDate: JsonField<String> = JsonMissing.of(),
-        ) : this(
-            endDate,
-            startDate,
-            mutableMapOf(),
-        )
+        ) : this(endDate, startDate, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -957,9 +898,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun endDate(endDate: JsonField<String>) = apply {
-                this.endDate = endDate
-            }
+            fun endDate(endDate: JsonField<String>) = apply { this.endDate = endDate }
 
             fun startDate(startDate: String?) = startDate(JsonField.ofNullable(startDate))
 
@@ -970,9 +909,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun startDate(startDate: JsonField<String>) = apply {
-                this.startDate = startDate
-            }
+            fun startDate(startDate: JsonField<String>) = apply { this.startDate = startDate }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -987,9 +924,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -1010,14 +945,8 @@ private constructor(
              */
             fun build(): PayPeriod =
                 PayPeriod(
-                    checkRequired(
-                        "endDate",
-                        endDate,
-                    ),
-                    checkRequired(
-                        "startDate",
-                        startDate,
-                    ),
+                    checkRequired("endDate", endDate),
+                    checkRequired("startDate", startDate),
                     additionalProperties.toMutableMap(),
                 )
         }

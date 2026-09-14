@@ -41,16 +41,7 @@ private constructor(
         @JsonProperty("middle_name")
         @ExcludeMissing
         middleName: JsonField<String> = JsonMissing.of(),
-    ) : this(
-        id,
-        department,
-        firstName,
-        isActive,
-        lastName,
-        manager,
-        middleName,
-        mutableMapOf(),
-    )
+    ) : this(id, department, firstName, isActive, lastName, manager, middleName, mutableMapOf())
 
     /**
      * A stable Finch `id` (UUID v4) for an individual in the company.
@@ -222,9 +213,7 @@ private constructor(
          * You should usually call [Builder.id] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The department object. */
         fun department(department: Department?) = department(JsonField.ofNullable(department))
@@ -236,9 +225,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun department(department: JsonField<Department>) = apply {
-            this.department = department
-        }
+        fun department(department: JsonField<Department>) = apply { this.department = department }
 
         /** The legal first name of the individual. */
         fun firstName(firstName: String?) = firstName(JsonField.ofNullable(firstName))
@@ -250,9 +237,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun firstName(firstName: JsonField<String>) = apply {
-            this.firstName = firstName
-        }
+        fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
 
         /** `true` if the individual is an active employee or contractor at the company. */
         fun isActive(isActive: Boolean?) = isActive(JsonField.ofNullable(isActive))
@@ -271,9 +256,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun isActive(isActive: JsonField<Boolean>) = apply {
-            this.isActive = isActive
-        }
+        fun isActive(isActive: JsonField<Boolean>) = apply { this.isActive = isActive }
 
         /** The legal last name of the individual. */
         fun lastName(lastName: String?) = lastName(JsonField.ofNullable(lastName))
@@ -284,9 +267,7 @@ private constructor(
          * You should usually call [Builder.lastName] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun lastName(lastName: JsonField<String>) = apply {
-            this.lastName = lastName
-        }
+        fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
         /** The manager object. */
         fun manager(manager: Manager?) = manager(JsonField.ofNullable(manager))
@@ -297,9 +278,7 @@ private constructor(
          * You should usually call [Builder.manager] with a well-typed [Manager] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun manager(manager: JsonField<Manager>) = apply {
-            this.manager = manager
-        }
+        fun manager(manager: JsonField<Manager>) = apply { this.manager = manager }
 
         /** The legal middle name of the individual. */
         fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
@@ -311,9 +290,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun middleName(middleName: JsonField<String>) = apply {
-            this.middleName = middleName
-        }
+        fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -328,9 +305,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -356,34 +331,13 @@ private constructor(
          */
         fun build(): IndividualInDirectory =
             IndividualInDirectory(
-                checkRequired(
-                    "id",
-                    id,
-                ),
-                checkRequired(
-                    "department",
-                    department,
-                ),
-                checkRequired(
-                    "firstName",
-                    firstName,
-                ),
-                checkRequired(
-                    "isActive",
-                    isActive,
-                ),
-                checkRequired(
-                    "lastName",
-                    lastName,
-                ),
-                checkRequired(
-                    "manager",
-                    manager,
-                ),
-                checkRequired(
-                    "middleName",
-                    middleName,
-                ),
+                checkRequired("id", id),
+                checkRequired("department", department),
+                checkRequired("firstName", firstName),
+                checkRequired("isActive", isActive),
+                checkRequired("lastName", lastName),
+                checkRequired("manager", manager),
+                checkRequired("middleName", middleName),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -446,10 +400,7 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
-        ) : this(
-            name,
-            mutableMapOf(),
-        )
+        ) : this(name, mutableMapOf())
 
         /**
          * The name of the department.
@@ -505,9 +456,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun name(name: JsonField<String>) = apply {
-                this.name = name
-            }
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -522,9 +471,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -535,11 +482,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Department =
-                Department(
-                    name,
-                    additionalProperties.toMutableMap(),
-                )
+            fun build(): Department = Department(name, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -607,10 +550,7 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of()
-        ) : this(
-            id,
-            mutableMapOf(),
-        )
+        ) : this(id, mutableMapOf())
 
         /**
          * A stable Finch `id` (UUID v4) for an individual in the company.
@@ -673,9 +613,7 @@ private constructor(
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun id(id: JsonField<String>) = apply {
-                this.id = id
-            }
+            fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -690,9 +628,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -711,13 +647,7 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Manager =
-                Manager(
-                    checkRequired(
-                        "id",
-                        id,
-                    ),
-                    additionalProperties.toMutableMap(),
-                )
+                Manager(checkRequired("id", id), additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false

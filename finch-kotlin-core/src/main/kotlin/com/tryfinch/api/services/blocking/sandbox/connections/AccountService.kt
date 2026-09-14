@@ -42,10 +42,7 @@ interface AccountService {
 
     /** @see update */
     fun update(requestOptions: RequestOptions): AccountUpdateResponse =
-        update(
-            SandboxConnectionAccountUpdateParams.none(),
-            requestOptions,
-        )
+        update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
 
     /** A view of [AccountService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -81,9 +78,6 @@ interface AccountService {
         /** @see update */
         @MustBeClosed
         fun update(requestOptions: RequestOptions): HttpResponseFor<AccountUpdateResponse> =
-            update(
-                SandboxConnectionAccountUpdateParams.none(),
-                requestOptions,
-            )
+            update(SandboxConnectionAccountUpdateParams.none(), requestOptions)
     }
 }

@@ -32,12 +32,7 @@ private constructor(
         @JsonProperty("body") @ExcludeMissing body: JsonField<List<JsonValue?>> = JsonMissing.of(),
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
-    ) : this(
-        body,
-        jobId,
-        status,
-        mutableMapOf(),
-    )
+    ) : this(body, jobId, status, mutableMapOf())
 
     /**
      * Specific information about the job, such as individual statuses for batch jobs.
@@ -156,9 +151,7 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply {
-            this.jobId = jobId
-        }
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         fun status(status: Status) = status(JsonField.of(status))
 
@@ -168,9 +161,7 @@ private constructor(
          * You should usually call [Builder.status] with a well-typed [Status] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun status(status: JsonField<Status>) = apply {
-            this.status = status
-        }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -185,9 +176,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -209,19 +198,9 @@ private constructor(
          */
         fun build(): ManualAsyncJob =
             ManualAsyncJob(
-                checkRequired(
-                        "body",
-                        body,
-                    )
-                    .map { it.toImmutable() },
-                checkRequired(
-                    "jobId",
-                    jobId,
-                ),
-                checkRequired(
-                    "status",
-                    status,
-                ),
+                checkRequired("body", body).map { it.toImmutable() },
+                checkRequired("jobId", jobId),
+                checkRequired("status", status),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -302,11 +281,9 @@ private constructor(
          * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Status] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

@@ -85,16 +85,10 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        createHandler.handle(it)
-                    }
+                    .use { createHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -121,16 +115,10 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        retrieveHandler.handle(it)
-                    }
+                    .use { retrieveHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -154,16 +142,10 @@ class AutomatedServiceAsyncImpl internal constructor(private val clientOptions: 
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        listHandler.handle(it)
-                    }
+                    .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

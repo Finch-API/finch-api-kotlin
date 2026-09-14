@@ -12,11 +12,7 @@ import com.tryfinch.api.core.JsonString
 import com.tryfinch.api.core.JsonValue
 import com.tryfinch.api.core.toImmutable
 
-class QueryParams
-private constructor(
-    private val map: Map<String, List<String>>,
-    val size: Int,
-) {
+class QueryParams private constructor(private val map: Map<String, List<String>>, val size: Int) {
 
     fun isEmpty(): Boolean = map.isEmpty()
 
@@ -45,9 +41,7 @@ private constructor(
                 is JsonString -> put(key, value.value)
                 is JsonArray -> value.values.forEach { put("$key[]", it) }
                 is JsonObject ->
-                    value.values.forEach { (nestedKey, value) ->
-                        put("$key[$nestedKey]", value)
-                    }
+                    value.values.forEach { (nestedKey, value) -> put("$key[$nestedKey]", value) }
             }
         }
 
@@ -94,10 +88,7 @@ private constructor(
         }
 
         fun build() =
-            QueryParams(
-                map.mapValues { (_, values) -> values.toImmutable() }.toImmutable(),
-                size,
-            )
+            QueryParams(map.mapValues { (_, values) -> values.toImmutable() }.toImmutable(), size)
     }
 
     override fun hashCode(): Int = map.hashCode()

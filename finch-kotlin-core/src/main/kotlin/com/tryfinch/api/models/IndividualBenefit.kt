@@ -45,12 +45,7 @@ private constructor(
         @JsonProperty("individual_id")
         @ExcludeMissing
         individualId: JsonField<String> = JsonMissing.of(),
-    ) : this(
-        body,
-        code,
-        individualId,
-        mutableMapOf(),
-    )
+    ) : this(body, code, individualId, mutableMapOf())
 
     /**
      * @throws FinchInvalidDataException if the JSON field has an unexpected type or is unexpectedly
@@ -143,9 +138,7 @@ private constructor(
          * You should usually call [Builder.body] with a well-typed [Body] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun body(body: JsonField<Body>) = apply {
-            this.body = body
-        }
+        fun body(body: JsonField<Body>) = apply { this.body = body }
 
         /** Alias for calling [body] with `Body.ofIndividualBenefit(individualBenefit)`. */
         fun body(individualBenefit: Body.InnerIndividualBenefit) =
@@ -162,9 +155,7 @@ private constructor(
          * You should usually call [Builder.code] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun code(code: JsonField<Long>) = apply {
-            this.code = code
-        }
+        fun code(code: JsonField<Long>) = apply { this.code = code }
 
         fun individualId(individualId: String) = individualId(JsonField.of(individualId))
 
@@ -192,9 +183,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -216,18 +205,9 @@ private constructor(
          */
         fun build(): IndividualBenefit =
             IndividualBenefit(
-                checkRequired(
-                    "body",
-                    body,
-                ),
-                checkRequired(
-                    "code",
-                    code,
-                ),
-                checkRequired(
-                    "individualId",
-                    individualId,
-                ),
+                checkRequired("body", body),
+                checkRequired("code", code),
+                checkRequired("individualId", individualId),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -702,9 +682,7 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun catchUp(catchUp: JsonField<Boolean>) = apply {
-                    this.catchUp = catchUp
-                }
+                fun catchUp(catchUp: JsonField<Boolean>) = apply { this.catchUp = catchUp }
 
                 /**
                  * Company contribution configuration. Supports fixed amounts (in cents),
@@ -836,22 +814,10 @@ private constructor(
                  */
                 fun build(): InnerIndividualBenefit =
                     InnerIndividualBenefit(
-                        checkRequired(
-                            "annualMaximum",
-                            annualMaximum,
-                        ),
-                        checkRequired(
-                            "catchUp",
-                            catchUp,
-                        ),
-                        checkRequired(
-                            "companyContribution",
-                            companyContribution,
-                        ),
-                        checkRequired(
-                            "employeeDeduction",
-                            employeeDeduction,
-                        ),
+                        checkRequired("annualMaximum", annualMaximum),
+                        checkRequired("catchUp", catchUp),
+                        checkRequired("companyContribution", companyContribution),
+                        checkRequired("employeeDeduction", employeeDeduction),
                         hsaContributionLimit,
                         additionalProperties.toMutableMap(),
                     )
@@ -1106,23 +1072,17 @@ private constructor(
                         val bestMatches =
                             sequenceOf(
                                     tryDeserialize(node, jacksonTypeRef<CompanyContributionFixed>())
-                                        ?.let {
-                                            CompanyContribution(fixed = it, _json = json)
-                                        },
+                                        ?.let { CompanyContribution(fixed = it, _json = json) },
                                     tryDeserialize(
                                             node,
                                             jacksonTypeRef<CompanyContributionPercent>(),
                                         )
-                                        ?.let {
-                                            CompanyContribution(percent = it, _json = json)
-                                        },
+                                        ?.let { CompanyContribution(percent = it, _json = json) },
                                     tryDeserialize(
                                             node,
                                             jacksonTypeRef<CompanyContributionTiered>(),
                                         )
-                                        ?.let {
-                                            CompanyContribution(tiered = it, _json = json)
-                                        },
+                                        ?.let { CompanyContribution(tiered = it, _json = json) },
                                 )
                                 .filterNotNull()
                                 .allMaxBy { it.validity() }
@@ -1175,11 +1135,7 @@ private constructor(
                         @JsonProperty("type")
                         @ExcludeMissing
                         type: JsonField<Type> = JsonMissing.of(),
-                    ) : this(
-                        amount,
-                        type,
-                        mutableMapOf(),
-                    )
+                    ) : this(amount, type, mutableMapOf())
 
                     /**
                      * Contribution amount in cents (for type=fixed) or basis points (for
@@ -1273,9 +1229,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun amount(amount: JsonField<Long>) = apply {
-                            this.amount = amount
-                        }
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
                         /**
                          * Contribution type. Supported values: "fixed" (amount in cents), "percent"
@@ -1290,9 +1244,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun type(type: JsonField<Type>) = apply {
-                            this.type = type
-                        }
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1306,9 +1258,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -1333,14 +1283,8 @@ private constructor(
                          */
                         fun build(): CompanyContributionFixed =
                             CompanyContributionFixed(
-                                checkRequired(
-                                    "amount",
-                                    amount,
-                                ),
-                                checkRequired(
-                                    "type",
-                                    type,
-                                ),
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -1420,11 +1364,9 @@ private constructor(
                          * member.
                          *
                          * An instance of [Type] can contain an unknown value in a couple of cases:
-                         *
                          * - It was deserialized from data that doesn't match any known member. For
                          *   example, if the SDK is on an older version than the API, then the API
                          *   may respond with new members that the SDK is unaware of.
-                         *
                          * - It was constructed with an arbitrary value using the [of] method.
                          */
                         enum class Value {
@@ -1564,11 +1506,7 @@ private constructor(
                         @JsonProperty("type")
                         @ExcludeMissing
                         type: JsonField<Type> = JsonMissing.of(),
-                    ) : this(
-                        amount,
-                        type,
-                        mutableMapOf(),
-                    )
+                    ) : this(amount, type, mutableMapOf())
 
                     /**
                      * Contribution amount in cents (for type=fixed) or basis points (for
@@ -1662,9 +1600,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun amount(amount: JsonField<Long>) = apply {
-                            this.amount = amount
-                        }
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
                         /**
                          * Contribution type. Supported values: "fixed" (amount in cents), "percent"
@@ -1679,9 +1615,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun type(type: JsonField<Type>) = apply {
-                            this.type = type
-                        }
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1695,9 +1629,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -1722,14 +1654,8 @@ private constructor(
                          */
                         fun build(): CompanyContributionPercent =
                             CompanyContributionPercent(
-                                checkRequired(
-                                    "amount",
-                                    amount,
-                                ),
-                                checkRequired(
-                                    "type",
-                                    type,
-                                ),
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -1809,11 +1735,9 @@ private constructor(
                          * member.
                          *
                          * An instance of [Type] can contain an unknown value in a couple of cases:
-                         *
                          * - It was deserialized from data that doesn't match any known member. For
                          *   example, if the SDK is on an older version than the API, then the API
                          *   may respond with new members that the SDK is unaware of.
-                         *
                          * - It was constructed with an arbitrary value using the [of] method.
                          */
                         enum class Value {
@@ -1953,11 +1877,7 @@ private constructor(
                         @JsonProperty("type")
                         @ExcludeMissing
                         type: JsonField<Type> = JsonMissing.of(),
-                    ) : this(
-                        tiers,
-                        type,
-                        mutableMapOf(),
-                    )
+                    ) : this(tiers, type, mutableMapOf())
 
                     /**
                      * Array of tier objects defining employer match tiers based on employee
@@ -2083,9 +2003,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun type(type: JsonField<Type>) = apply {
-                            this.type = type
-                        }
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -2099,9 +2017,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -2126,15 +2042,8 @@ private constructor(
                          */
                         fun build(): CompanyContributionTiered =
                             CompanyContributionTiered(
-                                checkRequired(
-                                        "tiers",
-                                        tiers,
-                                    )
-                                    .map { it.toImmutable() },
-                                checkRequired(
-                                    "type",
-                                    type,
-                                ),
+                                checkRequired("tiers", tiers).map { it.toImmutable() },
+                                checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -2195,11 +2104,7 @@ private constructor(
                             @JsonProperty("threshold")
                             @ExcludeMissing
                             threshold: JsonField<Long> = JsonMissing.of(),
-                        ) : this(
-                            match,
-                            threshold,
-                            mutableMapOf(),
-                        )
+                        ) : this(match, threshold, mutableMapOf())
 
                         /**
                          * @throws FinchInvalidDataException if the JSON field has an unexpected
@@ -2282,9 +2187,7 @@ private constructor(
                              * value instead. This method is primarily for setting the field to an
                              * undocumented or not yet supported value.
                              */
-                            fun match(match: JsonField<Long>) = apply {
-                                this.match = match
-                            }
+                            fun match(match: JsonField<Long>) = apply { this.match = match }
 
                             fun threshold(threshold: Long) = threshold(JsonField.of(threshold))
 
@@ -2311,9 +2214,7 @@ private constructor(
 
                             fun putAllAdditionalProperties(
                                 additionalProperties: Map<String, JsonValue>
-                            ) = apply {
-                                this.additionalProperties.putAll(additionalProperties)
-                            }
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                             fun removeAdditionalProperty(key: String) = apply {
                                 additionalProperties.remove(key)
@@ -2339,14 +2240,8 @@ private constructor(
                              */
                             fun build(): Tier =
                                 Tier(
-                                    checkRequired(
-                                        "match",
-                                        match,
-                                    ),
-                                    checkRequired(
-                                        "threshold",
-                                        threshold,
-                                    ),
+                                    checkRequired("match", match),
+                                    checkRequired("threshold", threshold),
                                     additionalProperties.toMutableMap(),
                                 )
                         }
@@ -2448,11 +2343,9 @@ private constructor(
                          * member.
                          *
                          * An instance of [Type] can contain an unknown value in a couple of cases:
-                         *
                          * - It was deserialized from data that doesn't match any known member. For
                          *   example, if the SDK is on an older version than the API, then the API
                          *   may respond with new members that the SDK is unaware of.
-                         *
                          * - It was constructed with an arbitrary value using the [of] method.
                          */
                         enum class Value {
@@ -2844,11 +2737,7 @@ private constructor(
                         @JsonProperty("type")
                         @ExcludeMissing
                         type: JsonField<Type> = JsonMissing.of(),
-                    ) : this(
-                        amount,
-                        type,
-                        mutableMapOf(),
-                    )
+                    ) : this(amount, type, mutableMapOf())
 
                     /**
                      * Contribution amount in cents (for type=fixed) or basis points (for
@@ -2944,9 +2833,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun amount(amount: JsonField<Long>) = apply {
-                            this.amount = amount
-                        }
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
                         /**
                          * Contribution type. Supported values: "fixed" (amount in cents) or
@@ -2961,9 +2848,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun type(type: JsonField<Type>) = apply {
-                            this.type = type
-                        }
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -2977,9 +2862,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -3004,14 +2887,8 @@ private constructor(
                          */
                         fun build(): EmployeeDeductionContributionFixed =
                             EmployeeDeductionContributionFixed(
-                                checkRequired(
-                                    "amount",
-                                    amount,
-                                ),
-                                checkRequired(
-                                    "type",
-                                    type,
-                                ),
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -3091,11 +2968,9 @@ private constructor(
                          * member.
                          *
                          * An instance of [Type] can contain an unknown value in a couple of cases:
-                         *
                          * - It was deserialized from data that doesn't match any known member. For
                          *   example, if the SDK is on an older version than the API, then the API
                          *   may respond with new members that the SDK is unaware of.
-                         *
                          * - It was constructed with an arbitrary value using the [of] method.
                          */
                         enum class Value {
@@ -3235,11 +3110,7 @@ private constructor(
                         @JsonProperty("type")
                         @ExcludeMissing
                         type: JsonField<Type> = JsonMissing.of(),
-                    ) : this(
-                        amount,
-                        type,
-                        mutableMapOf(),
-                    )
+                    ) : this(amount, type, mutableMapOf())
 
                     /**
                      * Contribution amount in cents (for type=fixed) or basis points (for
@@ -3336,9 +3207,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun amount(amount: JsonField<Long>) = apply {
-                            this.amount = amount
-                        }
+                        fun amount(amount: JsonField<Long>) = apply { this.amount = amount }
 
                         /**
                          * Contribution type. Supported values: "fixed" (amount in cents) or
@@ -3353,9 +3222,7 @@ private constructor(
                          * instead. This method is primarily for setting the field to an
                          * undocumented or not yet supported value.
                          */
-                        fun type(type: JsonField<Type>) = apply {
-                            this.type = type
-                        }
+                        fun type(type: JsonField<Type>) = apply { this.type = type }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -3369,9 +3236,7 @@ private constructor(
 
                         fun putAllAdditionalProperties(
                             additionalProperties: Map<String, JsonValue>
-                        ) = apply {
-                            this.additionalProperties.putAll(additionalProperties)
-                        }
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
 
                         fun removeAdditionalProperty(key: String) = apply {
                             additionalProperties.remove(key)
@@ -3396,14 +3261,8 @@ private constructor(
                          */
                         fun build(): EmployeeDeductionContributionPercent =
                             EmployeeDeductionContributionPercent(
-                                checkRequired(
-                                    "amount",
-                                    amount,
-                                ),
-                                checkRequired(
-                                    "type",
-                                    type,
-                                ),
+                                checkRequired("amount", amount),
+                                checkRequired("type", type),
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -3483,11 +3342,9 @@ private constructor(
                          * member.
                          *
                          * An instance of [Type] can contain an unknown value in a couple of cases:
-                         *
                          * - It was deserialized from data that doesn't match any known member. For
                          *   example, if the SDK is on an older version than the API, then the API
                          *   may respond with new members that the SDK is unaware of.
-                         *
                          * - It was constructed with an arbitrary value using the [of] method.
                          */
                         enum class Value {
@@ -3648,11 +3505,9 @@ private constructor(
                  *
                  * An instance of [HsaContributionLimit] can contain an unknown value in a couple of
                  * cases:
-                 *
                  * - It was deserialized from data that doesn't match any known member. For example,
                  *   if the SDK is on an older version than the API, then the API may respond with
                  *   new members that the SDK is unaware of.
-                 *
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -3809,13 +3664,7 @@ private constructor(
                 @JsonProperty("finch_code")
                 @ExcludeMissing
                 finchCode: JsonField<String> = JsonMissing.of(),
-            ) : this(
-                code,
-                message,
-                name,
-                finchCode,
-                mutableMapOf(),
-            )
+            ) : this(code, message, name, finchCode, mutableMapOf())
 
             /**
              * @throws FinchInvalidDataException if the JSON field has an unexpected type or is
@@ -3928,9 +3777,7 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun code(code: JsonField<Double>) = apply {
-                    this.code = code
-                }
+                fun code(code: JsonField<Double>) = apply { this.code = code }
 
                 fun message(message: String) = message(JsonField.of(message))
 
@@ -3941,9 +3788,7 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun message(message: JsonField<String>) = apply {
-                    this.message = message
-                }
+                fun message(message: JsonField<String>) = apply { this.message = message }
 
                 fun name(name: String) = name(JsonField.of(name))
 
@@ -3954,9 +3799,7 @@ private constructor(
                  * This method is primarily for setting the field to an undocumented or not yet
                  * supported value.
                  */
-                fun name(name: JsonField<String>) = apply {
-                    this.name = name
-                }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun finchCode(finchCode: String) = finchCode(JsonField.of(finchCode))
 
@@ -3967,9 +3810,7 @@ private constructor(
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun finchCode(finchCode: JsonField<String>) = apply {
-                    this.finchCode = finchCode
-                }
+                fun finchCode(finchCode: JsonField<String>) = apply { this.finchCode = finchCode }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
@@ -4009,18 +3850,9 @@ private constructor(
                  */
                 fun build(): BatchError =
                     BatchError(
-                        checkRequired(
-                            "code",
-                            code,
-                        ),
-                        checkRequired(
-                            "message",
-                            message,
-                        ),
-                        checkRequired(
-                            "name",
-                            name,
-                        ),
+                        checkRequired("code", code),
+                        checkRequired("message", message),
+                        checkRequired("name", name),
                         finchCode,
                         additionalProperties.toMutableMap(),
                     )

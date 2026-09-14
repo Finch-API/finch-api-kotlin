@@ -34,12 +34,7 @@ private constructor(
         @JsonProperty("data") @ExcludeMissing data: JsonField<Data> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
         @JsonProperty("year") @ExcludeMissing year: JsonField<Double> = JsonMissing.of(),
-    ) : this(
-        data,
-        type,
-        year,
-        mutableMapOf(),
-    )
+    ) : this(data, type, year, mutableMapOf())
 
     /**
      * Detailed information specific to the 2020 W4 form.
@@ -137,9 +132,7 @@ private constructor(
          * You should usually call [Builder.data] with a well-typed [Data] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun data(data: JsonField<Data>) = apply {
-            this.data = data
-        }
+        fun data(data: JsonField<Data>) = apply { this.data = data }
 
         /** Specifies the form type, indicating that this document is a 2020 W4 form. */
         fun type(type: Type) = type(JsonField.of(type))
@@ -150,9 +143,7 @@ private constructor(
          * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<Type>) = apply {
-            this.type = type
-        }
+        fun type(type: JsonField<Type>) = apply { this.type = type }
 
         /** The tax year this W4 document applies to. */
         fun year(year: Double) = year(JsonField.of(year))
@@ -163,9 +154,7 @@ private constructor(
          * You should usually call [Builder.year] with a well-typed [Double] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun year(year: JsonField<Double>) = apply {
-            this.year = year
-        }
+        fun year(year: JsonField<Double>) = apply { this.year = year }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -180,9 +169,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -204,18 +191,9 @@ private constructor(
          */
         fun build(): W42020 =
             W42020(
-                checkRequired(
-                    "data",
-                    data,
-                ),
-                checkRequired(
-                    "type",
-                    type,
-                ),
-                checkRequired(
-                    "year",
-                    year,
-                ),
+                checkRequired("data", data),
+                checkRequired("type", type),
+                checkRequired("year", year),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -560,9 +538,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun deductions(deductions: JsonField<Long>) = apply {
-                this.deductions = deductions
-            }
+            fun deductions(deductions: JsonField<Long>) = apply { this.deductions = deductions }
 
             /** Additional withholding amount (in cents). */
             fun extraWithholding(extraWithholding: Long) =
@@ -618,9 +594,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun otherIncome(otherIncome: JsonField<Long>) = apply {
-                this.otherIncome = otherIncome
-            }
+            fun otherIncome(otherIncome: JsonField<Long>) = apply { this.otherIncome = otherIncome }
 
             /** Total amount claimed for dependents and other credits (in cents). */
             fun totalClaimDependentAndOtherCredits(totalClaimDependentAndOtherCredits: Long) =
@@ -652,9 +626,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -681,34 +653,16 @@ private constructor(
              */
             fun build(): Data =
                 Data(
-                    checkRequired(
-                        "amountForOtherDependents",
-                        amountForOtherDependents,
-                    ),
+                    checkRequired("amountForOtherDependents", amountForOtherDependents),
                     checkRequired(
                         "amountForQualifyingChildrenUnder17",
                         amountForQualifyingChildrenUnder17,
                     ),
-                    checkRequired(
-                        "deductions",
-                        deductions,
-                    ),
-                    checkRequired(
-                        "extraWithholding",
-                        extraWithholding,
-                    ),
-                    checkRequired(
-                        "filingStatus",
-                        filingStatus,
-                    ),
-                    checkRequired(
-                        "individualId",
-                        individualId,
-                    ),
-                    checkRequired(
-                        "otherIncome",
-                        otherIncome,
-                    ),
+                    checkRequired("deductions", deductions),
+                    checkRequired("extraWithholding", extraWithholding),
+                    checkRequired("filingStatus", filingStatus),
+                    checkRequired("individualId", individualId),
+                    checkRequired("otherIncome", otherIncome),
                     checkRequired(
                         "totalClaimDependentAndOtherCredits",
                         totalClaimDependentAndOtherCredits,
@@ -805,11 +759,9 @@ private constructor(
              * An enum containing [FilingStatus]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [FilingStatus] can contain an unknown value in a couple of cases:
-             *
              * - It was deserialized from data that doesn't match any known member. For example, if
              *   the SDK is on an older version than the API, then the API may respond with new
              *   members that the SDK is unaware of.
-             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -985,11 +937,9 @@ private constructor(
          * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Type] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

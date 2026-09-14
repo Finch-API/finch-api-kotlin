@@ -140,14 +140,10 @@ private constructor(
          * - [products]
          * - [redirectUri]
          */
-        fun body(body: ReauthenticateRequest) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: ReauthenticateRequest) = apply { this.body = body.toBuilder() }
 
         /** The ID of the existing connection to reauthenticate */
-        fun connectionId(connectionId: String) = apply {
-            body.connectionId(connectionId)
-        }
+        fun connectionId(connectionId: String) = apply { body.connectionId(connectionId) }
 
         /**
          * Sets [Builder.connectionId] to an arbitrary JSON value.
@@ -163,9 +159,7 @@ private constructor(
         /**
          * The number of minutes until the session expires (defaults to 43,200, which is 30 days)
          */
-        fun minutesToExpire(minutesToExpire: Long) = apply {
-            body.minutesToExpire(minutesToExpire)
-        }
+        fun minutesToExpire(minutesToExpire: Long) = apply { body.minutesToExpire(minutesToExpire) }
 
         /**
          * Sets [Builder.minutesToExpire] to an arbitrary JSON value.
@@ -183,9 +177,7 @@ private constructor(
          * access deductions endpoints — `deduction` is a deprecated alias that is still accepted
          * but should not be combined with `benefits`.
          */
-        fun products(products: List<ConnectProducts>?) = apply {
-            body.products(products)
-        }
+        fun products(products: List<ConnectProducts>?) = apply { body.products(products) }
 
         /**
          * Sets [Builder.products] to an arbitrary JSON value.
@@ -194,23 +186,17 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
-        fun products(products: JsonField<List<ConnectProducts>>) = apply {
-            body.products(products)
-        }
+        fun products(products: JsonField<List<ConnectProducts>>) = apply { body.products(products) }
 
         /**
          * Adds a single [ConnectProducts] to [products].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addProduct(product: ConnectProducts) = apply {
-            body.addProduct(product)
-        }
+        fun addProduct(product: ConnectProducts) = apply { body.addProduct(product) }
 
         /** The URI to redirect to after the Connect flow is completed */
-        fun redirectUri(redirectUri: String?) = apply {
-            body.redirectUri(redirectUri)
-        }
+        fun redirectUri(redirectUri: String?) = apply { body.redirectUri(redirectUri) }
 
         /**
          * Sets [Builder.redirectUri] to an arbitrary JSON value.
@@ -219,19 +205,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun redirectUri(redirectUri: JsonField<String>) = apply {
-            body.redirectUri(redirectUri)
-        }
+        fun redirectUri(redirectUri: JsonField<String>) = apply { body.redirectUri(redirectUri) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -239,9 +220,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -289,9 +268,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -341,9 +318,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -399,13 +374,7 @@ private constructor(
             @JsonProperty("redirect_uri")
             @ExcludeMissing
             redirectUri: JsonField<String> = JsonMissing.of(),
-        ) : this(
-            connectionId,
-            minutesToExpire,
-            products,
-            redirectUri,
-            mutableMapOf(),
-        )
+        ) : this(connectionId, minutesToExpire, products, redirectUri, mutableMapOf())
 
         /**
          * The ID of the existing connection to reauthenticate
@@ -611,9 +580,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -633,10 +600,7 @@ private constructor(
              */
             fun build(): ReauthenticateRequest =
                 ReauthenticateRequest(
-                    checkRequired(
-                        "connectionId",
-                        connectionId,
-                    ),
+                    checkRequired("connectionId", connectionId),
                     minutesToExpire,
                     (products ?: JsonMissing.of()).map { it.toImmutable() },
                     redirectUri,
@@ -778,11 +742,9 @@ private constructor(
          * An enum containing [ConnectProducts]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [ConnectProducts] can contain an unknown value in a couple of cases:
-         *
          * - It was deserialized from data that doesn't match any known member. For example, if the
          *   SDK is on an older version than the API, then the API may respond with new members that
          *   the SDK is unaware of.
-         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {

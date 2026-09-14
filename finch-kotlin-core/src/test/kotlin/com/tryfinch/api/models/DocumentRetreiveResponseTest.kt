@@ -129,14 +129,7 @@ internal class DocumentRetreiveResponseTest {
         STRING(JsonValue.from("invalid")),
         INTEGER(JsonValue.from(-1)),
         FLOAT(JsonValue.from(3.14)),
-        ARRAY(
-            JsonValue.from(
-                listOf(
-                    "invalid",
-                    "array",
-                )
-            )
-        ),
+        ARRAY(JsonValue.from(listOf("invalid", "array"))),
     }
 
     @ParameterizedTest
@@ -145,10 +138,7 @@ internal class DocumentRetreiveResponseTest {
         val documentRetreiveResponse =
             jsonMapper().convertValue(testCase.value, jacksonTypeRef<DocumentRetreiveResponse>())
 
-        val e =
-            assertThrows<FinchInvalidDataException> {
-                documentRetreiveResponse.validate()
-            }
+        val e = assertThrows<FinchInvalidDataException> { documentRetreiveResponse.validate() }
         assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }

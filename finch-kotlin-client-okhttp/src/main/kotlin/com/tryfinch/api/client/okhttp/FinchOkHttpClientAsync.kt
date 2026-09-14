@@ -66,9 +66,7 @@ class FinchOkHttpClientAsync private constructor() {
             this.dispatcherExecutorService = dispatcherExecutorService
         }
 
-        fun proxy(proxy: Proxy?) = apply {
-            this.proxy = proxy
-        }
+        fun proxy(proxy: Proxy?) = apply { this.proxy = proxy }
 
         /**
          * Provides credentials when an HTTP proxy responds with `407 Proxy Authentication
@@ -161,9 +159,7 @@ class FinchOkHttpClientAsync private constructor() {
          * Defaults to [com.tryfinch.api.core.jsonMapper]. The default is usually sufficient and
          * rarely needs to be overridden.
          */
-        fun jsonMapper(jsonMapper: JsonMapper) = apply {
-            clientOptions.jsonMapper(jsonMapper)
-        }
+        fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
 
         /**
          * The interface to use for delaying execution, like during retries.
@@ -174,9 +170,7 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * This class takes ownership of the sleeper and closes it when closed.
          */
-        fun sleeper(sleeper: Sleeper) = apply {
-            clientOptions.sleeper(sleeper)
-        }
+        fun sleeper(sleeper: Sleeper) = apply { clientOptions.sleeper(sleeper) }
 
         /**
          * The clock to use for operations that require timing, like retries.
@@ -185,18 +179,14 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * Defaults to [Clock.systemUTC].
          */
-        fun clock(clock: Clock) = apply {
-            clientOptions.clock(clock)
-        }
+        fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
         /**
          * The base URL to use for every request.
          *
          * Defaults to the production environment: `https://api.tryfinch.com`.
          */
-        fun baseUrl(baseUrl: String?) = apply {
-            clientOptions.baseUrl(baseUrl)
-        }
+        fun baseUrl(baseUrl: String?) = apply { clientOptions.baseUrl(baseUrl) }
 
         /**
          * Whether to call `validate` on every response before returning it.
@@ -217,9 +207,7 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * Defaults to [Timeout.default].
          */
-        fun timeout(timeout: Timeout) = apply {
-            clientOptions.timeout(timeout)
-        }
+        fun timeout(timeout: Timeout) = apply { clientOptions.timeout(timeout) }
 
         /**
          * Sets the maximum time allowed for a complete HTTP call, not including retries.
@@ -245,9 +233,7 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * Defaults to 2.
          */
-        fun maxRetries(maxRetries: Int) = apply {
-            clientOptions.maxRetries(maxRetries)
-        }
+        fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
         /**
          * The level at which to log request and response information.
@@ -256,106 +242,66 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * Defaults to [LogLevel.fromEnv].
          */
-        fun logLevel(logLevel: LogLevel) = apply {
-            clientOptions.logLevel(logLevel)
-        }
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
-        fun accessToken(accessToken: String?) = apply {
-            clientOptions.accessToken(accessToken)
-        }
+        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
 
-        fun clientId(clientId: String?) = apply {
-            clientOptions.clientId(clientId)
-        }
+        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
 
-        fun clientSecret(clientSecret: String?) = apply {
-            clientOptions.clientSecret(clientSecret)
-        }
+        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
 
         fun webhookSecret(webhookSecret: String?) = apply {
             clientOptions.webhookSecret(webhookSecret)
         }
 
-        fun headers(headers: Headers) = apply {
-            clientOptions.headers(headers)
-        }
+        fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
         fun headers(headers: Map<String, Iterable<String>>) = apply {
             clientOptions.headers(headers)
         }
 
-        fun putHeader(name: String, value: String) = apply {
-            clientOptions.putHeader(
-                name,
-                value,
-            )
-        }
+        fun putHeader(name: String, value: String) = apply { clientOptions.putHeader(name, value) }
 
         fun putHeaders(name: String, values: Iterable<String>) = apply {
-            clientOptions.putHeaders(
-                name,
-                values,
-            )
+            clientOptions.putHeaders(name, values)
         }
 
-        fun putAllHeaders(headers: Headers) = apply {
-            clientOptions.putAllHeaders(headers)
-        }
+        fun putAllHeaders(headers: Headers) = apply { clientOptions.putAllHeaders(headers) }
 
         fun putAllHeaders(headers: Map<String, Iterable<String>>) = apply {
             clientOptions.putAllHeaders(headers)
         }
 
         fun replaceHeaders(name: String, value: String) = apply {
-            clientOptions.replaceHeaders(
-                name,
-                value,
-            )
+            clientOptions.replaceHeaders(name, value)
         }
 
         fun replaceHeaders(name: String, values: Iterable<String>) = apply {
-            clientOptions.replaceHeaders(
-                name,
-                values,
-            )
+            clientOptions.replaceHeaders(name, values)
         }
 
-        fun replaceAllHeaders(headers: Headers) = apply {
-            clientOptions.replaceAllHeaders(headers)
-        }
+        fun replaceAllHeaders(headers: Headers) = apply { clientOptions.replaceAllHeaders(headers) }
 
         fun replaceAllHeaders(headers: Map<String, Iterable<String>>) = apply {
             clientOptions.replaceAllHeaders(headers)
         }
 
-        fun removeHeaders(name: String) = apply {
-            clientOptions.removeHeaders(name)
-        }
+        fun removeHeaders(name: String) = apply { clientOptions.removeHeaders(name) }
 
-        fun removeAllHeaders(names: Set<String>) = apply {
-            clientOptions.removeAllHeaders(names)
-        }
+        fun removeAllHeaders(names: Set<String>) = apply { clientOptions.removeAllHeaders(names) }
 
-        fun queryParams(queryParams: QueryParams) = apply {
-            clientOptions.queryParams(queryParams)
-        }
+        fun queryParams(queryParams: QueryParams) = apply { clientOptions.queryParams(queryParams) }
 
         fun queryParams(queryParams: Map<String, Iterable<String>>) = apply {
             clientOptions.queryParams(queryParams)
         }
 
         fun putQueryParam(key: String, value: String) = apply {
-            clientOptions.putQueryParam(
-                key,
-                value,
-            )
+            clientOptions.putQueryParam(key, value)
         }
 
         fun putQueryParams(key: String, values: Iterable<String>) = apply {
-            clientOptions.putQueryParams(
-                key,
-                values,
-            )
+            clientOptions.putQueryParams(key, values)
         }
 
         fun putAllQueryParams(queryParams: QueryParams) = apply {
@@ -367,17 +313,11 @@ class FinchOkHttpClientAsync private constructor() {
         }
 
         fun replaceQueryParams(key: String, value: String) = apply {
-            clientOptions.replaceQueryParams(
-                key,
-                value,
-            )
+            clientOptions.replaceQueryParams(key, value)
         }
 
         fun replaceQueryParams(key: String, values: Iterable<String>) = apply {
-            clientOptions.replaceQueryParams(
-                key,
-                values,
-            )
+            clientOptions.replaceQueryParams(key, values)
         }
 
         fun replaceAllQueryParams(queryParams: QueryParams) = apply {
@@ -388,9 +328,7 @@ class FinchOkHttpClientAsync private constructor() {
             clientOptions.replaceAllQueryParams(queryParams)
         }
 
-        fun removeQueryParams(key: String) = apply {
-            clientOptions.removeQueryParams(key)
-        }
+        fun removeQueryParams(key: String) = apply { clientOptions.removeQueryParams(key) }
 
         fun removeAllQueryParams(keys: Set<String>) = apply {
             clientOptions.removeAllQueryParams(keys)
@@ -401,9 +339,7 @@ class FinchOkHttpClientAsync private constructor() {
          *
          * @see ClientOptions.Builder.fromEnv
          */
-        fun fromEnv() = apply {
-            clientOptions.fromEnv()
-        }
+        fun fromEnv() = apply { clientOptions.fromEnv() }
 
         /**
          * Returns an immutable instance of [FinchClientAsync].

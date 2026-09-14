@@ -64,22 +64,12 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.none(),
-                    )
+                    .prepareAsync(clientOptions, params, SecurityOptions.none())
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        listHandler.handle(it)
-                    }
+                    .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }

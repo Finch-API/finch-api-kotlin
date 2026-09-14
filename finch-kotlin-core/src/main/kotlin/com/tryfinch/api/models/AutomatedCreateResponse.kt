@@ -37,14 +37,7 @@ private constructor(
         @JsonProperty("job_id") @ExcludeMissing jobId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("job_url") @ExcludeMissing jobUrl: JsonField<String> = JsonMissing.of(),
         @JsonProperty("retry_at") @ExcludeMissing retryAt: JsonField<String> = JsonMissing.of(),
-    ) : this(
-        allowedRefreshes,
-        remainingRefreshes,
-        jobId,
-        jobUrl,
-        retryAt,
-        mutableMapOf(),
-    )
+    ) : this(allowedRefreshes, remainingRefreshes, jobId, jobUrl, retryAt, mutableMapOf())
 
     /**
      * The number of allowed refreshes per hour (per hour, fixed window)
@@ -211,9 +204,7 @@ private constructor(
          * You should usually call [Builder.jobId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobId(jobId: JsonField<String>) = apply {
-            this.jobId = jobId
-        }
+        fun jobId(jobId: JsonField<String>) = apply { this.jobId = jobId }
 
         /** The url that can be used to retrieve the job status */
         fun jobUrl(jobUrl: String) = jobUrl(JsonField.of(jobUrl))
@@ -224,9 +215,7 @@ private constructor(
          * You should usually call [Builder.jobUrl] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun jobUrl(jobUrl: JsonField<String>) = apply {
-            this.jobUrl = jobUrl
-        }
+        fun jobUrl(jobUrl: JsonField<String>) = apply { this.jobUrl = jobUrl }
 
         /** ISO 8601 timestamp indicating when to retry the request */
         fun retryAt(retryAt: String) = retryAt(JsonField.of(retryAt))
@@ -237,9 +226,7 @@ private constructor(
          * You should usually call [Builder.retryAt] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun retryAt(retryAt: JsonField<String>) = apply {
-            this.retryAt = retryAt
-        }
+        fun retryAt(retryAt: JsonField<String>) = apply { this.retryAt = retryAt }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -254,9 +241,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -277,14 +262,8 @@ private constructor(
          */
         fun build(): AutomatedCreateResponse =
             AutomatedCreateResponse(
-                checkRequired(
-                    "allowedRefreshes",
-                    allowedRefreshes,
-                ),
-                checkRequired(
-                    "remainingRefreshes",
-                    remainingRefreshes,
-                ),
+                checkRequired("allowedRefreshes", allowedRefreshes),
+                checkRequired("remainingRefreshes", remainingRefreshes),
                 jobId,
                 jobUrl,
                 retryAt,

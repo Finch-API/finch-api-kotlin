@@ -2489,14 +2489,7 @@ internal class WebhookEventTest {
         STRING(JsonValue.from("invalid")),
         INTEGER(JsonValue.from(-1)),
         FLOAT(JsonValue.from(3.14)),
-        ARRAY(
-            JsonValue.from(
-                listOf(
-                    "invalid",
-                    "array",
-                )
-            )
-        ),
+        ARRAY(JsonValue.from(listOf("invalid", "array"))),
     }
 
     @ParameterizedTest
@@ -2504,10 +2497,7 @@ internal class WebhookEventTest {
     fun incompatibleJsonShapeDeserializesToUnknown(testCase: IncompatibleJsonShapeTestCase) {
         val webhookEvent = jsonMapper().convertValue(testCase.value, jacksonTypeRef<WebhookEvent>())
 
-        val e =
-            assertThrows<FinchInvalidDataException> {
-                webhookEvent.validate()
-            }
+        val e = assertThrows<FinchInvalidDataException> { webhookEvent.validate() }
         assertThat(e).hasMessageStartingWith("Unknown ")
     }
 }

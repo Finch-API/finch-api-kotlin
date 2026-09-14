@@ -31,10 +31,7 @@ interface ProviderService {
 
     /** @see list */
     fun list(requestOptions: RequestOptions): ProviderListPage =
-        list(
-            ProviderListParams.none(),
-            requestOptions,
-        )
+        list(ProviderListParams.none(), requestOptions)
 
     /** A view of [ProviderService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -59,9 +56,6 @@ interface ProviderService {
         /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProviderListPage> =
-            list(
-                ProviderListParams.none(),
-                requestOptions,
-            )
+            list(ProviderListParams.none(), requestOptions)
     }
 }

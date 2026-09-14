@@ -73,9 +73,7 @@ private constructor(
                 hrisBenefitIndividualRetrieveManyBenefitsParams.additionalQueryParams.toBuilder()
         }
 
-        fun benefitId(benefitId: String?) = apply {
-            this.benefitId = benefitId
-        }
+        fun benefitId(benefitId: String?) = apply { this.benefitId = benefitId }
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
@@ -98,9 +96,7 @@ private constructor(
          * comma-delimited list of stable Finch uuids for each individual. If empty, defaults to all
          * individuals
          */
-        fun individualIds(individualIds: String?) = apply {
-            this.individualIds = individualIds
-        }
+        fun individualIds(individualIds: String?) = apply { this.individualIds = individualIds }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -144,9 +140,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -196,9 +190,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -230,9 +222,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 individualIds?.let { put("individual_ids", it) }
                 putAll(additionalQueryParams)
             }

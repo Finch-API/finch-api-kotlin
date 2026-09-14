@@ -140,13 +140,9 @@ private constructor(
          * - [frequency]
          * - [type]
          */
-        fun body(body: Body) = apply {
-            this.body = body.toBuilder()
-        }
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        fun description(description: String) = apply {
-            body.description(description)
-        }
+        fun description(description: String) = apply { body.description(description) }
 
         /**
          * Sets [Builder.description] to an arbitrary JSON value.
@@ -155,14 +151,10 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun description(description: JsonField<String>) = apply {
-            body.description(description)
-        }
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** The frequency of the benefit deduction/contribution. */
-        fun frequency(frequency: BenefitFrequency?) = apply {
-            body.frequency(frequency)
-        }
+        fun frequency(frequency: BenefitFrequency?) = apply { body.frequency(frequency) }
 
         /**
          * Sets [Builder.frequency] to an arbitrary JSON value.
@@ -171,14 +163,10 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun frequency(frequency: JsonField<BenefitFrequency>) = apply {
-            body.frequency(frequency)
-        }
+        fun frequency(frequency: JsonField<BenefitFrequency>) = apply { body.frequency(frequency) }
 
         /** Type of benefit. */
-        fun type(type: BenefitType?) = apply {
-            body.type(type)
-        }
+        fun type(type: BenefitType?) = apply { body.type(type) }
 
         /**
          * Sets [Builder.type] to an arbitrary JSON value.
@@ -187,19 +175,14 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun type(type: JsonField<BenefitType>) = apply {
-            body.type(type)
-        }
+        fun type(type: JsonField<BenefitType>) = apply { body.type(type) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(
-                key,
-                value,
-            )
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
@@ -207,9 +190,7 @@ private constructor(
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            body.removeAdditionalProperty(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
             body.removeAllAdditionalProperties(keys)
@@ -257,9 +238,7 @@ private constructor(
             this.additionalHeaders.replaceAll(additionalHeaders)
         }
 
-        fun removeAdditionalHeaders(name: String) = apply {
-            additionalHeaders.remove(name)
-        }
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
 
         fun removeAllAdditionalHeaders(names: Set<String>) = apply {
             additionalHeaders.removeAll(names)
@@ -309,9 +288,7 @@ private constructor(
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply {
-            additionalQueryParams.remove(key)
-        }
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
 
         fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
             additionalQueryParams.removeAll(keys)
@@ -338,9 +315,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                entityIds?.forEach {
-                    put("entity_ids[]", it)
-                }
+                entityIds?.forEach { put("entity_ids[]", it) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -363,12 +338,7 @@ private constructor(
             @ExcludeMissing
             frequency: JsonField<BenefitFrequency> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<BenefitType> = JsonMissing.of(),
-        ) : this(
-            description,
-            frequency,
-            type,
-            mutableMapOf(),
-        )
+        ) : this(description, frequency, type, mutableMapOf())
 
         /**
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -487,9 +457,7 @@ private constructor(
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun type(type: JsonField<BenefitType>) = apply {
-                this.type = type
-            }
+            fun type(type: JsonField<BenefitType>) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -504,9 +472,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun removeAdditionalProperty(key: String) = apply {
-                additionalProperties.remove(key)
-            }
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
             fun removeAllAdditionalProperties(keys: Set<String>) = apply {
                 keys.forEach(::removeAdditionalProperty)
@@ -518,12 +484,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Body =
-                Body(
-                    description,
-                    frequency,
-                    type,
-                    additionalProperties.toMutableMap(),
-                )
+                Body(description, frequency, type, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false

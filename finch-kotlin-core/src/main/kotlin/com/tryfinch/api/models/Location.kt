@@ -41,17 +41,7 @@ private constructor(
         @JsonProperty("state") @ExcludeMissing state: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("source_id") @ExcludeMissing sourceId: JsonField<String> = JsonMissing.of(),
-    ) : this(
-        city,
-        country,
-        line1,
-        line2,
-        postalCode,
-        state,
-        name,
-        sourceId,
-        mutableMapOf(),
-    )
+    ) : this(city, country, line1, line2, postalCode, state, name, sourceId, mutableMapOf())
 
     /**
      * City, district, suburb, town, or village.
@@ -233,9 +223,7 @@ private constructor(
          * You should usually call [Builder.city] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun city(city: JsonField<String>) = apply {
-            this.city = city
-        }
+        fun city(city: JsonField<String>) = apply { this.city = city }
 
         /** The 2-letter ISO 3166 country code. */
         fun country(country: String?) = country(JsonField.ofNullable(country))
@@ -246,9 +234,7 @@ private constructor(
          * You should usually call [Builder.country] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun country(country: JsonField<String>) = apply {
-            this.country = country
-        }
+        fun country(country: JsonField<String>) = apply { this.country = country }
 
         /** Street address or PO box. */
         fun line1(line1: String?) = line1(JsonField.ofNullable(line1))
@@ -259,9 +245,7 @@ private constructor(
          * You should usually call [Builder.line1] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun line1(line1: JsonField<String>) = apply {
-            this.line1 = line1
-        }
+        fun line1(line1: JsonField<String>) = apply { this.line1 = line1 }
 
         /** Apartment, suite, unit, or building. */
         fun line2(line2: String?) = line2(JsonField.ofNullable(line2))
@@ -272,9 +256,7 @@ private constructor(
          * You should usually call [Builder.line2] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun line2(line2: JsonField<String>) = apply {
-            this.line2 = line2
-        }
+        fun line2(line2: JsonField<String>) = apply { this.line2 = line2 }
 
         /** The postal code or zip code. */
         fun postalCode(postalCode: String?) = postalCode(JsonField.ofNullable(postalCode))
@@ -286,9 +268,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun postalCode(postalCode: JsonField<String>) = apply {
-            this.postalCode = postalCode
-        }
+        fun postalCode(postalCode: JsonField<String>) = apply { this.postalCode = postalCode }
 
         /** The state code. */
         fun state(state: String?) = state(JsonField.ofNullable(state))
@@ -299,9 +279,7 @@ private constructor(
          * You should usually call [Builder.state] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun state(state: JsonField<String>) = apply {
-            this.state = state
-        }
+        fun state(state: JsonField<String>) = apply { this.state = state }
 
         fun name(name: String?) = name(JsonField.ofNullable(name))
 
@@ -311,9 +289,7 @@ private constructor(
          * You should usually call [Builder.name] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         fun sourceId(sourceId: String?) = sourceId(JsonField.ofNullable(sourceId))
 
@@ -323,9 +299,7 @@ private constructor(
          * You should usually call [Builder.sourceId] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun sourceId(sourceId: JsonField<String>) = apply {
-            this.sourceId = sourceId
-        }
+        fun sourceId(sourceId: JsonField<String>) = apply { this.sourceId = sourceId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -340,9 +314,7 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun removeAdditionalProperty(key: String) = apply {
-            additionalProperties.remove(key)
-        }
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
 
         fun removeAllAdditionalProperties(keys: Set<String>) = apply {
             keys.forEach(::removeAdditionalProperty)
@@ -367,30 +339,12 @@ private constructor(
          */
         fun build(): Location =
             Location(
-                checkRequired(
-                    "city",
-                    city,
-                ),
-                checkRequired(
-                    "country",
-                    country,
-                ),
-                checkRequired(
-                    "line1",
-                    line1,
-                ),
-                checkRequired(
-                    "line2",
-                    line2,
-                ),
-                checkRequired(
-                    "postalCode",
-                    postalCode,
-                ),
-                checkRequired(
-                    "state",
-                    state,
-                ),
+                checkRequired("city", city),
+                checkRequired("country", country),
+                checkRequired("line1", line1),
+                checkRequired("line2", line2),
+                checkRequired("postalCode", postalCode),
+                checkRequired("state", state),
                 name,
                 sourceId,
                 additionalProperties.toMutableMap(),

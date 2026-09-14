@@ -128,16 +128,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        createHandler.handle(it)
-                    }
+                    .use { createHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -164,16 +158,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        retrieveHandler.handle(it)
-                    }
+                    .use { retrieveHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -201,16 +189,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        updateHandler.handle(it)
-                    }
+                    .use { updateHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -234,16 +216,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        listHandler.handle(it)
-                    }
+                    .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.forEach { it.validate() }
@@ -274,16 +250,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        listSupportedBenefitsHandler.handle(it)
-                    }
+                    .use { listSupportedBenefitsHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it?.forEach { it.validate() }
@@ -319,16 +289,10 @@ class BenefitServiceAsyncImpl internal constructor(private val clientOptions: Cl
                         SecurityOptions.builder().bearerAuth(true).build(),
                     )
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response =
-                clientOptions.httpClient.executeAsync(
-                    request,
-                    requestOptions,
-                )
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use {
-                        registerHandler.handle(it)
-                    }
+                    .use { registerHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
