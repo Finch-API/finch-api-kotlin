@@ -4,6 +4,7 @@ package com.tryfinch.api.services.async
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -63,21 +64,11 @@ class ProviderServiceAsyncImpl internal constructor(private val clientOptions: C
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-<<<<<<< HEAD
                     .prepareAsync(
                         clientOptions,
                         params,
                         SecurityOptions.none(),
                     )
-||||||| parent of 907c97c (Apply custom code)
-                    .prepareAsync(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
-=======
-                    .prepareAsync(clientOptions, params)
->>>>>>> 907c97c (Apply custom code)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response =
                 clientOptions.httpClient.executeAsync(

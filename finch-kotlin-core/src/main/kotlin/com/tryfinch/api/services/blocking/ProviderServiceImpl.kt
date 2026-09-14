@@ -4,6 +4,7 @@ package com.tryfinch.api.services.blocking
 
 import com.tryfinch.api.core.ClientOptions
 import com.tryfinch.api.core.RequestOptions
+import com.tryfinch.api.core.SecurityOptions
 import com.tryfinch.api.core.handlers.errorBodyHandler
 import com.tryfinch.api.core.handlers.errorHandler
 import com.tryfinch.api.core.handlers.jsonHandler
@@ -63,21 +64,11 @@ class ProviderServiceImpl internal constructor(private val clientOptions: Client
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("providers")
                     .build()
-<<<<<<< HEAD
                     .prepare(
                         clientOptions,
                         params,
                         SecurityOptions.none(),
                     )
-||||||| parent of 907c97c (Apply custom code)
-                    .prepare(
-                        clientOptions,
-                        params,
-                        SecurityOptions.builder().bearerAuth(true).build(),
-                    )
-=======
-                    .prepare(clientOptions, params)
->>>>>>> 907c97c (Apply custom code)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response =
                 clientOptions.httpClient.execute(
