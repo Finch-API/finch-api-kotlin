@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.8.2](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.1...v9.8.2) (2026-10-01)
+
+
+### Documentation
+
+* **spec:** document phone number format on individual phone_numbers ([d7b97c4](https://github.com/Finch-API/finch-api-kotlin/commit/d7b97c4cbdcc1ddb23c88e86d351645bf7719b9c))
+
 ## [9.8.1](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.0...v9.8.1) (2026-08-21)
 
 
