@@ -43,6 +43,15 @@ private constructor(
     fun individualId(): String? = individualId
 
     /**
+     * The employer defined benefit eligibility class that groups an employee into a set of eligible
+     * benefit plans, as stored by the provider. Null when not configured.
+     *
+     * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun benefitEligibilityClass(): String? = body.benefitEligibilityClass()
+
+    /**
      * Worker's compensation classification code for this employee
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -223,6 +232,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun unionLocal(): String? = body.unionLocal()
+
+    /**
+     * Returns the raw JSON value of [benefitEligibilityClass].
+     *
+     * Unlike [benefitEligibilityClass], this method doesn't throw if the JSON field has an
+     * unexpected type.
+     */
+    fun _benefitEligibilityClass(): JsonField<String> = body._benefitEligibilityClass()
 
     /**
      * Returns the raw JSON value of [classCode].
@@ -431,14 +448,33 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [benefitEligibilityClass]
          * - [classCode]
          * - [customFields]
          * - [department]
          * - [employment]
-         * - [employmentStatus]
          * - etc.
          */
         fun body(body: EmploymentWithoutId) = apply { this.body = body.toBuilder() }
+
+        /**
+         * The employer defined benefit eligibility class that groups an employee into a set of
+         * eligible benefit plans, as stored by the provider. Null when not configured.
+         */
+        fun benefitEligibilityClass(benefitEligibilityClass: String?) = apply {
+            body.benefitEligibilityClass(benefitEligibilityClass)
+        }
+
+        /**
+         * Sets [Builder.benefitEligibilityClass] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.benefitEligibilityClass] with a well-typed [String]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun benefitEligibilityClass(benefitEligibilityClass: JsonField<String>) = apply {
+            body.benefitEligibilityClass(benefitEligibilityClass)
+        }
 
         /** Worker's compensation classification code for this employee */
         fun classCode(classCode: String?) = apply { body.classCode(classCode) }
@@ -926,6 +962,7 @@ private constructor(
     class EmploymentWithoutId
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val benefitEligibilityClass: JsonField<String>,
         private val classCode: JsonField<String>,
         private val customFields: JsonField<List<CustomField>>,
         private val department: JsonField<Department>,
@@ -954,6 +991,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("benefit_eligibility_class")
+            @ExcludeMissing
+            benefitEligibilityClass: JsonField<String> = JsonMissing.of(),
             @JsonProperty("class_code")
             @ExcludeMissing
             classCode: JsonField<String> = JsonMissing.of(),
@@ -1016,6 +1056,7 @@ private constructor(
             @ExcludeMissing
             unionLocal: JsonField<String> = JsonMissing.of(),
         ) : this(
+            benefitEligibilityClass,
             classCode,
             customFields,
             department,
@@ -1041,6 +1082,16 @@ private constructor(
             unionLocal,
             mutableMapOf(),
         )
+
+        /**
+         * The employer defined benefit eligibility class that groups an employee into a set of
+         * eligible benefit plans, as stored by the provider. Null when not configured.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun benefitEligibilityClass(): String? =
+            benefitEligibilityClass.getNullable("benefit_eligibility_class")
 
         /**
          * Worker's compensation classification code for this employee
@@ -1225,6 +1276,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun unionLocal(): String? = unionLocal.getNullable("union_local")
+
+        /**
+         * Returns the raw JSON value of [benefitEligibilityClass].
+         *
+         * Unlike [benefitEligibilityClass], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("benefit_eligibility_class")
+        @ExcludeMissing
+        fun _benefitEligibilityClass(): JsonField<String> = benefitEligibilityClass
 
         /**
          * Returns the raw JSON value of [classCode].
@@ -1435,6 +1496,7 @@ private constructor(
         /** A builder for [EmploymentWithoutId]. */
         class Builder internal constructor() {
 
+            private var benefitEligibilityClass: JsonField<String> = JsonMissing.of()
             private var classCode: JsonField<String> = JsonMissing.of()
             private var customFields: JsonField<MutableList<CustomField>>? = null
             private var department: JsonField<Department> = JsonMissing.of()
@@ -1461,6 +1523,7 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(employmentWithoutId: EmploymentWithoutId) = apply {
+                benefitEligibilityClass = employmentWithoutId.benefitEligibilityClass
                 classCode = employmentWithoutId.classCode
                 customFields = employmentWithoutId.customFields.map { it.toMutableList() }
                 department = employmentWithoutId.department
@@ -1485,6 +1548,24 @@ private constructor(
                 unionCode = employmentWithoutId.unionCode
                 unionLocal = employmentWithoutId.unionLocal
                 additionalProperties = employmentWithoutId.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * The employer defined benefit eligibility class that groups an employee into a set of
+             * eligible benefit plans, as stored by the provider. Null when not configured.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: String?) =
+                benefitEligibilityClass(JsonField.ofNullable(benefitEligibilityClass))
+
+            /**
+             * Sets [Builder.benefitEligibilityClass] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.benefitEligibilityClass] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: JsonField<String>) = apply {
+                this.benefitEligibilityClass = benefitEligibilityClass
             }
 
             /** Worker's compensation classification code for this employee */
@@ -1873,6 +1954,7 @@ private constructor(
              */
             fun build(): EmploymentWithoutId =
                 EmploymentWithoutId(
+                    benefitEligibilityClass,
                     classCode,
                     (customFields ?: JsonMissing.of()).map { it.toImmutable() },
                     department,
@@ -1916,6 +1998,7 @@ private constructor(
                 return@apply
             }
 
+            benefitEligibilityClass()
             classCode()
             customFields()?.forEach { it.validate() }
             department()?.validate()
@@ -1957,7 +2040,8 @@ private constructor(
          * Used for best match union deserialization.
          */
         internal fun validity(): Int =
-            (if (classCode.asKnown() == null) 0 else 1) +
+            (if (benefitEligibilityClass.asKnown() == null) 0 else 1) +
+                (if (classCode.asKnown() == null) 0 else 1) +
                 (customFields.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
                 (department.asKnown()?.validity() ?: 0) +
                 (employment.asKnown()?.validity() ?: 0) +
@@ -1987,6 +2071,7 @@ private constructor(
             }
 
             return other is EmploymentWithoutId &&
+                benefitEligibilityClass == other.benefitEligibilityClass &&
                 classCode == other.classCode &&
                 customFields == other.customFields &&
                 department == other.department &&
@@ -2015,6 +2100,7 @@ private constructor(
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                benefitEligibilityClass,
                 classCode,
                 customFields,
                 department,
@@ -2045,7 +2131,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "EmploymentWithoutId{classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
+            "EmploymentWithoutId{benefitEligibilityClass=$benefitEligibilityClass, classCode=$classCode, customFields=$customFields, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, highlyCompensatedEmployee=$highlyCompensatedEmployee, income=$income, incomeHistory=$incomeHistory, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, sourceId=$sourceId, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, additionalProperties=$additionalProperties}"
     }
 
     class CustomField
