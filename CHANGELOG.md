@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.8.3](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.2...v9.8.3) (2026-10-16)
+
+
+### Chores
+
+* **api:** rebuild SDK ([6adbfbd](https://github.com/Finch-API/finch-api-kotlin/commit/6adbfbd913410600919041ffc2d53191ebe47467))
+
 ## [9.8.2](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.1...v9.8.2) (2026-10-01)
 
 
