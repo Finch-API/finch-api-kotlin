@@ -238,6 +238,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
+        private val benefitEligibilityClass: JsonField<String>,
         private val classCode: JsonField<String>,
         private val department: JsonField<Department>,
         private val employment: JsonField<Employment>,
@@ -268,6 +269,9 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("benefit_eligibility_class")
+            @ExcludeMissing
+            benefitEligibilityClass: JsonField<String> = JsonMissing.of(),
             @JsonProperty("class_code")
             @ExcludeMissing
             classCode: JsonField<String> = JsonMissing.of(),
@@ -332,6 +336,7 @@ private constructor(
             @JsonProperty("work_id") @ExcludeMissing workId: JsonField<String> = JsonMissing.of(),
         ) : this(
             id,
+            benefitEligibilityClass,
             classCode,
             department,
             employment,
@@ -366,6 +371,16 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun id(): String = id.getRequired("id")
+
+        /**
+         * The employer defined benefit eligibility class that groups an employee into a set of
+         * eligible benefit plans, as stored by the provider. Null when not configured.
+         *
+         * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun benefitEligibilityClass(): String? =
+            benefitEligibilityClass.getNullable("benefit_eligibility_class")
 
         /**
          * Worker's compensation classification code for this employee
@@ -565,6 +580,16 @@ private constructor(
          * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /**
+         * Returns the raw JSON value of [benefitEligibilityClass].
+         *
+         * Unlike [benefitEligibilityClass], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("benefit_eligibility_class")
+        @ExcludeMissing
+        fun _benefitEligibilityClass(): JsonField<String> = benefitEligibilityClass
 
         /**
          * Returns the raw JSON value of [classCode].
@@ -785,6 +810,7 @@ private constructor(
              * The following fields are required:
              * ```kotlin
              * .id()
+             * .benefitEligibilityClass()
              * .classCode()
              * .department()
              * .employment()
@@ -813,6 +839,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
+            private var benefitEligibilityClass: JsonField<String>? = null
             private var classCode: JsonField<String>? = null
             private var department: JsonField<Department>? = null
             private var employment: JsonField<Employment>? = null
@@ -841,6 +868,7 @@ private constructor(
 
             internal fun from(employmentDataResponseBody: EmploymentDataResponseBody) = apply {
                 id = employmentDataResponseBody.id
+                benefitEligibilityClass = employmentDataResponseBody.benefitEligibilityClass
                 classCode = employmentDataResponseBody.classCode
                 department = employmentDataResponseBody.department
                 employment = employmentDataResponseBody.employment
@@ -880,6 +908,24 @@ private constructor(
              * value.
              */
             fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /**
+             * The employer defined benefit eligibility class that groups an employee into a set of
+             * eligible benefit plans, as stored by the provider. Null when not configured.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: String?) =
+                benefitEligibilityClass(JsonField.ofNullable(benefitEligibilityClass))
+
+            /**
+             * Sets [Builder.benefitEligibilityClass] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.benefitEligibilityClass] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun benefitEligibilityClass(benefitEligibilityClass: JsonField<String>) = apply {
+                this.benefitEligibilityClass = benefitEligibilityClass
+            }
 
             /** Worker's compensation classification code for this employee */
             fun classCode(classCode: String?) = classCode(JsonField.ofNullable(classCode))
@@ -1282,6 +1328,7 @@ private constructor(
              * The following fields are required:
              * ```kotlin
              * .id()
+             * .benefitEligibilityClass()
              * .classCode()
              * .department()
              * .employment()
@@ -1308,6 +1355,7 @@ private constructor(
             fun build(): EmploymentDataResponseBody =
                 EmploymentDataResponseBody(
                     checkRequired("id", id),
+                    checkRequired("benefitEligibilityClass", benefitEligibilityClass),
                     checkRequired("classCode", classCode),
                     checkRequired("department", department),
                     checkRequired("employment", employment),
@@ -1353,6 +1401,7 @@ private constructor(
             }
 
             id()
+            benefitEligibilityClass()
             classCode()
             department()?.validate()
             employment()?.validate()
@@ -1396,6 +1445,7 @@ private constructor(
          */
         internal fun validity(): Int =
             (if (id.asKnown() == null) 0 else 1) +
+                (if (benefitEligibilityClass.asKnown() == null) 0 else 1) +
                 (if (classCode.asKnown() == null) 0 else 1) +
                 (department.asKnown()?.validity() ?: 0) +
                 (employment.asKnown()?.validity() ?: 0) +
@@ -3080,6 +3130,7 @@ private constructor(
 
             return other is EmploymentDataResponseBody &&
                 id == other.id &&
+                benefitEligibilityClass == other.benefitEligibilityClass &&
                 classCode == other.classCode &&
                 department == other.department &&
                 employment == other.employment &&
@@ -3110,6 +3161,7 @@ private constructor(
         private val hashCode: Int by lazy {
             Objects.hash(
                 id,
+                benefitEligibilityClass,
                 classCode,
                 department,
                 employment,
@@ -3141,7 +3193,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "EmploymentDataResponseBody{id=$id, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, highlyCompensatedEmployee=$highlyCompensatedEmployee, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
+            "EmploymentDataResponseBody{id=$id, benefitEligibilityClass=$benefitEligibilityClass, classCode=$classCode, department=$department, employment=$employment, employmentStatus=$employmentStatus, endDate=$endDate, firstName=$firstName, flsaStatus=$flsaStatus, highlyCompensatedEmployee=$highlyCompensatedEmployee, isActive=$isActive, keyEmployee=$keyEmployee, lastName=$lastName, latestRehireDate=$latestRehireDate, location=$location, manager=$manager, middleName=$middleName, startDate=$startDate, title=$title, unionCode=$unionCode, unionLocal=$unionLocal, customFields=$customFields, income=$income, incomeHistory=$incomeHistory, sourceId=$sourceId, workId=$workId, additionalProperties=$additionalProperties}"
     }
 
     class BatchError
