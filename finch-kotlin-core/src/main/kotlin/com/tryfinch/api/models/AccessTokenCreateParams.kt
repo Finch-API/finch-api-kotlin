@@ -51,7 +51,9 @@ private constructor(
     fun clientSecret(): String? = body.clientSecret()
 
     /**
-     * The redirect URI used in the authorization request (optional)
+     * The redirect URI used when creating the Connect session. Required if the authorization code
+     * came from the redirect flow, and it must match the `redirect_uri` used to create the session.
+     * Omit it if the code came from the embedded flow (Connect SDK).
      *
      * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -170,7 +172,11 @@ private constructor(
             body.clientSecret(clientSecret)
         }
 
-        /** The redirect URI used in the authorization request (optional) */
+        /**
+         * The redirect URI used when creating the Connect session. Required if the authorization
+         * code came from the redirect flow, and it must match the `redirect_uri` used to create the
+         * session. Omit it if the code came from the embedded flow (Connect SDK).
+         */
         fun redirectUri(redirectUri: String) = apply { body.redirectUri(redirectUri) }
 
         /**
@@ -374,7 +380,9 @@ private constructor(
         fun clientSecret(): String? = clientSecret.getNullable("client_secret")
 
         /**
-         * The redirect URI used in the authorization request (optional)
+         * The redirect URI used when creating the Connect session. Required if the authorization
+         * code came from the redirect flow, and it must match the `redirect_uri` used to create the
+         * session. Omit it if the code came from the embedded flow (Connect SDK).
          *
          * @throws FinchInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -494,7 +502,12 @@ private constructor(
                 this.clientSecret = clientSecret
             }
 
-            /** The redirect URI used in the authorization request (optional) */
+            /**
+             * The redirect URI used when creating the Connect session. Required if the
+             * authorization code came from the redirect flow, and it must match the `redirect_uri`
+             * used to create the session. Omit it if the code came from the embedded flow (Connect
+             * SDK).
+             */
             fun redirectUri(redirectUri: String) = redirectUri(JsonField.of(redirectUri))
 
             /**
