@@ -33,7 +33,9 @@ private constructor(
 
     /**
      * The entity IDs to specify which entities' data to access. Provide exactly one entity ID per
-     * request; a maximum of one is accepted.
+     * request; a maximum of one is accepted. Required when the connection has more than one entity
+     * — omitting it returns a `400` `invalid_request_error`. Optional for single-entity
+     * connections.
      */
     fun entityIds(): List<String>? = entityIds
 
@@ -98,7 +100,9 @@ private constructor(
 
         /**
          * The entity IDs to specify which entities' data to access. Provide exactly one entity ID
-         * per request; a maximum of one is accepted.
+         * per request; a maximum of one is accepted. Required when the connection has more than one
+         * entity — omitting it returns a `400` `invalid_request_error`. Optional for single-entity
+         * connections.
          */
         fun entityIds(entityIds: List<String>?) = apply {
             this.entityIds = entityIds?.toMutableList()
