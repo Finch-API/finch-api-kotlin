@@ -1,5 +1,18 @@
 # Changelog
 
+## [9.8.3](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.2...v9.8.3) (2026-10-22)
+
+
+### Chores
+
+* **api:** rebuild SDK ([6adbfbd](https://github.com/Finch-API/finch-api-kotlin/commit/6adbfbd913410600919041ffc2d53191ebe47467))
+
+
+### Documentation
+
+* **spec:** clarify redirect_uri requirement on connect and token endpoints [DDR-1050] ([4124e59](https://github.com/Finch-API/finch-api-kotlin/commit/4124e5933377137d0075a93cf1a8b7398b4e280f))
+* **spec:** document missing entity_ids error for multi-entity connections [DDR-1051] ([dd9724d](https://github.com/Finch-API/finch-api-kotlin/commit/dd9724d0015bdb90cfbcc075cc134800808e9c45))
+
 ## [9.8.2](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.1...v9.8.2) (2026-10-01)
 
 
