@@ -8,7 +8,7 @@ repositories {
 
 allprojects {
     group = "com.tryfinch.api"
-    version = "9.8.3" // x-release-please-version
+    version = "9.8.4" // x-release-please-version
 }
 
 subprojects {
