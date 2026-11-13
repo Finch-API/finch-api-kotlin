@@ -624,7 +624,7 @@ private constructor(
          * this account ID
          */
         @Deprecated("deprecated")
-        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+        fun accountId(accountId: String?) = accountId(JsonField.ofNullable(accountId))
 
         /**
          * Sets [Builder.accountId] to an arbitrary JSON value.
@@ -663,7 +663,7 @@ private constructor(
         }
 
         /** The Finch UUID of the company associated with the `access_token`. */
-        fun companyId(companyId: String) = companyId(JsonField.of(companyId))
+        fun companyId(companyId: String?) = companyId(JsonField.ofNullable(companyId))
 
         /**
          * Sets [Builder.companyId] to an arbitrary JSON value.
