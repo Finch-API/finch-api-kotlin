@@ -1,5 +1,18 @@
 # Changelog
 
+## [9.9.0](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.4...v9.9.0) (2026-11-13)
+
+
+### Features
+
+* **benefit-plan-admin:** accept coverage date, individual and plan filters on the list endpoints [DDR-1177] ([c3e829b](https://github.com/Finch-API/finch-api-kotlin/commit/c3e829bc65b38885f80479cfe23b1cea3182a36e))
+
+
+### Chores
+
+* **codeowners:** DEVOPS-390 Transfer SDK ownership to Data Delivery ([#515](https://github.com/Finch-API/finch-api-kotlin/issues/515)) ([6a8c4fc](https://github.com/Finch-API/finch-api-kotlin/commit/6a8c4fc2112b3d83fb969bd32f166ef4a3e0492d))
+* **codeowners:** transfer ownership to data delivery ([6a8c4fc](https://github.com/Finch-API/finch-api-kotlin/commit/6a8c4fc2112b3d83fb969bd32f166ef4a3e0492d))
+
 ## [9.8.4](https://github.com/Finch-API/finch-api-kotlin/compare/v9.8.3...v9.8.4) (2026-10-30)
 
 
